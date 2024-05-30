@@ -3,6 +3,7 @@ import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, useColorScheme, 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { colors } from './constants/colors';
+import SnippetsScreen from './screens/SnippetsScreen';
 
 function HomeScreen() {
   return (
@@ -20,7 +21,11 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen
+          name="Snippets"
+          component={SnippetsScreen}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
