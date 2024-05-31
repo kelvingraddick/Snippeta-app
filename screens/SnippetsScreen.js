@@ -1,69 +1,133 @@
 import React from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { Image, View, Text, SafeAreaView, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { Avatar, Button, Card } from 'react-native-paper';
 
 const sections = [
-  { title: 'Morning Inspiration', description: 'Start your day right with motivational quotes and affirmations to fuel your...', color: '#FFEB3B' },
-  { title: 'Recipe Ideas', description: 'Discover mouthwatering recipes for every occasion, from quick weekday...', color: '#4CAF50' },
-  { title: 'Travel Bucket List', description: 'Dreaming of exotic destinations? Save your travel aspirations here and turn...', color: '#E0E0E0' },
-  { title: 'Productivity Hacks', description: 'Boost your efficiency and get more done in less time with expert tips and...', color: '#3F51B5' },
-  { title: 'Creative Writing Prompts', description: 'Unleash your imagination with a collection of writing prompts guarante...', color: '#FF5722' },
+  { title: 'Morning Inspiration', description: 'Start your day right with motivational quotes and affirmations to fuel your spirit and energize your mind.', color: '#F9C74F' },
+  { title: 'Recipe Ideas', description: 'Discover mouthwatering recipes for every occasion, from quick weekday meals to gourmet dinner parties. Let your taste buds explore!', color: '#43AA8B' },
+  { title: 'Travel Bucket List', description: 'Dreaming of exotic destinations? Save your travel aspirations here and turn your wanderlust into reality, one destination at a time.', color: '#EEEEFE' },
+  { title: 'Productivity Hacks', description: 'Boost your efficiency and get more done in less time with expert tips and tricks to streamline your workflow and crush your goals.', color: '#5C63FF' },
+  { title: 'Creative Writing Prompts', description: 'Unleash your imagination with a collection of writing prompts guaranteed to spark creativity and inspire your next masterpiece.', color: '#F9844A' },
 ];
 
 const SnippetsScreen = () => {
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Snippets</Text>
-        <Avatar.Image size={48} source={{ uri: 'https://via.placeholder.com/150' }} />
-      </View>
-      <Button mode="contained" onPress={() => {}} style={styles.button}>
-        + New snippet / list
-      </Button>
-      {sections.map((section, index) => (
-        <TouchableOpacity key={index} style={[styles.card, { backgroundColor: section.color }]}>
-          <Text style={styles.cardTitle}>{section.title}</Text>
-          <Text style={styles.cardDescription}>{section.description}</Text>
-        </TouchableOpacity>
-      ))}
-    </ScrollView>
+      <ScrollView style={styles.scrollView}>
+        <View style={styles.headerView}>
+          <View style={styles.titleView}>
+            <Text style={styles.title}>Snippets</Text>
+            <Avatar.Image size={50} source={{ uri: 'https://scontent-atl3-2.xx.fbcdn.net/v/t39.30808-6/352223463_796188302106701_2923262842427112597_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=5f2048&_nc_ohc=SzNGY02E9WUQ7kNvgEN1WbP&_nc_ht=scontent-atl3-2.xx&oh=00_AYBOgTGe9P1-TIhkLn_A2X9Kkbw49UuiEhqyhlnFVXf9sQ&oe=665F1323' }} />
+          </View>
+          <TouchableOpacity style={styles.buttonView} onPress={() => {}}>
+            <Text style={styles.buttonIcon}>+ </Text><Text style={styles.buttonText}>New snippet / list</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.cardsView}>
+          {sections.map((section, index) => (
+            <TouchableOpacity key={index} style={[styles.cardView, { backgroundColor: section.color }]}>
+              <View style={styles.cardContentView}>
+                <View style={styles.cardTitleView}>
+                  <Image source={require('../assets/images/copy-white.png')} style={styles.cardTitleIcon} />
+                  <Text style={styles.cardTitleText}>{section.title}</Text>
+                </View>
+                <Text style={styles.cardDescription} numberOfLines={2}>{section.description}</Text>
+              </View>
+              <TouchableOpacity>
+                <Text style={styles.cardActionIcon}>&middot;&middot;&middot;</Text>
+              </TouchableOpacity>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  scrollView: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
-    padding: 16,
+    backgroundColor: '#EEEEFE',
   },
-  header: {
+  headerView: {
+    padding: 20,
+    paddingTop: 60,
+    borderRadius: 30,
+    shadowColor: 'black',
+    shadowOffset: 4,
+    shadowOpacity: 1,
+    shadowRadius: 4,
+    backgroundColor: '#1d2027',
+  },
+  titleView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 20
   },
   title: {
-    fontSize: 32,
+    fontSize: 40,
     fontWeight: 'bold',
+    color: 'white'
   },
-  button: {
-    marginBottom: 16,
-    backgroundColor: '#6200EE',
+  buttonView: {
+    backgroundColor: '#5C63FF',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    padding: 15,
+    marginBottom: 20,
+    borderRadius: 5
   },
-  card: {
-    borderRadius: 8,
-    padding: 16,
-    marginBottom: 16,
-  },
-  cardTitle: {
+  buttonIcon: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 8,
+    color: 'white'
+  },
+  buttonText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    opacity: 0.60
+  },
+  cardsView: {
+    padding: 20
+  },
+  cardView: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    borderRadius: 5,
+    padding: 20,
+    marginBottom: 16,
+    shadowColor: 'black',
+    shadowOffset: 1,
+    shadowOpacity: 0.75,
+    shadowRadius: 1,
+  },
+  cardContentView: {
+    flexDirection: 'column',
+    gap: 5,
+    marginRight: 20
+  },
+  cardTitleView: {
+    flexDirection: 'row',
+    gap: 5
+  },
+  cardTitleIcon: {
+    height: 20,
+    width: 20
+  },
+  cardTitleText: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    opacity: 0.60,
   },
   cardDescription: {
-    fontSize: 14,
-    color: '#555',
+    fontSize: 15,
+    opacity: 0.60,
   },
+  cardActionIcon: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    opacity: 0.60,
+  }
 });
 
 export default SnippetsScreen;
