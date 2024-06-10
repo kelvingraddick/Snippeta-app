@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, View, Text, SafeAreaView, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { Avatar, Button, Card } from 'react-native-paper';
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 const sections = [
   { title: 'Morning Inspiration', description: 'Start your day right with motivational quotes and affirmations to fuel your spirit and energize your mind.', color: '#F9C74F' },
@@ -24,7 +25,7 @@ const SnippetsScreen = () => {
         </View>
         <View style={styles.cardsView}>
           {sections.map((section, index) => (
-            <TouchableOpacity key={index} style={[styles.cardView, { backgroundColor: section.color }]}>
+            <TouchableOpacity key={index} style={[styles.cardView, { backgroundColor: section.color }]} onPress={() => onSnippetTapped(section)}>
               <View style={styles.cardContentView}>
                 <View style={styles.cardTitleView}>
                   <Image source={require('../assets/images/copy-white.png')} style={styles.cardTitleIcon} />
@@ -40,6 +41,25 @@ const SnippetsScreen = () => {
         </View>
       </ScrollView>
   );
+};
+
+const onSnippetTapped = (snippet) => {
+  showMessage({
+    message: 'The text was copied the clipboard',
+    description: `"${snippet.description}"`,
+    icon: { icon: () => <Image source={require('../assets/images/copy-white.png')} style={styles.cardTitleIcon} />, position: 'right' },
+    backgroundColor: snippet.color,
+    titleStyle: {
+      fontWeight: 'bold',
+      color: 'black',
+      opacity: 0.60,
+    },
+    textStyle: {
+      fontStyle: 'italic',
+      color: 'black',
+      opacity: 0.60,
+    }
+  });
 };
 
 const styles = StyleSheet.create({

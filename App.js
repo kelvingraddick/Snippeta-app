@@ -2,6 +2,7 @@ import React from 'react';
 import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, useColorScheme, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import FlashMessage from "react-native-flash-message";
 import { colors } from './constants/colors';
 import SnippetsScreen from './screens/SnippetsScreen';
 
@@ -27,6 +28,7 @@ export default function App() {
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
+      <FlashMessage position="top" />
     </NavigationContainer>
   );
 }
