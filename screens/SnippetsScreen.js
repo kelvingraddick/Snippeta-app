@@ -18,7 +18,7 @@ const SnippetsScreen = () => {
         <View style={styles.headerView}>
           <View style={styles.titleView}>
             <Text style={styles.title}>Snippets</Text>
-            <Avatar.Image size={50} source={{ uri: 'https://scontent-atl3-2.xx.fbcdn.net/v/t39.30808-6/352223463_796188302106701_2923262842427112597_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=5f2048&_nc_ohc=SzNGY02E9WUQ7kNvgEN1WbP&_nc_ht=scontent-atl3-2.xx&oh=00_AYBOgTGe9P1-TIhkLn_A2X9Kkbw49UuiEhqyhlnFVXf9sQ&oe=665F1323' }} />
+            <Avatar.Image size={50} source={{ uri: '' }} />
           </View>
           <TouchableOpacity style={styles.buttonView} onPress={() => onNewSnippetTapped()}>
             <Text style={styles.buttonText}>+ New snippet / list</Text>
@@ -47,7 +47,7 @@ const SnippetsScreen = () => {
 const onNewSnippetTapped = async () => {
   var message = await Clipboard.getString();
   showMessage({
-    message: 'The text was taken from the clipboard',
+    message: 'This text was taken from the clipboard',
     description: `"${message}"`,
     icon: { icon: () => <Image source={require('../assets/images/copy-white.png')} style={styles.cardTitleIcon} tintColor={'black'} />, position: 'right' },
     titleStyle: {
@@ -66,7 +66,7 @@ const onNewSnippetTapped = async () => {
 const onSnippetTapped = (snippet) => {
   Clipboard.setString(snippet.description);
   showMessage({
-    message: 'The text was copied the clipboard',
+    message: 'The text was copied to the clipboard',
     description: `"${snippet.description}"`,
     icon: { icon: () => <Image source={require('../assets/images/copy-white.png')} style={styles.cardTitleIcon} tintColor={'black'} />, position: 'right' },
     backgroundColor: snippet.color,
