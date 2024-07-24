@@ -164,7 +164,8 @@ const styles = StyleSheet.create({
   cardTitleIcon: {
     height: 20,
     width: 20,
-    color: '#1d2027'
+    color: '#1d2027',
+    opacity: 0.25
   },
   cardTitleText: {
     fontSize: 17,
