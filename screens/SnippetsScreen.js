@@ -32,7 +32,7 @@ const SnippetsScreen = () => {
               <View style={styles.cardContentView}>
                 <View style={styles.cardTitleView}>
                   <Image source={require('../assets/images/copy-white.png')} style={styles.cardTitleIcon} tintColor={'#1d2027'} />
-                  <Text style={styles.cardTitleText}>{section.title}</Text>
+                  <Text style={styles.cardTitleText}>&nbsp;{section.title}</Text>
                 </View>
                 <Text style={styles.cardDescription} numberOfLines={2}>{section.description}</Text>
               </View>
