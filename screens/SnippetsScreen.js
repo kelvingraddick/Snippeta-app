@@ -1,18 +1,83 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Image, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import Clipboard from '@react-native-clipboard/clipboard';
+import { ApplicationContext } from '../ApplicationContext';
+import storage from '../helpers/storage';
+import colors from '../helpers/colors';
 
-const sections = [
-  { title: 'Morning Inspiration', description: 'Start your day right with motivational quotes and affirmations to fuel your spirit and energize your mind.', color: '#feeaa6' },
-  { title: 'Recipe Ideas', description: 'Discover mouthwatering recipes for every occasion, from quick weekday meals to gourmet dinner parties. Let your taste buds explore!', color: '#e9fdd0' },
-  { title: 'Travel Bucket List', description: 'Dreaming of exotic destinations? Save your travel aspirations here and turn your wanderlust into reality, one destination at a time.', color: '#e9f4fe' },
-  { title: 'Productivity Hacks', description: 'Boost your efficiency and get more done in less time with expert tips and tricks to streamline your workflow and crush your goals.', color: '#f4e8fe' },
-  { title: 'Creative Writing Prompts', description: 'Unleash your imagination with a collection of writing prompts guaranteed to spark creativity and inspire your next masterpiece.', color: '#fdeae9' },
-  { title: 'Other snippets', description: 'Random snippets that don\'t fit another category.', color: '#f7f7f7' },
-];
+const SnippetsScreen = ({ route, navigation }) => {
+  const parentId = route.params?.parentId || 0;
 
-const SnippetsScreen = () => {
+  const [displayedSnippets, setDisplayedSnippets] = useState([]);
+
+  const { snippets, isSnippetsLoading, loadSnippets } = useContext(ApplicationContext);
+
+  useEffect(() => {
+    let displayedSnippets = snippets;
+    displayedSnippets.sort((a, b) => a.order_index - b.order_index);
+    setDisplayedSnippets(displayedSnippets);
+  }, [snippets]);
+
+  const onSettingsTapped = async () => {
+    showMessage({
+      message: 'The settings button was tapped!',
+      titleStyle: {
+        fontWeight: 'bold',
+        color: 'black',
+        opacity: 0.60,
+      },
+      textStyle: {
+        fontStyle: 'italic',
+        color: 'black',
+        opacity: 0.60,
+      }
+    });
+  };
+
+  const onNewSnippetTapped = async () => {
+    navigation.navigate('Snippet', { snippet: { parent_id: parentId, type: 0, color_id: 1 } });
+  
+    /*
+    var message = await Clipboard.getString();
+    showMessage({
+      message: 'This text was taken from the clipboard',
+      description: `"${message}"`,
+      icon: { icon: () => <Image source={require('../assets/images/copy-white.png')} style={styles.cardTitleIcon} tintColor={'black'} />, position: 'right' },
+      titleStyle: {
+        fontWeight: 'bold',
+        color: 'black',
+        opacity: 0.60,
+      },
+      textStyle: {
+        fontStyle: 'italic',
+        color: 'black',
+        opacity: 0.60,
+      }
+    });
+    */
+  };
+  
+  const onSnippetTapped = (snippet) => {
+    Clipboard.setString(snippet.content);
+    showMessage({
+      message: 'The text was copied to the clipboard',
+      description: `"${snippet.content}"`,
+      icon: { icon: () => <Image source={require('../assets/images/copy-white.png')} style={styles.cardTitleIcon} tintColor={'black'} />, position: 'right' },
+      backgroundColor: colors.getById(snippet.color_id).hexCode,
+      titleStyle: {
+        fontWeight: 'bold',
+        color: 'black',
+        opacity: 0.60,
+      },
+      textStyle: {
+        fontStyle: 'italic',
+        color: 'black',
+        opacity: 0.60,
+      }
+    });
+  };
+
   return (
       <ScrollView style={styles.scrollView}>
         <View style={styles.headerView}>
@@ -27,14 +92,14 @@ const SnippetsScreen = () => {
           </TouchableOpacity>
         </View>
         <View style={styles.cardsView}>
-          {sections.map((section, index) => (
-            <TouchableOpacity key={index} style={[styles.cardView, { backgroundColor: section.color }]} onPress={() => onSnippetTapped(section)}>
+          {displayedSnippets.map((snippet, index) => (
+            <TouchableOpacity key={index} style={[styles.cardView, { backgroundColor: colors.getById(snippet.color_id).hexCode }]} onPress={() => onSnippetTapped(snippet)}>
               <View style={styles.cardContentView}>
                 <View style={styles.cardTitleView}>
                   <Image source={require('../assets/images/copy-white.png')} style={styles.cardTitleIcon} tintColor={'#1d2027'} />
-                  <Text style={styles.cardTitleText}>&nbsp;{section.title}</Text>
+                  <Text style={styles.cardTitleText}>&nbsp;{snippet.title}</Text>
                 </View>
-                <Text style={styles.cardDescription} numberOfLines={2}>{section.description}</Text>
+                <Text style={styles.cardDescription} numberOfLines={2}>{snippet.content}</Text>
               </View>
               <TouchableOpacity>
                 <Text style={styles.cardActionIcon}>&middot;&middot;&middot;</Text>
@@ -44,61 +109,6 @@ const SnippetsScreen = () => {
         </View>
       </ScrollView>
   );
-};
-
-const onSettingsTapped = async () => {
-  showMessage({
-    message: 'The settings button was tapped!',
-    titleStyle: {
-      fontWeight: 'bold',
-      color: 'black',
-      opacity: 0.60,
-    },
-    textStyle: {
-      fontStyle: 'italic',
-      color: 'black',
-      opacity: 0.60,
-    }
-  });
-};
-
-const onNewSnippetTapped = async () => {
-  var message = await Clipboard.getString();
-  showMessage({
-    message: 'This text was taken from the clipboard',
-    description: `"${message}"`,
-    icon: { icon: () => <Image source={require('../assets/images/copy-white.png')} style={styles.cardTitleIcon} tintColor={'black'} />, position: 'right' },
-    titleStyle: {
-      fontWeight: 'bold',
-      color: 'black',
-      opacity: 0.60,
-    },
-    textStyle: {
-      fontStyle: 'italic',
-      color: 'black',
-      opacity: 0.60,
-    }
-  });
-};
-
-const onSnippetTapped = (snippet) => {
-  Clipboard.setString(snippet.description);
-  showMessage({
-    message: 'The text was copied to the clipboard',
-    description: `"${snippet.description}"`,
-    icon: { icon: () => <Image source={require('../assets/images/copy-white.png')} style={styles.cardTitleIcon} tintColor={'black'} />, position: 'right' },
-    backgroundColor: snippet.color,
-    titleStyle: {
-      fontWeight: 'bold',
-      color: 'black',
-      opacity: 0.60,
-    },
-    textStyle: {
-      fontStyle: 'italic',
-      color: 'black',
-      opacity: 0.60,
-    }
-  });
 };
 
 const styles = StyleSheet.create({
