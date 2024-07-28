@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Image, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import Clipboard from '@react-native-clipboard/clipboard';
+import { useActionSheet } from '@expo/react-native-action-sheet';
 import { ApplicationContext } from '../ApplicationContext';
 import storage from '../helpers/storage';
 import colors from '../helpers/colors';
@@ -12,6 +13,8 @@ const SnippetsScreen = ({ route, navigation }) => {
   const [displayedSnippets, setDisplayedSnippets] = useState([]);
 
   const { snippets, isSnippetsLoading, loadSnippets } = useContext(ApplicationContext);
+
+  const { showActionSheetWithOptions } = useActionSheet();
 
   useEffect(() => {
     let displayedSnippets = snippets;
@@ -78,6 +81,42 @@ const SnippetsScreen = ({ route, navigation }) => {
     });
   };
 
+  const onSnippetMenuTapped = (snippet) => {
+    const options = { 'Edit': 0, 'Move to top': 1, 'Delete': 2, 'Cancel': 3 };
+    showActionSheetWithOptions(
+      {
+        options: Object.keys(options),
+        cancelButtonIndex: options.Cancel,
+        destructiveButtonIndex: options.Delete,
+      },
+      (selectedIndex) => {
+        switch (selectedIndex) {
+          case options.Edit:
+            navigation.navigate('Snippet', { snippet });
+            break;
+          case options['Move to top']:
+          case options.Delete:
+            showMessage({
+              message: 'This feature is coming soon!',
+              titleStyle: {
+                fontWeight: 'bold',
+                color: 'black',
+                opacity: 0.60,
+              },
+              textStyle: {
+                fontStyle: 'italic',
+                color: 'black',
+                opacity: 0.60,
+              }
+            });
+            break;
+          case 2: // Delete
+
+        }
+      }
+    );
+  }
+
   return (
       <ScrollView style={styles.scrollView}>
         <View style={styles.headerView}>
@@ -101,7 +140,7 @@ const SnippetsScreen = ({ route, navigation }) => {
                 </View>
                 <Text style={styles.cardDescription} numberOfLines={2}>{snippet.content}</Text>
               </View>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => onSnippetMenuTapped(snippet)} hitSlop={40}>
                 <Text style={styles.cardActionIcon}>&middot;&middot;&middot;</Text>
               </TouchableOpacity>
             </TouchableOpacity>

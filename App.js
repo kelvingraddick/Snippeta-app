@@ -2,6 +2,7 @@ import React, { useEffect, useReducer } from 'react';
 import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, useColorScheme, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import FlashMessage from "react-native-flash-message";
 import { ApplicationContext } from './ApplicationContext';
 import { snippetTypes } from './constants/snippetTypes';
@@ -69,21 +70,23 @@ export default function App() {
 
   return (
     <ApplicationContext.Provider value={{...state, loadSnippets}}>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Snippets">
-          <Stack.Screen
-            name="Snippets"
-            component={SnippetsScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Snippet"
-            component={SnippetScreen}
-            options={{ headerShown: true }}
-          />
-        </Stack.Navigator>
-        <FlashMessage position="top" />
-      </NavigationContainer>
+      <ActionSheetProvider>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Snippets">
+            <Stack.Screen
+              name="Snippets"
+              component={SnippetsScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Snippet"
+              component={SnippetScreen}
+              options={{ headerShown: true }}
+            />
+          </Stack.Navigator>
+          <FlashMessage position="top" />
+        </NavigationContainer>
+      </ActionSheetProvider>
     </ApplicationContext.Provider>
   );
 }
