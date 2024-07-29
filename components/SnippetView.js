@@ -10,9 +10,9 @@ const SnippetView = (props) => {
       <View style={styles.contentView}>
         <View style={styles.titleView}>
           <Image
-            source={snippet.type == snippetTypes.SINGLE ? require('../assets/images/copy-white.png') : require('../assets/images/list-white.png')}
+            source={snippet.type == snippetTypes.SINGLE ? require('../assets/images/copy-white.png') : require('../assets/images/list-icon.png')}
             style={[styles.titleIcon, snippet.type == snippetTypes.SINGLE ? styles.copyIcon : styles.listIcon]}
-            tintColor={'#1d2027'}
+            tintColor={colors.darkGray.hexCode}
             resizeMode='stretch'
           />
           <Text style={styles.titleText}>&nbsp;{snippet.title}</Text>
@@ -47,29 +47,28 @@ const styles = StyleSheet.create({
   },
   titleIcon: {
     width: 20,
-    height: 20,
-    color: '#1d2027',
+    color: colors.darkGray.hexCode,
     opacity: 0.25,
   },
   copyIcon: {
     height: 20,
   },
   listIcon: {
-    height: 17,
+    height: 19,
   },
   titleText: {
     fontSize: 17,
     fontWeight: 'bold',
-    color: '#1d2027'
+    color: colors.darkGray.hexCode
   },
   contentText: {
     fontSize: 15,
-    color: '#1d2027'
+    color: colors.darkGray.hexCode
   },
   menuIcon: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#1d2027'
+    color: colors.darkGray.hexCode,
   }
 });
 

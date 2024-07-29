@@ -49,7 +49,7 @@ export default function App() {
             <Stack.Screen
               name="Snippet"
               component={SnippetScreen}
-              options={{ headerShown: true }}
+              options={{ headerShown: false }}
             />
           </Stack.Navigator>
           <FlashMessage position="top" />
