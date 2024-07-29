@@ -1,12 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Image, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { showMessage, hideMessage } from "react-native-flash-message";
+import React, { useEffect, useState } from 'react';
+import { FlatList, Image, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { showMessage } from "react-native-flash-message";
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useActionSheet } from '@expo/react-native-action-sheet';
-import { ApplicationContext } from '../ApplicationContext';
 import { snippetTypes } from '../constants/snippetTypes';
 import storage from '../helpers/storage';
 import colors from '../helpers/colors';
+import SnippetView from '../components/SnippetView';
 
 const SnippetsScreen = ({ route, navigation }) => {
   const parentId = route.params?.parentId;
@@ -143,40 +143,30 @@ const SnippetsScreen = ({ route, navigation }) => {
   }
 
   return (
-      <ScrollView style={styles.scrollView}>
-        <View style={styles.headerView}>
-          <View style={styles.titleView}>
-            <Text style={styles.title}>Snippets</Text>
-            <Pressable onPress={onSettingsTapped} hitSlop={20}>
-              <Image source={require('../assets/images/gear-gray.png')} style={styles.settingsIcon} tintColor={'white'} />
-            </Pressable>
-          </View>
-          <TouchableOpacity style={styles.buttonView} onPress={() => onNewSnippetTapped()}>
-            <Text style={styles.buttonText}>+ New snippet / list</Text>
-          </TouchableOpacity>
+    <View style={styles.container}>
+      <View style={styles.headerView}>
+        <View style={styles.titleView}>
+          <Text style={styles.title}>Snippets</Text>
+          <Pressable onPress={onSettingsTapped} hitSlop={20}>
+            <Image source={require('../assets/images/gear-gray.png')} style={styles.settingsIcon} tintColor={'white'} />
+          </Pressable>
         </View>
-        <View style={styles.cardsView}>
-          {snippets.map((snippet, index) => (
-            <TouchableOpacity key={index} style={[styles.cardView, { backgroundColor: colors.getById(snippet.color_id).hexCode }]} onPress={() => onSnippetTapped(snippet)}>
-              <View style={styles.cardContentView}>
-                <View style={styles.cardTitleView}>
-                  <Image source={require('../assets/images/copy-white.png')} style={styles.cardTitleIcon} tintColor={'#1d2027'} />
-                  <Text style={styles.cardTitleText}>&nbsp;{snippet.title}</Text>
-                </View>
-                <Text style={styles.cardDescription} numberOfLines={2}>{snippet.content}</Text>
-              </View>
-              <TouchableOpacity onPress={() => onSnippetMenuTapped(snippet)} hitSlop={40}>
-                <Text style={styles.cardActionIcon}>&middot;&middot;&middot;</Text>
-              </TouchableOpacity>
-            </TouchableOpacity>
-          ))}
-        </View>
-      </ScrollView>
+        <TouchableOpacity style={styles.buttonView} onPress={() => onNewSnippetTapped()}>
+          <Text style={styles.buttonText}>+ New snippet / list</Text>
+        </TouchableOpacity>
+      </View>
+      <FlatList
+        style={styles.cardsView}
+        data={snippets}
+        keyExtractor={item => item.id.toString()}
+        renderItem={({item}) => <SnippetView snippet={item} onSnippetTapped={onSnippetTapped} onSnippetMenuTapped={onSnippetMenuTapped} />}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
+  container: {
     flex: 1,
     backgroundColor: 'white',
   },
