@@ -14,11 +14,11 @@ const colors = {
   black: new Color('#000', null),
   darkGray: new Color('#1d2027', null),
   whiteGray: new Color('#f5f5f5', null),
-  lightGray: new Color('#f7f7f7', null),
+  lightGray: new Color('#f7f7f7', 6),
   lightYellow: new Color('#feeaa6', 1),
   lightGreen: new Color('#e9fdd0', 4),
   lightBlue: new Color('#e9f4fe', 2),
-  lightPurple: new Color('#f4e8fe', null),
+  lightPurple: new Color('#f4e8fe', 5),
   lightRed: new Color('#fdeae9', 3),
   nebulaBlue: new Color('#5c63ff', null),
 }

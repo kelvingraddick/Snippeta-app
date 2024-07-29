@@ -82,7 +82,7 @@ const SnippetsScreen = ({ route, navigation }) => {
   };
 
   const onNewSnippetTapped = async () => {
-    navigation.navigate('Snippet', { parentSnippet: parentSnippet });
+    navigation.navigate('Snippet', { snippet: { parent_id: parentSnippet?.id, type: snippetTypes.SINGLE, color_id: colors.lightYellow.id }, getSnippets: getSnippets });
   
     /*
     var message = await Clipboard.getString();
@@ -110,8 +110,8 @@ const SnippetsScreen = ({ route, navigation }) => {
       showMessage({
         message: 'The text was copied to the clipboard',
         description: `"${snippet.content}"`,
-        icon: { icon: () => <Image source={require('../assets/images/copy-white.png')} style={styles.cardTitleIcon} tintColor={colors.black.hexCode} />, position: 'right' },
-        backgroundColor: colors.getById(snippet.color_id).hexCode,
+        icon: { icon: () => <Image source={require('../assets/images/copy-white.png')} style={styles.messageIcon} tintColor={colors.black.hexCode} />, position: 'right' },
+        backgroundColor: colors.getById(snippet.color_id)?.hexCode,
         titleStyle: {
           fontWeight: 'bold',
           color: 'black',
@@ -139,7 +139,7 @@ const SnippetsScreen = ({ route, navigation }) => {
       async (selectedIndex) => {
         switch (selectedIndex) {
           case options.Edit:
-            navigation.navigate('Snippet', { snippet });
+            navigation.navigate('Snippet', { snippet, getSnippets });
             break;
           case options['Move to top']:
           case options.Delete:
@@ -173,7 +173,7 @@ const SnippetsScreen = ({ route, navigation }) => {
           </Pressable>
         </View>
         <TouchableOpacity style={styles.buttonView} onPress={() => onNewSnippetTapped()}>
-          <Text style={styles.buttonText}><Text style={styles.buttonIcon}>+</Text> New snippet or list</Text>
+          <Text style={styles.buttonText}><Text style={styles.buttonIcon}>+</Text> New snippet or list&nbsp;&nbsp;</Text>
         </TouchableOpacity>
       </View>
       <FlatList
@@ -222,6 +222,12 @@ const styles = StyleSheet.create({
     height: 25,
     width: 25,
     marginTop: 2,
+  },
+  messageIcon: {
+    height: 20,
+    width: 20,
+    color: colors.darkGray.hexCode,
+    opacity: 0.25,
   },
   buttonView: {
     backgroundColor: colors.nebulaBlue.hexCode,

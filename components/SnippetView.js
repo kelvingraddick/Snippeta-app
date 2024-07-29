@@ -6,7 +6,7 @@ import { snippetTypes } from '../constants/snippetTypes';
 const SnippetView = (props) => {
   const { snippet, onSnippetTapped, onSnippetMenuTapped } = props;
   return (
-    <TouchableOpacity style={[styles.container, { backgroundColor: colors.getById(snippet.color_id).hexCode }]} onPress={() => onSnippetTapped(snippet)}>
+    <TouchableOpacity style={[styles.container, { backgroundColor: colors.getById(snippet.color_id)?.hexCode }]} onPress={() => onSnippetTapped(snippet)}>
       <View style={styles.contentView}>
         <View style={styles.titleView}>
           <Image
@@ -36,9 +36,9 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   contentView: {
+    flex: 1,
     flexDirection: 'column',
     gap: 5,
-    marginRight: 20
   },
   titleView: {
     flexDirection: 'row',

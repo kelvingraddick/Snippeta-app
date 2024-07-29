@@ -30,9 +30,11 @@ const getSnippet = async (id) => {
 };
 
 const saveSnippet = async (snippet) => {
+  console.log('storage.js -> saveSnippet: Saving snippet with ID', snippet?.id);
   if (isValidSnippet(snippet)) {
     const value = JSON.stringify(snippet);
     await AsyncStorage.setItem(snippet.id, value);
+    console.log('storage.js -> saveSnippet: Saved snippet with ID', snippet.id);
   }
 };
 
