@@ -4,23 +4,62 @@ import { showMessage, hideMessage } from "react-native-flash-message";
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import { ApplicationContext } from '../ApplicationContext';
+import { snippetTypes } from '../constants/snippetTypes';
 import storage from '../helpers/storage';
 import colors from '../helpers/colors';
 
 const SnippetsScreen = ({ route, navigation }) => {
-  const parentId = route.params?.parentId || 0;
+  const parentId = route.params?.parentId;
 
-  const [displayedSnippets, setDisplayedSnippets] = useState([]);
-
-  const { snippets, isSnippetsLoading, loadSnippets } = useContext(ApplicationContext);
+  const [isLoading, setIsLoading] = useState(true);
+  const [snippets, setSnippets] = useState([]);
 
   const { showActionSheetWithOptions } = useActionSheet();
 
+  const tutorialSnippets = [
+    { id: storage.keys.SNIPPET + 1, type: snippetTypes.SINGLE, title: 'Welcome to Snippeta!', content: 'Snippeta is the best way to copy, paste, and manage snippets of text! Copy text to your clipboard with a single tap; no highlighting or long-tapping!', color_id: colors.lightYellow.id, time: new Date(), order_index: 0 },
+    { id: storage.keys.SNIPPET + 2, type: snippetTypes.SINGLE, title: 'How to use:', content: 'Tap the button above to create a new snippet. Or tap on this snippet to copy it to your clipboard for pasting later!', color_id: colors.lightGreen.id, time: new Date(), order_index: 1 },
+    { id: storage.keys.SNIPPET + 3, type: snippetTypes.MULTIPLE, title: 'Go PRO!', content: 'Want more out of Snippeta? Take your account pro and get access to create lists and more!', color_id: colors.lightBlue.id, time: new Date(), order_index: 2 },
+  ];
+
   useEffect(() => {
-    let displayedSnippets = snippets;
-    displayedSnippets.sort((a, b) => a.order_index - b.order_index);
-    setDisplayedSnippets(displayedSnippets);
-  }, [snippets]);
+    getSnippets();
+  }, []);
+
+  const getSnippets = async () => {
+    try {
+      setIsLoading(true);
+      // try to get snippets for current parent ID
+      let snippets = await storage.getSnippets(parentId);
+      // if in root snippet list, and no snippets exist, then populate with tutorial snippets
+      if (!parentId && snippets.length == 0) {
+        console.log('SnippetsScreen.js -> loadSnippets: No snippets in root snippet list. Adding tutorial snippets..');
+        for (const tutorialSnippet of tutorialSnippets) {
+          await storage.saveSnippet(tutorialSnippet);
+        }
+        snippets = await storage.getSnippets();
+      }
+      // sort snippets by order index
+      snippets.sort((a, b) => a.order_index - b.order_index);
+      // set snippets for display
+      setSnippets(snippets);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('SnippetsScreen.js -> loadSnippets: Loading snippets data failed with error: ' + error.message);
+    }
+  };
+
+  const deleteSnippet = async (id) => {
+    try {
+      setIsLoading(true);
+      // try to delete snippets for current ID
+      await storage.deleteSnippet(id);
+      setIsLoading(false);
+      await getSnippets();
+    } catch (error) {
+      console.error('SnippetsScreen.js -> deleteSnippet: Deleting snippet failed with error: ' + error.message);
+    }
+  };
 
   const onSettingsTapped = async () => {
     showMessage({
@@ -89,29 +128,15 @@ const SnippetsScreen = ({ route, navigation }) => {
         cancelButtonIndex: options.Cancel,
         destructiveButtonIndex: options.Delete,
       },
-      (selectedIndex) => {
+      async (selectedIndex) => {
         switch (selectedIndex) {
           case options.Edit:
             navigation.navigate('Snippet', { snippet });
             break;
           case options['Move to top']:
           case options.Delete:
-            showMessage({
-              message: 'This feature is coming soon!',
-              titleStyle: {
-                fontWeight: 'bold',
-                color: 'black',
-                opacity: 0.60,
-              },
-              textStyle: {
-                fontStyle: 'italic',
-                color: 'black',
-                opacity: 0.60,
-              }
-            });
+            await deleteSnippet(snippet.id);
             break;
-          case 2: // Delete
-
         }
       }
     );
@@ -131,7 +156,7 @@ const SnippetsScreen = ({ route, navigation }) => {
           </TouchableOpacity>
         </View>
         <View style={styles.cardsView}>
-          {displayedSnippets.map((snippet, index) => (
+          {snippets.map((snippet, index) => (
             <TouchableOpacity key={index} style={[styles.cardView, { backgroundColor: colors.getById(snippet.color_id).hexCode }]} onPress={() => onSnippetTapped(snippet)}>
               <View style={styles.cardContentView}>
                 <View style={styles.cardTitleView}>

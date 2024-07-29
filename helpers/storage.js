@@ -7,8 +7,11 @@ const keys = {
 };
 
 const getSnippets = async (parentId) => {
+  console.log('storage.js -> getSnippets: Getting snippets for parent ID', parentId);
   const allKeys = await AsyncStorage.getAllKeys();
+  console.log('storage.js -> getSnippets: All storage keys:', JSON.stringify(allKeys));
   const snippetKeys = allKeys.filter(key => key.startsWith(keys.SNIPPET));
+  console.log(`storage.js -> getSnippets: Storage keys with parent Id ${parentId}:`, JSON.stringify(allKeys));
   const snippets = [];
   for (const snippetKey of snippetKeys) {
     const value = await AsyncStorage.getItem(snippetKey);
@@ -17,6 +20,7 @@ const getSnippets = async (parentId) => {
       snippets.push(snippet);
     }
   }
+  console.log(`storage.js -> getSnippets: Got ${snippets.length} snippets for parent ID ${parentId}`);
   return snippets;
 };
 
@@ -34,6 +38,10 @@ const saveSnippet = async (snippet) => {
 
 const deleteSnippet = async (id) => {
   await AsyncStorage.removeItem(id);
+  const childSnippets = await getSnippets(id);
+  for (const childSnippet of childSnippets) {
+    await deleteSnippet(childSnippet.id);
+  }
 };
 
 const isValidSnippet = (snippet) => {
@@ -44,7 +52,7 @@ const isValidSnippet = (snippet) => {
   if (!snippet.id || !snippet.id.startsWith(keys.SNIPPET)) {
     errorMessages.push(`snippet.id must start with '${keys.SNIPPET}.'`);
   }
-  if (!snippet.parent_id || !snippet.parent_id.startsWith(keys.SNIPPET)) {
+  if (snippet.parent_id && !snippet.parent_id.startsWith(keys.SNIPPET)) {
     errorMessages.push(`snippet.parent_id must start with '${keys.SNIPPET}.'`);
   }
   if (!Object.values(snippetTypes).includes(snippet.type)) {
