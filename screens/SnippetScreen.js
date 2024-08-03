@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { showMessage } from "react-native-flash-message";
 import { snippetTypes } from '../constants/snippetTypes';
 import storage from '../helpers/storage';
 import colors from '../helpers/colors';
@@ -31,6 +32,15 @@ const SnippetScreen = ({ route, navigation }) => {
       navigation.goBack();
     } catch (error) {
       console.error('SnippetScreen.js -> onSaveTapped: Saving snippet failed with error: ' + error.message);
+      showMessage({
+        message: 'Saving snippet failed with error: ' + error.message,
+        backgroundColor: colors.lightRed.hexCode,
+        titleStyle: {
+          fontWeight: 'bold',
+          color: 'black',
+          opacity: 0.60,
+        }
+      });
     }
   };
 
@@ -75,7 +85,7 @@ const SnippetScreen = ({ route, navigation }) => {
           </View>
         </View>
         <View style={[styles.titleInputView, { backgroundColor: colors.getById(snippet.color_id)?.hexCode }]}>
-          <TextInput style={styles.titleInput} placeholder={'Type or paste title here..'} placeholderTextColor={colors.darkGray.hexCode} numberOfLines={2} onChangeText={onTitleChangeText}>{snippet.title}</TextInput>
+          <TextInput style={styles.titleInput} placeholder={'Type or paste title here..'} placeholderTextColor={colors.darkGray.hexCode} multiline onChangeText={onTitleChangeText}>{snippet.title}</TextInput>
         </View>
         <View style={styles.contentInputView}>
           <TextInput style={styles.contentInput} placeholder={'Type or paste content here..'} placeholderTextColor={colors.darkGray.hexCode} multiline onChangeText={onContentChangeText}>{snippet.content}</TextInput>
@@ -123,8 +133,12 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   titleInputView: {
-    margin: 20,
-    padding: 20,
+    marginTop: 20,
+    marginBottom: 15,
+    marginHorizontal: 10,
+    paddingHorizontal: 20,
+    paddingTop: 15,
+    paddingBottom: 20,
     borderRadius: 30,
   },
   titleInput: {

@@ -49,34 +49,34 @@ const deleteSnippet = async (id) => {
 const isValidSnippet = (snippet) => {
   let errorMessages = [];
   if (!snippet) {
-    errorMessages.push('snippet object cannot be null.');
+    errorMessages.push('Snippet cannot be null.');
   }
   if (!snippet.id || !snippet.id.startsWith(keys.SNIPPET)) {
-    errorMessages.push(`snippet.id must start with '${keys.SNIPPET}.'`);
+    errorMessages.push(`Snippet ID must start with '${keys.SNIPPET}.'`);
   }
   if (snippet.parent_id && !snippet.parent_id.startsWith(keys.SNIPPET)) {
-    errorMessages.push(`snippet.parent_id must start with '${keys.SNIPPET}.'`);
+    errorMessages.push(`Snippet parent ID must start with '${keys.SNIPPET}.'`);
   }
   if (!Object.values(snippetTypes).includes(snippet.type)) {
-    errorMessages.push(`snippet.type must be one of: ${Object.values(snippetTypes).join(', ')}.'`);
+    errorMessages.push(`Snippet type must be one of: ${Object.values(snippetTypes).join(', ')}.'`);
   }
-  if (!snippet.title ) {
-    errorMessages.push('snippet.title must not be empty.');
+  if (!snippet.title || snippet.title.length < 1 || snippet.title.length > 50) {
+    errorMessages.push('Snippet title must be between 1 and 50 characters.');
   }
-  if (!snippet.content) {
-    errorMessages.push('snippet.content must not be empty.');
+  if (!snippet.content || snippet.title.length < 1 || snippet.title.length > 1000) {
+    errorMessages.push('sSippet content must be between 1 and 1000 characters.');
   }
   if (!colors.getById(snippet.color_id)) {
-    errorMessages.push(`snippet.color_id must be a valid one of the valid color IDs (0-4).'`);
+    errorMessages.push(`Snippet color ID must be a valid one of the valid color IDs (0-4).'`);
   }
   if (Object.prototype.toString.call(snippet.time) !== '[object Date]') {
-    errorMessages.push('snippet.time must be a valid datetime.');
+    errorMessages.push('Snippet time must be a valid datetime.');
   }
   if (typeof(snippet.order_index) !== 'number') {
-    errorMessages.push('snippet.order_index must be a valid number.');
+    errorMessages.push('Snippet order index must be a valid number.');
   }
   if (errorMessages.length > 0) {
-    throw new Error(`The snippet data for ID ${snippet?.id} is not valid: ${errorMessages.join(' ')}`);
+    throw new Error(errorMessages.join(' '));
   }
   return true;
 }
