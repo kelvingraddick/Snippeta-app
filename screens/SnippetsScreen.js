@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, Image, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { showMessage } from "react-native-flash-message";
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useActionSheet } from '@expo/react-native-action-sheet';
@@ -166,14 +166,15 @@ const SnippetsScreen = ({ route, navigation }) => {
             </Pressable>
           }
           {parentSnippet &&
-            <Text style={styles.title}>{parentSnippet ? parentSnippet.title : 'Snippeta'}</Text>
+            <Text style={styles.title} numberOfLines={2}>{parentSnippet ? parentSnippet.title : 'Snippeta'}</Text>
           }
           <Pressable onPress={onSettingsTapped} hitSlop={20}>
             <Image source={require('../assets/images/gear-gray.png')} style={styles.settingsIcon} tintColor={colors.white.hexCode} />
           </Pressable>
         </View>
         <TouchableOpacity style={styles.buttonView} onPress={() => onNewSnippetTapped()}>
-          <Text style={styles.buttonText}><Text style={styles.buttonIcon}>+</Text> New snippet or list&nbsp;&nbsp;</Text>
+          <Image source={require('../assets/images/plus.png')} style={styles.buttonIcon} tintColor={colors.darkGray.hexCode} />
+          <Text style={styles.buttonText}>&nbsp;&nbsp;New snippet or list&nbsp;&nbsp;</Text>
         </TouchableOpacity>
       </View>
       <FlatList
@@ -201,9 +202,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    gap: 20,
     marginBottom: 20
   },
   title: {
+    flex: 1,
     fontSize: 20,
     fontWeight: 'bold',
     color: colors.white.hexCode
@@ -233,16 +236,20 @@ const styles = StyleSheet.create({
     backgroundColor: colors.nebulaBlue.hexCode,
     flexDirection: 'row',
     justifyContent: 'center',
+    alignContent: 'center',
     padding: 15,
     marginBottom: 10,
     borderRadius: 30
   },
   buttonText: {
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: 'bold',
     color: colors.darkGray.hexCode
   },
   buttonIcon: {
+    height: 18,
+    width: 18,
+    marginTop: 1,
     opacity: 0.50,
   },
   snippetsList: {

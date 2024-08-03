@@ -15,7 +15,7 @@ const SnippetView = (props) => {
             tintColor={colors.darkGray.hexCode}
             resizeMode='stretch'
           />
-          <Text style={styles.titleText}>&nbsp;{snippet.title}</Text>
+          <Text style={styles.titleText} numberOfLines={1}>&nbsp;{snippet.title}</Text>
         </View>
         <Text style={styles.contentText} numberOfLines={2}>{snippet.content}</Text>
       </View>
@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
+    gap: 5,
     borderRadius: 10,
     padding: 20,
     marginBottom: 16,
@@ -57,11 +58,13 @@ const styles = StyleSheet.create({
     height: 19,
   },
   titleText: {
+    flex: 1,
     fontSize: 17,
     fontWeight: 'bold',
     color: colors.darkGray.hexCode
   },
   contentText: {
+    flex: 1,
     fontSize: 15,
     color: colors.darkGray.hexCode
   },
