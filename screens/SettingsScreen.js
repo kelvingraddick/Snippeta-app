@@ -1,0 +1,108 @@
+import React, { useContext, useState } from 'react';
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { showMessage } from "react-native-flash-message";
+import { ApplicationContext } from '../ApplicationContext';
+import colors from '../helpers/colors';
+import ActionButton from '../components/ActionButton';
+
+const SettingsScreen = ({ navigation }) => {
+  
+  const { user, isUserLoading, logout } = useContext(ApplicationContext);
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  const onBackTapped = async () => {
+    navigation.goBack();
+  };
+
+  const onLoginTapped = async () => {
+    navigation.navigate('Login');
+  };
+
+  const onLogoutTapped = async () => {
+    navigation.popToTop();
+    await logout();
+
+    showMessage({
+      message: 'Logged out!',
+      titleStyle: {
+        fontWeight: 'bold',
+        color: 'black',
+        opacity: 0.60,
+      },
+      textStyle: {
+        fontStyle: 'italic',
+        color: 'black',
+        opacity: 0.60,
+      }
+    });
+  };
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.headerView}>
+        <View style={styles.titleView}>
+          <Pressable onPress={onBackTapped} hitSlop={20}>
+            <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={colors.white.hexCode} />
+          </Pressable>
+          <Text style={styles.title}>Settings</Text>
+          <View style={styles.placeholderIcon} />
+        </View>
+        { user && user.email_address && 
+          <Text style={styles.title}>{user.email_address}</Text>
+        }
+        { user && user.phone_number && 
+          <Text style={styles.title}>{user.phone_number}</Text>
+        }
+        { !user && 
+          <ActionButton iconImageSource={require('../assets/images/user.png')} text={'Login'} color={colors.turquoise} onTapped={() => onLoginTapped()} />
+        }
+      </View>
+      <ScrollView style={styles.scrollView}>
+        { user && 
+          <ActionButton iconImageSource={require('../assets/images/user.png')} text={'Logout'} color={colors.lightRed} onTapped={() => onLogoutTapped()} />
+        }
+      </ScrollView>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.white.hexCode,
+  },
+  headerView: {
+    padding: 20,
+    paddingTop: 60,
+    borderRadius: 30,
+    backgroundColor: colors.darkGray.hexCode,
+  },
+  titleView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: colors.white.hexCode
+  },
+  backIcon: {
+    height: 25,
+    width: 25,
+    marginTop: 2,
+  },
+  placeholderIcon: {
+    height: 25,
+    width: 25,
+    marginTop: 2,
+  },
+  scrollView: {
+    flex: 1,
+    padding: 20,
+  },
+});
+
+export default SettingsScreen;

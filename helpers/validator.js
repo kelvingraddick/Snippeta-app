@@ -1,5 +1,6 @@
 import colors from './colors';
 import { snippetTypes } from '../constants/snippetTypes';
+import { storageKeys } from '../constants/storageKeys';
 
 const isValidCredentials = (credentials) => {
   let errorMessages = [];
@@ -23,11 +24,11 @@ const isValidSnippet = (snippet) => {
   if (!snippet) {
     errorMessages.push('Snippet cannot be null.');
   }
-  if (!snippet.id || !snippet.id.startsWith(keys.SNIPPET)) {
-    errorMessages.push(`Snippet ID must start with '${keys.SNIPPET}.'`);
+  if (!snippet.id || !snippet.id.startsWith(storageKeys.SNIPPET)) {
+    errorMessages.push(`Snippet ID must start with '${storageKeys.SNIPPET}.'`);
   }
-  if (snippet.parent_id && !snippet.parent_id.startsWith(keys.SNIPPET)) {
-    errorMessages.push(`Snippet parent ID must start with '${keys.SNIPPET}.'`);
+  if (snippet.parent_id && !snippet.parent_id.startsWith(storageKeys.SNIPPET)) {
+    errorMessages.push(`Snippet parent ID must start with '${storageKeys.SNIPPET}.'`);
   }
   if (!Object.values(snippetTypes).includes(snippet.type)) {
     errorMessages.push(`Snippet type must be one of: ${Object.values(snippetTypes).join(', ')}.'`);

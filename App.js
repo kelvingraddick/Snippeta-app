@@ -5,12 +5,15 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import FlashMessage from "react-native-flash-message";
 import { ApplicationContext } from './ApplicationContext';
-import authenticator from './helpers/authenticator';
+import storage from './helpers/storage';
+import api from './helpers/api';
 import SnippetsScreen from './screens/SnippetsScreen';
 import SnippetScreen from './screens/SnippetScreen';
+import SettingsScreen from './screens/SettingsScreen';
+import LoginScreen from './screens/LoginScreen';
 
 const initialState = {
-  user: null,
+  user: undefined,
   isUserLoading: true,
 }
 
@@ -41,26 +44,53 @@ export default function App() {
 
   const loginWithStorage = async () => {
     try {
-      dispatch({ type: 'LOGGING_IN' });
-      const user = await authenticator.login.withStorage();
-      dispatch({ type: 'LOGGED_IN', payload: user });
+      console.log('App.js -> loginWithStorage: Attempt to get credentials from storage..');
+      const credentials = await storage.getCredentials();
+      if (credentials) {
+        await loginWithCredentials(credentials.emailOrPhone, credentials.password);
+      } else {
+        dispatch({ type: 'LOGGED_IN', payload: null });
+      }
     } catch (error) {
-      console.error('App.js -> login: Logging in user failed with error: ' + error.message);
+      console.error('App.js -> loginWithStorage: Logging in user failed with error: ' + error.message);
     }
+  };
+
+  const loginWithCredentials = async (emailOrPhone, password) => {
+    dispatch({ type: 'LOGGING_IN' });
+    let user = null;
+    let responseJson;
+    try {
+      const response = await api.login(emailOrPhone, password);
+      responseJson = await response.json();
+      if (responseJson && responseJson.success && responseJson.user) {
+        user = responseJson.user;
+        delete user.password;
+        console.log(`App.js -> loginWithCredentials: Login successful with user ID ${user.id}`);
+        await storage.saveCredentials(emailOrPhone, password);
+      } else {
+        console.log('App.js -> loginWithCredentials: Login failed with error code: ' + responseJson?.error_code);
+      }
+    } catch (error) {
+      console.error('App.js -> loginWithCredentials: Login failed with error: ' + error.message);
+    }
+    dispatch({ type: 'LOGGED_IN', payload: user ?? null });
+    return responseJson;
   };
 
   const logout = async () => {
+    dispatch({ type: 'LOGGING_OUT' });
     try {
-      dispatch({ type: 'LOGGING_OUT' });
-      await authenticator.logout();
-      dispatch({ type: 'LOGGED_OUT' });
+      await storage.deleteCredentials();
+      console.log('App.js -> logout: Deleted credentials from storage..');
     } catch (error) {
       console.error('App.js -> logout: Logging out user failed with error: ' + error.message);
     }
+    dispatch({ type: 'LOGGED_OUT' });
   };
 
   return (
-    <ApplicationContext.Provider value={{...state, logout}}>
+    <ApplicationContext.Provider value={{...state, loginWithCredentials, logout}}>
       <ActionSheetProvider>
         <NavigationContainer>
           <Stack.Navigator initialRouteName="Snippets">
@@ -72,6 +102,16 @@ export default function App() {
             <Stack.Screen
               name="Snippet"
               component={SnippetScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Settings"
+              component={SettingsScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
               options={{ headerShown: false }}
             />
           </Stack.Navigator>

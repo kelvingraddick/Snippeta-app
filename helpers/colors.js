@@ -21,6 +21,7 @@ const colors = {
   lightPurple: new Color('#f4e8fe', 5),
   lightRed: new Color('#fdeae9', 3),
   nebulaBlue: new Color('#5c63ff', null),
+  turquoise: new Color('#33d9b1', null),
 }
 
 const getById = (id) => {

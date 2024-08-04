@@ -1,13 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigationState } from '@react-navigation/native';
 import { showMessage } from "react-native-flash-message";
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import { ApplicationContext } from '../ApplicationContext';
 import { snippetTypes } from '../constants/snippetTypes';
+import { storageKeys } from '../constants/storageKeys';
 import storage from '../helpers/storage';
 import colors from '../helpers/colors';
+import ActionButton from '../components/ActionButton';
 import SnippetView from '../components/SnippetView';
 
 const SnippetsScreen = ({ route, navigation }) => {
@@ -23,9 +25,9 @@ const SnippetsScreen = ({ route, navigation }) => {
   const { showActionSheetWithOptions } = useActionSheet();
 
   const tutorialSnippets = [
-    { id: storage.keys.SNIPPET + 1, type: snippetTypes.SINGLE, title: 'Welcome to Snippeta!', content: 'Snippeta is the best way to copy, paste, and manage snippets of text! Copy text to your clipboard with a single tap; no highlighting or long-tapping!', color_id: colors.lightYellow.id, time: new Date(), order_index: 0 },
-    { id: storage.keys.SNIPPET + 2, type: snippetTypes.SINGLE, title: 'How to use:', content: 'Tap the button above to create a new snippet. Or tap on this snippet to copy it to your clipboard for pasting later!', color_id: colors.lightGreen.id, time: new Date(), order_index: 1 },
-    { id: storage.keys.SNIPPET + 3, type: snippetTypes.MULTIPLE, title: 'Go PRO!', content: 'Want more out of Snippeta? Take your account pro and get access to create lists and more!', color_id: colors.lightBlue.id, time: new Date(), order_index: 2 },
+    { id: storageKeys.SNIPPET + 1, type: snippetTypes.SINGLE, title: 'Welcome to Snippeta!', content: 'Snippeta is the best way to copy, paste, and manage snippets of text! Copy text to your clipboard with a single tap; no highlighting or long-tapping!', color_id: colors.lightYellow.id, time: new Date(), order_index: 0 },
+    { id: storageKeys.SNIPPET + 2, type: snippetTypes.SINGLE, title: 'How to use:', content: 'Tap the button above to create a new snippet. Or tap on this snippet to copy it to your clipboard for pasting later!', color_id: colors.lightGreen.id, time: new Date(), order_index: 1 },
+    { id: storageKeys.SNIPPET + 3, type: snippetTypes.MULTIPLE, title: 'Go PRO!', content: 'Want more out of Snippeta? Take your account pro and get access to create lists and more!', color_id: colors.lightBlue.id, time: new Date(), order_index: 2 },
   ];
 
   useEffect(() => {
@@ -33,7 +35,7 @@ const SnippetsScreen = ({ route, navigation }) => {
       console.log(`SnippetsScreen.js -> useEffect: ${user ? `User ${user.id} loaded` : 'No user loaded'}. Getting snippets..`);
       getSnippets();
     }
-  }, [isUserLoading]);
+  }, [user]);
 
   const getSnippets = async () => {
     try {
@@ -75,26 +77,7 @@ const SnippetsScreen = ({ route, navigation }) => {
   };
 
   const onSettingsTapped = async () => {
-    if (routes.length > 1) {
-      navigation.popToTop();
-    }
-    await logout();
-
-    /*
-    showMessage({
-      message: 'The settings button was tapped!',
-      titleStyle: {
-        fontWeight: 'bold',
-        color: 'black',
-        opacity: 0.60,
-      },
-      textStyle: {
-        fontStyle: 'italic',
-        color: 'black',
-        opacity: 0.60,
-      }
-    });
-    */
+    navigation.navigate('Settings');
   };
 
   const onNewSnippetTapped = async () => {
@@ -188,10 +171,7 @@ const SnippetsScreen = ({ route, navigation }) => {
             <Image source={require('../assets/images/gear-gray.png')} style={styles.settingsIcon} tintColor={colors.white.hexCode} />
           </Pressable>
         </View>
-        <TouchableOpacity style={styles.buttonView} onPress={() => onNewSnippetTapped()}>
-          <Image source={require('../assets/images/plus.png')} style={styles.buttonIcon} tintColor={colors.darkGray.hexCode} />
-          <Text style={styles.buttonText}>&nbsp;&nbsp;New snippet or list&nbsp;&nbsp;</Text>
-        </TouchableOpacity>
+        <ActionButton iconImageSource={require('../assets/images/plus.png')} text={'New snippet or list'} color={colors.nebulaBlue} onTapped={() => onNewSnippetTapped()} />
       </View>
       <FlatList
         style={styles.snippetsList}
@@ -247,26 +227,6 @@ const styles = StyleSheet.create({
     width: 20,
     color: colors.darkGray.hexCode,
     opacity: 0.25,
-  },
-  buttonView: {
-    backgroundColor: colors.nebulaBlue.hexCode,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignContent: 'center',
-    padding: 15,
-    marginBottom: 10,
-    borderRadius: 30
-  },
-  buttonText: {
-    fontSize: 17,
-    fontWeight: 'bold',
-    color: colors.darkGray.hexCode
-  },
-  buttonIcon: {
-    height: 18,
-    width: 18,
-    marginTop: 1,
-    opacity: 0.50,
   },
   snippetsList: {
     padding: 20

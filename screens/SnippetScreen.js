@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { showMessage } from "react-native-flash-message";
+import { storageKeys } from '../constants/storageKeys';
 import { snippetTypes } from '../constants/snippetTypes';
 import storage from '../helpers/storage';
 import colors from '../helpers/colors';
@@ -23,7 +24,7 @@ const SnippetScreen = ({ route, navigation }) => {
       setIsLoading(true);
       await storage.saveSnippet({
         ...snippet,
-        id: snippet.id ?? (storage.keys.SNIPPET + generateRandomString(10)),
+        id: snippet.id ?? (storageKeys.SNIPPET + generateRandomString(10)),
         time: new Date(),
         order_index: snippet.order_index ?? 0
       });
@@ -85,10 +86,10 @@ const SnippetScreen = ({ route, navigation }) => {
           </View>
         </View>
         <View style={[styles.titleInputView, { backgroundColor: colors.getById(snippet.color_id)?.hexCode }]}>
-          <TextInput style={styles.titleInput} placeholder={'Type or paste title here..'} placeholderTextColor={colors.darkGray.hexCode} multiline onChangeText={onTitleChangeText}>{snippet.title}</TextInput>
+          <TextInput style={styles.titleInput} placeholder={'Type or paste title here..'} placeholderTextColor={colors.darkGray.hexCode} multiline maxLength={50} onChangeText={onTitleChangeText}>{snippet.title}</TextInput>
         </View>
         <View style={styles.contentInputView}>
-          <TextInput style={styles.contentInput} placeholder={'Type or paste content here..'} placeholderTextColor={colors.darkGray.hexCode} multiline onChangeText={onContentChangeText}>{snippet.content}</TextInput>
+          <TextInput style={styles.contentInput} placeholder={'Type or paste content here..'} placeholderTextColor={colors.darkGray.hexCode} multiline maxLength={1000} onChangeText={onContentChangeText}>{snippet.content}</TextInput>
         </View>
       </ScrollView>
   );
