@@ -1,7 +1,7 @@
 const login = async (emailOrPhone, password) => {
   console.log(`api.js -> login: Attempt to request login with credentials for ${emailOrPhone}.`);
   
-  var body = {
+  const body = {
     email_or_phone: emailOrPhone,
     password: password,
   };
@@ -13,6 +13,47 @@ const login = async (emailOrPhone, password) => {
   });
 }
 
+const getSnippets = async (parentId, authorizationToken) => {
+  console.log(`api.js -> getSnippets: Get snippets for parent ID ${parentId}.`);
+  
+  return await fetch(`http://www.snippeta.com/api/snippets/get.php?parent_id=${parentId}`, {
+    method: 'GET',
+    headers: { 
+      'Authorization': `Basic ${authorizationToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
+}
+
+const saveSnippet = async (snippet, authorizationToken) => {
+  console.log(`api.js -> saveSnippet: Saving snippet with ID ${snippet?.id}.`);
+
+  return await fetch('http://www.snippeta.com/api/snippet/save.php', {
+    method: 'POST',
+    headers: { 
+      'Authorization': `Basic ${authorizationToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(snippet),
+  });
+}
+
+const deleteSnippet = async (id, authorizationToken) => {
+  console.log(`api.js -> deleteSnippet: Deleting snippet with ID ${id}.`);
+
+  return await fetch('http://www.snippeta.com/api/snippet/remove.php', {
+    method: 'POST',
+    headers: { 
+      'Authorization': `Basic ${authorizationToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ id }),
+  });
+};
+
 export default {
   login,
+  getSnippets,
+  saveSnippet,
+  deleteSnippet,
 };

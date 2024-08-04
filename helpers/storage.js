@@ -24,6 +24,11 @@ const deleteCredentials = async () => {
   console.log('storage.js -> deleteCredentials: Deleted credentials');
 };
 
+const getAuthorizationToken = async () => {
+  const credentials = await getCredentials();
+  return credentials ? btoa(`${credentials.emailOrPhone}:${credentials.password}`) : null;
+};
+
 const getSnippets = async (parentId) => {
   console.log('storage.js -> getSnippets: Getting snippets for parent ID', parentId);
   const allKeys = await AsyncStorage.getAllKeys();
@@ -68,6 +73,7 @@ export default {
   getCredentials,
   saveCredentials,
   deleteCredentials,
+  getAuthorizationToken,
   getSnippets,
   getSnippet,
   saveSnippet,

@@ -1,0 +1,1 @@
+export const snippetSources = { STORAGE: "On device", API: "Cloud" };

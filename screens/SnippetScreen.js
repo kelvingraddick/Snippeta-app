@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { showMessage } from "react-native-flash-message";
+import { useActionSheet } from '@expo/react-native-action-sheet';
+import { ApplicationContext } from '../ApplicationContext';
 import { storageKeys } from '../constants/storageKeys';
 import { snippetTypes } from '../constants/snippetTypes';
 import storage from '../helpers/storage';
+import api from '../helpers/api';
 import colors from '../helpers/colors';
+import { snippetSources } from '../constants/snippetSources';
+import { errorCodeMessages } from '../constants/errorCodeMessages';
 import ColorButton from '../components/ColorButton';
 
 const SnippetScreen = ({ route, navigation }) => {
@@ -12,8 +17,12 @@ const SnippetScreen = ({ route, navigation }) => {
 
   const getSnippets = route.params.getSnippets;
 
+  const { user, isUserLoading } = useContext(ApplicationContext);
+
   const [isLoading, setIsLoading] = useState([]);
   const [snippet, setSnippet] = useState(route.params.snippet || {});
+
+  const { showActionSheetWithOptions } = useActionSheet();
 
   const onBackTapped = async () => {
     navigation.goBack();
@@ -22,26 +31,52 @@ const SnippetScreen = ({ route, navigation }) => {
   const onSaveTapped = async () => {
     try {
       setIsLoading(true);
-      await storage.saveSnippet({
-        ...snippet,
-        id: snippet.id ?? (storageKeys.SNIPPET + generateRandomString(10)),
-        time: new Date(),
-        order_index: snippet.order_index ?? 0
-      });
+
+      // if no source selected, let the user choose, or default to storage
+      if (!snippet.source) {
+        let snippetSource = snippetSources.STORAGE;
+        if (user) {
+          snippetSource = await selectSnippetSource();
+          if (!snippetSource) { setIsLoading(false); return; }
+        }
+        snippet.source = snippetSource;
+        setSnippet({...snippet, source: snippetSource});
+      }
+
+      // if source is storage, save in storage
+      if (snippet.source == snippetSources.STORAGE) {
+        const id = snippet.id ?? (storageKeys.SNIPPET + generateRandomString(10));
+        await storage.saveSnippet({
+          ...snippet,
+          id: id,
+          time: new Date(),
+          order_index: snippet.order_index ?? 0
+        });
+        console.log('SnippetScreen.js -> onSaveTapped: Saved snippet to storage with ID ' + id);
+      }
+      // if source is api, save via api
+      else if (snippet.source == snippetSources.API && user) {
+        const id = snippet.id ?? 0;
+        const response = await api.saveSnippet({ ...snippet, id: id, parent_id: snippet.parent_id ?? 0 }, await storage.getAuthorizationToken());
+        const responseJson = await response.json();
+        if (responseJson && responseJson.success) {
+          console.log('SnippetScreen.js -> onSaveTapped: Saved snippet via API with ID ' + id);
+        } else {
+          const errorMessage = responseJson?.error_code ? 'Saving snippet failed: ' + errorCodeMessages[responseJson.error_code] : 'Saving snippet failed with unknown error.';
+          console.log('SnippetScreen.js -> onSaveTapped: ' + errorMessage);
+          showErrorMessage(errorMessage);
+          setIsLoading(false); return;
+        }
+      }
+
       setIsLoading(false);
       await getSnippets();
       navigation.goBack();
+
     } catch (error) {
-      console.error('SnippetScreen.js -> onSaveTapped: Saving snippet failed with error: ' + error.message);
-      showMessage({
-        message: 'Saving snippet failed with error: ' + error.message,
-        backgroundColor: colors.lightRed.hexCode,
-        titleStyle: {
-          fontWeight: 'bold',
-          color: 'black',
-          opacity: 0.60,
-        }
-      });
+      const errorMessage = 'Saving snippet failed with error: ' + error.message;
+      console.error('SnippetScreen.js -> onSaveTapped: ' + errorMessage);
+      showErrorMessage(errorMessage);
     }
   };
 
@@ -57,6 +92,29 @@ const SnippetScreen = ({ route, navigation }) => {
     setSnippet({ ...snippet, content: text });
   };
 
+  const selectSnippetSource = async () => {
+    return new Promise((resolve, reject) => {
+      const options = {}; options[snippetSources.API] = 0; options[snippetSources.STORAGE] = 1; options.Cancel = 2;
+      showActionSheetWithOptions(
+        {
+          title: 'Where do you want to store this snippet?',
+          options: Object.keys(options),
+          cancelButtonIndex: options.Cancel,
+        },
+        async (selectedIndex) => {
+          switch (selectedIndex) {
+            case options[snippetSources.API]:
+              resolve(snippetSources.API); break;
+            case options[snippetSources.STORAGE]:
+              resolve(snippetSources.STORAGE); break;
+            default:
+              resolve(null);
+          }
+        }
+      );
+    });
+  };
+
   const generateRandomString = (length) => {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
@@ -66,6 +124,18 @@ const SnippetScreen = ({ route, navigation }) => {
     }
     return result;
   }
+
+  const showErrorMessage = (message) => {
+    showMessage({
+      message: message,
+      backgroundColor: colors.lightRed.hexCode,
+      titleStyle: {
+        fontWeight: 'bold',
+        color: 'black',
+        opacity: 0.60,
+      }
+    });
+  };
 
   return (
       <ScrollView style={styles.container}>

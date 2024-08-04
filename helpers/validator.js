@@ -1,5 +1,6 @@
 import colors from './colors';
 import { snippetTypes } from '../constants/snippetTypes';
+import { snippetSources } from '../constants/snippetSources';
 import { storageKeys } from '../constants/storageKeys';
 
 const isValidCredentials = (credentials) => {
@@ -24,14 +25,17 @@ const isValidSnippet = (snippet) => {
   if (!snippet) {
     errorMessages.push('Snippet cannot be null.');
   }
-  if (!snippet.id || !snippet.id.startsWith(storageKeys.SNIPPET)) {
-    errorMessages.push(`Snippet ID must start with '${storageKeys.SNIPPET}.'`);
+  if (!snippet.id || !(snippet.id.startsWith(storageKeys.SNIPPET) || typeof(snippet.id) == 'number')) {
+    errorMessages.push(`Snippet ID must start with '${storageKeys.SNIPPET}' or be a number.`);
   }
-  if (snippet.parent_id && !snippet.parent_id.startsWith(storageKeys.SNIPPET)) {
-    errorMessages.push(`Snippet parent ID must start with '${storageKeys.SNIPPET}.'`);
+  if (snippet.parent_id && !(snippet.parent_id.startsWith(storageKeys.SNIPPET) || typeof(snippet.parent_id) == 'number')) {
+    errorMessages.push(`Snippet parent ID must start with '${storageKeys.SNIPPET}' or be a number.`);
   }
   if (!Object.values(snippetTypes).includes(snippet.type)) {
     errorMessages.push(`Snippet type must be one of: ${Object.values(snippetTypes).join(', ')}.'`);
+  }
+  if (!Object.values(snippetSources).includes(snippet.source)) {
+    errorMessages.push(`Snippet source must be one of: ${Object.values(snippetSources).join(', ')}.'`);
   }
   if (!snippet.title || snippet.title.length < 1 || snippet.title.length > 50) {
     errorMessages.push('Snippet title must be between 1 and 50 characters.');
