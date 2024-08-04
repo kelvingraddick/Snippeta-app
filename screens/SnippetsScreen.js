@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useNavigationState } from '@react-navigation/native';
 import { showMessage } from "react-native-flash-message";
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useActionSheet } from '@expo/react-native-action-sheet';
+import { ApplicationContext } from '../ApplicationContext';
 import { snippetTypes } from '../constants/snippetTypes';
 import storage from '../helpers/storage';
 import colors from '../helpers/colors';
@@ -10,6 +12,10 @@ import SnippetView from '../components/SnippetView';
 
 const SnippetsScreen = ({ route, navigation }) => {
   const parentSnippet = route.params?.parentSnippet;
+
+  const { user, isUserLoading, logout } = useContext(ApplicationContext);
+
+  const routes = useNavigationState(state => state.routes);
 
   const [isLoading, setIsLoading] = useState(true);
   const [snippets, setSnippets] = useState([]);
@@ -23,8 +29,11 @@ const SnippetsScreen = ({ route, navigation }) => {
   ];
 
   useEffect(() => {
-    getSnippets();
-  }, []);
+    if (!isUserLoading) {
+      console.log(`SnippetsScreen.js -> useEffect: ${user ? `User ${user.id} loaded` : 'No user loaded'}. Getting snippets..`);
+      getSnippets();
+    }
+  }, [isUserLoading]);
 
   const getSnippets = async () => {
     try {
@@ -66,6 +75,12 @@ const SnippetsScreen = ({ route, navigation }) => {
   };
 
   const onSettingsTapped = async () => {
+    if (routes.length > 1) {
+      navigation.popToTop();
+    }
+    await logout();
+
+    /*
     showMessage({
       message: 'The settings button was tapped!',
       titleStyle: {
@@ -79,6 +94,7 @@ const SnippetsScreen = ({ route, navigation }) => {
         opacity: 0.60,
       }
     });
+    */
   };
 
   const onNewSnippetTapped = async () => {

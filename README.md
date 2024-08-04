@@ -37,6 +37,8 @@ yarn android
 ```bash
 # using npm
 npm run ios
+# using npm and specific device
+npm run ios --device "iPhone 15 Pro"   
 
 # OR using Yarn
 yarn ios

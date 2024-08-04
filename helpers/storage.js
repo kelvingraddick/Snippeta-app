@@ -1,9 +1,32 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { snippetTypes } from '../constants/snippetTypes';
-import colors from './colors';
+import validator from './validator';
 
 const keys = {
   SNIPPET: 'SNIPPET_',
+  CREDENTIALS: 'CREDENTIALS',
+  PASSWORD: 'PASSWORD',
+};
+
+const getCredentials = async () => {
+  const item = await AsyncStorage.getItem(keys.CREDENTIALS);
+  const credentials = JSON.parse(item);
+  console.log(`storage.js -> getCredentials: ${credentials?.emailOrPhone ? `Got credentials for ${credentials.emailOrPhone}` : 'No credentials in storage'}`);
+  return credentials;
+};
+
+const saveCredentials = async (emailOrPhone, password) => {
+  console.log('storage.js -> saveCredentials: Saving credentials for ', emailOrPhone);
+  const credentials = { emailOrPhone, password };
+  if (validator.isValidCredentials(credentials)) {
+    const item = JSON.stringify(credentials);
+    await AsyncStorage.setItem(keys.CREDENTIALS, item);
+    console.log('storage.js -> saveCredentials: Saved credentials for ', emailOrPhone);
+  }
+};
+
+const deleteCredentials = async () => {
+  await AsyncStorage.removeItem(keys.CREDENTIALS);
+  console.log('storage.js -> deleteCredentials: Deleted credentials');
 };
 
 const getSnippets = async (parentId) => {
@@ -14,8 +37,8 @@ const getSnippets = async (parentId) => {
   console.log(`storage.js -> getSnippets: Storage keys with parent Id ${parentId}:`, JSON.stringify(allKeys));
   const snippets = [];
   for (const snippetKey of snippetKeys) {
-    const value = await AsyncStorage.getItem(snippetKey);
-    const snippet = JSON.parse(value);
+    const item = await AsyncStorage.getItem(snippetKey);
+    const snippet = JSON.parse(item);
     if (snippet?.parent_id === parentId) {
       snippets.push(snippet);
     }
@@ -25,15 +48,15 @@ const getSnippets = async (parentId) => {
 };
 
 const getSnippet = async (id) => {
-  const value = await AsyncStorage.getItem(id);
-  return JSON.parse(value);
+  const item = await AsyncStorage.getItem(id);
+  return JSON.parse(item);
 };
 
 const saveSnippet = async (snippet) => {
   console.log('storage.js -> saveSnippet: Saving snippet with ID', snippet?.id);
-  if (isValidSnippet(snippet)) {
-    const value = JSON.stringify(snippet);
-    await AsyncStorage.setItem(snippet.id, value);
+  if (validator.isValidSnippet(snippet)) {
+    const item = JSON.stringify(snippet);
+    await AsyncStorage.setItem(snippet.id, item);
     console.log('storage.js -> saveSnippet: Saved snippet with ID', snippet.id);
   }
 };
@@ -46,42 +69,10 @@ const deleteSnippet = async (id) => {
   }
 };
 
-const isValidSnippet = (snippet) => {
-  let errorMessages = [];
-  if (!snippet) {
-    errorMessages.push('Snippet cannot be null.');
-  }
-  if (!snippet.id || !snippet.id.startsWith(keys.SNIPPET)) {
-    errorMessages.push(`Snippet ID must start with '${keys.SNIPPET}.'`);
-  }
-  if (snippet.parent_id && !snippet.parent_id.startsWith(keys.SNIPPET)) {
-    errorMessages.push(`Snippet parent ID must start with '${keys.SNIPPET}.'`);
-  }
-  if (!Object.values(snippetTypes).includes(snippet.type)) {
-    errorMessages.push(`Snippet type must be one of: ${Object.values(snippetTypes).join(', ')}.'`);
-  }
-  if (!snippet.title || snippet.title.length < 1 || snippet.title.length > 50) {
-    errorMessages.push('Snippet title must be between 1 and 50 characters.');
-  }
-  if (!snippet.content || snippet.title.length < 1 || snippet.title.length > 1000) {
-    errorMessages.push('sSippet content must be between 1 and 1000 characters.');
-  }
-  if (!colors.getById(snippet.color_id)) {
-    errorMessages.push(`Snippet color ID must be a valid one of the valid color IDs (0-4).'`);
-  }
-  if (Object.prototype.toString.call(snippet.time) !== '[object Date]') {
-    errorMessages.push('Snippet time must be a valid datetime.');
-  }
-  if (typeof(snippet.order_index) !== 'number') {
-    errorMessages.push('Snippet order index must be a valid number.');
-  }
-  if (errorMessages.length > 0) {
-    throw new Error(errorMessages.join(' '));
-  }
-  return true;
-}
-
 export default {
+  getCredentials,
+  saveCredentials,
+  deleteCredentials,
   getSnippets,
   getSnippet,
   saveSnippet,
