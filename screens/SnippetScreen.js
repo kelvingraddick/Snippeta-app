@@ -49,16 +49,25 @@ const SnippetScreen = ({ route, navigation }) => {
         await storage.saveSnippet({
           ...snippet,
           id: id,
-          time: new Date(),
-          order_index: snippet.order_index ?? 0
+          time: snippet.time ?? new Date(),
+          order_index: snippet.order_index ?? 0,
         });
         console.log('SnippetScreen.js -> onSaveTapped: Saved snippet to storage with ID ' + id);
       }
       // if source is api, save via api
       else if (snippet.source == snippetSources.API && user) {
         const id = snippet.id ?? 0;
-        const response = await api.saveSnippet({ ...snippet, id: id, parent_id: snippet.parent_id ?? 0 }, await storage.getAuthorizationToken());
-        const responseJson = await response.json();
+        const response = await api.saveSnippet(
+          {
+            ...snippet,
+            id: id,
+            parent_id: snippet.parent_id ?? 0,
+            time: snippet.time ?? new Date(),
+            order_index: snippet.order_index ?? 0,
+          },
+          await storage.getAuthorizationToken()
+        );
+        const responseJson = response && await response.json();
         if (responseJson && responseJson.success) {
           console.log('SnippetScreen.js -> onSaveTapped: Saved snippet via API with ID ' + id);
         } else {

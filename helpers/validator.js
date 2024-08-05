@@ -25,11 +25,11 @@ const isValidSnippet = (snippet) => {
   if (!snippet) {
     errorMessages.push('Snippet cannot be null.');
   }
-  if (!snippet.id || !(snippet.id.startsWith(storageKeys.SNIPPET) || typeof(snippet.id) == 'number')) {
+  if (snippet.id == undefined || snippet.id == null || !(!isNaN(snippet.id) || snippet.id.startsWith(storageKeys.SNIPPET))) {
     errorMessages.push(`Snippet ID must start with '${storageKeys.SNIPPET}' or be a number.`);
   }
-  if (snippet.parent_id && !(snippet.parent_id.startsWith(storageKeys.SNIPPET) || typeof(snippet.parent_id) == 'number')) {
-    errorMessages.push(`Snippet parent ID must start with '${storageKeys.SNIPPET}' or be a number.`);
+  if (snippet.parent_id !== undefined && snippet.parent_id !== null && !(!isNaN(snippet.parent_id) || snippet.parent_id.startsWith(storageKeys.SNIPPET))) {
+    errorMessages.push(`Snippet parent ID (if defined) must start with '${storageKeys.SNIPPET}' or be a number.`);
   }
   if (!Object.values(snippetTypes).includes(snippet.type)) {
     errorMessages.push(`Snippet type must be one of: ${Object.values(snippetTypes).join(', ')}.'`);

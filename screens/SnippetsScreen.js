@@ -118,6 +118,21 @@ const SnippetsScreen = ({ route, navigation }) => {
     }
   };
 
+  const createSnippet = async (snippetType, content) => {
+    navigation.navigate('Snippet',
+      {
+        snippet: {
+          parent_id: parentSnippet?.id,
+          type: snippetType ?? snippetTypes.SINGLE,
+          source: parentSnippet?.source,
+          content: content,
+          color_id: parentSnippet?.color_id ?? colors.lightYellow.id,
+        },
+        getSnippets: getSnippets
+      }
+    );
+  };
+
   const onBackTapped = async () => {
     navigation.goBack();
   };
@@ -127,36 +142,27 @@ const SnippetsScreen = ({ route, navigation }) => {
   };
 
   const onNewSnippetTapped = async () => {
-    navigation.navigate('Snippet',
+    const options = { 'Snippet (blank)': 0, 'Snippet (from clipboard)': 1, 'List': 2, 'Cancel': 3 };
+    showActionSheetWithOptions(
       {
-        snippet: {
-          parent_id: parentSnippet?.id,
-          type: snippetTypes.SINGLE,
-          source: parentSnippet?.source,
-          color_id: parentSnippet?.color_id ?? colors.lightYellow.id,
-        },
-        getSnippets: getSnippets
+        title: 'What do you want to create?',
+        options: Object.keys(options),
+        cancelButtonIndex: options.Cancel,
+      },
+      async (selectedIndex) => {
+        switch (selectedIndex) {
+          case options['Snippet (blank)']:
+            createSnippet(snippetTypes.SINGLE);
+            break;
+          case options['Snippet (from clipboard)']:
+            createSnippet(snippetTypes.SINGLE, await Clipboard.getString());
+            break;
+          case options['List']:
+            createSnippet(snippetTypes.MULTIPLE);
+            break;
+        }
       }
     );
-  
-    /*
-    var message = await Clipboard.getString();
-    showMessage({
-      message: 'This text was taken from the clipboard',
-      description: `"${message}"`,
-      icon: { icon: () => <Image source={require('../assets/images/copy-white.png')} style={styles.cardTitleIcon} tintColor={'black'} />, position: 'right' },
-      titleStyle: {
-        fontWeight: 'bold',
-        color: 'black',
-        opacity: 0.60,
-      },
-      textStyle: {
-        fontStyle: 'italic',
-        color: 'black',
-        opacity: 0.60,
-      }
-    });
-    */
   };
   
   const onSnippetTapped = (snippet) => {

@@ -1,3 +1,5 @@
+import validator from "./validator";
+
 const login = async (emailOrPhone, password) => {
   console.log(`api.js -> login: Attempt to request login with credentials for ${emailOrPhone}.`);
   
@@ -27,15 +29,17 @@ const getSnippets = async (parentId, authorizationToken) => {
 
 const saveSnippet = async (snippet, authorizationToken) => {
   console.log(`api.js -> saveSnippet: Saving snippet with ID ${snippet?.id}.`);
-
-  return await fetch('http://www.snippeta.com/api/snippet/save.php', {
-    method: 'POST',
-    headers: { 
-      'Authorization': `Basic ${authorizationToken}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(snippet),
-  });
+  if (validator.isValidSnippet(snippet)) {
+    return await fetch('http://www.snippeta.com/api/snippet/save.php', {
+      method: 'POST',
+      headers: { 
+        'Authorization': `Basic ${authorizationToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(snippet),
+    });
+  }
+  return null;
 }
 
 const deleteSnippet = async (id, authorizationToken) => {
