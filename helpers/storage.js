@@ -62,6 +62,7 @@ const saveSnippet = async (snippet) => {
 };
 
 const deleteSnippet = async (id) => {
+  console.log('storage.js -> deleteSnippet: Deleting snippet with ID', id);
   await AsyncStorage.removeItem(id);
   const childSnippets = await getSnippets(id);
   for (const childSnippet of childSnippets) {
