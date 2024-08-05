@@ -55,9 +55,25 @@ const deleteSnippet = async (id, authorizationToken) => {
   });
 };
 
+const moveSnippet = async (snippet, authorizationToken) => {
+  console.log(`api.js -> moveSnippet: Moving snippet with ID ${snippet?.id}.`);
+  if (validator.isValidSnippet(snippet)) {
+    return await fetch('http://www.snippeta.com/api/snippet/move.php', {
+      method: 'POST',
+      headers: { 
+        'Authorization': `Basic ${authorizationToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id: snippet?.id }),
+    });
+  }
+  return null;
+}
+
 export default {
   login,
   getSnippets,
   saveSnippet,
   deleteSnippet,
+  moveSnippet,
 };

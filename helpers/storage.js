@@ -69,6 +69,21 @@ const deleteSnippet = async (id) => {
   }
 };
 
+const moveSnippet = async (snippet) => {
+  console.log('storage.js -> moveSnippet: Moving snippet with ID', snippet?.id);
+  if (validator.isValidSnippet(snippet)) {
+    let orderIndex = 0;
+    snippet.order_index = orderIndex++;
+    await saveSnippet(snippet);
+    const siblingSnippets = (await getSnippets(snippet?.parent_id)).filter(x => x.id != snippet.id);
+    siblingSnippets.sort((a, b) => a.order_index - b.order_index);
+    for (const siblingSnippet of siblingSnippets) {
+      siblingSnippet.order_index = orderIndex++;
+      await saveSnippet(siblingSnippet);
+    }
+  }
+};
+
 export default {
   getCredentials,
   saveCredentials,
@@ -78,4 +93,5 @@ export default {
   getSnippet,
   saveSnippet,
   deleteSnippet,
+  moveSnippet,
 };

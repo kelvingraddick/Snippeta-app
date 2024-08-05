@@ -31,7 +31,7 @@ const isValidSnippet = (snippet) => {
   if (snippet.parent_id !== undefined && snippet.parent_id !== null && !(!isNaN(snippet.parent_id) || snippet.parent_id.startsWith(storageKeys.SNIPPET))) {
     errorMessages.push(`Snippet parent ID (if defined) must start with '${storageKeys.SNIPPET}' or be a number.`);
   }
-  if (!Object.values(snippetTypes).includes(snippet.type)) {
+  if (!Object.values(snippetTypes).map(x => `${x}`).includes(`${snippet.type}`)) {
     errorMessages.push(`Snippet type must be one of: ${Object.values(snippetTypes).join(', ')}.'`);
   }
   if (!Object.values(snippetSources).includes(snippet.source)) {
@@ -41,15 +41,15 @@ const isValidSnippet = (snippet) => {
     errorMessages.push('Snippet title must be between 1 and 50 characters.');
   }
   if (!snippet.content || snippet.title.length < 1 || snippet.title.length > 1000) {
-    errorMessages.push('sSippet content must be between 1 and 1000 characters.');
+    errorMessages.push('Snippet content must be between 1 and 1000 characters.');
   }
   if (!colors.getById(snippet.color_id)) {
     errorMessages.push(`Snippet color ID must be a valid one of the valid color IDs (0-4).'`);
   }
-  if (Object.prototype.toString.call(snippet.time) !== '[object Date]') {
+  if (isNaN(Date.parse(snippet.time))) {
     errorMessages.push('Snippet time must be a valid datetime.');
   }
-  if (typeof(snippet.order_index) !== 'number') {
+  if (isNaN(snippet.order_index)) {
     errorMessages.push('Snippet order index must be a valid number.');
   }
   if (errorMessages.length > 0) {

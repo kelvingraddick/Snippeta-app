@@ -133,6 +133,37 @@ const SnippetsScreen = ({ route, navigation }) => {
     );
   };
 
+  const moveSnippet = async (snippet) => {
+    try {
+      setIsLoading(true);
+      // if source is storage, move in storage
+      if (snippet.source == snippetSources.STORAGE) {
+        await storage.moveSnippet(snippet);
+        console.log('SnippetScreen.js -> moveSnippet: Moved snippet in storage with ID ' + snippet.id);
+      }
+      // if source is api, move via api
+      else if (snippet.source == snippetSources.API && user) {
+        const response = await api.moveSnippet(snippet, await storage.getAuthorizationToken());
+        const responseJson = await response.json();
+        if (responseJson && responseJson.success) {
+          console.log('SnippetScreen.js -> moveSnippet: Moved snippet via API with ID ' + snippet.id);
+        } else {
+          const errorMessage = 'Moving snippet in failed with unknown error.';
+          console.log('SnippetScreen.js -> moveSnippet: ' + errorMessage);
+          showErrorMessage(errorMessage);
+        }
+      }
+      setIsLoading(false);
+      await getSnippets();
+
+    } catch (error) {
+      const errorMessage = 'Moving snippet failed with error: ' + error.message;
+      console.error('SnippetsScreen.js -> moveSnippet: ' + errorMessage);
+      showErrorMessage(errorMessage);
+      setIsLoading(false);
+    }
+  };
+
   const onBackTapped = async () => {
     navigation.goBack();
   };
@@ -203,6 +234,8 @@ const SnippetsScreen = ({ route, navigation }) => {
             navigation.navigate('Snippet', { snippet, getSnippets });
             break;
           case options['Move to top']:
+            await moveSnippet(snippet);
+            break;
           case options.Delete:
             await deleteSnippet(snippet);
             break;
