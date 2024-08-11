@@ -19,7 +19,7 @@ const SnippetScreen = ({ route, navigation }) => {
 
   const { user, isUserLoading } = useContext(ApplicationContext);
 
-  const [isLoading, setIsLoading] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [snippet, setSnippet] = useState(route.params.snippet || {});
 
   const { showActionSheetWithOptions } = useActionSheet();
@@ -86,6 +86,7 @@ const SnippetScreen = ({ route, navigation }) => {
       const errorMessage = 'Saving snippet failed with error: ' + error.message;
       console.error('SnippetScreen.js -> onSaveTapped: ' + errorMessage);
       showErrorMessage(errorMessage);
+      setIsLoading(false);
     }
   };
 
@@ -154,8 +155,8 @@ const SnippetScreen = ({ route, navigation }) => {
               <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={colors.white.hexCode} />
             </Pressable>
             <Text style={styles.title}>{`${snippet.id ? 'Edit' : 'New'} ${snippet.type == snippetTypes.SINGLE ? 'snippet' : 'list'}`}</Text>
-            <Pressable onPress={onSaveTapped} hitSlop={20} disabled={!snippet.title || snippet.title.length == 0 || !snippet.content || snippet.content.length == 0}>
-              <Image source={require('../assets/images/checkmark.png')} style={[styles.saveIcon, { opacity: !snippet.title || snippet.title.length == 0 || !snippet.content || snippet.content.length == 0 ? .1 : 1 }]} tintColor={colors.white.hexCode} />
+            <Pressable onPress={onSaveTapped} hitSlop={20} disabled={isLoading || !snippet.title || snippet.title.length == 0 || !snippet.content || snippet.content.length == 0}>
+              <Image source={require('../assets/images/checkmark.png')} style={[styles.saveIcon, { opacity: isLoading || !snippet.title || snippet.title.length == 0 || !snippet.content || snippet.content.length == 0 ? .1 : 1 }]} tintColor={colors.white.hexCode} />
             </Pressable>
           </View>
           <View style={styles.buttonsView}>

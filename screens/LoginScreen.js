@@ -10,7 +10,7 @@ const LoginScreen = ({ navigation }) => {
   
   const { loginWithCredentials } = useContext(ApplicationContext);
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [credentials, setCredentials] = useState(true);
 
   const onBackTapped = async () => {
@@ -19,6 +19,7 @@ const LoginScreen = ({ navigation }) => {
 
   const onLoginTapped = async () => {
     try {
+      setIsLoading(true);
       const responseJson = await loginWithCredentials(credentials?.emailOrPhone, credentials?.password);
       if (responseJson && responseJson.success && responseJson.user) {
         console.log(`LoginScreen.js -> onLoginTapped: User logged in. Going back to Settings screen..`);
@@ -26,10 +27,12 @@ const LoginScreen = ({ navigation }) => {
       } else {
         showErrorMessage(responseJson?.error_code ? 'Login failed: ' + errorCodeMessages[responseJson.error_code] : 'Login failed with unknown error.');
       }
+      setIsLoading(false);
     } catch(error) {
       const errorMessage = 'Login failed with error: ' + error.message;
       console.error('LoginScreen.js -> onLoginTapped: ' + errorMessage);
       showErrorMessage(errorMessage);
+      setIsLoading(false);
     }
   };
 
@@ -71,7 +74,7 @@ const LoginScreen = ({ navigation }) => {
         <View style={styles.inputView}>
           <TextInput style={styles.input} placeholder={'Password..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={100} secureTextEntry={true} onChangeText={onPasswordChangeText} />
         </View>
-        <ActionButton iconImageSource={require('../assets/images/user.png')} text={'Login'} color={colors.turquoise} onTapped={() => onLoginTapped()} />
+        <ActionButton iconImageSource={require('../assets/images/user.png')} text={'Login'} color={colors.turquoise} disabled={isLoading} onTapped={() => onLoginTapped()} />
       </View>
     </View>
   );
