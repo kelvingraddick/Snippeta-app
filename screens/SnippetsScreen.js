@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Image, Pressable, SectionList, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Image, Pressable, SectionList, StyleSheet, Text, View } from 'react-native';
 import { showMessage } from "react-native-flash-message";
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useActionSheet } from '@expo/react-native-action-sheet';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { ApplicationContext } from '../ApplicationContext';
 import { snippetTypes } from '../constants/snippetTypes';
 import { snippetSources } from '../constants/snippetSources';
@@ -274,25 +275,36 @@ const SnippetsScreen = ({ route, navigation }) => {
           {!isRootSnippetsScreen &&
             <Text style={styles.title} numberOfLines={2}>{parentSnippet ? parentSnippet.title : 'Snippeta'}</Text>
           }
-          <Pressable onPress={onSettingsTapped} hitSlop={20}>
+          <Pressable onPress={onSettingsTapped} hitSlop={20} disabled={isLoading || isUserLoading}>
             <Image source={require('../assets/images/gear-gray.png')} style={styles.settingsIcon} tintColor={colors.white.hexCode} />
           </Pressable>
         </View>
-        <ActionButton iconImageSource={require('../assets/images/plus.png')} text={'New snippet or list'} color={colors.nebulaBlue} onTapped={() => onNewSnippetTapped()} />
+        <ActionButton iconImageSource={require('../assets/images/plus.png')} text={'New snippet or list'} color={colors.nebulaBlue} disabled={isLoading || isUserLoading} onTapped={() => onNewSnippetTapped()} />
       </View>
-      <SectionList
-        style={styles.snippetsList}
-        sections={snippetSections}
-        keyExtractor={(item, index) => item + index}
-        stickySectionHeadersEnabled={false}
-        renderItem={({item}) => <SnippetView snippet={item} onSnippetTapped={onSnippetTapped} onSnippetMenuTapped={onSnippetMenuTapped} />}
-        renderSectionHeader={({section: {title}}) => ( title &&
-          <View style={styles.sectionHeaderView}>
-            <Image source={title == snippetSources.STORAGE ? require('../assets/images/device.png') : require('../assets/images/cloud.png')} style={styles.sectionHeaderIcon} tintColor={colors.darkGray.hexCode} />
-            <Text style={styles.sectionHeaderText}>{title}</Text>
-          </View>
-        )}
-      />
+      { (isLoading || isUserLoading) &&
+        <View style={styles.snippetsList}>
+          {[0, 1, 2, 3, 4, 5].map(x => (
+            <SkeletonPlaceholder borderRadius={10} speed={200}>
+              <SkeletonPlaceholder.Item height={100} width={Dimensions.get('window').width - 40 } marginBottom={16} />
+            </SkeletonPlaceholder>
+          ))}
+        </View>
+      }
+      { (!isLoading && !isUserLoading) && 
+        <SectionList
+          style={styles.snippetsList}
+          sections={snippetSections}
+          keyExtractor={(item, index) => item + index}
+          stickySectionHeadersEnabled={false}
+          renderItem={({item}) => <SnippetView snippet={item} onSnippetTapped={onSnippetTapped} onSnippetMenuTapped={onSnippetMenuTapped} />}
+          renderSectionHeader={({section: {title}}) => ( title &&
+            <View style={styles.sectionHeaderView}>
+              <Image source={title == snippetSources.STORAGE ? require('../assets/images/device.png') : require('../assets/images/cloud.png')} style={styles.sectionHeaderIcon} tintColor={colors.darkGray.hexCode} />
+              <Text style={styles.sectionHeaderText}>{title}</Text>
+            </View>
+          )}
+        />
+      }
     </View>
   );
 };
