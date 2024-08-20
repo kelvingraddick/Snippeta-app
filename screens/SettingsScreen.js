@@ -19,6 +19,10 @@ const SettingsScreen = ({ navigation }) => {
     navigation.navigate('Login');
   };
 
+  const onRegisterTapped = async () => {
+    navigation.navigate('Register');
+  };
+
   const onLogoutTapped = async () => {
     navigation.popToTop();
     await logout();
@@ -55,7 +59,10 @@ const SettingsScreen = ({ navigation }) => {
           <Text style={styles.title}>{user.phone_number}</Text>
         }
         { !user && 
-          <ActionButton iconImageSource={require('../assets/images/user.png')} text={'Login'} color={colors.turquoise} onTapped={() => onLoginTapped()} />
+          <>
+            <ActionButton iconImageSource={require('../assets/images/user.png')} text={'Login'} color={colors.turquoise} onTapped={() => onLoginTapped()} />
+            <ActionButton iconImageSource={require('../assets/images/user.png')} text={'Register'} color={colors.lightYellow} onTapped={() => onRegisterTapped()} />
+          </>
         }
       </View>
       <ScrollView style={styles.scrollView}>

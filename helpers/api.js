@@ -1,5 +1,17 @@
 import validator from "./validator";
 
+const register = async (user) => {
+  console.log(`api.js -> register: Attempt to request register with email address ${user?.email_address}.`);
+  if (validator.isValidUser(user)) {
+    return await fetch('http://www.snippeta.com/api/user/register.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(user)
+    });
+  }
+  return null;
+}
+
 const login = async (emailOrPhone, password) => {
   console.log(`api.js -> login: Attempt to request login with credentials for ${emailOrPhone}.`);
   
@@ -13,6 +25,18 @@ const login = async (emailOrPhone, password) => {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body)
   });
+}
+
+const saveUser = async (user) => {
+  console.log(`api.js -> saveUser: Attempt to request saving user with id ${user?.id}.`);
+  if (validator.isValidUser(user)) {
+    return await fetch('http://www.snippeta.com/api/user/save.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(user)
+    });
+  }
+  return null;
 }
 
 const getSnippets = async (parentId, authorizationToken) => {
@@ -71,7 +95,9 @@ const moveSnippet = async (snippet, authorizationToken) => {
 }
 
 export default {
+  register,
   login,
+  saveUser,
   getSnippets,
   saveSnippet,
   deleteSnippet,

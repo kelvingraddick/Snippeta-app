@@ -20,6 +20,32 @@ const isValidCredentials = (credentials) => {
   return true;
 }
 
+const isValidUser = (user) => {
+  let errorMessages = [];
+  if (!user) {
+    errorMessages.push('User cannot be null.');
+  }
+  if (!user.email_address || user.email_address.length < 1 || user.email_address.length > 50) {
+    errorMessages.push('User email address must be between 1 and 50 characters.');
+  }
+  if (!user.phone_number || user.phone_number.length < 1 || user.phone_number.length > 20) {
+    errorMessages.push('User phone number must be between 1 and 20 characters.');
+  }
+  if (!user.password || user.password.length < 1 || user.password.length > 100) {
+    errorMessages.push('User password must be between 1 and 100 characters.');
+  }
+  if (!user.first_name || user.first_name.length < 1 || user.first_name.length > 30) {
+    errorMessages.push('User first name must be between 1 and 30 characters.');
+  }
+  if (!user.last_name || user.last_name.length < 1 || user.last_name.length > 30) {
+    errorMessages.push('User last name must be between 1 and 30 characters.');
+  }
+  if (errorMessages.length > 0) {
+    throw new Error(errorMessages.join(' '));
+  }
+  return true;
+}
+
 const isValidSnippet = (snippet) => {
   let errorMessages = [];
   if (!snippet) {
@@ -60,5 +86,6 @@ const isValidSnippet = (snippet) => {
 
 export default {
   isValidCredentials,
+  isValidUser,
   isValidSnippet,
 };
