@@ -23,6 +23,10 @@ const SettingsScreen = ({ navigation }) => {
     navigation.navigate('Register');
   };
 
+  const onAccountTapped = async () => {
+    navigation.navigate('User');
+  };
+
   const onLogoutTapped = async () => {
     navigation.popToTop();
     await logout();
@@ -52,22 +56,27 @@ const SettingsScreen = ({ navigation }) => {
           <Text style={styles.title}>Settings</Text>
           <View style={styles.placeholderIcon} />
         </View>
-        { user && user.email_address && 
-          <Text style={styles.title}>{user.email_address}</Text>
-        }
-        { user && user.phone_number && 
-          <Text style={styles.title}>{user.phone_number}</Text>
+        <View style={styles.infoView}>
+          { user && user.email_address && 
+            <Text style={styles.title}>{user.email_address}</Text>
+          }
+          { user && user.phone_number && 
+            <Text style={styles.title}>{user.phone_number}</Text>
+          }
+        </View>
+        { user && 
+          <ActionButton iconImageSource={require('../assets/images/user.png')} text={'Account'} color={colors.turquoise} onTapped={() => onAccountTapped()} />
         }
         { !user && 
           <>
             <ActionButton iconImageSource={require('../assets/images/user.png')} text={'Login'} color={colors.turquoise} onTapped={() => onLoginTapped()} />
-            <ActionButton iconImageSource={require('../assets/images/user.png')} text={'Register'} color={colors.lightYellow} onTapped={() => onRegisterTapped()} />
+            <ActionButton iconImageSource={require('../assets/images/list-icon.png')} text={'Register'} color={colors.lightBlue} onTapped={() => onRegisterTapped()} />
           </>
         }
       </View>
       <ScrollView style={styles.scrollView}>
         { user && 
-          <ActionButton iconImageSource={require('../assets/images/user.png')} text={'Logout'} color={colors.lightRed} onTapped={() => onLogoutTapped()} />
+          <ActionButton iconImageSource={require('../assets/images/back-arrow.png')} text={'Logout'} color={colors.lightRed} onTapped={() => onLogoutTapped()} />
         }
       </ScrollView>
     </View>
@@ -89,6 +98,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginBottom: 20
+  },
+  infoView: {
     marginBottom: 20
   },
   title: {

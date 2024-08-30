@@ -12,6 +12,7 @@ import SnippetScreen from './screens/SnippetScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
+import UserScreen from './screens/UserScreen';
 
 const initialState = {
   user: undefined,
@@ -118,6 +119,11 @@ export default function App() {
             <Stack.Screen
               name="Register"
               component={RegisterScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="User"
+              component={UserScreen}
               options={{ headerShown: false }}
             />
           </Stack.Navigator>
