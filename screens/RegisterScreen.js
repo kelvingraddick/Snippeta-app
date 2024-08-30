@@ -113,7 +113,7 @@ const RegisterScreen = ({ navigation }) => {
         <View style={styles.inputView}>
           <TextInput style={styles.input} placeholder={'Password confirm..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={100} secureTextEntry={true} onChangeText={onPasswordConfirmChangeText} />
         </View>
-        <ActionButton iconImageSource={require('../assets/images/user.png')} text={'Register'} color={colors.turquoise} disabled={isLoading} onTapped={() => onRegisterTapped()} />
+        <ActionButton iconImageSource={require('../assets/images/list-icon.png')} text={'Register'} color={colors.nebulaBlue} disabled={isLoading} onTapped={() => onRegisterTapped()} />
       </View>
     </View>
   );
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     padding: 20,
     borderRadius: 30,
-    backgroundColor: colors.lightYellow.hexCode,
+    backgroundColor: colors.lightBlue.hexCode,
   },
   input: {
     fontSize: 17,

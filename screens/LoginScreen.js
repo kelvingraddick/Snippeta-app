@@ -74,7 +74,7 @@ const LoginScreen = ({ navigation }) => {
         <View style={styles.inputView}>
           <TextInput style={styles.input} placeholder={'Password..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={100} secureTextEntry={true} onChangeText={onPasswordChangeText} />
         </View>
-        <ActionButton iconImageSource={require('../assets/images/user.png')} text={'Login'} color={colors.turquoise} disabled={isLoading} onTapped={() => onLoginTapped()} />
+        <ActionButton iconImageSource={require('../assets/images/user.png')} text={'Login'} color={colors.nebulaBlue} disabled={isLoading} onTapped={() => onLoginTapped()} />
       </View>
     </View>
   );
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     padding: 20,
     borderRadius: 30,
-    backgroundColor: colors.lightYellow.hexCode,
+    backgroundColor: colors.lightBlue.hexCode,
   },
   input: {
     fontSize: 17,
