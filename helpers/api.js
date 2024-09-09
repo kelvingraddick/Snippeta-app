@@ -51,6 +51,19 @@ const getSnippets = async (parentId, authorizationToken) => {
   });
 }
 
+const searchSnippets = async (query, authorizationToken) => {
+  console.log(`api.js -> searchSnippets: Search snippets with query ${query}.`);
+  query = query && query.toLowerCase ? query.toLowerCase() : '';
+  
+  return await fetch(`http://www.snippeta.com/api/snippets/search.php?query=${query}`, {
+    method: 'GET',
+    headers: { 
+      'Authorization': `Basic ${authorizationToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
+}
+
 const saveSnippet = async (snippet, authorizationToken) => {
   console.log(`api.js -> saveSnippet: Saving snippet with ID ${snippet?.id}.`);
   if (validator.isValidSnippet(snippet)) {
@@ -99,6 +112,7 @@ export default {
   login,
   saveUser,
   getSnippets,
+  searchSnippets,
   saveSnippet,
   deleteSnippet,
   moveSnippet,

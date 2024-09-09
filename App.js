@@ -9,6 +9,7 @@ import storage from './helpers/storage';
 import api from './helpers/api';
 import SnippetsScreen from './screens/SnippetsScreen';
 import SnippetScreen from './screens/SnippetScreen';
+import SearchScreen from './screens/SearchScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
@@ -104,6 +105,11 @@ export default function App() {
             <Stack.Screen
               name="Snippet"
               component={SnippetScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Search"
+              component={SearchScreen}
               options={{ headerShown: false }}
             />
             <Stack.Screen

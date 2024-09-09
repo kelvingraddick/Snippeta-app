@@ -165,6 +165,10 @@ const SnippetsScreen = ({ route, navigation }) => {
     }
   };
 
+  const onSearchTapped = async () => {
+    navigation.navigate('Search', { getSnippets });
+  };
+
   const onBackTapped = async () => {
     navigation.goBack();
   };
@@ -262,7 +266,9 @@ const SnippetsScreen = ({ route, navigation }) => {
       <View style={styles.headerView}>
         <View style={styles.titleView}>
           {isRootSnippetsScreen && 
-            <View style={styles.backIcon} />
+            <Pressable onPress={onSearchTapped} hitSlop={20}>
+              <Image source={require('../assets/images/search.png')} style={styles.searchIcon} tintColor={colors.white.hexCode} />
+            </Pressable>
           }
           {isRootSnippetsScreen && 
             <Image source={require('../assets/images/logo.png')} style={styles.logoIcon} tintColor={colors.white.hexCode} resizeMode='contain' />
@@ -338,6 +344,11 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 40,
     marginTop: 7,
+  },
+  searchIcon: {
+    height: 25,
+    width: 25,
+    marginTop: 2,
   },
   backIcon: {
     height: 25,

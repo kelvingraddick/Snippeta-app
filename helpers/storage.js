@@ -47,6 +47,25 @@ const getSnippets = async (parentId) => {
   return snippets;
 };
 
+const searchSnippets = async (query) => {
+  console.log('storage.js -> searchSnippets: Searching snippets for query', query);
+  query = query && query.toLowerCase ? query.toLowerCase() : '';
+  const allKeys = await AsyncStorage.getAllKeys();
+  //console.log('storage.js -> getSnippets: All storage keys:', JSON.stringify(allKeys));
+  const snippetKeys = allKeys.filter(key => key.startsWith(storageKeys.SNIPPET));
+  console.log(`storage.js -> searchSnippets: Storage keys for query ${query}:`);
+  const snippets = [];
+  for (const snippetKey of snippetKeys) {
+    const item = await AsyncStorage.getItem(snippetKey);
+    const snippet = JSON.parse(item);
+    if (snippet && (snippet.title?.toLowerCase().includes(query) || snippet.content?.toLowerCase().includes(query))) {
+      snippets.push(snippet);
+    }
+  }
+  console.log(`storage.js -> searchSnippets: Got ${snippets.length} snippets for query ${query}:`, JSON.stringify(snippets.map(x => x.id)));
+  return snippets;
+};
+
 const getSnippet = async (id) => {
   const item = await AsyncStorage.getItem(id);
   return JSON.parse(item);
@@ -91,6 +110,7 @@ export default {
   deleteCredentials,
   getAuthorizationToken,
   getSnippets,
+  searchSnippets,
   getSnippet,
   saveSnippet,
   deleteSnippet,
