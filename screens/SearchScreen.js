@@ -13,11 +13,12 @@ import colors from '../helpers/colors';
 import SnippetView from '../components/SnippetView';
 
 const SearchScreen = ({ route, navigation }) => {
-  const getSnippets = route.params.getSnippets;
+  const callbacks = route.params.callbacks || [];
 
   const { user, isUserLoading } = useContext(ApplicationContext);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [query, setQuery] = useState("");
   const [snippetSections, setSnippetSections] = useState([]);
 
   const { showActionSheetWithOptions } = useActionSheet();
@@ -64,6 +65,7 @@ const SearchScreen = ({ route, navigation }) => {
   };
 
   const onQueryChangeText = async (text) => {
+    setQuery(text);
     await searchSnippets(text);
   };
 
@@ -91,7 +93,7 @@ const SearchScreen = ({ route, navigation }) => {
         }
       });
     } else { // snippetTypes.MULTIPLE
-      navigation.push('Snippets', { parentSnippet: snippet });
+      navigation.push('Snippets', { parentSnippet: snippet, callbacks: callbacks.concat(async () => { await searchSnippets(query); }) });
     }
   };
 
@@ -105,7 +107,7 @@ const SearchScreen = ({ route, navigation }) => {
       async (selectedIndex) => {
         switch (selectedIndex) {
           case options.Edit:
-            navigation.navigate('Snippet', { snippet, getSnippets });
+            navigation.navigate('Snippet', { snippet, callbacks: callbacks.concat(async () => { await searchSnippets(query); }) });
             break;
         }
       }
@@ -135,7 +137,7 @@ const SearchScreen = ({ route, navigation }) => {
           <View style={styles.placeholderIcon} />
         </View>
         <View style={styles.inputView}>
-          <TextInput style={styles.input} placeholder={'Search text..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={50} autoCapitalize='none' autoFocus onChangeText={onQueryChangeText} />
+          <TextInput style={styles.input} placeholder={'Search text..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={50} autoCapitalize='none' autoFocus value={query} onChangeText={onQueryChangeText} />
         </View>
       </View>
       { (isLoading || isUserLoading) &&

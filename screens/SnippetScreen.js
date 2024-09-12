@@ -13,9 +13,9 @@ import { errorCodeMessages } from '../constants/errorCodeMessages';
 import ColorButton from '../components/ColorButton';
 
 const SnippetScreen = ({ route, navigation }) => {
-  const snippetColors = [colors.lightYellow, colors.lightGreen, colors.lightBlue, colors.lightPurple, colors.lightRed, colors.lightGray];
+  const callbacks = route.params.callbacks || [];
 
-  const getSnippets = route.params.getSnippets;
+  const snippetColors = [colors.lightYellow, colors.lightGreen, colors.lightBlue, colors.lightPurple, colors.lightRed, colors.lightGray];
 
   const { user, isUserLoading } = useContext(ApplicationContext);
 
@@ -40,7 +40,6 @@ const SnippetScreen = ({ route, navigation }) => {
           if (!snippetSource) { setIsLoading(false); return; }
         }
         snippet.source = snippetSource;
-        setSnippet({...snippet, source: snippetSource});
       }
 
       // if source is storage, save in storage
@@ -79,7 +78,7 @@ const SnippetScreen = ({ route, navigation }) => {
       }
 
       setIsLoading(false);
-      await getSnippets();
+      callbacks.forEach(async callback => { await callback(); });
       navigation.goBack();
 
     } catch (error) {
@@ -92,14 +91,17 @@ const SnippetScreen = ({ route, navigation }) => {
 
   const onColorButtonTapped = async (colorId) => {
     setSnippet({ ...snippet, color_id: colorId });
+    route.params.snippet.color_id = colorId;
   };
 
   const onTitleChangeText = async (text) => {
     setSnippet({ ...snippet, title: text });
+    route.params.snippet.title = text;
   };
 
   const onContentChangeText = async (text) => {
     setSnippet({ ...snippet, content: text });
+    route.params.snippet.content = text;
   };
 
   const selectSnippetSource = async () => {

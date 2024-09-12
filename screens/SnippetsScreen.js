@@ -17,6 +17,7 @@ import SnippetView from '../components/SnippetView';
 const SnippetsScreen = ({ route, navigation }) => {
   const parentSnippet = route.params?.parentSnippet;
   const isRootSnippetsScreen = !parentSnippet;
+  const callbacks = route.params?.callbacks || [];
 
   const { user, isUserLoading } = useContext(ApplicationContext);
 
@@ -129,7 +130,7 @@ const SnippetsScreen = ({ route, navigation }) => {
           content: content,
           color_id: parentSnippet?.color_id ?? colors.lightYellow.id,
         },
-        getSnippets: getSnippets
+        callbacks: callbacks.concat(getSnippets)
       }
     );
   };
@@ -166,7 +167,7 @@ const SnippetsScreen = ({ route, navigation }) => {
   };
 
   const onSearchTapped = async () => {
-    navigation.navigate('Search', { getSnippets });
+    navigation.navigate('Search', { callbacks: callbacks.concat(getSnippets) });
   };
 
   const onBackTapped = async () => {
@@ -175,6 +176,12 @@ const SnippetsScreen = ({ route, navigation }) => {
 
   const onSettingsTapped = async () => {
     navigation.navigate('Settings');
+  };
+
+  const onEditTapped = async () => {
+    if (!parentSnippet)
+      return;
+    navigation.navigate('Snippet', { snippet: parentSnippet, callbacks: callbacks.concat(getSnippets) });
   };
 
   const onNewSnippetTapped = async () => {
@@ -221,7 +228,7 @@ const SnippetsScreen = ({ route, navigation }) => {
         }
       });
     } else { // snippetTypes.MULTIPLE
-      navigation.push('Snippets', { parentSnippet: snippet });
+      navigation.push('Snippets', { parentSnippet: snippet, callbacks: callbacks.concat(getSnippets) });
     }
   };
 
@@ -236,7 +243,7 @@ const SnippetsScreen = ({ route, navigation }) => {
       async (selectedIndex) => {
         switch (selectedIndex) {
           case options.Edit:
-            navigation.navigate('Snippet', { snippet, getSnippets });
+            navigation.navigate('Snippet', { snippet, callbacks: callbacks.concat(getSnippets) });
             break;
           case options['Move to top']:
             await moveSnippet(snippet);
@@ -281,9 +288,16 @@ const SnippetsScreen = ({ route, navigation }) => {
           {!isRootSnippetsScreen &&
             <Text style={styles.title} numberOfLines={2}>{parentSnippet ? parentSnippet.title : 'Snippeta'}</Text>
           }
-          <Pressable onPress={onSettingsTapped} hitSlop={20} disabled={isLoading || isUserLoading}>
-            <Image source={require('../assets/images/gear-gray.png')} style={styles.settingsIcon} tintColor={colors.white.hexCode} />
-          </Pressable>
+          {(!parentSnippet || parentSnippet.type == snippetTypes.SINGLE) &&
+            <Pressable onPress={onSettingsTapped} hitSlop={20} disabled={isLoading || isUserLoading}>
+              <Image source={require('../assets/images/gear-gray.png')} style={styles.settingsIcon} tintColor={colors.white.hexCode} />
+            </Pressable>
+          }
+          {(parentSnippet && parentSnippet.type == snippetTypes.MULTIPLE) &&
+            <Pressable onPress={onEditTapped} hitSlop={20} disabled={isLoading || isUserLoading}>
+              <Image source={require('../assets/images/edit.png')} style={styles.editIcon} tintColor={colors.white.hexCode} />
+            </Pressable>
+          }
         </View>
         <ActionButton iconImageSource={require('../assets/images/plus.png')} text={'New snippet or list'} color={colors.nebulaBlue} disabled={isLoading || isUserLoading} onTapped={() => onNewSnippetTapped()} />
       </View>
@@ -356,6 +370,11 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   settingsIcon: {
+    height: 25,
+    width: 25,
+    marginTop: 2,
+  },
+  editIcon: {
     height: 25,
     width: 25,
     marginTop: 2,
