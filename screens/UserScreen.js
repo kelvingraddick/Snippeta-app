@@ -36,7 +36,7 @@ const UserScreen = ({ navigation }) => {
       if (editedUser.password != editedUser.password_confirm) {
         throw new Error('Password confirmation must match the password entered.');
       }
-      const response= await api.saveUser(editedUser);
+      const response = await api.saveUser(editedUser, await storage.getAuthorizationToken());
       let responseJson = await response.json();
       if (responseJson && responseJson.success && responseJson.user) {
         console.log(`UserScreen.js -> onSaveTapped: User saved. Now logging user in again..`);

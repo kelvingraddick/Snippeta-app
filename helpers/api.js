@@ -27,12 +27,15 @@ const login = async (emailOrPhone, password) => {
   });
 }
 
-const saveUser = async (user) => {
+const saveUser = async (user, authorizationToken) => {
   console.log(`api.js -> saveUser: Attempt to request saving user with id ${user?.id}.`);
   if (validator.isValidUser(user)) {
     return await fetch('http://www.snippeta.com/api/user/save.php', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Authorization': `Basic ${authorizationToken}`,
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify(user)
     });
   }
