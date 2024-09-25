@@ -42,6 +42,18 @@ const saveUser = async (user, authorizationToken) => {
   return null;
 }
 
+const deleteUser = async (authorizationToken) => {
+  console.log(`api.js -> deleteUser: Attempt to request deleting current user.`);
+  return await fetch('http://www.snippeta.com/api/user/delete.php', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Basic ${authorizationToken}`,
+      'Content-Type': 'application/json'
+    },
+  });
+  return null;
+}
+
 const getSnippets = async (parentId, authorizationToken) => {
   console.log(`api.js -> getSnippets: Get snippets for parent ID ${parentId}.`);
   
@@ -114,6 +126,7 @@ export default {
   register,
   login,
   saveUser,
+  deleteUser,
   getSnippets,
   searchSnippets,
   saveSnippet,

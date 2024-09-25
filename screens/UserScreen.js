@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { showMessage } from "react-native-flash-message";
+import { useActionSheet } from '@expo/react-native-action-sheet';
 import { ApplicationContext } from '../ApplicationContext';
 import storage from '../helpers/storage';
 import { errorCodeMessages } from '../constants/errorCodeMessages';
@@ -10,10 +11,12 @@ import ActionButton from '../components/ActionButton';
 
 const UserScreen = ({ navigation }) => {
 
-  const { user, isUserLoading, loginWithCredentials } = useContext(ApplicationContext);
+  const { user, isUserLoading, loginWithCredentials, logout } = useContext(ApplicationContext);
 
   const [isLoading, setIsLoading] = useState(false);
   const [editedUser, setEditedUser] = useState(user);
+
+  const { showActionSheetWithOptions } = useActionSheet();
 
   useEffect(() => {
     getPasswordFromStorage();
@@ -54,6 +57,59 @@ const UserScreen = ({ navigation }) => {
     } catch(error) {
       const errorMessage = 'Saving failed with error: ' + error.message;
       console.error('UserScreen.js -> onSaveTapped: ' + errorMessage);
+      showErrorMessage(errorMessage);
+      setIsLoading(false);
+    }
+  };
+
+  const onDeleteTapped = async () => {
+    const options = { 'Delete': 0, 'Cancel': 1 };
+    showActionSheetWithOptions(
+      {
+        title: 'This is a permanent action. Are you sure you want to delete your account?',
+        options: Object.keys(options),
+        destructiveButtonIndex: options.Delete,
+        cancelButtonIndex: options.Cancel,
+      },
+      async (selectedIndex) => {
+        switch (selectedIndex) {
+          case options.Delete:
+            deleteUser();
+            break;
+        }
+      }
+    );
+  };
+
+  const deleteUser = async () => {
+    try {
+      setIsLoading(true);
+      const response = await api.deleteUser(await storage.getAuthorizationToken());
+      let responseJson = await response.json();
+      if (responseJson && responseJson.success) {
+        console.log(`UserScreen.js -> deleteUser: User deleted. Now logging user out..`);
+        navigation.popToTop();
+        await logout();
+        showMessage({
+          message: 'Logged out!',
+          titleStyle: {
+            fontWeight: 'bold',
+            color: 'black',
+            opacity: 0.60,
+          },
+          textStyle: {
+            fontStyle: 'italic',
+            color: 'black',
+            opacity: 0.60,
+          }
+        });
+      } else {
+        showErrorMessage(responseJson?.error_code ? 'Deleting failed: ' + errorCodeMessages[responseJson.error_code] : 'Deleting failed with unknown error.');
+      }
+      setIsLoading(false);
+    } catch(error) {
+      const errorMessage = 'Deleting failed with error: ' + error.message;
+      console.error('UserScreen.js -> deleteUser: ' + errorMessage);
       showErrorMessage(errorMessage);
       setIsLoading(false);
     }
@@ -107,25 +163,30 @@ const UserScreen = ({ navigation }) => {
         </View>
       </View>
       <View style={styles.inputsView}>
-        <View style={styles.inputView}>
-          <TextInput style={styles.input} placeholder={'Email address..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={50} keyboardType='email-address' autoCapitalize='none' value={editedUser.email_address} onChangeText={onEmailAddressChangeText} />
+        <View>
+          <View style={styles.inputView}>
+            <TextInput style={styles.input} placeholder={'Email address..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={50} keyboardType='email-address' autoCapitalize='none' value={editedUser.email_address} onChangeText={onEmailAddressChangeText} />
+          </View>
+          <View style={styles.inputView}>
+            <TextInput style={styles.input} placeholder={'Phone number..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={50} keyboardType='phone-pad' autoCapitalize='none' value={editedUser.phone_number} onChangeText={onPhoneNumberChangeText} />
+          </View>
+          <View style={styles.inputView}>
+            <TextInput style={styles.input} placeholder={'First name..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={50} keyboardType='default' autoCapitalize='words' value={editedUser.first_name} onChangeText={onFirstNameChangeText} />
+          </View>
+          <View style={styles.inputView}>
+            <TextInput style={styles.input} placeholder={'Last name..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={50} keyboardType='default' autoCapitalize='words' value={editedUser.last_name} onChangeText={onLastNameChangeText} />
+          </View>
+          <View style={styles.inputView}>
+            <TextInput style={styles.input} placeholder={'Password..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={100} secureTextEntry={true} value={editedUser.password} onChangeText={onPasswordChangeText} />
+          </View>
+          <View style={styles.inputView}>
+            <TextInput style={styles.input} placeholder={'Password confirm..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={100} secureTextEntry={true} value={editedUser.password_confirm} onChangeText={onPasswordConfirmChangeText} />
+          </View>
+          <ActionButton iconImageSource={require('../assets/images/checkmark.png')} text={'Save'} color={colors.nebulaBlue} disabled={isLoading} onTapped={() => onSaveTapped()} />
         </View>
-        <View style={styles.inputView}>
-          <TextInput style={styles.input} placeholder={'Phone number..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={50} keyboardType='phone-pad' autoCapitalize='none' value={editedUser.phone_number} onChangeText={onPhoneNumberChangeText} />
-        </View>
-        <View style={styles.inputView}>
-          <TextInput style={styles.input} placeholder={'First name..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={50} keyboardType='default' autoCapitalize='words' value={editedUser.first_name} onChangeText={onFirstNameChangeText} />
-        </View>
-        <View style={styles.inputView}>
-          <TextInput style={styles.input} placeholder={'Last name..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={50} keyboardType='default' autoCapitalize='words' value={editedUser.last_name} onChangeText={onLastNameChangeText} />
-        </View>
-        <View style={styles.inputView}>
-          <TextInput style={styles.input} placeholder={'Password..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={100} secureTextEntry={true} value={editedUser.password} onChangeText={onPasswordChangeText} />
-        </View>
-        <View style={styles.inputView}>
-          <TextInput style={styles.input} placeholder={'Password confirm..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={100} secureTextEntry={true} value={editedUser.password_confirm} onChangeText={onPasswordConfirmChangeText} />
-        </View>
-        <ActionButton iconImageSource={require('../assets/images/checkmark.png')} text={'Save'} color={colors.nebulaBlue} disabled={isLoading} onTapped={() => onSaveTapped()} />
+        <View style={styles.deleteButtonView}>
+          <ActionButton iconImageSource={require('../assets/images/x.png')} text={'Delete account'} color={colors.lightRed} onTapped={() => onDeleteTapped()} />
+        </View> 
       </View>
     </View>
   );
@@ -165,6 +226,7 @@ const styles = StyleSheet.create({
   },
   inputsView: {
     flex: 1,
+    justifyContent: 'space-between',
     padding: 20,
   },
   inputView: {
