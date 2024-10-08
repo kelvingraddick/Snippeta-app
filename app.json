@@ -1,4 +1,8 @@
 {
   "name": "Snippeta",
-  "displayName": "Snippeta"
+  "displayName": "Snippeta",
+  "ios": {
+    "bundleIdentifier": "com.wavelinkllc.snippeta",
+    "associatedDomains": ["webcredentials:www.snippeta.com", "webcredentials:snippeta.com"]
+  }
 }

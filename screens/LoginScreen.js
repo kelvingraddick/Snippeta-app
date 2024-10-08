@@ -69,10 +69,10 @@ const LoginScreen = ({ navigation }) => {
       </View>
       <View style={styles.inputsView}>
         <View style={styles.inputView}>
-          <TextInput style={styles.input} placeholder={'Email or phone..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={50} keyboardType='email-address' autoCapitalize='none' onChangeText={onEmailOrPhoneChangeText} />
+          <TextInput style={styles.input} placeholder={'Email or phone..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={50} keyboardType='email-address' textContentType='username' autoCapitalize='none' onChangeText={onEmailOrPhoneChangeText} />
         </View>
         <View style={styles.inputView}>
-          <TextInput style={styles.input} placeholder={'Password..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={100} secureTextEntry={true} onChangeText={onPasswordChangeText} />
+          <TextInput style={styles.input} placeholder={'Password..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={100} secureTextEntry={true} textContentType='password' onChangeText={onPasswordChangeText} />
         </View>
         <ActionButton iconImageSource={require('../assets/images/user.png')} text={'Login'} color={colors.nebulaBlue} disabled={isLoading} onTapped={() => onLoginTapped()} />
       </View>
