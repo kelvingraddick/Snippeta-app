@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { showMessage } from "react-native-flash-message";
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import { ApplicationContext } from '../ApplicationContext';
@@ -162,7 +163,11 @@ const UserScreen = ({ navigation }) => {
           <View style={styles.placeholderIcon} />
         </View>
       </View>
-      <View style={styles.inputsView}>
+      <KeyboardAwareScrollView
+        contentContainerStyle={styles.inputsView}
+        extraHeight={100}
+        enableOnAndroid={true}
+      >
         <View>
           <View style={styles.inputView}>
             <TextInput style={styles.input} placeholder={'Email address..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={50} keyboardType='email-address' autoCapitalize='none' value={editedUser.email_address} onChangeText={onEmailAddressChangeText} />
@@ -187,7 +192,7 @@ const UserScreen = ({ navigation }) => {
         <View style={styles.deleteButtonView}>
           <ActionButton iconImageSource={require('../assets/images/x.png')} text={'Delete account'} color={colors.lightRed} onTapped={() => onDeleteTapped()} />
         </View> 
-      </View>
+      </KeyboardAwareScrollView>
     </View>
   );
 };

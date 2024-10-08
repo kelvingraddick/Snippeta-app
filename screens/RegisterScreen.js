@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { showMessage } from "react-native-flash-message";
 import { ApplicationContext } from '../ApplicationContext';
 import { errorCodeMessages } from '../constants/errorCodeMessages';
@@ -94,7 +95,11 @@ const RegisterScreen = ({ navigation }) => {
           <View style={styles.placeholderIcon} />
         </View>
       </View>
-      <View style={styles.inputsView}>
+      <KeyboardAwareScrollView
+        contentContainerStyle={styles.inputsView}
+        extraHeight={100}
+        enableOnAndroid={true}
+      >
         <View style={styles.inputView}>
           <TextInput style={styles.input} placeholder={'Email address..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={50} keyboardType='email-address' autoCapitalize='none' onChangeText={onEmailAddressChangeText} />
         </View>
@@ -114,7 +119,7 @@ const RegisterScreen = ({ navigation }) => {
           <TextInput style={styles.input} placeholder={'Password confirm..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={100} secureTextEntry={true} onChangeText={onPasswordConfirmChangeText} />
         </View>
         <ActionButton iconImageSource={require('../assets/images/list-icon.png')} text={'Register'} color={colors.nebulaBlue} disabled={isLoading} onTapped={() => onRegisterTapped()} />
-      </View>
+      </KeyboardAwareScrollView>
     </View>
   );
 };
