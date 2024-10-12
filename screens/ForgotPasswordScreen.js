@@ -24,6 +24,19 @@ const ForgotPasswordScreen = ({ navigation }) => {
       if (responseJson && responseJson.success) {
         console.log(`ForgotPasswordScreen.js -> onSubmitTapped: Password reset email sent. Going back to Login screen..`);
         navigation.goBack();
+        showMessage({
+          message: 'Email sent. Please check your email to continue resetting the password.',
+          titleStyle: {
+            fontWeight: 'bold',
+            color: 'black',
+            opacity: 0.60,
+          },
+          textStyle: {
+            fontStyle: 'italic',
+            color: 'black',
+            opacity: 0.60,
+          }
+        });
       } else {
         console.log(responseJson);
         showErrorMessage(responseJson?.error_code ? 'Password reset email failed: ' + errorCodeMessages[responseJson.error_code] : 'Password reset email failed with unknown error.');
