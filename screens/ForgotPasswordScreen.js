@@ -73,7 +73,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
           <Pressable onPress={onBackTapped} hitSlop={20}>
             <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={colors.white.hexCode} />
           </Pressable>
-          <Text style={styles.title}>Login</Text>
+          <Text style={styles.title}>Forgot Password</Text>
           <View style={styles.placeholderIcon} />
         </View>
       </View>
