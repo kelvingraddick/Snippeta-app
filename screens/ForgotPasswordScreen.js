@@ -5,47 +5,40 @@ import { ApplicationContext } from '../ApplicationContext';
 import { errorCodeMessages } from '../constants/errorCodeMessages';
 import colors from '../helpers/colors';
 import ActionButton from '../components/ActionButton';
+import api from '../helpers/api';
 
-const LoginScreen = ({ navigation }) => {
-  
-  const { loginWithCredentials } = useContext(ApplicationContext);
+const ForgotPasswordScreen = ({ navigation }) => {
 
   const [isLoading, setIsLoading] = useState(false);
-  const [credentials, setCredentials] = useState(true);
+  const [emailOrPhone, setEmailOrPhone] = useState();
 
   const onBackTapped = async () => {
     navigation.goBack();
   };
 
-  const onLoginTapped = async () => {
+  const onSendPasswordResetEmailTapped = async () => {
     try {
       setIsLoading(true);
-      const responseJson = await loginWithCredentials(credentials?.emailOrPhone, credentials?.password);
-      if (responseJson && responseJson.success && responseJson.user) {
-        console.log(`LoginScreen.js -> onLoginTapped: User logged in. Going back to Settings screen..`);
+      const response = await api.sendPasswordResetEmail(emailOrPhone);
+      let responseJson = await response.json();
+      if (responseJson && responseJson.success) {
+        console.log(`ForgotPasswordScreen.js -> onSubmitTapped: Password reset email sent. Going back to Login screen..`);
         navigation.goBack();
       } else {
-        showErrorMessage(responseJson?.error_code ? 'Login failed: ' + errorCodeMessages[responseJson.error_code] : 'Login failed with unknown error.');
+        console.log(responseJson);
+        showErrorMessage(responseJson?.error_code ? 'Password reset email failed: ' + errorCodeMessages[responseJson.error_code] : 'Password reset email failed with unknown error.');
       }
       setIsLoading(false);
     } catch(error) {
-      const errorMessage = 'Login failed with error: ' + error.message;
-      console.error('LoginScreen.js -> onLoginTapped: ' + errorMessage);
+      const errorMessage = 'Password reset email failed with error: ' + error.message;
+      console.error('ForgotPasswordScreen.js -> onSubmitTapped: ' + errorMessage);
       showErrorMessage(errorMessage);
       setIsLoading(false);
     }
   };
 
-  const onForgotPasswordTapped = async () => {
-    navigation.navigate('ForgotPassword');
-  };
-
   const onEmailOrPhoneChangeText = async (text) => {
-    setCredentials({ ...credentials, emailOrPhone: text });
-  };
-
-  const onPasswordChangeText = async (text) => {
-    setCredentials({ ...credentials, password: text });
+    setEmailOrPhone(text);
   };
 
   const showErrorMessage = (message) => {
@@ -75,11 +68,7 @@ const LoginScreen = ({ navigation }) => {
         <View style={styles.inputView}>
           <TextInput style={styles.input} placeholder={'Email or phone..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={50} keyboardType='email-address' textContentType='username' autoCapitalize='none' onChangeText={onEmailOrPhoneChangeText} />
         </View>
-        <View style={styles.inputView}>
-          <TextInput style={styles.input} placeholder={'Password..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={100} secureTextEntry={true} textContentType='password' onChangeText={onPasswordChangeText} />
-        </View>
-        <ActionButton iconImageSource={require('../assets/images/user.png')} text={'Login'} color={colors.nebulaBlue} disabled={isLoading} onTapped={() => onLoginTapped()} />
-        <ActionButton iconImageSource={require('../assets/images/gear-gray.png')} text={'Forgot Password'} color={colors.lightBlue} onTapped={() => onForgotPasswordTapped()} />
+        <ActionButton iconImageSource={require('../assets/images/gear-gray.png')} text={'Send password reset email'} color={colors.nebulaBlue} disabled={isLoading} onTapped={() => onSendPasswordResetEmailTapped()} />
       </View>
     </View>
   );
@@ -134,4 +123,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default ForgotPasswordScreen;

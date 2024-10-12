@@ -54,6 +54,16 @@ const deleteUser = async (authorizationToken) => {
   return null;
 }
 
+const sendPasswordResetEmail = async (emailOrPhone) => {
+  console.log(`api.js -> passwordResetEmail: Attempt to request password reset email for ${emailOrPhone}.`);
+  return await fetch('http://www.snippeta.com/api/user/password/reset/email.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email_or_phone: emailOrPhone })
+  });
+  return null;
+}
+
 const getSnippets = async (parentId, authorizationToken) => {
   console.log(`api.js -> getSnippets: Get snippets for parent ID ${parentId}.`);
   
@@ -127,6 +137,7 @@ export default {
   login,
   saveUser,
   deleteUser,
+  sendPasswordResetEmail,
   getSnippets,
   searchSnippets,
   saveSnippet,
