@@ -17,6 +17,11 @@ end
 target 'Snippeta' do
   config = use_native_modules!
 
+  target 'SnippetaWidgetExtension' do
+    inherit! :search_paths
+    # Add widget-specific pods here, if needed
+  end
+
   use_react_native!(
     :path => config[:reactNativePath],
     # An absolute path to your application root.
