@@ -1,6 +1,8 @@
 import React, { useEffect, useReducer } from 'react';
-import { StyleSheet } from 'react-native';
+import { Linking, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import { navigationRef } from './RootNavigation';
+import navigation from './RootNavigation';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import FlashMessage from "react-native-flash-message";
@@ -43,7 +45,15 @@ export default function App() {
 
   useEffect(() => {
     console.log('\n\n\nApp.js -> useEffect: STARTING APP');
+    
     loginWithStorage();
+
+    Linking.getInitialURL().then((url) => { if (url) { handleDeepLink({ url }); }}); // handle deep link from app launch
+    const urlEventBinding = Linking.addEventListener('url', handleDeepLink);  // handle deep link while app running
+
+    return () => {
+      urlEventBinding.remove();
+    };
   }, []);
 
   const loginWithStorage = async () => {
@@ -93,10 +103,28 @@ export default function App() {
     dispatch({ type: 'LOGGED_OUT' });
   };
 
+  const handleDeepLink = (event) => {
+    console.log('App.js -> handleDeepLink: Handling deep link', event?.url);
+    const url = event.url;
+    const route = url.replace(/.*?:\/\//g, '');
+    const [path, param] = route.split('/');
+    navigation.popToTop();
+    if (path === 'snippets' && param) {
+      console.log(`App.js -> handleDeepLink: Navigating to Snippets screen to handle deep link for snippet Id ${param}`);
+      navigation.push('Snippets', { deepLinkSnippetId: param });
+    } else if (path === 'search') {
+      console.log(`App.js -> handleDeepLink: Navigating to Search screen to handle deep link`);
+      navigation.push('Snippets', { deepLinkSearch: true });
+    } else if (path === 'add') {
+      console.log(`App.js -> handleDeepLink: Navigating to Snippet screen to handle deep link`);
+      navigation.push('Snippets', { deepLinkAddSnippet: true });
+    }
+  };
+
   return (
     <ApplicationContext.Provider value={{...state, loginWithCredentials, logout}}>
       <ActionSheetProvider>
-        <NavigationContainer>
+        <NavigationContainer ref={navigationRef}>
           <Stack.Navigator initialRouteName="Snippets">
             <Stack.Screen
               name="Snippets"

@@ -14,7 +14,7 @@ struct Provider: AppIntentTimelineProvider {
     }
 
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
-        SimpleEntry(date: Date(), configuration: configuration)
+      SimpleEntry(date: Date(), configuration: configuration)
     }
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
@@ -24,7 +24,7 @@ struct Provider: AppIntentTimelineProvider {
         let currentDate = Date()
         for hourOffset in 0 ..< 5 {
             let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate, configuration: configuration)
+          let entry = SimpleEntry(date: entryDate, configuration: configuration)
             entries.append(entry)
         }
 
@@ -45,23 +45,59 @@ struct SnippetaWidgetEntryView : View {
     var entry: Provider.Entry
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 1) {
-          Text("Snippeta").bold()
-          Spacer().frame(height: 10)
+        VStack(alignment: .leading, spacing: 0) {
           
-          HStack {
-            Text("Time:")
-            Text(entry.date, style: .time)
-          }
-          
-          HStack {
-            Text("Emoji:")
-            Text(entry.configuration.favoriteEmoji)
-          }
+            HStack(alignment: .center, spacing: 5) {
+              Image(systemName: "rectangle.stack.fill")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(height: 20)
+                //.padding([.top], 3)
+                .opacity(0.25)
+              
+              Text(entry.configuration.snippetList?.title ?? "No snippet list selected")
+                .font(.footnote)
+                .bold()
+            }
+            
+            Spacer()
+            
+            HStack(alignment: .center) {
+              Link(destination: URL(string: "snippeta://search")!) {
+                Button(action: {
+                  
+                }) {
+                  Image(systemName: "magnifyingglass")
+                    .foregroundColor(.primary)
+                    .frame(maxWidth: .infinity, maxHeight: 30)
+                    .opacity(0.5)
+                }
+                .buttonStyle(.plain)
+                .background(Color.white.opacity(0.10))
+                .cornerRadius(8)
+              }
+              
+              Link(destination: URL(string: "snippeta://add")!) {
+                Button(action: {
+                  // Action for plus button
+                  print("Plus button tapped")
+                }) {
+                  Image(systemName: "plus")
+                    .foregroundColor(.primary)
+                    .frame(maxWidth: .infinity, maxHeight: 30)
+                    .opacity(0.5)
+                }
+                .buttonStyle(.plain)
+                .background(Color.white.opacity(0.10))
+                .cornerRadius(8)
+              }
+            }
+            .frame(maxWidth: .infinity)
         }
         .containerBackground(for: .widget) {
           backgroundGradient
         }
+        .widgetURL(URL(string: "snippeta://snippets/\(entry.configuration.snippetList?.id ?? "")")!)
     }
 }
 
@@ -102,15 +138,9 @@ struct SnippetaWidget: Widget {
 }
 
 extension ConfigurationAppIntent {
-    fileprivate static var smiley: ConfigurationAppIntent {
+    fileprivate static var defaultSnippetList: ConfigurationAppIntent {
         let intent = ConfigurationAppIntent()
-        intent.favoriteEmoji = "😀"
-        return intent
-    }
-    
-    fileprivate static var starEyes: ConfigurationAppIntent {
-        let intent = ConfigurationAppIntent()
-        intent.favoriteEmoji = "🤩"
+        intent.snippetList = SnippetList(id: "", title: "Snippets")
         return intent
     }
 }
@@ -118,6 +148,5 @@ extension ConfigurationAppIntent {
 #Preview(as: .systemSmall) {
     SnippetaWidget()
 } timeline: {
-    SimpleEntry(date: .now, configuration: .smiley)
-    SimpleEntry(date: .now, configuration: .starEyes)
+  SimpleEntry(date: .now, configuration: .defaultSnippetList)
 }

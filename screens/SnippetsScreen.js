@@ -10,6 +10,7 @@ import { snippetSources } from '../constants/snippetSources';
 import { storageKeys } from '../constants/storageKeys';
 import api from '../helpers/api';
 import storage from '../helpers/storage';
+import widget from '../helpers/widget';
 import colors from '../helpers/colors';
 import ActionButton from '../components/ActionButton';
 import SnippetView from '../components/SnippetView';
@@ -18,6 +19,9 @@ const SnippetsScreen = ({ route, navigation }) => {
   const parentSnippet = route.params?.parentSnippet;
   const isRootSnippetsScreen = !parentSnippet;
   const callbacks = route.params?.callbacks || [];
+  const deepLinkSnippetId = route.params?.deepLinkSnippetId;
+  const deepLinkSearch = route.params?.deepLinkSearch;
+  const deepLinkAddSnippet = route.params?.deepLinkAddSnippet;
 
   const { user, isUserLoading } = useContext(ApplicationContext);
 
@@ -78,7 +82,29 @@ const SnippetsScreen = ({ route, navigation }) => {
         }
         snippetSections = [{ data: await storage.getSnippets(parentSnippet?.id) }];
       }
-      
+
+      if (isRootSnippetsScreen) {
+        // set snippet data for widget
+        let snippetLists = [{ id: '-1', title: 'Snippets' }];
+        snippetLists = snippetLists.concat(storageSnippets.concat(apiSnippets).filter(x => x.type == snippetTypes.MULTIPLE).map(x => { return { id: x.id, title: x.title }; }));
+        await widget.saveData('snippetLists', JSON.stringify(snippetLists));
+      }
+
+      if (deepLinkSnippetId) {
+        console.log(`SnippetsScreen.js -> getSnippets: handling deep link to snippet Id ${deepLinkSnippetId}`);
+        const snippet = storageSnippets.concat(apiSnippets).find(x => x.id === deepLinkSnippetId);
+        if (snippet) {
+          console.log(`SnippetsScreen.js -> getSnippets: performing deep link screen navigation to snippet Id ${deepLinkSnippetId}`);
+          navigation.push('Snippets', { parentSnippet: snippet, callbacks: callbacks.concat(getSnippets) });
+        }
+      } else if (deepLinkSearch) {
+        console.log(`SnippetsScreen.js -> getSnippets: handling deep link to search`);
+        onSearchTapped();
+      } else if (deepLinkAddSnippet ) {
+        console.log(`SnippetsScreen.js -> getSnippets: handling deep link to add new snippet`);
+        onNewSnippetTapped();
+      }
+
       // set snippets for display
       setSnippetSections(snippetSections);
       setIsLoading(false);
