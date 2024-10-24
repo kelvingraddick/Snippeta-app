@@ -48,7 +48,6 @@ const styles = StyleSheet.create({
   },
   titleIcon: {
     width: 20,
-    color: colors.darkGray.hexCode,
     opacity: 0.25,
   },
   copyIcon: {

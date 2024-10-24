@@ -345,8 +345,8 @@ const SnippetsScreen = ({ route, navigation }) => {
           renderItem={({item}) => <SnippetView snippet={item} onSnippetTapped={onSnippetTapped} onSnippetMenuTapped={onSnippetMenuTapped} />}
           renderSectionHeader={({section: {title}}) => ( title &&
             <View style={styles.sectionHeaderView}>
-              <Image source={title == snippetSources.STORAGE ? require('../assets/images/device.png') : require('../assets/images/cloud.png')} style={styles.sectionHeaderIcon} tintColor={colors.darkGray.hexCode} />
               <Text style={styles.sectionHeaderText}>{title}</Text>
+              <Image source={title == snippetSources.STORAGE ? require('../assets/images/device.png') : require('../assets/images/cloud.png')} style={styles.sectionHeaderIcon} tintColor={colors.darkGray.hexCode} />
             </View>
           )}
         />
@@ -382,7 +382,7 @@ const styles = StyleSheet.create({
   },
   logoIcon: {
     flex: 1,
-    height: 40,
+    height: 35,
     marginTop: 7,
   },
   searchIcon: {
@@ -418,10 +418,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     gap: 5,
-    paddingBottom: 7.5,
     marginBottom: 15,
-    borderBottomWidth: 4,
-    borderColor: 'rgba(29, 32, 39, .1)', // colors.darkGray.hexCode
   }, 
   sectionHeaderIcon: {
     height: 20,
@@ -434,7 +431,6 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: 'bold',
     color: colors.darkGray.hexCode,
-    opacity: 0.50,
   }
 });
 
