@@ -28,9 +28,9 @@ const styles = StyleSheet.create({
     color: colors.darkGray.hexCode
   },
   icon: {
-    height: 18,
-    width: 18,
-    marginTop: 1,
+    height: 14,
+    width: 14,
+    marginTop: 3,
     opacity: 0.50,
   },
 });

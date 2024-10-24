@@ -47,14 +47,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   titleIcon: {
-    width: 20,
+    width: 15,
     opacity: 0.25,
   },
   copyIcon: {
-    height: 20,
+    height: 15,
   },
   listIcon: {
-    height: 19,
+    height: 14,
   },
   titleText: {
     flex: 1,
@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: colors.darkGray.hexCode,
+    opacity: 0.50,
   }
 });
 
