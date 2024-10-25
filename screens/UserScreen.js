@@ -64,6 +64,10 @@ const UserScreen = ({ navigation }) => {
   };
 
   const onDeleteTapped = async () => {
+    confirmDelete(0);
+  };
+
+  const confirmDelete = async (count) => {
     const options = { 'Delete': 0, 'Cancel': 1 };
     showActionSheetWithOptions(
       {
@@ -75,12 +79,12 @@ const UserScreen = ({ navigation }) => {
       async (selectedIndex) => {
         switch (selectedIndex) {
           case options.Delete:
-            deleteUser();
+            if (count > 0) { deleteUser() } else { confirmDelete(++count) }
             break;
         }
       }
     );
-  };
+  }
 
   const deleteUser = async () => {
     try {
