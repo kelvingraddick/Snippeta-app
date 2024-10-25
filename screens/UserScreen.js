@@ -194,7 +194,7 @@ const UserScreen = ({ navigation }) => {
           <ActionButton iconImageSource={require('../assets/images/checkmark.png')} text={'Save'} color={colors.nebulaBlue} disabled={isLoading} onTapped={() => onSaveTapped()} />
         </View>
         <View style={styles.deleteButtonView}>
-          <ActionButton iconImageSource={require('../assets/images/x.png')} text={'Delete account'} color={colors.lightRed} onTapped={() => onDeleteTapped()} />
+          <ActionButton iconImageSource={require('../assets/images/x.png')} text={'Delete account'} color={colors.gray} onTapped={() => onDeleteTapped()} />
         </View> 
       </KeyboardAwareScrollView>
     </View>
@@ -204,12 +204,11 @@ const UserScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white.hexCode,
+    backgroundColor: colors.gray.hexCode,
   },
   headerView: {
     padding: 20,
     paddingTop: 60,
-    borderRadius: 30,
     backgroundColor: colors.darkGray.hexCode,
   },
   titleView: {
@@ -242,7 +241,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     padding: 20,
     borderRadius: 30,
-    backgroundColor: colors.lightBlue.hexCode,
+    backgroundColor: colors.whiteGray.hexCode,
   },
   input: {
     fontSize: 17,

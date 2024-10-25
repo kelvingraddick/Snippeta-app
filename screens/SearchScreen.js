@@ -171,12 +171,11 @@ const SearchScreen = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white.hexCode,
+    backgroundColor: colors.gray.hexCode,
   },
   headerView: {
     padding: 20,
     paddingTop: 60,
-    borderRadius: 30,
     backgroundColor: colors.darkGray.hexCode,
   },
   titleView: {
@@ -213,7 +212,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     padding: 20,
     borderRadius: 30,
-    backgroundColor: colors.lightBlue.hexCode,
+    backgroundColor: colors.lightYellow.hexCode,
   },
   input: {
     fontSize: 17,

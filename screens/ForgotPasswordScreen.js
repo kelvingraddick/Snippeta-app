@@ -81,7 +81,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
         <View style={styles.inputView}>
           <TextInput style={styles.input} placeholder={'Email or phone..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={50} keyboardType='email-address' textContentType='username' autoCapitalize='none' onChangeText={onEmailOrPhoneChangeText} />
         </View>
-        <ActionButton iconImageSource={require('../assets/images/gear-gray.png')} text={'Send password reset email'} color={colors.nebulaBlue} disabled={isLoading} onTapped={() => onSendPasswordResetEmailTapped()} />
+        <ActionButton iconImageSource={require('../assets/images/gear-gray.png')} text={'Send password reset email'} color={colors.lightGreen} disabled={isLoading} onTapped={() => onSendPasswordResetEmailTapped()} />
       </View>
     </View>
   );
@@ -90,12 +90,11 @@ const ForgotPasswordScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white.hexCode,
+    backgroundColor: colors.gray.hexCode,
   },
   headerView: {
     padding: 20,
     paddingTop: 60,
-    borderRadius: 30,
     backgroundColor: colors.darkGray.hexCode,
   },
   titleView: {
@@ -127,7 +126,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     padding: 20,
     borderRadius: 30,
-    backgroundColor: colors.lightBlue.hexCode,
+    backgroundColor: colors.whiteGray.hexCode,
   },
   input: {
     fontSize: 17,

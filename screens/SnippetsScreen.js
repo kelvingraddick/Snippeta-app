@@ -33,7 +33,8 @@ const SnippetsScreen = ({ route, navigation }) => {
   const tutorialSnippets = [
     { id: storageKeys.SNIPPET + 1, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Welcome to Snippeta!', content: 'Snippeta is the best way to copy, paste, and manage snippets of text! Copy text to your clipboard with a single tap; no highlighting or long-tapping!', color_id: colors.lightYellow.id, time: new Date(), order_index: 0 },
     { id: storageKeys.SNIPPET + 2, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'How to use:', content: 'Tap the button above to create a new snippet. Or tap on this snippet to copy it to your clipboard for pasting later!', color_id: colors.lightGreen.id, time: new Date(), order_index: 1 },
-    { id: storageKeys.SNIPPET + 3, type: snippetTypes.MULTIPLE, source: snippetSources.STORAGE, title: 'Go PRO!', content: 'Want more out of Snippeta? Take your account pro and get access to create lists and more!', color_id: colors.lightBlue.id, time: new Date(), order_index: 2 },
+    { id: storageKeys.SNIPPET + 3, type: snippetTypes.MULTIPLE, source: snippetSources.STORAGE, title: 'Organize by creating lists', content: 'Create a snippet list to organize and nest snippets. Tap here to try it out!', color_id: colors.lightBlue.id, time: new Date(), order_index: 2 },
+    { id: storageKeys.SNIPPET + 4, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Go PRO!', content: 'Want more out of Snippeta? Take your account pro and get access to create lists and more!', color_id: colors.lightRed.id, time: new Date(), order_index: 3 },
   ];
 
   useEffect(() => {
@@ -80,7 +81,7 @@ const SnippetsScreen = ({ route, navigation }) => {
         for (const tutorialSnippet of tutorialSnippets) {
           await storage.saveSnippet(tutorialSnippet);
         }
-        snippetSections = [{ data: await storage.getSnippets(parentSnippet?.id) }];
+        await getSnippets(); return;
       }
 
       if (isRootSnippetsScreen) {
@@ -358,12 +359,11 @@ const SnippetsScreen = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white.hexCode,
+    backgroundColor: colors.gray.hexCode,
   },
   headerView: {
     padding: 20,
     paddingTop: 60,
-    borderRadius: 30,
     backgroundColor: colors.darkGray.hexCode,
   },
   titleView: {

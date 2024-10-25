@@ -78,8 +78,8 @@ const LoginScreen = ({ navigation }) => {
         <View style={styles.inputView}>
           <TextInput style={styles.input} placeholder={'Password..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={100} secureTextEntry={true} textContentType='password' onChangeText={onPasswordChangeText} />
         </View>
-        <ActionButton iconImageSource={require('../assets/images/user.png')} text={'Login'} color={colors.nebulaBlue} disabled={isLoading} onTapped={() => onLoginTapped()} />
-        <ActionButton iconImageSource={require('../assets/images/gear-gray.png')} text={'Forgot Password'} color={colors.lightBlue} onTapped={() => onForgotPasswordTapped()} />
+        <ActionButton iconImageSource={require('../assets/images/user.png')} text={'Login'} color={colors.lightGreen} disabled={isLoading} onTapped={() => onLoginTapped()} />
+        <ActionButton iconImageSource={require('../assets/images/gear-gray.png')} text={'Forgot Password'} color={colors.gray} onTapped={() => onForgotPasswordTapped()} />
       </View>
     </View>
   );
@@ -88,12 +88,11 @@ const LoginScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white.hexCode,
+    backgroundColor: colors.gray.hexCode,
   },
   headerView: {
     padding: 20,
     paddingTop: 60,
-    borderRadius: 30,
     backgroundColor: colors.darkGray.hexCode,
   },
   titleView: {
@@ -125,7 +124,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     padding: 20,
     borderRadius: 30,
-    backgroundColor: colors.lightBlue.hexCode,
+    backgroundColor: colors.whiteGray.hexCode,
   },
   input: {
     fontSize: 17,

@@ -65,18 +65,18 @@ const SettingsScreen = ({ navigation }) => {
           }
         </View>
         { user && 
-          <ActionButton iconImageSource={require('../assets/images/user.png')} text={'Account'} color={colors.turquoise} onTapped={() => onAccountTapped()} />
+          <ActionButton iconImageSource={require('../assets/images/user.png')} text={'Account'} color={colors.lightGreen} onTapped={() => onAccountTapped()} />
         }
         { !user && 
           <>
-            <ActionButton iconImageSource={require('../assets/images/user.png')} text={'Login'} color={colors.turquoise} onTapped={() => onLoginTapped()} />
+            <ActionButton iconImageSource={require('../assets/images/user.png')} text={'Login'} color={colors.lightGreen} onTapped={() => onLoginTapped()} />
             <ActionButton iconImageSource={require('../assets/images/list-icon.png')} text={'Register'} color={colors.lightBlue} onTapped={() => onRegisterTapped()} />
           </>
         }
       </View>
       <ScrollView style={styles.scrollView}>
         { user && 
-          <ActionButton iconImageSource={require('../assets/images/back-arrow.png')} text={'Logout'} color={colors.lightRed} onTapped={() => onLogoutTapped()} />
+          <ActionButton iconImageSource={require('../assets/images/back-arrow.png')} text={'Logout'} color={colors.gray} onTapped={() => onLogoutTapped()} />
         }
       </ScrollView>
     </View>
@@ -86,12 +86,11 @@ const SettingsScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white.hexCode,
+    backgroundColor: colors.gray.hexCode,
   },
   headerView: {
     padding: 20,
     paddingTop: 60,
-    borderRadius: 30,
     backgroundColor: colors.darkGray.hexCode,
   },
   titleView: {

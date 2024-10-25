@@ -6,7 +6,8 @@ import { snippetTypes } from '../constants/snippetTypes';
 const SnippetView = (props) => {
   const { snippet, onSnippetTapped, onSnippetMenuTapped } = props;
   return (
-    <TouchableOpacity style={[styles.container, { backgroundColor: colors.getById(snippet.color_id)?.hexCode }]} onPress={() => onSnippetTapped(snippet)}>
+    <TouchableOpacity style={[styles.container, { backgroundColor: colors.white.hexCode }]} onPress={() => onSnippetTapped(snippet)}>
+      <View style={[styles.barView, { backgroundColor: colors.getById(snippet.color_id)?.hexCode }]}></View>
       <View style={styles.contentView}>
         <View style={styles.titleView}>
           <Image
@@ -32,14 +33,22 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     gap: 5,
-    borderRadius: 10,
-    padding: 20,
+    borderRadius: 5,
+    paddingRight: 20,
     marginBottom: 16,
+  },
+  barView: {
+    width: 20,
+    alignSelf: 'stretch',
+    borderStartStartRadius: 5,
+    borderEndStartRadius: 5,
   },
   contentView: {
     flex: 1,
     flexDirection: 'column',
     gap: 5,
+    paddingVertical: 20,
+    paddingLeft: 10, 
   },
   titleView: {
     flexDirection: 'row',
@@ -47,14 +56,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   titleIcon: {
-    width: 15,
+    width: 17,
     opacity: 0.25,
   },
   copyIcon: {
-    height: 15,
+    height: 17,
   },
   listIcon: {
-    height: 14,
+    height: 16,
   },
   titleText: {
     flex: 1,

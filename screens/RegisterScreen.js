@@ -118,7 +118,7 @@ const RegisterScreen = ({ navigation }) => {
         <View style={styles.inputView}>
           <TextInput style={styles.input} placeholder={'Password confirm..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={100} secureTextEntry={true} onChangeText={onPasswordConfirmChangeText} />
         </View>
-        <ActionButton iconImageSource={require('../assets/images/list-icon.png')} text={'Register'} color={colors.nebulaBlue} disabled={isLoading} onTapped={() => onRegisterTapped()} />
+        <ActionButton iconImageSource={require('../assets/images/list-icon.png')} text={'Register'} color={colors.lightBlue} disabled={isLoading} onTapped={() => onRegisterTapped()} />
       </KeyboardAwareScrollView>
     </View>
   );
@@ -127,12 +127,11 @@ const RegisterScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white.hexCode,
+    backgroundColor: colors.gray.hexCode,
   },
   headerView: {
     padding: 20,
     paddingTop: 60,
-    borderRadius: 30,
     backgroundColor: colors.darkGray.hexCode,
   },
   titleView: {
@@ -164,7 +163,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     padding: 20,
     borderRadius: 30,
-    backgroundColor: colors.lightBlue.hexCode,
+    backgroundColor: colors.whiteGray.hexCode,
   },
   input: {
     fontSize: 17,
