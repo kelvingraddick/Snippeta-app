@@ -25,6 +25,7 @@ struct ConfigurationAppIntent: WidgetConfigurationIntent {
 struct SnippetList: AppEntity, Decodable {
     let id: String
     let title: String
+    let colorHexCode: String
     
     static var typeDisplayRepresentation: TypeDisplayRepresentation = "Snippet List"
     static var defaultQuery = SnippetListQuery()

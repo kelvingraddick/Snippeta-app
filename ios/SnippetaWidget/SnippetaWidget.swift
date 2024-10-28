@@ -47,13 +47,14 @@ struct SnippetaWidgetEntryView : View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
           
-            HStack(alignment: .center, spacing: 5) {
+          HStack(alignment: .center, spacing: 7) {
               Image(systemName: "rectangle.stack.fill")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(height: 20)
                 //.padding([.top], 3)
-                .opacity(0.25)
+                //.opacity(0.25)
+                .foregroundStyle(Color(hex: entry.configuration.snippetList?.colorHexCode ?? "#5c63ff")!)
               
               Text(entry.configuration.snippetList?.title ?? "No snippet list selected")
                 .font(.footnote)
@@ -73,7 +74,7 @@ struct SnippetaWidgetEntryView : View {
                     .opacity(0.5)
                 }
                 .buttonStyle(.plain)
-                .background(Color.white.opacity(0.10))
+                .background(Color.primary.opacity(0.10))
                 .cornerRadius(8)
               }
               
@@ -88,22 +89,24 @@ struct SnippetaWidgetEntryView : View {
                     .opacity(0.5)
                 }
                 .buttonStyle(.plain)
-                .background(Color.white.opacity(0.10))
+                .background(Color.primary.opacity(0.10))
                 .cornerRadius(8)
               }
             }
             .frame(maxWidth: .infinity)
         }
         .containerBackground(for: .widget) {
-          backgroundGradient
+          Color("adaptiveBackground")
         }
         .widgetURL(URL(string: "snippeta://snippets/\(entry.configuration.snippetList?.id ?? "")")!)
     }
 }
 
+/*
 let backgroundGradient = LinearGradient(
     colors: [Color(hexStringToUIColor(hex: "fe9567")), Color(hexStringToUIColor(hex: "ff6264"))],
     startPoint: .topLeading, endPoint: .bottomTrailing)
+*/
 
 func hexStringToUIColor (hex:String) -> UIColor {
     var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
@@ -140,8 +143,43 @@ struct SnippetaWidget: Widget {
 extension ConfigurationAppIntent {
     fileprivate static var defaultSnippetList: ConfigurationAppIntent {
         let intent = ConfigurationAppIntent()
-        intent.snippetList = SnippetList(id: "", title: "Snippets")
+        intent.snippetList = SnippetList(id: "", title: "Snippets", colorHexCode: "#5c63ff")
         return intent
+    }
+}
+
+extension Color {
+    init?(hex: String) {
+        var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)
+        hexSanitized = hexSanitized.replacingOccurrences(of: "#", with: "")
+
+        var rgb: UInt64 = 0
+
+        var r: CGFloat = 0.0
+        var g: CGFloat = 0.0
+        var b: CGFloat = 0.0
+        var a: CGFloat = 1.0
+
+        let length = hexSanitized.count
+
+        guard Scanner(string: hexSanitized).scanHexInt64(&rgb) else { return nil }
+
+        if length == 6 {
+            r = CGFloat((rgb & 0xFF0000) >> 16) / 255.0
+            g = CGFloat((rgb & 0x00FF00) >> 8) / 255.0
+            b = CGFloat(rgb & 0x0000FF) / 255.0
+
+        } else if length == 8 {
+            r = CGFloat((rgb & 0xFF000000) >> 24) / 255.0
+            g = CGFloat((rgb & 0x00FF0000) >> 16) / 255.0
+            b = CGFloat((rgb & 0x0000FF00) >> 8) / 255.0
+            a = CGFloat(rgb & 0x000000FF) / 255.0
+
+        } else {
+            return nil
+        }
+
+        self.init(red: r, green: g, blue: b, opacity: a)
     }
 }
 

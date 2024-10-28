@@ -86,8 +86,10 @@ const SnippetsScreen = ({ route, navigation }) => {
 
       if (isRootSnippetsScreen) {
         // set snippet data for widget
-        let snippetLists = [{ id: '-1', title: 'Snippets' }];
-        snippetLists = snippetLists.concat(storageSnippets.concat(apiSnippets).filter(x => x.type == snippetTypes.MULTIPLE).map(x => { return { id: x.id, title: x.title }; }));
+        let snippetLists = [{ id: '-1', title: 'Snippets', colorHexCode: colors.nebulaBlue.hexCode }];
+        snippetLists = snippetLists
+          .concat(storageSnippets.concat(apiSnippets)
+          .filter(x => x.type == snippetTypes.MULTIPLE).map(x => { return { id: x.id, title: x.title, colorHexCode: colors.getById(x.color_id)?.hexCode }; }));
         await widget.saveData('snippetLists', JSON.stringify(snippetLists));
       }
 
