@@ -12,11 +12,23 @@ struct ConfigurationAppIntent: WidgetConfigurationIntent {
     static var title: LocalizedStringResource { "Configuration" }
     static var description: IntentDescription { "This is an example widget." }
   
-    @Parameter(title: "Snippet List")
-    var snippetList: SnippetList?
+    @Parameter(title: "Snippet List 1")
+    var snippetList1: SnippetList?
+  
+    @Parameter(title: "Snippet List 2")
+    var snippetList2: SnippetList?
+    
+    @Parameter(title: "Snippet List 3")
+    var snippetList3: SnippetList?
+    
+    @Parameter(title: "Snippet List 4")
+    var snippetList4: SnippetList?
 
-    init(snippetList: SnippetList) {
-        self.snippetList = snippetList
+    init(snippetList1: SnippetList, snippetList2: SnippetList, snippetList3: SnippetList, snippetList4: SnippetList) {
+      self.snippetList1 = snippetList1;
+      self.snippetList2 = snippetList2;
+      self.snippetList3 = snippetList3;
+      self.snippetList4 = snippetList4;
     }
 
     init() {}

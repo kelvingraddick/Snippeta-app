@@ -43,31 +43,44 @@ struct SimpleEntry: TimelineEntry {
 
 struct SnippetaWidgetEntryView : View {
     var entry: Provider.Entry
+    @Environment(\.widgetFamily) var widgetFamily
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
           
-          HStack(alignment: .center, spacing: 7) {
-              Image(systemName: "rectangle.stack.fill")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(height: 20)
-                //.padding([.top], 3)
-                //.opacity(0.25)
-                .foregroundStyle(Color(hex: entry.configuration.snippetList?.colorHexCode ?? "#5c63ff")!)
-              
-              Text(entry.configuration.snippetList?.title ?? "No snippet list selected")
-                .font(.footnote)
-                .bold()
+            if widgetFamily == .systemSmall {
+              getSnippetsListButton(snippetList: entry.configuration.snippetList1!)
+            } else if widgetFamily == .systemMedium {
+              HStack(alignment: .center) {
+                getSnippetsListButton(snippetList: entry.configuration.snippetList1!)
+                Rectangle().frame(width: 1).foregroundColor(.primary.opacity(0.10))
+                getSnippetsListButton(snippetList: entry.configuration.snippetList2!)
+              }
+              .frame(maxWidth: .infinity)
+            } else { // .systemLarge or larger
+              VStack(alignment: .leading, spacing: 0) {
+                HStack(alignment: .top) {
+                  getSnippetsListButton(snippetList: entry.configuration.snippetList1!).padding(.top, 10)
+                  Rectangle().frame(width: 1).foregroundColor(.primary.opacity(0.10))
+                  getSnippetsListButton(snippetList: entry.configuration.snippetList2!).padding(.top, 10)
+                }
+                .frame(maxWidth: .infinity)
+                Rectangle().frame(height: 1).foregroundColor(.primary.opacity(0.10))
+                HStack(alignment: .top) {
+                  getSnippetsListButton(snippetList: entry.configuration.snippetList3!).padding(.top, 10)
+                  Rectangle().frame(width: 1).foregroundColor(.primary.opacity(0.10))
+                  getSnippetsListButton(snippetList: entry.configuration.snippetList4!).padding(.top, 10)
+                }
+                .frame(maxWidth: .infinity)
+              }
+              .frame(maxHeight: .infinity)
             }
             
             Spacer()
             
             HStack(alignment: .center) {
               Link(destination: URL(string: "snippeta://search")!) {
-                Button(action: {
-                  
-                }) {
+                Button(action: {}) {
                   Image(systemName: "magnifyingglass")
                     .foregroundColor(.primary)
                     .frame(maxWidth: .infinity, maxHeight: 30)
@@ -79,10 +92,7 @@ struct SnippetaWidgetEntryView : View {
               }
               
               Link(destination: URL(string: "snippeta://add")!) {
-                Button(action: {
-                  // Action for plus button
-                  print("Plus button tapped")
-                }) {
+                Button(action: {}) {
                   Image(systemName: "plus")
                     .foregroundColor(.primary)
                     .frame(maxWidth: .infinity, maxHeight: 30)
@@ -98,7 +108,25 @@ struct SnippetaWidgetEntryView : View {
         .containerBackground(for: .widget) {
           Color("adaptiveBackground")
         }
-        .widgetURL(URL(string: "snippeta://snippets/\(entry.configuration.snippetList?.id ?? "")")!)
+    }
+}
+
+func getSnippetsListButton(snippetList: SnippetList) -> some View {
+  return
+    Link(destination: URL(string: "snippeta://snippets/\(snippetList.id)")!) {
+      HStack(alignment: .center, spacing: 7) {
+        Image(systemName: "rectangle.stack.fill")
+          .resizable()
+          .aspectRatio(contentMode: .fit)
+          .frame(height: 20)
+          .foregroundStyle(Color(hex: snippetList.colorHexCode)!)
+        
+        Text(snippetList.title)
+          .font(.footnote)
+          .bold()
+          .frame(maxWidth: .infinity, alignment: .leading)
+      }
+      .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
     }
 }
 
@@ -143,7 +171,10 @@ struct SnippetaWidget: Widget {
 extension ConfigurationAppIntent {
     fileprivate static var defaultSnippetList: ConfigurationAppIntent {
         let intent = ConfigurationAppIntent()
-        intent.snippetList = SnippetList(id: "", title: "Snippets", colorHexCode: "#5c63ff")
+        intent.snippetList1 = SnippetList(id: "-1", title: "Snippets", colorHexCode: "#5c63ff")
+        intent.snippetList2 = SnippetList(id: "-1", title: "Snippets", colorHexCode: "#5c63ff")
+        intent.snippetList3 = SnippetList(id: "-1", title: "Snippets", colorHexCode: "#5c63ff")
+        intent.snippetList4 = SnippetList(id: "-1", title: "Snippets", colorHexCode: "#5c63ff")
         return intent
     }
 }
@@ -184,6 +215,24 @@ extension Color {
 }
 
 #Preview(as: .systemSmall) {
+    SnippetaWidget()
+} timeline: {
+  SimpleEntry(date: .now, configuration: .defaultSnippetList)
+}
+
+#Preview(as: .systemMedium) {
+    SnippetaWidget()
+} timeline: {
+  SimpleEntry(date: .now, configuration: .defaultSnippetList)
+}
+
+#Preview(as: .systemLarge) {
+    SnippetaWidget()
+} timeline: {
+  SimpleEntry(date: .now, configuration: .defaultSnippetList)
+}
+
+#Preview(as: .systemExtraLarge) {
     SnippetaWidget()
 } timeline: {
   SimpleEntry(date: .now, configuration: .defaultSnippetList)
