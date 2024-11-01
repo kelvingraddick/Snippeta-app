@@ -106,7 +106,7 @@ struct SnippetaWidgetEntryView : View {
             .frame(maxWidth: .infinity)
         }
         .containerBackground(for: .widget) {
-          Color("adaptiveBackground")
+          Color(.systemBackground)
         }
     }
 }
