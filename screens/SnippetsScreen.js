@@ -35,6 +35,7 @@ const SnippetsScreen = ({ route, navigation }) => {
     { id: storageKeys.SNIPPET + 2, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'How to use:', content: 'Tap the button above to create a new snippet. Or tap on this snippet to copy it to your clipboard for pasting later!', color_id: colors.lightGreen.id, time: new Date(), order_index: 1 },
     { id: storageKeys.SNIPPET + 3, type: snippetTypes.MULTIPLE, source: snippetSources.STORAGE, title: 'Organize by creating lists', content: 'Create a snippet list to organize and nest snippets. Tap here to try it out!', color_id: colors.lightBlue.id, time: new Date(), order_index: 2 },
     { id: storageKeys.SNIPPET + 4, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Go PRO!', content: 'Want more out of Snippeta? Take your account pro and get access to create lists and more!', color_id: colors.lightRed.id, time: new Date(), order_index: 3 },
+    { id: storageKeys.SNIPPET + 5, parent_id: storageKeys.SNIPPET + 3, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Add snippets to a list', content: 'Add a new snippet to this list. Tap the "New snippet" button above to try it out!', color_id: colors.lightBlue.id, time: new Date(), order_index: 0 },
   ];
 
   useEffect(() => {
@@ -82,15 +83,6 @@ const SnippetsScreen = ({ route, navigation }) => {
           await storage.saveSnippet(tutorialSnippet);
         }
         await getSnippets(); return;
-      }
-
-      if (isRootSnippetsScreen) {
-        // set snippet data for widget
-        let snippetLists = [{ id: '-1', title: 'Snippets', colorHexCode: colors.nebulaBlue.hexCode }];
-        snippetLists = snippetLists
-          .concat(storageSnippets.concat(apiSnippets)
-          .filter(x => x.type == snippetTypes.MULTIPLE).map(x => { return { id: x.id, title: x.title, colorHexCode: colors.getById(x.color_id)?.hexCode }; }));
-        await widget.saveData('snippetLists', JSON.stringify(snippetLists));
       }
 
       if (deepLinkSnippetId) {

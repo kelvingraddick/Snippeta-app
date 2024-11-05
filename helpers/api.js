@@ -76,6 +76,18 @@ const getSnippets = async (parentId, authorizationToken) => {
   });
 }
 
+const getSnippetLists = async (authorizationToken) => {
+  console.log(`api.js -> getSnippetLists: Get snippet lists.`);
+  
+  return await fetch(`http://www.snippeta.com/api/snippets/lists.php`, {
+    method: 'GET',
+    headers: { 
+      'Authorization': `Basic ${authorizationToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
+}
+
 const searchSnippets = async (query, authorizationToken) => {
   console.log(`api.js -> searchSnippets: Search snippets with query ${query}.`);
   query = query && query.toLowerCase ? query.toLowerCase() : '';
@@ -139,6 +151,7 @@ export default {
   deleteUser,
   sendPasswordResetEmail,
   getSnippets,
+  getSnippetLists,
   searchSnippets,
   saveSnippet,
   deleteSnippet,

@@ -21,7 +21,7 @@ const colors = {
   lightBlue: new Color('#3098c5', 2),
   lightPurple: new Color('#986b9b', 5),
   lightRed: new Color('#fb7477', 3),
-  nebulaBlue: new Color('#5c63ff', null),
+  nebulaBlue: new Color('#5c63ff', 100),
   turquoise: new Color('#33d9b1', null),
 }
 

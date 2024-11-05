@@ -1,0 +1,37 @@
+import WidgetKit
+import AppIntents
+
+struct ShortcutWidgetConfigurationIntent: WidgetConfigurationIntent {
+  static var title: LocalizedStringResource { "Configuration" }
+  static var description: IntentDescription { "This is an example widget." }
+
+  @Parameter(title: "List 1")
+  var snippetList1: SnippetList?
+
+  @Parameter(title: "List 2")
+  var snippetList2: SnippetList?
+  
+  @Parameter(title: "List 3")
+  var snippetList3: SnippetList?
+  
+  @Parameter(title: "List 4")
+  var snippetList4: SnippetList?
+
+  init(snippetList1: SnippetList, snippetList2: SnippetList, snippetList3: SnippetList, snippetList4: SnippetList) {
+    self.snippetList1 = snippetList1;
+    self.snippetList2 = snippetList2;
+    self.snippetList3 = snippetList3;
+    self.snippetList4 = snippetList4;
+  }
+
+  init() {}
+
+  public static var defaultValue: ShortcutWidgetConfigurationIntent {
+    let intent = ShortcutWidgetConfigurationIntent()
+    intent.snippetList1 = SnippetList(id: "-1", type: 0, title: "Example List 1", content: "This is example list 1.", color_id: -1, snippets: [])
+    intent.snippetList2 = SnippetList(id: "-1", type: 0, title: "Example List 2", content: "This is example list 2.", color_id: -1, snippets: [])
+    intent.snippetList3 = SnippetList(id: "-1", type: 0, title: "Example List 3", content: "This is example list 3.", color_id: -1, snippets: [])
+    intent.snippetList4 = SnippetList(id: "-1", type: 0, title: "Example List 4", content: "This is example list 4.", color_id: -1, snippets: [])
+    return intent
+  }
+}

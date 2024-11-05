@@ -1,6 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import validator from './validator';
+import colors from './colors';
 import { storageKeys } from '../constants/storageKeys';
+import { snippetTypes } from '../constants/snippetTypes';
 
 const getCredentials = async () => {
   const item = await AsyncStorage.getItem(storageKeys.CREDENTIALS);
@@ -45,6 +47,27 @@ const getSnippets = async (parentId) => {
   }
   console.log(`storage.js -> getSnippets: Got ${snippets.length} snippets for parent ID ${parentId}:`, JSON.stringify(snippets.map(x => x.id)));
   return snippets;
+};
+
+const getSnippetLists = async () => {
+  console.log('storage.js -> getSnippetLists: Getting snippet lists');
+  const allKeys = await AsyncStorage.getAllKeys();
+  const snippetKeys = allKeys.filter(key => key.startsWith(storageKeys.SNIPPET));
+  const snippets = [];
+  for (const snippetKey of snippetKeys) {
+    const item = await AsyncStorage.getItem(snippetKey);
+    const snippet = JSON.parse(item);
+    snippets.push(snippet);
+  }
+  let snippetLists = [{ id: storageKeys.SNIPPET + 0, type: snippetTypes.MULTIPLE, title: 'Default', content: "Default", color_id: colors.nebulaBlue.id }]; // root snippet list
+  snippetLists = snippetLists.concat(snippets.filter(x => x.type === snippetTypes.MULTIPLE));
+  for (let i = 0; i < snippetLists.length; i++) {
+    snippetLists[i].snippets = snippetLists[i].id === storageKeys.SNIPPET + 0 ?
+      snippets.filter(x => !x.parent_id) :
+      snippets.filter(x => x.parent_id === snippetLists[i].id)
+  }
+  console.log(`storage.js -> getSnippetLists: Got ${snippetLists.length} snippet lists:`, JSON.stringify(snippetLists.map(x => x.id)));
+  return snippetLists;
 };
 
 const searchSnippets = async (query) => {
@@ -110,6 +133,7 @@ export default {
   deleteCredentials,
   getAuthorizationToken,
   getSnippets,
+  getSnippetLists,
   searchSnippets,
   getSnippet,
   saveSnippet,

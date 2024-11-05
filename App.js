@@ -7,8 +7,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import FlashMessage from "react-native-flash-message";
 import { ApplicationContext } from './ApplicationContext';
-import storage from './helpers/storage';
+import { snippetSources } from './constants/snippetSources';
 import api from './helpers/api';
+import storage from './helpers/storage';
+import widget from './helpers/widget';
+import colors from './helpers/colors';
 import SnippetsScreen from './screens/SnippetsScreen';
 import SnippetScreen from './screens/SnippetScreen';
 import SearchScreen from './screens/SearchScreen';
@@ -63,6 +66,7 @@ export default function App() {
       if (credentials) {
         await loginWithCredentials(credentials.emailOrPhone, credentials.password);
       } else {
+        await getSnippetLists();
         dispatch({ type: 'LOGGED_IN', payload: null });
       }
     } catch (error) {
@@ -82,6 +86,7 @@ export default function App() {
         delete user.password;
         console.log(`App.js -> loginWithCredentials: Login successful with user ID ${user.id}`);
         await storage.saveCredentials(emailOrPhone, password);
+        await getSnippetLists();
       } else {
         console.log('App.js -> loginWithCredentials: Login failed with error code: ' + responseJson?.error_code);
       }
@@ -119,6 +124,31 @@ export default function App() {
       console.log(`App.js -> handleDeepLink: Navigating to Snippet screen to handle deep link`);
       navigation.push('Snippets', { deepLinkAddSnippet: true });
     }
+  };
+
+  const getSnippetLists = async () => {
+    console.log('App.js -> getSnippetLists: about to get snippet lists for user');
+
+    // try to get storage snippet lists
+    let storageSnippetLists = [];
+    storageSnippetLists = await storage.getSnippetLists();
+    storageSnippetLists.forEach(x => { x.source = snippetSources.STORAGE; });
+    storageSnippetLists.sort((a, b) => a.order_index - b.order_index);
+    console.log(`App.js -> getSnippetLists: Got ${storageSnippetLists.length} snippet lists from storage:`, JSON.stringify(storageSnippetLists.map(x => x.id)));
+
+    // try to get api snippet lists
+    let apiSnippetLists = [];
+    let response = await api.getSnippetLists(await storage.getAuthorizationToken());
+    let responseJson = await response.json();
+    apiSnippetLists = responseJson.lists ?? [];
+    apiSnippetLists.forEach(x => { x.source = snippetSources.API; });
+    apiSnippetLists.sort((a, b) => a.order_index - b.order_index);
+    console.log(`App.js -> getSnippetLists: Got ${apiSnippetLists.length} snippet lists via API:`, JSON.stringify(apiSnippetLists.map(x => x.id)));
+
+    // set snippet lists data for widget
+    let snippetLists = [];
+    snippetLists = snippetLists.concat(storageSnippetLists).concat(apiSnippetLists);
+    await widget.saveData('snippetLists', JSON.stringify(snippetLists));
   };
 
   return (

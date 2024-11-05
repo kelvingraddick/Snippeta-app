@@ -15,12 +15,22 @@
 		7699B88040F8A987B510C191 /* libPods-Snippeta-SnippetaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-Snippeta-SnippetaTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		ABD44DBC6FC501B9FBB79BD7 /* libPods-SnippetaWidgetExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B32FBB9B8D99D29EFFC25E37 /* libPods-SnippetaWidgetExtension.a */; };
+		B67D17CD2CD5F13800DC3628 /* CopyToClipboardAppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17CC2CD5F13800DC3628 /* CopyToClipboardAppIntent.swift */; };
+		B67D17CE2CD5F13800DC3628 /* CopyToClipboardAppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17CC2CD5F13800DC3628 /* CopyToClipboardAppIntent.swift */; };
+		B67D17D22CD6CB1E00DC3628 /* ListWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17D12CD6CB1E00DC3628 /* ListWidget.swift */; };
+		B67D17D32CD6CB1E00DC3628 /* ListWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17D12CD6CB1E00DC3628 /* ListWidget.swift */; };
+		B67D17D52CD6CCB500DC3628 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17D42CD6CCB500DC3628 /* ColorExtension.swift */; };
+		B67D17D62CD6CCB500DC3628 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17D42CD6CCB500DC3628 /* ColorExtension.swift */; };
+		B67D17D82CD6D40300DC3628 /* ListWidgetConfigurationIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17D72CD6D40300DC3628 /* ListWidgetConfigurationIntent.swift */; };
+		B67D17D92CD6D40300DC3628 /* ListWidgetConfigurationIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17D72CD6D40300DC3628 /* ListWidgetConfigurationIntent.swift */; };
+		B67D17DE2CD7239B00DC3628 /* SnippetList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17DD2CD7239B00DC3628 /* SnippetList.swift */; };
+		B67D17DF2CD7239B00DC3628 /* SnippetList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17DD2CD7239B00DC3628 /* SnippetList.swift */; };
 		B68377392CC0B6E300BC1755 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B68377382CC0B6E300BC1755 /* WidgetKit.framework */; };
 		B683773B2CC0B6E300BC1755 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B683773A2CC0B6E300BC1755 /* SwiftUI.framework */; };
 		B68377482CC0B6E400BC1755 /* SnippetaWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B68377372CC0B6E300BC1755 /* SnippetaWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B68377542CC0CAAE00BC1755 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B683774F2CC0CAAE00BC1755 /* Assets.xcassets */; };
-		B68377552CC0CAAE00BC1755 /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B683774E2CC0CAAE00BC1755 /* AppIntent.swift */; };
-		B68377562CC0CAAE00BC1755 /* SnippetaWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68377512CC0CAAE00BC1755 /* SnippetaWidget.swift */; };
+		B68377552CC0CAAE00BC1755 /* ShortcutWidgetConfigurationIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B683774E2CC0CAAE00BC1755 /* ShortcutWidgetConfigurationIntent.swift */; };
+		B68377562CC0CAAE00BC1755 /* ShortcutWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68377512CC0CAAE00BC1755 /* ShortcutWidget.swift */; };
 		B68377572CC0CAAE00BC1755 /* SnippetaWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68377522CC0CAAE00BC1755 /* SnippetaWidgetBundle.swift */; };
 		E5C4676548DEE7CB10F23EF6 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 42FB28459BF5265885BA2952 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
@@ -77,14 +87,19 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Snippeta/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-Snippeta-SnippetaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Snippeta-SnippetaTests.release.xcconfig"; path = "Target Support Files/Pods-Snippeta-SnippetaTests/Pods-Snippeta-SnippetaTests.release.xcconfig"; sourceTree = "<group>"; };
 		B32FBB9B8D99D29EFFC25E37 /* libPods-SnippetaWidgetExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SnippetaWidgetExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B67D17CC2CD5F13800DC3628 /* CopyToClipboardAppIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyToClipboardAppIntent.swift; sourceTree = "<group>"; };
+		B67D17D12CD6CB1E00DC3628 /* ListWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListWidget.swift; sourceTree = "<group>"; };
+		B67D17D42CD6CCB500DC3628 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
+		B67D17D72CD6D40300DC3628 /* ListWidgetConfigurationIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListWidgetConfigurationIntent.swift; sourceTree = "<group>"; };
+		B67D17DD2CD7239B00DC3628 /* SnippetList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetList.swift; sourceTree = "<group>"; };
 		B67D4F1D2CC4CF4D00818353 /* SnippetaWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SnippetaWidgetExtension.entitlements; sourceTree = "<group>"; };
 		B68377372CC0B6E300BC1755 /* SnippetaWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SnippetaWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		B68377382CC0B6E300BC1755 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		B683773A2CC0B6E300BC1755 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
-		B683774E2CC0CAAE00BC1755 /* AppIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntent.swift; sourceTree = "<group>"; };
+		B683774E2CC0CAAE00BC1755 /* ShortcutWidgetConfigurationIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutWidgetConfigurationIntent.swift; sourceTree = "<group>"; };
 		B683774F2CC0CAAE00BC1755 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B68377502CC0CAAE00BC1755 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B68377512CC0CAAE00BC1755 /* SnippetaWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetaWidget.swift; sourceTree = "<group>"; };
+		B68377512CC0CAAE00BC1755 /* ShortcutWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutWidget.swift; sourceTree = "<group>"; };
 		B68377522CC0CAAE00BC1755 /* SnippetaWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetaWidgetBundle.swift; sourceTree = "<group>"; };
 		B6CC09E22CC4B30300ABB709 /* SnippetaWidgetExtension-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SnippetaWidgetExtension-Bridging-Header.h"; sourceTree = "<group>"; };
 		B6D391DF2CB4F2AC00EC0846 /* Snippeta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Snippeta.entitlements; path = Snippeta/Snippeta.entitlements; sourceTree = "<group>"; };
@@ -205,10 +220,15 @@
 		B683773C2CC0B6E300BC1755 /* SnippetaWidget */ = {
 			isa = PBXGroup;
 			children = (
-				B683774E2CC0CAAE00BC1755 /* AppIntent.swift */,
 				B683774F2CC0CAAE00BC1755 /* Assets.xcassets */,
 				B68377502CC0CAAE00BC1755 /* Info.plist */,
-				B68377512CC0CAAE00BC1755 /* SnippetaWidget.swift */,
+				B67D17DD2CD7239B00DC3628 /* SnippetList.swift */,
+				B68377512CC0CAAE00BC1755 /* ShortcutWidget.swift */,
+				B683774E2CC0CAAE00BC1755 /* ShortcutWidgetConfigurationIntent.swift */,
+				B67D17D12CD6CB1E00DC3628 /* ListWidget.swift */,
+				B67D17D72CD6D40300DC3628 /* ListWidgetConfigurationIntent.swift */,
+				B67D17CC2CD5F13800DC3628 /* CopyToClipboardAppIntent.swift */,
+				B67D17D42CD6CCB500DC3628 /* ColorExtension.swift */,
 				B68377522CC0CAAE00BC1755 /* SnippetaWidgetBundle.swift */,
 				B6CC09E22CC4B30300ABB709 /* SnippetaWidgetExtension-Bridging-Header.h */,
 			);
@@ -307,7 +327,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1610;
 					};
 					B68377362CC0B6E300BC1755 = {
 						CreatedOnToolsVersion = 16.1;
@@ -529,8 +549,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B67D17D92CD6D40300DC3628 /* ListWidgetConfigurationIntent.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				B67D17DE2CD7239B00DC3628 /* SnippetList.swift in Sources */,
+				B67D17CE2CD5F13800DC3628 /* CopyToClipboardAppIntent.swift in Sources */,
+				B67D17D32CD6CB1E00DC3628 /* ListWidget.swift in Sources */,
+				B67D17D62CD6CCB500DC3628 /* ColorExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -538,8 +563,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B68377552CC0CAAE00BC1755 /* AppIntent.swift in Sources */,
-				B68377562CC0CAAE00BC1755 /* SnippetaWidget.swift in Sources */,
+				B68377552CC0CAAE00BC1755 /* ShortcutWidgetConfigurationIntent.swift in Sources */,
+				B68377562CC0CAAE00BC1755 /* ShortcutWidget.swift in Sources */,
+				B67D17CD2CD5F13800DC3628 /* CopyToClipboardAppIntent.swift in Sources */,
+				B67D17DF2CD7239B00DC3628 /* SnippetList.swift in Sources */,
+				B67D17D52CD6CCB500DC3628 /* ColorExtension.swift in Sources */,
+				B67D17D82CD6D40300DC3628 /* ListWidgetConfigurationIntent.swift in Sources */,
+				B67D17D22CD6CB1E00DC3628 /* ListWidget.swift in Sources */,
 				B68377572CC0CAAE00BC1755 /* SnippetaWidgetBundle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -570,7 +600,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = SnippetaTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -594,7 +624,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = SnippetaTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -618,12 +648,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Snippeta/Snippeta.entitlements;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = HCQ2A438C7;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Snippeta/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Snippeta;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -652,11 +683,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Snippeta/Snippeta.entitlements;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = HCQ2A438C7;
 				INFOPLIST_FILE = Snippeta/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Snippeta;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -855,7 +887,7 @@
 				INFOPLIST_FILE = SnippetaWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = SnippetaWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -903,7 +935,7 @@
 				INFOPLIST_FILE = SnippetaWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = SnippetaWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
