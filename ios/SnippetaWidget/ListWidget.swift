@@ -31,7 +31,7 @@ struct ListWidgetEntryView : View {
       if let snippets = entry.configuration.snippetList!.snippets {
         let maxSnippets = (widgetFamily == .systemSmall || widgetFamily == .systemMedium) ? 3 : 8;
         ForEach((0...min((maxSnippets - 1), (snippets.count - 1))), id: \.self) {
-          getSnippetListButton(snippetList: snippets[$0])
+          getSnippetListButton(snippetList: snippets[$0], copiedSnippetId: entry.copiedSnippetId)
         }
       }
     }
@@ -41,15 +41,15 @@ struct ListWidgetEntryView : View {
   }
 }
 
-private func getSnippetListButton(snippetList: SnippetList) -> some View {
+private func getSnippetListButton(snippetList: SnippetList, copiedSnippetId: String?) -> some View {
   return
-    Button(intent: CopyToClipboardAppIntent(text: snippetList.content)) {
+    Button(intent: CopyToClipboardAppIntent(snippetId: snippetList.id, text: snippetList.content)) {
       HStack(alignment: .center, spacing: 7) {
         
         Rectangle().frame(width: 12).foregroundColor(Color(hex: snippetList.colorHexCode) ?? Color.primary);
         
         HStack(alignment: .center) {
-          Text(snippetList.title)
+          Text(snippetList.id == copiedSnippetId ? "Copied!" : snippetList.title)
             .font(.caption).foregroundColor(.primary)
             .truncationMode(.tail).multilineTextAlignment(.leading)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -65,21 +65,38 @@ private func getSnippetListButton(snippetList: SnippetList) -> some View {
 
 struct ListWidgetAppIntentTimelineProvider: AppIntentTimelineProvider {
   func placeholder(in context: Context) -> ListWidgetTimelineEntry {
-    ListWidgetTimelineEntry(date: Date(), configuration: ListWidgetConfigurationIntent())
+    ListWidgetTimelineEntry(date: Date(), configuration: ListWidgetConfigurationIntent(), copiedSnippetId: nil)
   }
   
   func snapshot(for configuration: ListWidgetConfigurationIntent, in context: Context) async -> ListWidgetTimelineEntry {
-    ListWidgetTimelineEntry(date: Date(), configuration: configuration)
+    ListWidgetTimelineEntry(date: Date(), configuration: configuration, copiedSnippetId: nil)
   }
   
   func timeline(for configuration: ListWidgetConfigurationIntent, in context: Context) async -> Timeline<ListWidgetTimelineEntry> {
     var entries: [ListWidgetTimelineEntry] = []
+    var currentDate = Date()
+    
+    // Handle if a snippet was just copied (notification message)
+    let sharedDefaults = UserDefaults(suiteName: "group.com.wavelinkllc.snippeta.shared")
+    let copiedSnippetId = sharedDefaults?.string(forKey: "copiedSnippetId")
+    if (copiedSnippetId != nil) {
+      let startDate = Date()
+      let endDate = startDate.addingTimeInterval(3)
+      currentDate = endDate
+      
+      let copiedSnippetEntry = ListWidgetTimelineEntry(date: startDate, configuration: configuration, copiedSnippetId: copiedSnippetId)
+      entries.append(copiedSnippetEntry)
+      
+      DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + endDate.timeIntervalSinceNow) {
+        let sharedDefaults = UserDefaults(suiteName: "group.com.wavelinkllc.snippeta.shared")
+        sharedDefaults?.removeObject(forKey: "copiedSnippetId")
+      }
+    }
     
     // Generate a timeline consisting of five entries an hour apart, starting from the current date.
-    let currentDate = Date()
     for hourOffset in 0 ..< 5 {
       let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-      let entry = ListWidgetTimelineEntry(date: entryDate, configuration: configuration)
+      let entry = ListWidgetTimelineEntry(date: entryDate, configuration: configuration, copiedSnippetId: nil)
       entries.append(entry)
     }
     
@@ -90,28 +107,29 @@ struct ListWidgetAppIntentTimelineProvider: AppIntentTimelineProvider {
 struct ListWidgetTimelineEntry: TimelineEntry {
   let date: Date
   let configuration: ListWidgetConfigurationIntent
+  let copiedSnippetId: String?
 }
 
 #Preview(as: .systemSmall) {
   ListWidget()
 } timeline: {
-  ListWidgetTimelineEntry(date: .now, configuration: .defaultValue)
+  ListWidgetTimelineEntry(date: .now, configuration: .defaultValue, copiedSnippetId: nil)
 }
 
 #Preview(as: .systemMedium) {
   ListWidget()
 } timeline: {
-  ListWidgetTimelineEntry(date: .now, configuration: .defaultValue)
+  ListWidgetTimelineEntry(date: .now, configuration: .defaultValue, copiedSnippetId: nil)
 }
 
 #Preview(as: .systemLarge) {
   ListWidget()
 } timeline: {
-  ListWidgetTimelineEntry(date: .now, configuration: .defaultValue)
+  ListWidgetTimelineEntry(date: .now, configuration: .defaultValue, copiedSnippetId: nil)
 }
 
 #Preview(as: .systemExtraLarge) {
   ListWidget()
 } timeline: {
-  ListWidgetTimelineEntry(date: .now, configuration: .defaultValue)
+  ListWidgetTimelineEntry(date: .now, configuration: .defaultValue, copiedSnippetId: nil)
 }
