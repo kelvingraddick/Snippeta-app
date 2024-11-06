@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { showMessage } from "react-native-flash-message";
 import { ApplicationContext } from '../ApplicationContext';
 import colors from '../helpers/colors';
+import banner from '../helpers/banner';
 import ActionButton from '../components/ActionButton';
 
 const SettingsScreen = ({ navigation }) => {
@@ -31,19 +31,7 @@ const SettingsScreen = ({ navigation }) => {
     navigation.popToTop();
     await logout();
 
-    showMessage({
-      message: 'Logged out!',
-      titleStyle: {
-        fontWeight: 'bold',
-        color: 'black',
-        opacity: 0.60,
-      },
-      textStyle: {
-        fontStyle: 'italic',
-        color: 'black',
-        opacity: 0.60,
-      }
-    });
+    banner.showSuccessMessage('Logged out!');
   };
 
   return (

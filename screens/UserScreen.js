@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { showMessage } from "react-native-flash-message";
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import { ApplicationContext } from '../ApplicationContext';
 import storage from '../helpers/storage';
 import { errorCodeMessages } from '../constants/errorCodeMessages';
 import api from '../helpers/api';
 import colors from '../helpers/colors';
+import banner from '../helpers/banner';
 import ActionButton from '../components/ActionButton';
 
 const UserScreen = ({ navigation }) => {
@@ -49,16 +49,16 @@ const UserScreen = ({ navigation }) => {
           console.log(`UserScreen.js -> onSaveTapped: User logged in. Going back to Settings screen..`);
           navigation.goBack();
         } else {
-          showErrorMessage(responseJson?.error_code ? 'Login failed: ' + errorCodeMessages[responseJson.error_code] : 'Login failed with unknown error.');
+          banner.showErrorMessage(responseJson?.error_code ? 'Login failed: ' + errorCodeMessages[responseJson.error_code] : 'Login failed with unknown error.');
         }
       } else {
-        showErrorMessage(responseJson?.error_code ? 'Saving failed: ' + errorCodeMessages[responseJson.error_code] : 'Saving failed with unknown error.');
+        banner.showErrorMessage(responseJson?.error_code ? 'Saving failed: ' + errorCodeMessages[responseJson.error_code] : 'Saving failed with unknown error.');
       }
       setIsLoading(false);
     } catch(error) {
       const errorMessage = 'Saving failed with error: ' + error.message;
       console.error('UserScreen.js -> onSaveTapped: ' + errorMessage);
-      showErrorMessage(errorMessage);
+      banner.showErrorMessage(errorMessage);
       setIsLoading(false);
     }
   };
@@ -95,27 +95,15 @@ const UserScreen = ({ navigation }) => {
         console.log(`UserScreen.js -> deleteUser: User deleted. Now logging user out..`);
         navigation.popToTop();
         await logout();
-        showMessage({
-          message: 'Logged out!',
-          titleStyle: {
-            fontWeight: 'bold',
-            color: 'black',
-            opacity: 0.60,
-          },
-          textStyle: {
-            fontStyle: 'italic',
-            color: 'black',
-            opacity: 0.60,
-          }
-        });
+        banner.showSuccessMessage('Logged out!');
       } else {
-        showErrorMessage(responseJson?.error_code ? 'Deleting failed: ' + errorCodeMessages[responseJson.error_code] : 'Deleting failed with unknown error.');
+        banner.showErrorMessage(responseJson?.error_code ? 'Deleting failed: ' + errorCodeMessages[responseJson.error_code] : 'Deleting failed with unknown error.');
       }
       setIsLoading(false);
     } catch(error) {
       const errorMessage = 'Deleting failed with error: ' + error.message;
       console.error('UserScreen.js -> deleteUser: ' + errorMessage);
-      showErrorMessage(errorMessage);
+      banner.showErrorMessage(errorMessage);
       setIsLoading(false);
     }
   };
@@ -142,18 +130,6 @@ const UserScreen = ({ navigation }) => {
 
   const onLastNameChangeText = async (text) => {
     setEditedUser({ ...editedUser, last_name: text });
-  };
-
-  const showErrorMessage = (message) => {
-    showMessage({
-      message: message,
-      backgroundColor: colors.lightRed.hexCode,
-      titleStyle: {
-        fontWeight: 'bold',
-        color: 'black',
-        opacity: 0.60,
-      }
-    });
   };
 
   return (

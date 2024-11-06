@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
-import { showMessage } from "react-native-flash-message";
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import { ApplicationContext } from '../ApplicationContext';
 import { storageKeys } from '../constants/storageKeys';
@@ -8,6 +7,7 @@ import { snippetTypes } from '../constants/snippetTypes';
 import storage from '../helpers/storage';
 import api from '../helpers/api';
 import colors from '../helpers/colors';
+import banner from '../helpers/banner';
 import { snippetSources } from '../constants/snippetSources';
 import { errorCodeMessages } from '../constants/errorCodeMessages';
 import ColorButton from '../components/ColorButton';
@@ -72,7 +72,7 @@ const SnippetScreen = ({ route, navigation }) => {
         } else {
           const errorMessage = responseJson?.error_code ? 'Saving snippet failed: ' + errorCodeMessages[responseJson.error_code] : 'Saving snippet failed with unknown error.';
           console.log('SnippetScreen.js -> onSaveTapped: ' + errorMessage);
-          showErrorMessage(errorMessage);
+          banner.showErrorMessage(errorMessage);
           setIsLoading(false); return;
         }
       }
@@ -84,7 +84,7 @@ const SnippetScreen = ({ route, navigation }) => {
     } catch (error) {
       const errorMessage = 'Saving snippet failed with error: ' + error.message;
       console.error('SnippetScreen.js -> onSaveTapped: ' + errorMessage);
-      showErrorMessage(errorMessage);
+      banner.showErrorMessage(errorMessage);
       setIsLoading(false);
     }
   };
@@ -136,18 +136,6 @@ const SnippetScreen = ({ route, navigation }) => {
     }
     return result;
   }
-
-  const showErrorMessage = (message) => {
-    showMessage({
-      message: message,
-      backgroundColor: colors.lightRed.hexCode,
-      titleStyle: {
-        fontWeight: 'bold',
-        color: 'black',
-        opacity: 0.60,
-      }
-    });
-  };
 
   return (
       <ScrollView style={styles.container}>

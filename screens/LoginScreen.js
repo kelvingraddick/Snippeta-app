@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
-import { showMessage } from "react-native-flash-message";
 import { ApplicationContext } from '../ApplicationContext';
 import { errorCodeMessages } from '../constants/errorCodeMessages';
 import colors from '../helpers/colors';
+import banner from '../helpers/banner';
 import ActionButton from '../components/ActionButton';
 
 const LoginScreen = ({ navigation }) => {
@@ -25,13 +25,13 @@ const LoginScreen = ({ navigation }) => {
         console.log(`LoginScreen.js -> onLoginTapped: User logged in. Going back to Settings screen..`);
         navigation.goBack();
       } else {
-        showErrorMessage(responseJson?.error_code ? 'Login failed: ' + errorCodeMessages[responseJson.error_code] : 'Login failed with unknown error.');
+        banner.showErrorMessage(responseJson?.error_code ? 'Login failed: ' + errorCodeMessages[responseJson.error_code] : 'Login failed with unknown error.');
       }
       setIsLoading(false);
     } catch(error) {
       const errorMessage = 'Login failed with error: ' + error.message;
       console.error('LoginScreen.js -> onLoginTapped: ' + errorMessage);
-      showErrorMessage(errorMessage);
+      banner.showErrorMessage(errorMessage);
       setIsLoading(false);
     }
   };
@@ -46,18 +46,6 @@ const LoginScreen = ({ navigation }) => {
 
   const onPasswordChangeText = async (text) => {
     setCredentials({ ...credentials, password: text });
-  };
-
-  const showErrorMessage = (message) => {
-    showMessage({
-      message: message,
-      backgroundColor: colors.lightRed.hexCode,
-      titleStyle: {
-        fontWeight: 'bold',
-        color: 'black',
-        opacity: 0.60,
-      }
-    });
   };
 
   return (

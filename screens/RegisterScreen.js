@@ -1,11 +1,11 @@
 import React, { useContext, useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { showMessage } from "react-native-flash-message";
 import { ApplicationContext } from '../ApplicationContext';
 import { errorCodeMessages } from '../constants/errorCodeMessages';
 import api from '../helpers/api';
 import colors from '../helpers/colors';
+import banner from '../helpers/banner';
 import ActionButton from '../components/ActionButton';
 
 const RegisterScreen = ({ navigation }) => {
@@ -34,16 +34,16 @@ const RegisterScreen = ({ navigation }) => {
           console.log(`RegisterScreen.js -> onRegisterTapped: User logged in. Going back to Settings screen..`);
           navigation.goBack();
         } else {
-          showErrorMessage(responseJson?.error_code ? 'Login failed: ' + errorCodeMessages[responseJson.error_code] : 'Login failed with unknown error.');
+          banner.showErrorMessage(responseJson?.error_code ? 'Login failed: ' + errorCodeMessages[responseJson.error_code] : 'Login failed with unknown error.');
         }
       } else {
-        showErrorMessage(responseJson?.error_code ? 'Registration failed: ' + errorCodeMessages[responseJson.error_code] : 'Registration failed with unknown error.');
+        banner.showErrorMessage(responseJson?.error_code ? 'Registration failed: ' + errorCodeMessages[responseJson.error_code] : 'Registration failed with unknown error.');
       }
       setIsLoading(false);
     } catch(error) {
       const errorMessage = 'Registration failed with error: ' + error.message;
       console.error('RegisterScreen.js -> onRegisterTapped: ' + errorMessage);
-      showErrorMessage(errorMessage);
+      banner.showErrorMessage(errorMessage);
       setIsLoading(false);
     }
   };
@@ -70,18 +70,6 @@ const RegisterScreen = ({ navigation }) => {
 
   const onLastNameChangeText = async (text) => {
     setUser({ ...user, last_name: text });
-  };
-
-  const showErrorMessage = (message) => {
-    showMessage({
-      message: message,
-      backgroundColor: colors.lightRed.hexCode,
-      titleStyle: {
-        fontWeight: 'bold',
-        color: 'black',
-        opacity: 0.60,
-      }
-    });
   };
 
   return (

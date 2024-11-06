@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
-import { showMessage } from "react-native-flash-message";
 import { ApplicationContext } from '../ApplicationContext';
 import { errorCodeMessages } from '../constants/errorCodeMessages';
 import colors from '../helpers/colors';
+import banner from '../helpers/banner';
 import ActionButton from '../components/ActionButton';
 import api from '../helpers/api';
 
@@ -24,46 +24,22 @@ const ForgotPasswordScreen = ({ navigation }) => {
       if (responseJson && responseJson.success) {
         console.log(`ForgotPasswordScreen.js -> onSubmitTapped: Password reset email sent. Going back to Login screen..`);
         navigation.goBack();
-        showMessage({
-          message: 'Email sent. Please check your email to continue resetting the password.',
-          titleStyle: {
-            fontWeight: 'bold',
-            color: 'black',
-            opacity: 0.60,
-          },
-          textStyle: {
-            fontStyle: 'italic',
-            color: 'black',
-            opacity: 0.60,
-          }
-        });
+        banner.showSuccessMessage('Email sent. Please check your email to continue resetting the password.');
       } else {
         console.log(responseJson);
-        showErrorMessage(responseJson?.error_code ? 'Password reset email failed: ' + errorCodeMessages[responseJson.error_code] : 'Password reset email failed with unknown error.');
+        banner.showErrorMessage(responseJson?.error_code ? 'Password reset email failed: ' + errorCodeMessages[responseJson.error_code] : 'Password reset email failed with unknown error.');
       }
       setIsLoading(false);
     } catch(error) {
       const errorMessage = 'Password reset email failed with error: ' + error.message;
       console.error('ForgotPasswordScreen.js -> onSubmitTapped: ' + errorMessage);
-      showErrorMessage(errorMessage);
+      banner.showErrorMessage(errorMessage);
       setIsLoading(false);
     }
   };
 
   const onEmailOrPhoneChangeText = async (text) => {
     setEmailOrPhone(text);
-  };
-
-  const showErrorMessage = (message) => {
-    showMessage({
-      message: message,
-      backgroundColor: colors.lightRed.hexCode,
-      titleStyle: {
-        fontWeight: 'bold',
-        color: 'black',
-        opacity: 0.60,
-      }
-    });
   };
 
   return (

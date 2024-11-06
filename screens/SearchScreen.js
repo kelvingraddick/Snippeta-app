@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
 import { Dimensions, Image, Pressable, SectionList, StyleSheet, Text, TextInput, View } from 'react-native';
-import { showMessage } from "react-native-flash-message";
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
@@ -10,6 +9,7 @@ import { snippetSources } from '../constants/snippetSources';
 import api from '../helpers/api';
 import storage from '../helpers/storage';
 import colors from '../helpers/colors';
+import banner from '../helpers/banner';
 import SnippetView from '../components/SnippetView';
 
 const SearchScreen = ({ route, navigation }) => {
@@ -76,22 +76,7 @@ const SearchScreen = ({ route, navigation }) => {
   const onSnippetTapped = (snippet) => {
     if (snippet.type == snippetTypes.SINGLE) {
       Clipboard.setString(snippet.content);
-      showMessage({
-        message: 'The text was copied to the clipboard',
-        description: `"${snippet.content}"`,
-        icon: { icon: () => <Image source={require('../assets/images/copy-white.png')} style={styles.messageIcon} tintColor={colors.black.hexCode} />, position: 'right' },
-        backgroundColor: colors.getById(snippet.color_id)?.hexCode,
-        titleStyle: {
-          fontWeight: 'bold',
-          color: 'black',
-          opacity: 0.60,
-        },
-        textStyle: {
-          fontStyle: 'italic',
-          color: 'black',
-          opacity: 0.60,
-        }
-      });
+      banner.showSuccessMessage('The text was copied to the clipboard', `"${snippet.content}"`);
     } else { // snippetTypes.MULTIPLE
       navigation.push('Snippets', { parentSnippet: snippet, callbacks: callbacks.concat(async () => { await searchSnippets(query); }) });
     }
@@ -115,15 +100,7 @@ const SearchScreen = ({ route, navigation }) => {
   }
 
   const showErrorMessage = (message) => {
-    showMessage({
-      message: message,
-      backgroundColor: colors.lightRed.hexCode,
-      titleStyle: {
-        fontWeight: 'bold',
-        color: 'black',
-        opacity: 0.60,
-      }
-    });
+    banner.showErrorMessage(message);
   };
 
   return (
