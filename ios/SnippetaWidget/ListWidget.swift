@@ -43,7 +43,8 @@ struct ListWidgetEntryView : View {
 
 private func getSnippetListButton(snippetList: SnippetList, copiedSnippetId: String?) -> some View {
   return
-    Button(intent: CopyToClipboardAppIntent(snippetId: snippetList.id, text: snippetList.content)) {
+    Link(destination: URL(string: "snippeta://copy/\(snippetList.content.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? "")")!) {
+    //Button(intent: CopyToClipboardAppIntent(snippetId: snippetList.id, text: snippetList.content)) {
       HStack(alignment: .center, spacing: 7) {
         
         Rectangle().frame(width: 12).foregroundColor(Color(hex: snippetList.colorHexCode) ?? Color.primary);

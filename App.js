@@ -6,12 +6,14 @@ import navigation from './RootNavigation';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import FlashMessage from "react-native-flash-message";
+import Clipboard from '@react-native-clipboard/clipboard';
 import { ApplicationContext } from './ApplicationContext';
 import { snippetSources } from './constants/snippetSources';
 import api from './helpers/api';
 import storage from './helpers/storage';
 import widget from './helpers/widget';
 import colors from './helpers/colors';
+import banner from './helpers/banner';
 import SnippetsScreen from './screens/SnippetsScreen';
 import SnippetScreen from './screens/SnippetScreen';
 import SearchScreen from './screens/SearchScreen';
@@ -113,15 +115,22 @@ export default function App() {
     const url = event.url;
     const route = url.replace(/.*?:\/\//g, '');
     const [path, param] = route.split('/');
-    navigation.popToTop();
     if (path === 'snippets' && param) {
       console.log(`App.js -> handleDeepLink: Navigating to Snippets screen to handle deep link for snippet Id ${param}`);
+      navigation.popToTop();
       navigation.push('Snippets', { deepLinkSnippetId: param });
+    } else if (path === 'copy' && param) {
+      console.log(`App.js -> handleDeepLink: copying to clipboard text ${param}`);
+      const content = decodeURI(param);
+      Clipboard.setString(content);
+      banner.showSuccessMessage('The text was copied to the clipboard', `"${content}"`);
     } else if (path === 'search') {
       console.log(`App.js -> handleDeepLink: Navigating to Search screen to handle deep link`);
+      navigation.popToTop();
       navigation.push('Snippets', { deepLinkSearch: true });
     } else if (path === 'add') {
       console.log(`App.js -> handleDeepLink: Navigating to Snippet screen to handle deep link`);
+      navigation.popToTop();
       navigation.push('Snippets', { deepLinkAddSnippet: true });
     }
   };
@@ -205,5 +214,10 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-
+  messageIcon: {
+    height: 20,
+    width: 20,
+    color: colors.darkGray.hexCode,
+    opacity: 0.25,
+  },
 });
