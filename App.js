@@ -141,7 +141,7 @@ export default function App() {
     // try to get storage snippet lists
     let storageSnippetLists = [];
     storageSnippetLists = await storage.getSnippetLists();
-    storageSnippetLists.forEach(x => { x.source = snippetSources.STORAGE; });
+    storageSnippetLists.forEach(x => { x.source = snippetSources.STORAGE; x.snippets.forEach(y => { y.source = snippetSources.STORAGE; }) });
     storageSnippetLists.sort((a, b) => a.order_index - b.order_index);
     console.log(`App.js -> getSnippetLists: Got ${storageSnippetLists.length} snippet lists from storage:`, JSON.stringify(storageSnippetLists.map(x => x.id)));
 
@@ -150,7 +150,7 @@ export default function App() {
     let response = await api.getSnippetLists(await storage.getAuthorizationToken());
     let responseJson = await response.json();
     apiSnippetLists = responseJson.lists ?? [];
-    apiSnippetLists.forEach(x => { x.source = snippetSources.API; });
+    apiSnippetLists.forEach(x => { x.source = snippetSources.API; x.snippets.forEach(y => { y.source = snippetSources.API; }) });
     apiSnippetLists.sort((a, b) => a.order_index - b.order_index);
     console.log(`App.js -> getSnippetLists: Got ${apiSnippetLists.length} snippet lists via API:`, JSON.stringify(apiSnippetLists.map(x => x.id)));
 

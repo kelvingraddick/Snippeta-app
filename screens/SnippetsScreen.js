@@ -34,7 +34,7 @@ const SnippetsScreen = ({ route, navigation }) => {
     { id: storageKeys.SNIPPET + 2, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'How to use:', content: 'Tap the button above to create a new snippet. Or tap on this snippet to copy it to your clipboard for pasting later!', color_id: colors.lightGreen.id, time: new Date(), order_index: 1 },
     { id: storageKeys.SNIPPET + 3, type: snippetTypes.MULTIPLE, source: snippetSources.STORAGE, title: 'Organize by creating lists', content: 'Create a snippet list to organize and nest snippets. Tap here to try it out!', color_id: colors.lightBlue.id, time: new Date(), order_index: 2 },
     { id: storageKeys.SNIPPET + 4, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Go PRO!', content: 'Want more out of Snippeta? Take your account pro and get access to create lists and more!', color_id: colors.lightRed.id, time: new Date(), order_index: 3 },
-    { id: storageKeys.SNIPPET + 5, parent_id: storageKeys.SNIPPET + 3, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Add snippets to a list', content: 'Add a new snippet to this list. Tap the "New snippet" button above to try it out!', color_id: colors.lightBlue.id, time: new Date(), order_index: 0 },
+    { id: storageKeys.SNIPPET + 5, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Add snippets to a list', content: 'Add a new snippet to this list. Tap the "New snippet" button above to try it out!', color_id: colors.lightBlue.id, time: new Date(), order_index: 0, parent_id: storageKeys.SNIPPET + 3 },
   ];
 
   useEffect(() => {

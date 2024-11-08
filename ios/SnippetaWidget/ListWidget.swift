@@ -28,7 +28,8 @@ struct ListWidgetEntryView : View {
       
       Spacer().frame(height: 0)
       
-      if let snippets = entry.configuration.snippetList!.snippets {
+      if let snippets = entry.configuration.snippetList!.snippets?
+        .sorted(by: { ($0.source, $0.order_index) < ($1.source, $1.order_index) }) {
         let maxSnippets = (widgetFamily == .systemSmall || widgetFamily == .systemMedium) ? 3 : 8;
         ForEach((0...min((maxSnippets - 1), (snippets.count - 1))), id: \.self) {
           getSnippetListButton(snippetList: snippets[$0], copiedSnippetId: entry.copiedSnippetId)

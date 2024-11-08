@@ -59,7 +59,7 @@ const getSnippetLists = async () => {
     const snippet = JSON.parse(item);
     snippets.push(snippet);
   }
-  let snippetLists = [{ id: storageKeys.SNIPPET + 0, type: snippetTypes.MULTIPLE, title: 'Default', content: "Default", color_id: colors.nebulaBlue.id }]; // root snippet list
+  let snippetLists = [{ id: storageKeys.SNIPPET + 0, type: snippetTypes.MULTIPLE, title: 'Default', content: "Default", color_id: colors.nebulaBlue.id, order_index: 0 }]; // root snippet list
   snippetLists = snippetLists.concat(snippets.filter(x => x.type === snippetTypes.MULTIPLE));
   for (let i = 0; i < snippetLists.length; i++) {
     snippetLists[i].snippets = snippetLists[i].id === storageKeys.SNIPPET + 0 ?
