@@ -110,7 +110,7 @@ export default function App() {
     dispatch({ type: 'LOGGED_OUT' });
   };
 
-  const handleDeepLink = (event) => {
+  const handleDeepLink = async (event) => {
     console.log('App.js -> handleDeepLink: Handling deep link', event?.url);
     const url = event.url;
     const route = url.replace(/.*?:\/\//g, '');
@@ -120,10 +120,16 @@ export default function App() {
       navigation.popToTop();
       navigation.push('Snippets', { deepLinkSnippetId: param });
     } else if (path === 'copy' && param) {
-      console.log(`App.js -> handleDeepLink: copying to clipboard text ${param}`);
-      const content = decodeURI(param);
-      Clipboard.setString(content);
-      banner.showSuccessMessage('The text was copied to the clipboard', `"${content}"`);
+      console.log(`App.js -> handleDeepLink: copy for snippet ID ${param}`);
+      const snippetLists = await widget.getData('snippetLists');
+      const snippet = snippetLists?.reduce((result, list) => result || list.snippets?.find(snippet => snippet.id == param) || (list.id == param ? list : null), null);
+      if (snippet) {
+        console.log(`App.js -> handleDeepLink: copying to clipboard text ${snippet.content}`);
+        Clipboard.setString(snippet.content);
+        banner.showSuccessMessage('The text was copied to the clipboard', `"${snippet.content}"`);
+      } else {
+        console.warn(`App.js -> handleDeepLink: could not find snippet for ID ${param}`);
+      }
     } else if (path === 'search') {
       console.log(`App.js -> handleDeepLink: Navigating to Search screen to handle deep link`);
       navigation.popToTop();
@@ -157,7 +163,7 @@ export default function App() {
     // set snippet lists data for widget
     let snippetLists = [];
     snippetLists = snippetLists.concat(storageSnippetLists).concat(apiSnippetLists);
-    await widget.saveData('snippetLists', JSON.stringify(snippetLists));
+    await widget.saveData('snippetLists', snippetLists);
   };
 
   return (
