@@ -18,9 +18,6 @@ const SnippetsScreen = ({ route, navigation }) => {
   const parentSnippet = route.params?.parentSnippet;
   const isRootSnippetsScreen = !parentSnippet;
   const callbacks = route.params?.callbacks || [];
-  const deepLinkSnippetId = route.params?.deepLinkSnippetId;
-  const deepLinkSearch = route.params?.deepLinkSearch;
-  const deepLinkAddSnippet = route.params?.deepLinkAddSnippet;
 
   const { user, isUserLoading } = useContext(ApplicationContext);
 
@@ -82,21 +79,6 @@ const SnippetsScreen = ({ route, navigation }) => {
           await storage.saveSnippet(tutorialSnippet);
         }
         await getSnippets(); return;
-      }
-
-      if (deepLinkSnippetId) {
-        console.log(`SnippetsScreen.js -> getSnippets: handling deep link to snippet Id ${deepLinkSnippetId}`);
-        const snippet = storageSnippets.concat(apiSnippets).find(x => x.id === deepLinkSnippetId);
-        if (snippet) {
-          console.log(`SnippetsScreen.js -> getSnippets: performing deep link screen navigation to snippet Id ${deepLinkSnippetId}`);
-          navigation.push('Snippets', { parentSnippet: snippet, callbacks: callbacks.concat(getSnippets) });
-        }
-      } else if (deepLinkSearch) {
-        console.log(`SnippetsScreen.js -> getSnippets: handling deep link to search`);
-        onSearchTapped();
-      } else if (deepLinkAddSnippet ) {
-        console.log(`SnippetsScreen.js -> getSnippets: handling deep link to add new snippet`);
-        onNewSnippetTapped();
       }
 
       // set snippets for display

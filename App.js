@@ -8,6 +8,8 @@ import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import FlashMessage from "react-native-flash-message";
 import Clipboard from '@react-native-clipboard/clipboard';
 import { ApplicationContext } from './ApplicationContext';
+import { storageKeys } from './constants/storageKeys';
+import { snippetTypes } from './constants/snippetTypes';
 import { snippetSources } from './constants/snippetSources';
 import api from './helpers/api';
 import storage from './helpers/storage';
@@ -103,6 +105,7 @@ export default function App() {
     dispatch({ type: 'LOGGING_OUT' });
     try {
       await storage.deleteCredentials();
+      await getSnippetLists();
       console.log('App.js -> logout: Deleted credentials from storage..');
     } catch (error) {
       console.error('App.js -> logout: Logging out user failed with error: ' + error.message);
@@ -110,34 +113,43 @@ export default function App() {
     dispatch({ type: 'LOGGED_OUT' });
   };
 
+  const refresh = async () => {
+    console.log('App.js -> refresh: Refreshing login, snippets, widgets, etc.');
+    loginWithStorage();
+  };
+
   const handleDeepLink = async (event) => {
     console.log('App.js -> handleDeepLink: Handling deep link', event?.url);
     const url = event.url;
     const route = url.replace(/.*?:\/\//g, '');
     const [path, param] = route.split('/');
-    if (path === 'snippets' && param) {
-      console.log(`App.js -> handleDeepLink: Navigating to Snippets screen to handle deep link for snippet Id ${param}`);
-      navigation.popToTop();
-      navigation.push('Snippets', { deepLinkSnippetId: param });
-    } else if (path === 'copy' && param) {
-      console.log(`App.js -> handleDeepLink: copy for snippet ID ${param}`);
+    if ((path === 'snippets' || path === 'copy') && param) {
+      console.log(`App.js -> handleDeepLink: Getting shared data for snippet Id ${param}`);
       const snippetLists = await widget.getData('snippetLists');
       const snippet = snippetLists?.reduce((result, list) => result || list.snippets?.find(snippet => snippet.id == param) || (list.id == param ? list : null), null);
       if (snippet) {
-        console.log(`App.js -> handleDeepLink: copying to clipboard text ${snippet.content}`);
-        Clipboard.setString(snippet.content);
-        banner.showSuccessMessage('The text was copied to the clipboard', `"${snippet.content}"`);
+        if (path === 'snippets') {
+          console.log(`App.js -> handleDeepLink: Navigating to Snippets screen to handle deep link for snippet Id ${param}`);
+          navigation.popToTop();
+          if (snippet.id !== (storageKeys.SNIPPET + 0)) {
+            navigation.push('Snippets', { parentSnippet: snippet, callbacks: [refresh] });
+          }
+        } else { // path === 'copy'
+          console.log(`App.js -> handleDeepLink: copy for snippet ID ${param}`);
+          Clipboard.setString(snippet.content);
+          banner.showSuccessMessage('The text was copied to the clipboard', `"${snippet.content}"`);
+        }
       } else {
         console.warn(`App.js -> handleDeepLink: could not find snippet for ID ${param}`);
       }
     } else if (path === 'search') {
       console.log(`App.js -> handleDeepLink: Navigating to Search screen to handle deep link`);
       navigation.popToTop();
-      navigation.push('Snippets', { deepLinkSearch: true });
+      navigation.navigate('Search', { callbacks: [refresh] });
     } else if (path === 'add') {
       console.log(`App.js -> handleDeepLink: Navigating to Snippet screen to handle deep link`);
       navigation.popToTop();
-      navigation.push('Snippets', { deepLinkAddSnippet: true });
+      navigation.navigate('Snippet', { snippet: { type: snippetTypes.SINGLE, color_id: colors.lightYellow.id, }, callbacks: [refresh], });
     }
   };
 
