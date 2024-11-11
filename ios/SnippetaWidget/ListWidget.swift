@@ -43,8 +43,9 @@ struct ListWidgetEntryView : View {
 }
 
 private func getSnippetListButton(snippetList: SnippetList, copiedSnippetId: String?) -> some View {
+  let url = snippetList.type == SnippetType.SINGLE.rawValue ? "snippeta://copy/\(snippetList.id)" : "snippeta://snippets/\(snippetList.id)"
   return
-    Link(destination: URL(string: "snippeta://copy/\(snippetList.id)")!) {
+    Link(destination: URL(string: url)!) {
     //Button(intent: CopyToClipboardAppIntent(snippetId: snippetList.id, text: snippetList.content)) {
       HStack(alignment: .center, spacing: 7) {
         

@@ -74,6 +74,11 @@ struct SnippetList: AppEntity, Decodable, Hashable {
   }
 }
 
+enum SnippetType: Int {
+  case SINGLE = 0
+  case MULTIPLE = 1
+}
+
 enum SnippetSource: String {
   case STORAGE = "On device"
   case API = "Cloud"
