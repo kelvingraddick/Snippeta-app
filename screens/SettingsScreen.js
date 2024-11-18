@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useActionSheet } from '@expo/react-native-action-sheet';
 import { ApplicationContext } from '../ApplicationContext';
 import colors from '../helpers/colors';
 import banner from '../helpers/banner';
@@ -10,6 +11,8 @@ const SettingsScreen = ({ navigation }) => {
   const { user, isUserLoading, logout } = useContext(ApplicationContext);
 
   const [isLoading, setIsLoading] = useState(true);
+
+  const { showActionSheetWithOptions } = useActionSheet();
 
   const onBackTapped = async () => {
     navigation.goBack();
@@ -28,10 +31,24 @@ const SettingsScreen = ({ navigation }) => {
   };
 
   const onLogoutTapped = async () => {
-    navigation.popToTop();
-    await logout();
-
-    banner.showSuccessMessage('Logged out!');
+    const options = { 'Logout': 0, 'Cancel': 1 };
+    showActionSheetWithOptions(
+      {
+        title: 'Are you sure you want to logout of your account?',
+        options: Object.keys(options),
+        destructiveButtonIndex: options.Logout,
+        cancelButtonIndex: options.Cancel,
+      },
+      async (selectedIndex) => {
+        switch (selectedIndex) {
+          case options.Logout:
+            navigation.popToTop();
+            await logout();
+            banner.showSuccessMessage('Logged out!');
+            break;
+        }
+      }
+    );
   };
 
   return (
