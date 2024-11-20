@@ -61,14 +61,24 @@ const SettingsScreen = ({ navigation }) => {
           <Text style={styles.title}>Settings</Text>
           <View style={styles.placeholderIcon} />
         </View>
-        <View style={styles.infoView}>
-          { user && user.email_address && 
-            <Text style={styles.title}>{user.email_address}</Text>
-          }
-          { user && user.phone_number && 
-            <Text style={styles.title}>{user.phone_number}</Text>
-          }
+        <View style={styles.logoView}>
+          <Image source={require('../assets/images/logo.png')} style={styles.logoIcon} tintColor={colors.white.hexCode} resizeMode='contain' />
+          <Text style={styles.subTitle}>Cloud</Text>
         </View>
+        { !user &&
+          <View style={styles.infoView}>
+            <Text style={styles.descriptionText}>Create an account for <Text style={{ fontWeight: 'bold' }}>more features</Text></Text>
+            <View style={styles.infoView}>
+              <Text style={styles.featureText}>☁️ Save snippets to the Cloud to never lose them</Text>
+              <Text style={styles.featureText}>📱 Access your snippets on different devices</Text>
+            </View>
+          </View>
+        }
+        { user && user.first_name && user.last_name &&
+          <View style={styles.infoView}>
+            <Text style={styles.descriptionText}>You are logged in as <Text style={{ fontWeight: 'bold' }}>{user.first_name} {user.last_name}</Text></Text>
+          </View>
+        }
         { user && 
           <ActionButton iconImageSource={require('../assets/images/user.png')} text={'Account'} color={colors.lightGreen} onTapped={() => onAccountTapped()} />
         }
@@ -110,6 +120,32 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
+    color: colors.white.hexCode
+  },
+  logoView: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 2,
+  },
+  logoIcon: {
+    height: 35,
+    width: 150,
+    marginTop: 6,
+  },
+  subTitle: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: colors.white.hexCode,
+  },
+  descriptionText: {
+    fontSize: 15,
+    textAlign: 'center',
+    marginBottom: 20,
+    color: colors.white.hexCode,
+  },
+  featureText: {
+    fontSize: 15,
     color: colors.white.hexCode
   },
   backIcon: {
