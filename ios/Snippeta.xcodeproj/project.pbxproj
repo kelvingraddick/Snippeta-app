@@ -32,6 +32,7 @@
 		B68377552CC0CAAE00BC1755 /* ShortcutWidgetConfigurationIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B683774E2CC0CAAE00BC1755 /* ShortcutWidgetConfigurationIntent.swift */; };
 		B68377562CC0CAAE00BC1755 /* ShortcutWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68377512CC0CAAE00BC1755 /* ShortcutWidget.swift */; };
 		B68377572CC0CAAE00BC1755 /* SnippetaWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68377522CC0CAAE00BC1755 /* SnippetaWidgetBundle.swift */; };
+		B6F0D5012D051AAF0023B0BF /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6F0D5002D051AAF0023B0BF /* StoreKit.framework */; };
 		E5C4676548DEE7CB10F23EF6 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 42FB28459BF5265885BA2952 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
@@ -103,6 +104,7 @@
 		B68377522CC0CAAE00BC1755 /* SnippetaWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetaWidgetBundle.swift; sourceTree = "<group>"; };
 		B6CC09E22CC4B30300ABB709 /* SnippetaWidgetExtension-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SnippetaWidgetExtension-Bridging-Header.h"; sourceTree = "<group>"; };
 		B6D391DF2CB4F2AC00EC0846 /* Snippeta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Snippeta.entitlements; path = Snippeta/Snippeta.entitlements; sourceTree = "<group>"; };
+		B6F0D5002D051AAF0023B0BF /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		E9E5E563F43D227E18278396 /* Pods-SnippetaWidgetExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnippetaWidgetExtension.release.xcconfig"; path = "Target Support Files/Pods-SnippetaWidgetExtension/Pods-SnippetaWidgetExtension.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -121,6 +123,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C80B921A6F3F58F76C31292 /* libPods-Snippeta.a in Frameworks */,
+				B6F0D5012D051AAF0023B0BF /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -173,6 +176,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B6F0D5002D051AAF0023B0BF /* StoreKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				5DCACB8F33CDC322A6C60F78 /* libPods-Snippeta.a */,
 				19F6CBCC0A4E27FBF8BF4A61 /* libPods-Snippeta-SnippetaTests.a */,
@@ -782,7 +786,10 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -854,7 +861,10 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
