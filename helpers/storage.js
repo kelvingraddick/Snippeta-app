@@ -36,7 +36,7 @@ const getSnippets = async (parentId) => {
   const allKeys = await AsyncStorage.getAllKeys();
   //console.log('storage.js -> getSnippets: All storage keys:', JSON.stringify(allKeys));
   const snippetKeys = allKeys.filter(key => key.startsWith(storageKeys.SNIPPET));
-  console.log(`storage.js -> getSnippets: Storage keys with parent ID ${parentId}:`);
+  //console.log(`storage.js -> getSnippets: Storage keys with parent ID ${parentId}:`);
   const snippets = [];
   for (const snippetKey of snippetKeys) {
     const item = await AsyncStorage.getItem(snippetKey);

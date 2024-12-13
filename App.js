@@ -170,9 +170,8 @@ export default function App() {
     storageSnippetLists = await storage.getSnippetLists();
     storageSnippetLists.forEach(x => { x.source = snippetSources.STORAGE; x.snippets.forEach(y => { y.source = snippetSources.STORAGE; }) });
     storageSnippetLists.sort((a, b) => a.order_index - b.order_index);
-    console.log(`App.js -> getSnippetLists: Got ${storageSnippetLists.length} snippet lists from storage:`, JSON.stringify(storageSnippetLists.map(x => x.id)));
 
-    // try to get api snippet lists
+    // try to get API snippet lists
     let apiSnippetLists = [];
     let response = await api.getSnippetLists(await storage.getAuthorizationToken());
     let responseJson = await response.json();

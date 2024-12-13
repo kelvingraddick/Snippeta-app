@@ -51,10 +51,9 @@ const SnippetsScreen = ({ route, navigation }) => {
         storageSnippets = await storage.getSnippets(parentSnippet?.id);
         storageSnippets.forEach(x => { x.source = snippetSources.STORAGE; });
         storageSnippets.sort((a, b) => a.order_index - b.order_index);
-        console.log(`SnippetsScreen.js -> getSnippets: Got ${storageSnippets.length} snippets from storage for parent ID ${parentSnippet?.id ?? 0}:`, JSON.stringify(storageSnippets.map(x => x.id)));
       }
       
-      // try to get api snippets for current parent ID
+      // try to get API snippets for current parent ID
       let apiSnippets = [];
       if (isRootSnippetsScreen || (parentSnippet.source == snippetSources.API && user)) {
         let response = await api.getSnippets(parentSnippet?.id ?? 0, await storage.getAuthorizationToken());
@@ -62,10 +61,10 @@ const SnippetsScreen = ({ route, navigation }) => {
         apiSnippets = responseJson.child_snippets ?? [];
         apiSnippets.forEach(x => { x.source = snippetSources.API; });
         apiSnippets.sort((a, b) => a.order_index - b.order_index);
-        console.log(`SnippetsScreen.js -> getSnippets: Got ${apiSnippets.length} snippets for parent ID ${parentSnippet?.id ?? 0}:`, JSON.stringify(apiSnippets.map(x => x.id)));
+        console.log(`SnippetsScreen.js -> getSnippets: Got ${apiSnippets.length} snippets from API for parent ID ${parentSnippet?.id ?? 0}:`, JSON.stringify(apiSnippets.map(x => x.id)));
       }
 
-      // combime storage and api snippets
+      // combime storage and API snippets
       let snippetSections =
         storageSnippets.length > 0 && apiSnippets.length > 0 ? [{ title: snippetSources.STORAGE, data: storageSnippets }, { title: snippetSources.API, data: apiSnippets }] :
         storageSnippets.length > 0 ? [{ data: storageSnippets }] :
@@ -99,7 +98,7 @@ const SnippetsScreen = ({ route, navigation }) => {
         await storage.deleteSnippet(snippet.id);
         console.log('SnippetScreen.js -> deleteSnippet: Deleted snippet from storage with ID ' + snippet.id);
       }
-      // if source is api, delete via api
+      // if source is API, delete via API
       else if (snippet.source == snippetSources.API && user) {
         const response = await api.deleteSnippet(snippet.id, await storage.getAuthorizationToken());
         const responseJson = await response.json();
@@ -145,7 +144,7 @@ const SnippetsScreen = ({ route, navigation }) => {
         await storage.moveSnippet(snippet);
         console.log('SnippetScreen.js -> moveSnippet: Moved snippet in storage with ID ' + snippet.id);
       }
-      // if source is api, move via api
+      // if source is API, move via API
       else if (snippet.source == snippetSources.API && user) {
         const response = await api.moveSnippet(snippet, await storage.getAuthorizationToken());
         const responseJson = await response.json();
