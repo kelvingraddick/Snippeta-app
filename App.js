@@ -16,6 +16,7 @@ import storage from './helpers/storage';
 import widget from './helpers/widget';
 import colors from './helpers/colors';
 import banner from './helpers/banner';
+import RevenueCat from './helpers/revenueCat';
 import SnippetsScreen from './screens/SnippetsScreen';
 import SnippetScreen from './screens/SnippetScreen';
 import SearchScreen from './screens/SearchScreen';
@@ -28,6 +29,7 @@ import UserScreen from './screens/UserScreen';
 const initialState = {
   user: undefined,
   isUserLoading: true,
+  subscription: undefined,
 }
 
 const reducer = (state, action) => {
@@ -40,6 +42,8 @@ const reducer = (state, action) => {
       return { ...state, isUserLoading: true };
     case 'LOGGED_OUT':
       return { ...state, user: null, isUserLoading: false };
+    case 'UPDATE_SUBSCRIPTION':
+      return { ...state, subscription: action.payload };
     default:
       return state;
   }
@@ -52,8 +56,9 @@ export default function App() {
 
   useEffect(() => {
     console.log('\n\n\nApp.js -> useEffect: STARTING APP');
-    
-    loginWithStorage();
+
+    RevenueCat.configure()
+      .then(loginWithStorage());
 
     Linking.getInitialURL().then((url) => { if (url) { handleDeepLink({ url }); }}); // handle deep link from app launch
     const urlEventBinding = Linking.addEventListener('url', handleDeepLink);  // handle deep link while app running
@@ -70,6 +75,7 @@ export default function App() {
       if (credentials) {
         await loginWithCredentials(credentials.emailOrPhone, credentials.password);
       } else {
+        await updateSubscriptionStatus();
         await getSnippetLists();
         dispatch({ type: 'LOGGED_IN', payload: null });
       }
@@ -90,6 +96,8 @@ export default function App() {
         delete user.password;
         console.log(`App.js -> loginWithCredentials: Login successful with user ID ${user.id}`);
         await storage.saveCredentials(emailOrPhone, password);
+        await RevenueCat.login(user.id);
+        await updateSubscriptionStatus(user);
         await getSnippetLists();
       } else {
         console.log('App.js -> loginWithCredentials: Login failed with error code: ' + responseJson?.error_code);
@@ -105,6 +113,7 @@ export default function App() {
     dispatch({ type: 'LOGGING_OUT' });
     try {
       await storage.deleteCredentials();
+      await updateSubscriptionStatus();
       await getSnippetLists();
       console.log('App.js -> logout: Deleted credentials from storage..');
     } catch (error) {
@@ -178,8 +187,21 @@ export default function App() {
     await widget.saveData('snippetLists', snippetLists);
   };
 
+  const updateSubscriptionStatus = async (user) => {
+    try {
+      const inAppSubscription = { type: 'IN-APP', data: (await RevenueCat.getSubscription() ?? null), };
+      const snippetaCloudSubscription = { type: 'SNIPPETA-CLOUD', data: (user?.type == 1 ? {} : null), };
+      console.log('App.js -> updateSubscriptionStatus: ' + (snippetaCloudSubscription?.data ? 'Found' : 'Did not find') + ' active Snippeta Cloud subscription');
+      const activeSubscription = inAppSubscription.data ? inAppSubscription : (snippetaCloudSubscription.data ? snippetaCloudSubscription : null);
+      console.log('App.js -> updateSubscriptionStatus: ' + (activeSubscription?.type ?? 'No active subscription'));
+      dispatch({ type: 'UPDATE_SUBSCRIPTION', payload: activeSubscription });
+    } catch (error) {
+      console.error('App.js -> updateSubscriptionStatus: syncing subscription failed with error: ' + error.message);
+    }
+  };
+
   return (
-    <ApplicationContext.Provider value={{...state, loginWithCredentials, logout}}>
+    <ApplicationContext.Provider value={{...state, loginWithCredentials, logout, updateSubscriptionStatus}}>
       <ActionSheetProvider>
         <NavigationContainer ref={navigationRef}>
           <Stack.Navigator initialRouteName="Snippets">
