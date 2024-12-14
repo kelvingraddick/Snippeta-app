@@ -297,6 +297,7 @@ const SnippetsScreen = ({ route, navigation }) => {
               <Image source={title == snippetSources.STORAGE ? require('../assets/images/device.png') : require('../assets/images/cloud.png')} style={styles.sectionHeaderIcon} tintColor={colors.darkGray.hexCode} />
             </View>
           )}
+          renderSectionFooter={() => <View style={{ height: 10 }}></View>}
         />
       }
     </View>

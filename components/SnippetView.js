@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     gap: 5,
     borderRadius: 5,
     paddingRight: 20,
-    marginBottom: 16,
+    marginBottom: 10,
   },
   barView: {
     width: 20,
