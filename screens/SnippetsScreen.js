@@ -186,22 +186,23 @@ const SnippetsScreen = ({ route, navigation }) => {
   };
 
   const onNewSnippetTapped = async () => {
-    const options = { 'Snippet (blank)': 0, 'Snippet (from clipboard)': 1, 'List': 2, 'Cancel': 3 };
+    const options = { 'New snippet (blank)': 0, 'New snippet (from clipboard)': 1, 'New list': 2, 'Cancel': 3 };
     showActionSheetWithOptions(
       {
-        title: 'What do you want to create?',
+        title: 'What do you want to add?',
+        tintColor: colors.white.hexCode,
         options: Object.keys(options),
         cancelButtonIndex: options.Cancel,
       },
       async (selectedIndex) => {
         switch (selectedIndex) {
-          case options['Snippet (blank)']:
+          case options['New snippet (blank)']:
             createSnippet(snippetTypes.SINGLE);
             break;
-          case options['Snippet (from clipboard)']:
+          case options['New snippet (from clipboard)']:
             createSnippet(snippetTypes.SINGLE, await Clipboard.getString());
             break;
-          case options['List']:
+          case options['New list']:
             createSnippet(snippetTypes.MULTIPLE);
             break;
         }
