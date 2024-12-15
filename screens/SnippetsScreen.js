@@ -286,7 +286,7 @@ const SnippetsScreen = ({ route, navigation }) => {
       { (isLoading || isUserLoading) &&
         <View style={styles.snippetsList}>
           {[0, 1, 2, 3, 4, 5].map(x => (
-            <SkeletonPlaceholder borderRadius={10} speed={300}>
+            <SkeletonPlaceholder key={x} borderRadius={10} speed={300}>
               <SkeletonPlaceholder.Item height={100} width={Dimensions.get('window').width - 40 } marginBottom={16} />
             </SkeletonPlaceholder>
           ))}
@@ -296,7 +296,7 @@ const SnippetsScreen = ({ route, navigation }) => {
         <SectionList
           style={styles.snippetsList}
           sections={snippetSections}
-          keyExtractor={(item, index) => item + index}
+          keyExtractor={(item, index) => item.id}
           stickySectionHeadersEnabled={false}
           renderItem={({item}) => <SnippetView snippet={item} onSnippetTapped={onSnippetTapped} onSnippetMenuTapped={onSnippetMenuTapped} isHidden={item.source == snippetSources.STORAGE ? !isOnDeviceSectionVisible : !isCloudSectionVisible} />}
           renderSectionHeader={({section: {title}}) => ( title &&
