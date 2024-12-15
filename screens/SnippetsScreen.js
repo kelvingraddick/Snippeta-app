@@ -13,6 +13,7 @@ import banner from '../helpers/banner';
 import colors from '../helpers/colors';
 import ActionButton from '../components/ActionButton';
 import SnippetView from '../components/SnippetView';
+import SnippetaCloudView from '../components/SnippetaCloudView';
 
 const SnippetsScreen = ({ route, navigation }) => {
   const parentSnippet = route.params?.parentSnippet;
@@ -314,9 +315,15 @@ const SnippetsScreen = ({ route, navigation }) => {
                   />
                 </View>
               </Pressable>
+              { ((title == snippetSources.API && snippetSections.find(x => x.title == snippetSources.API)?.data?.length == 0) && isCloudSectionVisible) &&
+                <SnippetaCloudView user={user} isLargeLogo={false} isCentered={false}>
+                  <ActionButton iconImageSource={require('../assets/images/cloud.png')} text={'Learn more'} color={colors.nebulaBlue} disabled={isLoading} onTapped={() => onSettingsTapped()} />
+                </SnippetaCloudView>
+              }
             </>
           )}
           renderSectionFooter={() => <View style={{ height: 10 }}></View>}
+          ListFooterComponent={() => <View style={{ height: 50 }}></View>}
         />
       }
     </View>

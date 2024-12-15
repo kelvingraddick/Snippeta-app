@@ -5,6 +5,7 @@ import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
 import { ApplicationContext } from '../ApplicationContext';
 import colors from '../helpers/colors';
 import banner from '../helpers/banner';
+import SnippetaCloudView from '../components/SnippetaCloudView';
 import ActionButton from '../components/ActionButton';
 
 const SettingsScreen = ({ navigation }) => {
@@ -121,42 +122,20 @@ const SettingsScreen = ({ navigation }) => {
         }
       </View>
       <ScrollView style={styles.scrollView}>
-        <View style={styles.adView}>
-          <View style={styles.adLogoView}>
-            <Image source={require('../assets/images/logo.png')} style={styles.logoIcon} tintColor={colors.darkGray.hexCode} resizeMode='contain' />
-            <Text style={styles.adSubTitle}>Cloud</Text>
-          </View>
+        <SnippetaCloudView user={user} isLargeLogo={true} isCentered={true}>
           { !user && 
-            <View style={styles.adInfoView}>
-              <Text style={styles.adDescriptionText}>Create an account for more features*</Text>
-              <View style={styles.adInfoView}>
-                <Text style={styles.adFeatureText}>☁️ Sync & backup snippets to the Cloud</Text>
-                <Text style={styles.adFeatureText}>📱 Access your snippets on different devices</Text>
-                <Text style={styles.adFeatureText}>🛒 Unlock <Text style={{ fontWeight: 'bold' }}>Snippeta Pro</Text> on multiple devices</Text>
-                <Text style={[styles.adFeatureText, { textAlign: 'center', fontStyle: 'italic', opacity: 0.50, marginTop: 5 }]}>*Requires a Snippeta Pro subscription</Text>
-              </View>
-            </View>
+            <>
+              <ActionButton iconImageSource={require('../assets/images/user.png')} text={'Login'} color={colors.lightGreen} disabled={isLoading} onTapped={() => onLoginTapped()} />
+              <ActionButton iconImageSource={require('../assets/images/list-icon.png')} text={'Register'} color={colors.lightBlue} disabled={isLoading} onTapped={() => onRegisterTapped()} />
+            </>
           }
-          { user && user.first_name && user.last_name &&
-            <View style={styles.adInfoView}>
-              <Text style={styles.adDescriptionText}>You are logged in as <Text style={{ fontWeight: 'bold' }}>{user.first_name} {user.last_name}</Text></Text>
-            </View>
+          { user && 
+            <>
+              <ActionButton iconImageSource={require('../assets/images/user.png')} text={'Account'} color={colors.lightGreen} disabled={isLoading} onTapped={() => onAccountTapped()} />
+              <ActionButton iconImageSource={require('../assets/images/back-arrow.png')} text={'Logout'} color={colors.gray} disabled={isLoading} onTapped={() => onLogoutTapped()} />
+            </>
           }
-          <View style={styles.adButtonsView}>
-            { !user && 
-              <>
-                <ActionButton iconImageSource={require('../assets/images/user.png')} text={'Login'} color={colors.lightGreen} disabled={isLoading} onTapped={() => onLoginTapped()} />
-                <ActionButton iconImageSource={require('../assets/images/list-icon.png')} text={'Register'} color={colors.lightBlue} disabled={isLoading} onTapped={() => onRegisterTapped()} />
-              </>
-            }
-            { user && 
-              <>
-                <ActionButton iconImageSource={require('../assets/images/user.png')} text={'Account'} color={colors.lightGreen} disabled={isLoading} onTapped={() => onAccountTapped()} />
-                <ActionButton iconImageSource={require('../assets/images/back-arrow.png')} text={'Logout'} color={colors.gray} disabled={isLoading} onTapped={() => onLogoutTapped()} />
-              </>
-            }
-          </View>
-        </View>
+        </SnippetaCloudView>
       </ScrollView>
     </View>
   );
@@ -226,44 +205,6 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
     padding: 20,
-  },
-  adView: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    padding: 20,
-    borderRadius: 10,
-    backgroundColor: colors.white.hexCode,
-  },
-  adLogoView: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 2,
-  },
-  adInfoView: {
-    marginBottom: 10,
-  },
-  adSubTitle: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    color: colors.darkGray.hexCode,
-  },
-  adDescriptionText: {
-    fontSize: 15,
-    textAlign: 'center',
-    marginBottom: 20,
-    color: colors.darkGray.hexCode,
-  },
-  adFeatureText: {
-    fontSize: 15,
-    color: colors.darkGray.hexCode,
-    marginBottom: 3,
-  },
-  adButtonsView: {
-    alignSelf: 'stretch',
-    justifyContent: 'space-evenly',
   },
 });
 
