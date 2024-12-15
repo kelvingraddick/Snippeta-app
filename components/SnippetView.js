@@ -4,8 +4,9 @@ import colors from '../helpers/colors';
 import { snippetTypes } from '../constants/snippetTypes';
 
 const SnippetView = (props) => {
-  const { snippet, onSnippetTapped, onSnippetMenuTapped } = props;
+  const { snippet, onSnippetTapped, onSnippetMenuTapped, isHidden } = props;
   return (
+    !isHidden &&
     <TouchableOpacity style={[styles.container, { backgroundColor: colors.white.hexCode }]} onPress={() => onSnippetTapped(snippet)}>
       <View style={[styles.barView, { backgroundColor: colors.getById(snippet.color_id)?.hexCode }]}></View>
       <View style={styles.contentView}>

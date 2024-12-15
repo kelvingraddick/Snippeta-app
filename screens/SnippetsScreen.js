@@ -23,6 +23,8 @@ const SnippetsScreen = ({ route, navigation }) => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [snippetSections, setSnippetSections] = useState([]);
+  const [isOnDeviceSectionVisible, setIsOnDeviceSectionVisible] = useState(true);
+  const [isCloudSectionVisible, setIsCloudSectionVisible] = useState(true);
 
   const { showActionSheetWithOptions } = useActionSheet();
 
@@ -65,14 +67,18 @@ const SnippetsScreen = ({ route, navigation }) => {
       }
 
       // combime storage and API snippets
-      let snippetSections =
-        storageSnippets.length > 0 && apiSnippets.length > 0 ? [{ title: snippetSources.STORAGE, data: storageSnippets }, { title: snippetSources.API, data: apiSnippets }] :
-        storageSnippets.length > 0 ? [{ data: storageSnippets }] :
-        apiSnippets.length > 0 ? [{ data: apiSnippets }] :
-        [];
+      let snippetSections = [];
+      if (isRootSnippetsScreen) {
+        if ((storageSnippets.length > 0 && apiSnippets.length > 0) || storageSnippets.length > 0) { snippetSections.push({ title: snippetSources.STORAGE, data: storageSnippets }, { title: snippetSources.API, data: apiSnippets }); }
+        else if (apiSnippets.length > 0) { snippetSections.push({ title: snippetSources.API, data: apiSnippets }); }
+      } else {
+        if (storageSnippets.length > 0 && apiSnippets.length > 0) { snippetSections.push({ title: snippetSources.STORAGE, data: storageSnippets }, { title: snippetSources.API, data: apiSnippets }); }
+        else if (storageSnippets.length > 0) { snippetSections.push({ data: storageSnippets }); }
+        else if (apiSnippets.length > 0) { snippetSections.push({ data: apiSnippets }); }
+      }
       
       // if in root snippet list, and no snippets exist, then populate with tutorial snippets in storage
-      if (isRootSnippetsScreen && snippetSections.length == 0) {
+      if (isRootSnippetsScreen && storageSnippets.length == 0 && apiSnippets.length == 0) {
         console.log('SnippetsScreen.js -> getSnippets: No snippets in root snippet list. Adding tutorial snippets..');
         for (const tutorialSnippet of tutorialSnippets) {
           await storage.saveSnippet(tutorialSnippet);
@@ -291,12 +297,24 @@ const SnippetsScreen = ({ route, navigation }) => {
           sections={snippetSections}
           keyExtractor={(item, index) => item + index}
           stickySectionHeadersEnabled={false}
-          renderItem={({item}) => <SnippetView snippet={item} onSnippetTapped={onSnippetTapped} onSnippetMenuTapped={onSnippetMenuTapped} />}
+          renderItem={({item}) => <SnippetView snippet={item} onSnippetTapped={onSnippetTapped} onSnippetMenuTapped={onSnippetMenuTapped} isHidden={item.source == snippetSources.STORAGE ? !isOnDeviceSectionVisible : !isCloudSectionVisible} />}
           renderSectionHeader={({section: {title}}) => ( title &&
-            <View style={styles.sectionHeaderView}>
-              <Text style={styles.sectionHeaderText}>{title}</Text>
-              <Image source={title == snippetSources.STORAGE ? require('../assets/images/device.png') : require('../assets/images/cloud.png')} style={styles.sectionHeaderIcon} tintColor={colors.darkGray.hexCode} />
-            </View>
+            <>
+              <Pressable 
+                onPress={() => { if (title == snippetSources.STORAGE) { setIsOnDeviceSectionVisible(!isOnDeviceSectionVisible); } else { setIsCloudSectionVisible(!isCloudSectionVisible); }}}
+                hitSlop={20}
+                disabled={isLoading || isUserLoading}
+              >
+                <View style={styles.sectionHeaderView}>
+                  <Text style={styles.sectionHeaderText}>{title == snippetSources.STORAGE ? '📱' : '☁️'} {title}</Text>
+                  <Image
+                    source={require('../assets/images/back-arrow.png')}
+                    style={[styles.sectionHeaderButtonIcon, { transform: [{ rotate: (title == snippetSources.STORAGE ? (isOnDeviceSectionVisible ? '-90deg' : '180deg') : (isCloudSectionVisible ? '-90deg' : '180deg')) }], }]}
+                    tintColor={colors.darkGray.hexCode}
+                  />
+                </View>
+              </Pressable>
+            </>
           )}
           renderSectionFooter={() => <View style={{ height: 10 }}></View>}
         />
@@ -368,19 +386,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 5,
     marginBottom: 15,
-  }, 
-  sectionHeaderIcon: {
-    height: 20,
-    width: 20,
-    color: colors.darkGray.hexCode,
-    opacity: 0.25,
   },
   sectionHeaderText: {
     flex: 1,
     fontSize: 17,
     fontWeight: 'bold',
     color: colors.darkGray.hexCode,
-  }
+  },
+  sectionHeaderButtonIcon: {
+    width: 20,
+    height: 20,
+    resizeMode: 'cover',
+    color: colors.darkGray.hexCode,
+    opacity: 0.25,
+  },
 });
 
 export default SnippetsScreen;
