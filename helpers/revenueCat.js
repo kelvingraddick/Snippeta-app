@@ -4,7 +4,7 @@ import Purchases, { LOG_LEVEL } from 'react-native-purchases';
 const configure = async function () {
   try {
     await Purchases.setLogLevel(LOG_LEVEL.VERBOSE);
-    Purchases.configure({ apiKey: (Platform.OS === 'ios' ? 'appl_DPAuKeaWaZokumYNodUGFJebqdQ' : '<revenuecat_project_google_api_key>') });
+    Purchases.configure({ apiKey: (Platform.OS === 'ios' ? '<revenuecat_project_apple_api_key>' : '<revenuecat_project_google_api_key>') });
     console.log('RevenueCat -> configure: in-app purchase library (RevenueCat) configued with app user Id ', await Purchases.getAppUserID());
   } catch (error) {
     console.error('RevenueCat -> configure: in-app purchase library (RevenueCat) configuration failed with error:', error.message);
