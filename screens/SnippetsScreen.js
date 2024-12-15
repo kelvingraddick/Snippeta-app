@@ -279,7 +279,7 @@ const SnippetsScreen = ({ route, navigation }) => {
       { (isLoading || isUserLoading) &&
         <View style={styles.snippetsList}>
           {[0, 1, 2, 3, 4, 5].map(x => (
-            <SkeletonPlaceholder borderRadius={10} speed={200}>
+            <SkeletonPlaceholder borderRadius={10} speed={300}>
               <SkeletonPlaceholder.Item height={100} width={Dimensions.get('window').width - 40 } marginBottom={16} />
             </SkeletonPlaceholder>
           ))}
