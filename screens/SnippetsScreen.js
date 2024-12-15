@@ -281,7 +281,7 @@ const SnippetsScreen = ({ route, navigation }) => {
             </Pressable>
           }
         </View>
-        <ActionButton iconImageSource={require('../assets/images/copy-white.png')} text={'Add new snippet or list'} color={colors.nebulaBlue} disabled={isLoading || isUserLoading} onTapped={() => onNewSnippetTapped()} />
+        <ActionButton iconImageSource={require('../assets/images/plus.png')} text={'Add new snippet or list'} color={colors.nebulaBlue} disabled={isLoading || isUserLoading} onTapped={() => onNewSnippetTapped()} />
       </View>
       { (isLoading || isUserLoading) &&
         <View style={styles.snippetsList}>
