@@ -251,12 +251,3 @@ export default function App() {
     </ApplicationContext.Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  messageIcon: {
-    height: 20,
-    width: 20,
-    color: colors.darkGray.hexCode,
-    opacity: 0.25,
-  },
-});
