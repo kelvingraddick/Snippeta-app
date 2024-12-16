@@ -179,12 +179,6 @@ const styles = StyleSheet.create({
     width: 25,
     marginTop: 2,
   },
-  messageIcon: {
-    height: 20,
-    width: 20,
-    color: colors.darkGray.hexCode,
-    opacity: 0.25,
-  },
   inputView: {
     marginBottom: 20,
     padding: 20,
