@@ -2,13 +2,12 @@ import React, { useContext, useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { ApplicationContext } from '../ApplicationContext';
 import { errorCodeMessages } from '../constants/errorCodeMessages';
-import colors from '../helpers/colors';
 import banner from '../helpers/banner';
 import ActionButton from '../components/ActionButton';
 
 const LoginScreen = ({ navigation }) => {
   
-  const { loginWithCredentials } = useContext(ApplicationContext);
+  const { themer, loginWithCredentials } = useContext(ApplicationContext);
 
   const [isLoading, setIsLoading] = useState(false);
   const [credentials, setCredentials] = useState(true);
@@ -49,25 +48,25 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.headerView}>
+    <View style={[styles.container, { backgroundColor: themer.getColor('background1').hexCode }]}>
+      <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background').hexCode } ]}>
         <View style={styles.titleView}>
           <Pressable onPress={onBackTapped} hitSlop={20}>
-            <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={colors.white.hexCode} />
+            <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={themer.getColor('screenHeader1.foreground').hexCode} />
           </Pressable>
-          <Text style={styles.title}>Login</Text>
+          <Text style={[styles.title, { color: themer.getColor('screenHeader1.foreground').hexCode }]}>Login</Text>
           <View style={styles.placeholderIcon} />
         </View>
       </View>
       <View style={styles.inputsView}>
-        <View style={styles.inputView}>
-          <TextInput style={styles.input} placeholder={'Email or phone..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={50} keyboardType='email-address' textContentType='username' autoCapitalize='none' onChangeText={onEmailOrPhoneChangeText} />
+        <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background').hexCode }]}>
+          <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground').hexCode }]} placeholder={'Email or phone..'} placeholderTextColor={themer.getColor('textInput1.foreground').hexCode} maxLength={50} keyboardType='email-address' textContentType='username' autoCapitalize='none' onChangeText={onEmailOrPhoneChangeText} />
         </View>
-        <View style={styles.inputView}>
-          <TextInput style={styles.input} placeholder={'Password..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={100} secureTextEntry={true} textContentType='password' onChangeText={onPasswordChangeText} />
+        <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background').hexCode }]}>
+          <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground').hexCode }]} placeholder={'Password..'} placeholderTextColor={themer.getColor('textInput1.foreground').hexCode} maxLength={100} secureTextEntry={true} textContentType='password' onChangeText={onPasswordChangeText} />
         </View>
-        <ActionButton iconImageSource={require('../assets/images/user.png')} text={'Login'} color={colors.lightGreen} disabled={isLoading} onTapped={() => onLoginTapped()} />
-        <ActionButton iconImageSource={require('../assets/images/gear-gray.png')} text={'Forgot Password'} color={colors.gray} onTapped={() => onForgotPasswordTapped()} />
+        <ActionButton iconImageSource={require('../assets/images/user.png')} text={'Login'} foregroundColor={themer.getColor('button2.foreground')} backgroundColor={themer.getColor('button2.background')} disabled={isLoading} onTapped={() => onLoginTapped()} />
+        <ActionButton iconImageSource={require('../assets/images/gear-gray.png')} text={'Forgot Password'} foregroundColor={themer.getColor('button4.foreground')} backgroundColor={themer.getColor('button4.background')} onTapped={() => onForgotPasswordTapped()} />
       </View>
     </View>
   );
@@ -76,12 +75,10 @@ const LoginScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.gray.hexCode,
   },
   headerView: {
     padding: 20,
     paddingTop: 60,
-    backgroundColor: colors.darkGray.hexCode,
   },
   titleView: {
     flexDirection: 'row',
@@ -92,7 +89,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: colors.white.hexCode
   },
   backIcon: {
     height: 25,
@@ -112,12 +108,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     padding: 20,
     borderRadius: 30,
-    backgroundColor: colors.whiteGray.hexCode,
   },
   input: {
     fontSize: 17,
     fontWeight: 'bold',
-    color: colors.darkGray.hexCode
   },
 });
 

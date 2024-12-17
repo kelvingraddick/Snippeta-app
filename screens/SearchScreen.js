@@ -8,14 +8,13 @@ import { snippetTypes } from '../constants/snippetTypes';
 import { snippetSources } from '../constants/snippetSources';
 import api from '../helpers/api';
 import storage from '../helpers/storage';
-import colors from '../helpers/colors';
 import banner from '../helpers/banner';
 import SnippetView from '../components/SnippetView';
 
 const SearchScreen = ({ route, navigation }) => {
   const callbacks = route.params.callbacks || [];
 
-  const { user, isUserLoading } = useContext(ApplicationContext);
+  const { themer, user, isUserLoading } = useContext(ApplicationContext);
 
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useState("");
@@ -104,17 +103,17 @@ const SearchScreen = ({ route, navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.headerView}>
+    <View style={[styles.container, { backgroundColor: themer.getColor('background1').hexCode }]}>
+      <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background').hexCode } ]}>
         <View style={styles.titleView}>
           <Pressable onPress={onBackTapped} hitSlop={20}>
-            <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={colors.white.hexCode} />
+            <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={themer.getColor('screenHeader1.foreground').hexCode} />
           </Pressable>
-          <Text style={styles.title}>Search</Text>
+          <Text style={[styles.title, { color: themer.getColor('screenHeader1.foreground').hexCode }]}>Search</Text>
           <View style={styles.placeholderIcon} />
         </View>
-        <View style={styles.inputView}>
-          <TextInput style={styles.input} placeholder={'Search text..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={50} autoCapitalize='none' autoFocus value={query} onChangeText={onQueryChangeText} />
+        <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput2.background').hexCode }]}>
+          <TextInput style={[styles.input, { color: themer.getColor('textInput2.foreground').hexCode }]} placeholder={'Search text..'} placeholderTextColor={themer.getColor('textInput2.foreground').hexCode} maxLength={50} autoCapitalize='none' autoFocus value={query} onChangeText={onQueryChangeText} />
         </View>
       </View>
       { (isLoading || isUserLoading) &&
@@ -132,13 +131,14 @@ const SearchScreen = ({ route, navigation }) => {
           sections={snippetSections}
           keyExtractor={(item, index) => item + index}
           stickySectionHeadersEnabled={false}
-          renderItem={({item}) => <SnippetView snippet={item} onSnippetTapped={onSnippetTapped} onSnippetMenuTapped={onSnippetMenuTapped} />}
+          renderItem={({item}) => <SnippetView snippet={item} onSnippetTapped={onSnippetTapped} onSnippetMenuTapped={onSnippetMenuTapped} themer={themer} />}
           renderSectionHeader={({section: {title}}) => ( title &&
             <View style={styles.sectionHeaderView}>
-              <Image source={title == snippetSources.STORAGE ? require('../assets/images/device.png') : require('../assets/images/cloud.png')} style={styles.sectionHeaderIcon} tintColor={colors.darkGray.hexCode} />
-              <Text style={styles.sectionHeaderText}>{title}</Text>
+              <Text style={[styles.sectionHeaderText, { color: themer.getColor('listHeader1.foreground').hexCode }]}>{title == snippetSources.STORAGE ? '📱' : '☁️'} {title}</Text>
             </View>
           )}
+          renderSectionFooter={() => <View style={{ height: 10 }}></View>}
+          ListFooterComponent={() => <View style={{ height: 50 }}></View>}
         />
       }
     </View>
@@ -148,12 +148,10 @@ const SearchScreen = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.gray.hexCode,
   },
   headerView: {
     padding: 20,
     paddingTop: 60,
-    backgroundColor: colors.darkGray.hexCode,
   },
   titleView: {
     flexDirection: 'row',
@@ -167,7 +165,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
-    color: colors.white.hexCode
   },
   backIcon: {
     height: 25,
@@ -183,12 +180,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     padding: 20,
     borderRadius: 30,
-    backgroundColor: colors.lightYellow.hexCode,
   },
   input: {
     fontSize: 17,
     fontWeight: 'bold',
-    color: colors.darkGray.hexCode
   },
   snippetsList: {
     padding: 20
@@ -197,24 +192,19 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     gap: 5,
-    paddingBottom: 7.5,
     marginBottom: 15,
-    borderBottomWidth: 4,
-    borderColor: 'rgba(29, 32, 39, .1)', // colors.darkGray.hexCode
-  }, 
-  sectionHeaderIcon: {
-    height: 20,
-    width: 20,
-    color: colors.darkGray.hexCode,
-    opacity: 0.25,
   },
   sectionHeaderText: {
     flex: 1,
     fontSize: 17,
     fontWeight: 'bold',
-    color: colors.darkGray.hexCode,
-    opacity: 0.50,
-  }
+  },
+  sectionHeaderButtonIcon: {
+    width: 20,
+    height: 20,
+    resizeMode: 'cover',
+    opacity: 0.25,
+  },
 });
 
 export default SearchScreen;

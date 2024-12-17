@@ -1,7 +1,6 @@
 class Color {
-  constructor(hexCode, id) {
+  constructor(hexCode) {
     this.hexCode = hexCode;
-    this.id = id;
   }
 
   toString() {
@@ -10,26 +9,20 @@ class Color {
 }
 
 const colors = {
-  white: new Color('#fff', 0),
-  black: new Color('#000', null),
-  gray: new Color('#dfdfdf', null),
-  darkGray: new Color('#1d2027', null),
-  whiteGray: new Color('#f5f5f5', null),
-  lightGray: new Color('#f7f7f7', 6),
-  lightYellow: new Color('#fad275', 1),
-  lightGreen: new Color('#a9cc8e', 4),
-  lightBlue: new Color('#3098c5', 2),
-  lightPurple: new Color('#986b9b', 5),
-  lightRed: new Color('#fb7477', 3),
-  nebulaBlue: new Color('#5c63ff', 100),
-  turquoise: new Color('#33d9b1', null),
-}
-
-const getById = (id) => {
-  return Object.keys(colors).map(key => colors[key]).find(color => color.id == id);
+  white: new Color('#fff'),
+  black: new Color('#000'),
+  gray: new Color('#dfdfdf'),
+  darkGray: new Color('#1d2027'),
+  whiteGray: new Color('#f5f5f5'),
+  lightGray: new Color('#f7f7f7'),
+  lightYellow: new Color('#fad275'),
+  lightGreen: new Color('#a9cc8e'),
+  lightBlue: new Color('#3098c5'),
+  lightPurple: new Color('#986b9b'),
+  lightRed: new Color('#fb7477'),
+  nebulaBlue: new Color('#5c63ff'),
 }
 
 export default {
   ...colors,
-  getById
 };

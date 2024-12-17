@@ -11,10 +11,11 @@ import { ApplicationContext } from './ApplicationContext';
 import { storageKeys } from './constants/storageKeys';
 import { snippetTypes } from './constants/snippetTypes';
 import { snippetSources } from './constants/snippetSources';
+import { colorIds } from './constants/colorIds';
+import Themer from './helpers/themer';
 import api from './helpers/api';
 import storage from './helpers/storage';
 import widget from './helpers/widget';
-import colors from './helpers/colors';
 import banner from './helpers/banner';
 import RevenueCat from './helpers/revenueCat';
 import SnippetsScreen from './screens/SnippetsScreen';
@@ -27,6 +28,7 @@ import RegisterScreen from './screens/RegisterScreen';
 import UserScreen from './screens/UserScreen';
 
 const initialState = {
+  themer: new Themer('default-light'),
   user: undefined,
   isUserLoading: true,
   subscription: undefined,
@@ -34,6 +36,8 @@ const initialState = {
 
 const reducer = (state, action) => {
   switch(action.type) {
+    case 'UPDATE_THEMER':
+      return { ...state, themer: action.payload };
     case 'LOGGING_IN':
       return { ...state, isUserLoading: true };
     case 'LOGGED_IN':
@@ -58,6 +62,7 @@ export default function App() {
     console.log('\n\n\nApp.js -> useEffect: STARTING APP');
 
     RevenueCat.configure()
+      .then(loadThemeFromStorage())
       .then(loginWithStorage());
 
     Linking.getInitialURL().then((url) => { if (url) { handleDeepLink({ url }); }}); // handle deep link from app launch
@@ -158,7 +163,7 @@ export default function App() {
     } else if (path === 'add') {
       console.log(`App.js -> handleDeepLink: Navigating to Snippet screen to handle deep link`);
       navigation.popToTop();
-      navigation.navigate('Snippet', { snippet: { type: snippetTypes.SINGLE, color_id: colors.lightYellow.id, }, callbacks: [refresh], });
+      navigation.navigate('Snippet', { snippet: { type: snippetTypes.SINGLE, color_id: colorIds.COLOR_0, }, callbacks: [refresh], });
     }
   };
 
@@ -186,6 +191,22 @@ export default function App() {
     await widget.saveData('snippetLists', snippetLists);
   };
 
+  const loadThemeFromStorage = async () => {
+    console.log('App.js -> loadThemeFromStorage: about to load theme Id from storage and set in app..');
+    const themeId = await storage.getThemeId();
+    await updateThemer(themeId);
+  };
+
+  const updateThemer = async (themeId) => {
+    try {
+      const themer = new Themer(themeId);
+      console.log(`App.js -> updateThemer: ${themeId ? `updated themer with id '${themeId}' and name '${themer.getName()}'` : `no theme found; using default '${themer.getName()}'`}`);
+      dispatch({ type: 'UPDATE_THEMER', payload: themer });
+    } catch (error) {
+      console.error('App.js -> updateThemer: updating themer failed with error: ' + error.message);
+    }
+  }
+
   const updateSubscriptionStatus = async (user) => {
     try {
       const inAppSubscription = { type: 'IN-APP', data: (await RevenueCat.getSubscription() ?? null), };
@@ -200,7 +221,7 @@ export default function App() {
   };
 
   return (
-    <ApplicationContext.Provider value={{...state, loginWithCredentials, logout, updateSubscriptionStatus}}>
+    <ApplicationContext.Provider value={{...state, updateThemer, loginWithCredentials, logout, updateSubscriptionStatus}}>
       <ActionSheetProvider>
         <NavigationContainer ref={navigationRef}>
           <Stack.Navigator initialRouteName="Snippets">

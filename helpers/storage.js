@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import validator from './validator';
-import colors from './colors';
+import { colorIds } from '../constants/colorIds';
 import { storageKeys } from '../constants/storageKeys';
 import { snippetTypes } from '../constants/snippetTypes';
 
@@ -59,7 +59,7 @@ const getSnippetLists = async () => {
     const snippet = JSON.parse(item);
     snippets.push(snippet);
   }
-  let snippetLists = [{ id: storageKeys.SNIPPET + 0, type: snippetTypes.MULTIPLE, title: 'Default', content: "Default", color_id: colors.nebulaBlue.id, order_index: 0 }]; // root snippet list
+  let snippetLists = [{ id: storageKeys.SNIPPET + 0, type: snippetTypes.MULTIPLE, title: 'Default', content: "Default", color_id: colorIds.COLOR_100, order_index: 0 }]; // root snippet list
   snippetLists = snippetLists.concat(snippets.filter(x => x.type === snippetTypes.MULTIPLE));
   for (let i = 0; i < snippetLists.length; i++) {
     snippetLists[i].snippets = snippetLists[i].id === storageKeys.SNIPPET + 0 ?
@@ -127,6 +127,16 @@ const moveSnippet = async (snippet) => {
   }
 };
 
+const getThemeId = async () => {
+  return await AsyncStorage.getItem(storageKeys.THEME_ID);
+};
+
+const saveThemeId = async (themeId) => {
+  console.log('storage.js -> saveTheme: Saving theme with ID', themeId);
+  await AsyncStorage.setItem(storageKeys.THEME_ID, themeId);
+  console.log('storage.js -> saveTheme: Saved theme with ID', themeId);
+};
+
 export default {
   getCredentials,
   saveCredentials,
@@ -139,4 +149,6 @@ export default {
   saveSnippet,
   deleteSnippet,
   moveSnippet,
+  getThemeId,
+  saveThemeId,
 };

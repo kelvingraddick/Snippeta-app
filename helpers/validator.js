@@ -1,4 +1,4 @@
-import colors from './colors';
+import { colorIds } from '../constants/colorIds';
 import { snippetTypes } from '../constants/snippetTypes';
 import { snippetSources } from '../constants/snippetSources';
 import { storageKeys } from '../constants/storageKeys';
@@ -69,8 +69,8 @@ const isValidSnippet = (snippet) => {
   if (!snippet.content || snippet.title.length < 1 || snippet.title.length > 1000) {
     errorMessages.push('Snippet content must be between 1 and 1000 characters.');
   }
-  if (!colors.getById(snippet.color_id)) {
-    errorMessages.push(`Snippet color ID must be a valid one of the valid color IDs (0-4).'`);
+  if (!Object.values(colorIds).includes(snippet.color_id)) {
+    errorMessages.push(`Snippet color ID must be a valid color ID (typically 0-6 or 100).'`);
   }
   if (isNaN(Date.parse(snippet.time))) {
     errorMessages.push('Snippet time must be a valid datetime.');

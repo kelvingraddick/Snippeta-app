@@ -6,18 +6,21 @@ import { storageKeys } from '../constants/storageKeys';
 import { snippetTypes } from '../constants/snippetTypes';
 import storage from '../helpers/storage';
 import api from '../helpers/api';
-import colors from '../helpers/colors';
 import banner from '../helpers/banner';
 import { snippetSources } from '../constants/snippetSources';
 import { errorCodeMessages } from '../constants/errorCodeMessages';
+import { colorIds } from '../constants/colorIds';
 import ColorButton from '../components/ColorButton';
 
 const SnippetScreen = ({ route, navigation }) => {
   const callbacks = route.params.callbacks || [];
 
-  const snippetColors = [colors.lightYellow, colors.lightGreen, colors.lightBlue, colors.lightPurple, colors.lightRed, colors.lightGray];
+  const { themer, user, isUserLoading } = useContext(ApplicationContext);
 
-  const { user, isUserLoading } = useContext(ApplicationContext);
+  const snippetColorOptions = [
+    { id: colorIds.COLOR_1, hexCode: themer.getColor(colorIds.COLOR_1).hexCode }, { id: colorIds.COLOR_4, hexCode: themer.getColor(colorIds.COLOR_4).hexCode  }, { id: colorIds.COLOR_2, hexCode: themer.getColor(colorIds.COLOR_2).hexCode },
+    { id: colorIds.COLOR_5, hexCode: themer.getColor(colorIds.COLOR_5).hexCode  }, { id: colorIds.COLOR_3, hexCode: themer.getColor(colorIds.COLOR_3).hexCode  }, { id: colorIds.COLOR_6, hexCode: themer.getColor(colorIds.COLOR_6).hexCode },
+  ];
 
   const [isLoading, setIsLoading] = useState(false);
   const [snippet, setSnippet] = useState(route.params.snippet || {});
@@ -138,28 +141,28 @@ const SnippetScreen = ({ route, navigation }) => {
   }
 
   return (
-      <ScrollView style={styles.container}>
-        <View style={styles.headerView}>
+      <ScrollView style={[styles.container, { backgroundColor: themer.getColor('background2').hexCode }]}>
+        <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background').hexCode } ]}>
           <View style={styles.titleView}>
             <Pressable onPress={onBackTapped} hitSlop={20}>
-              <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={colors.white.hexCode} />
+              <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={themer.getColor('screenHeader1.foreground').hexCode} />
             </Pressable>
-            <Text style={styles.title}>{`${snippet.id ? 'Edit' : 'New'} ${snippet.type == snippetTypes.SINGLE ? 'snippet' : 'list'}`}</Text>
+            <Text style={[styles.title, { color: themer.getColor('screenHeader1.foreground').hexCode }]}>{`${snippet.id ? 'Edit' : 'New'} ${snippet.type == snippetTypes.SINGLE ? 'snippet' : 'list'}`}</Text>
             <Pressable onPress={onSaveTapped} hitSlop={20} disabled={isLoading || !snippet.title || snippet.title.length == 0 || !snippet.content || snippet.content.length == 0}>
-              <Image source={require('../assets/images/checkmark.png')} style={[styles.saveIcon, { opacity: isLoading || !snippet.title || snippet.title.length == 0 || !snippet.content || snippet.content.length == 0 ? .1 : 1 }]} tintColor={colors.white.hexCode} />
+              <Image source={require('../assets/images/checkmark.png')} style={[styles.saveIcon, { opacity: isLoading || !snippet.title || snippet.title.length == 0 || !snippet.content || snippet.content.length == 0 ? .1 : 1 }]} tintColor={themer.getColor('screenHeader1.foreground').hexCode} />
             </Pressable>
           </View>
           <View style={styles.buttonsView}>
-            {snippetColors.map((snippetColor, index) =>
-              (<ColorButton key={index} color={snippetColor} isSelected={colors.getById(snippet.color_id) == snippetColor} onTapped={onColorButtonTapped} />)
+            {snippetColorOptions.map((snippetColorOption, index) =>
+              (<ColorButton key={index} id={snippetColorOption.id} hexCode={snippetColorOption.hexCode} isSelected={snippet.color_id == snippetColorOption.id} onTapped={onColorButtonTapped} />)
             )}
           </View>
         </View>
-        <View style={[styles.titleInputView, { backgroundColor: colors.getById(snippet.color_id)?.hexCode }]}>
-          <TextInput style={styles.titleInput} placeholder={'Type or paste title here..'} placeholderTextColor={colors.darkGray.hexCode} multiline maxLength={50} onChangeText={onTitleChangeText}>{snippet.title}</TextInput>
+        <View style={[styles.titleInputView, { backgroundColor: themer.getColor(snippet.color_id)?.hexCode }]}>
+          <TextInput style={[styles.titleInput, { color: themer.getColor('textInput3.foreground').hexCode }]} placeholder={'Type or paste title here..'} placeholderTextColor={themer.getColor('textInput3.foreground').hexCode} multiline maxLength={50} onChangeText={onTitleChangeText}>{snippet.title}</TextInput>
         </View>
         <View style={styles.contentInputView}>
-          <TextInput style={styles.contentInput} placeholder={'Type or paste content here..'} placeholderTextColor={colors.darkGray.hexCode} multiline maxLength={1000} onChangeText={onContentChangeText}>{snippet.content}</TextInput>
+          <TextInput style={[styles.contentInput, { color: themer.getColor('textArea1.foreground').hexCode }]} placeholder={'Type or paste content here..'} placeholderTextColor={themer.getColor('textArea1.foreground').hexCode} multiline maxLength={1000} onChangeText={onContentChangeText}>{snippet.content}</TextInput>
         </View>
       </ScrollView>
   );
@@ -168,12 +171,10 @@ const SnippetScreen = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white.hexCode,
   },
   headerView: {
     padding: 20,
     paddingTop: 60,
-    backgroundColor: colors.darkGray.hexCode,
   },
   titleView: {
     flexDirection: 'row',
@@ -184,7 +185,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: colors.white.hexCode
   },
   backIcon: {
     height: 25,
@@ -214,7 +214,6 @@ const styles = StyleSheet.create({
   titleInput: {
     fontSize: 17,
     fontWeight: 'bold',
-    color: colors.darkGray.hexCode
   },
   contentInputView: {
     margin: 20,
@@ -222,7 +221,6 @@ const styles = StyleSheet.create({
   },
   contentInput: {
     fontSize: 17,
-    color: colors.darkGray.hexCode
   }
 });
 

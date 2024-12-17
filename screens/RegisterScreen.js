@@ -4,13 +4,12 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { ApplicationContext } from '../ApplicationContext';
 import { errorCodeMessages } from '../constants/errorCodeMessages';
 import api from '../helpers/api';
-import colors from '../helpers/colors';
 import banner from '../helpers/banner';
 import ActionButton from '../components/ActionButton';
 
 const RegisterScreen = ({ navigation }) => {
 
-  const { loginWithCredentials } = useContext(ApplicationContext);
+  const { themer, loginWithCredentials } = useContext(ApplicationContext);
 
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState({});
@@ -73,13 +72,13 @@ const RegisterScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.headerView}>
+    <View style={[styles.container, { backgroundColor: themer.getColor('background1').hexCode }]}>
+      <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background').hexCode } ]}>
         <View style={styles.titleView}>
           <Pressable onPress={onBackTapped} hitSlop={20}>
-            <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={colors.white.hexCode} />
+            <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={themer.getColor('screenHeader1.foreground').hexCode} />
           </Pressable>
-          <Text style={styles.title}>Register</Text>
+          <Text style={[styles.title, { color: themer.getColor('screenHeader1.foreground').hexCode }]}>Register</Text>
           <View style={styles.placeholderIcon} />
         </View>
       </View>
@@ -88,25 +87,25 @@ const RegisterScreen = ({ navigation }) => {
         extraHeight={100}
         enableOnAndroid={true}
       >
-        <View style={styles.inputView}>
-          <TextInput style={styles.input} placeholder={'Email address..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={50} keyboardType='email-address' autoCapitalize='none' onChangeText={onEmailAddressChangeText} />
+        <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background').hexCode }]}>
+          <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground').hexCode }]} placeholder={'Email address..'} placeholderTextColor={themer.getColor('textInput1.foreground').hexCode} maxLength={50} keyboardType='email-address' autoCapitalize='none' onChangeText={onEmailAddressChangeText} />
         </View>
-        <View style={styles.inputView}>
-          <TextInput style={styles.input} placeholder={'Phone number..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={50} keyboardType='phone-pad' autoCapitalize='none' onChangeText={onPhoneNumberChangeText} />
+        <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background').hexCode }]}>
+          <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground').hexCode }]} placeholder={'Phone number..'} placeholderTextColor={themer.getColor('textInput1.foreground').hexCode} maxLength={50} keyboardType='phone-pad' autoCapitalize='none' onChangeText={onPhoneNumberChangeText} />
         </View>
-        <View style={styles.inputView}>
-          <TextInput style={styles.input} placeholder={'First name..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={50} keyboardType='default' autoCapitalize='words' onChangeText={onFirstNameChangeText} />
+        <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background').hexCode }]}>
+          <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground').hexCode }]} placeholder={'First name..'} placeholderTextColor={themer.getColor('textInput1.foreground').hexCode} maxLength={50} keyboardType='default' autoCapitalize='words' onChangeText={onFirstNameChangeText} />
         </View>
-        <View style={styles.inputView}>
-          <TextInput style={styles.input} placeholder={'Last name..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={50} keyboardType='default' autoCapitalize='words' onChangeText={onLastNameChangeText} />
+        <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background').hexCode }]}>
+          <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground').hexCode }]} placeholder={'Last name..'} placeholderTextColor={themer.getColor('textInput1.foreground').hexCode} maxLength={50} keyboardType='default' autoCapitalize='words' onChangeText={onLastNameChangeText} />
         </View>
-        <View style={styles.inputView}>
-          <TextInput style={styles.input} placeholder={'Password..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={100} secureTextEntry={true} onChangeText={onPasswordChangeText} />
+        <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background').hexCode }]}>
+          <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground').hexCode }]} placeholder={'Password..'} placeholderTextColor={themer.getColor('textInput1.foreground').hexCode} maxLength={100} secureTextEntry={true} onChangeText={onPasswordChangeText} />
         </View>
-        <View style={styles.inputView}>
-          <TextInput style={styles.input} placeholder={'Password confirm..'} placeholderTextColor={colors.darkGray.hexCode} maxLength={100} secureTextEntry={true} onChangeText={onPasswordConfirmChangeText} />
+        <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background').hexCode }]}>
+          <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground').hexCode }]} placeholder={'Password confirm..'} placeholderTextColor={themer.getColor('textInput1.foreground').hexCode} maxLength={100} secureTextEntry={true} onChangeText={onPasswordConfirmChangeText} />
         </View>
-        <ActionButton iconImageSource={require('../assets/images/list-icon.png')} text={'Register'} color={colors.lightBlue} disabled={isLoading} onTapped={() => onRegisterTapped()} />
+        <ActionButton iconImageSource={require('../assets/images/list-icon.png')} text={'Register'} foregroundColor={themer.getColor('button3.foreground')} backgroundColor={themer.getColor('button3.background')} disabled={isLoading} onTapped={() => onRegisterTapped()} />
       </KeyboardAwareScrollView>
     </View>
   );
@@ -115,12 +114,10 @@ const RegisterScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.gray.hexCode,
   },
   headerView: {
     padding: 20,
     paddingTop: 60,
-    backgroundColor: colors.darkGray.hexCode,
   },
   titleView: {
     flexDirection: 'row',
@@ -131,7 +128,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: colors.white.hexCode
   },
   backIcon: {
     height: 25,
@@ -151,12 +147,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     padding: 20,
     borderRadius: 30,
-    backgroundColor: colors.whiteGray.hexCode,
   },
   input: {
     fontSize: 17,
     fontWeight: 'bold',
-    color: colors.darkGray.hexCode
   },
 });
 

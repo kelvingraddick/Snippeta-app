@@ -7,6 +7,7 @@ import { ApplicationContext } from '../ApplicationContext';
 import { snippetTypes } from '../constants/snippetTypes';
 import { snippetSources } from '../constants/snippetSources';
 import { storageKeys } from '../constants/storageKeys';
+import { colorIds } from '../constants/colorIds';
 import api from '../helpers/api';
 import storage from '../helpers/storage';
 import banner from '../helpers/banner';
@@ -20,7 +21,7 @@ const SnippetsScreen = ({ route, navigation }) => {
   const isRootSnippetsScreen = !parentSnippet;
   const callbacks = route.params?.callbacks || [];
 
-  const { user, isUserLoading } = useContext(ApplicationContext);
+  const { themer, user, isUserLoading } = useContext(ApplicationContext);
 
   const [isLoading, setIsLoading] = useState(true);
   const [snippetSections, setSnippetSections] = useState([]);
@@ -30,11 +31,11 @@ const SnippetsScreen = ({ route, navigation }) => {
   const { showActionSheetWithOptions } = useActionSheet();
 
   const tutorialSnippets = [
-    { id: storageKeys.SNIPPET + 1, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Welcome to Snippeta!', content: 'Snippeta is the best way to copy, paste, and manage snippets of text! Copy text to your clipboard with a single tap; no highlighting or long-tapping!', color_id: colors.lightYellow.id, time: new Date(), order_index: 0 },
-    { id: storageKeys.SNIPPET + 2, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'How to use:', content: 'Tap the button above to create a new snippet. Or tap on this snippet to copy it to your clipboard for pasting later!', color_id: colors.lightGreen.id, time: new Date(), order_index: 1 },
-    { id: storageKeys.SNIPPET + 3, type: snippetTypes.MULTIPLE, source: snippetSources.STORAGE, title: 'Organize by creating lists', content: 'Create a snippet list to organize and nest snippets. Tap here to try it out!', color_id: colors.lightBlue.id, time: new Date(), order_index: 2 },
-    { id: storageKeys.SNIPPET + 4, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Go PRO!', content: 'Want more out of Snippeta? Take your account pro and get access to create lists and more!', color_id: colors.lightRed.id, time: new Date(), order_index: 3 },
-    { id: storageKeys.SNIPPET + 5, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Add snippets to a list', content: 'Add a new snippet to this list. Tap the "New snippet" button above to try it out!', color_id: colors.lightBlue.id, time: new Date(), order_index: 0, parent_id: storageKeys.SNIPPET + 3 },
+    { id: storageKeys.SNIPPET + 1, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Welcome to Snippeta!', content: 'Snippeta is the best way to copy, paste, and manage snippets of text! Copy text to your clipboard with a single tap; no highlighting or long-tapping!', color_id: colorIds.COLOR_1, time: new Date(), order_index: 0 },
+    { id: storageKeys.SNIPPET + 2, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'How to use:', content: 'Tap the button above to create a new snippet. Or tap on this snippet to copy it to your clipboard for pasting later!', color_id: colorIds.COLOR_4, time: new Date(), order_index: 1 },
+    { id: storageKeys.SNIPPET + 3, type: snippetTypes.MULTIPLE, source: snippetSources.STORAGE, title: 'Organize by creating lists', content: 'Create a snippet list to organize and nest snippets. Tap here to try it out!', color_id: colorIds.COLOR_2, time: new Date(), order_index: 2 },
+    { id: storageKeys.SNIPPET + 4, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Go PRO!', content: 'Want more out of Snippeta? Take your account pro and get access to create lists and more!', color_id: colorIds.COLOR_3, time: new Date(), order_index: 3 },
+    { id: storageKeys.SNIPPET + 5, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Add snippets to a list', content: 'Add a new snippet to this list. Tap the "New snippet" button above to try it out!', color_id: colorIds.COLOR_2, time: new Date(), order_index: 0, parent_id: storageKeys.SNIPPET + 3 },
   ];
 
   useEffect(() => {
@@ -136,7 +137,7 @@ const SnippetsScreen = ({ route, navigation }) => {
           type: snippetType ?? snippetTypes.SINGLE,
           source: parentSnippet?.source,
           content: content,
-          color_id: parentSnippet?.color_id ?? colors.lightYellow.id,
+          color_id: parentSnippet?.color_id ?? colorIds.COLOR_1,
         },
         callbacks: callbacks.concat(getSnippets)
       }
@@ -251,37 +252,37 @@ const SnippetsScreen = ({ route, navigation }) => {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.headerView}>
+    <View style={[styles.container, { backgroundColor: themer.getColor('background1').hexCode }]}>
+      <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background').hexCode } ]}>
         <View style={styles.titleView}>
           {isRootSnippetsScreen && 
             <Pressable onPress={onSearchTapped} hitSlop={20}>
-              <Image source={require('../assets/images/search.png')} style={styles.searchIcon} tintColor={colors.white.hexCode} />
+              <Image source={require('../assets/images/search.png')} style={styles.searchIcon} tintColor={themer.getColor('screenHeader1.foreground').hexCode} />
             </Pressable>
           }
           {isRootSnippetsScreen && 
-            <Image source={require('../assets/images/logo.png')} style={styles.logoIcon} tintColor={colors.white.hexCode} resizeMode='contain' />
+            <Image source={require('../assets/images/logo.png')} style={styles.logoIcon} tintColor={themer.getColor('screenHeader1.foreground').hexCode} resizeMode='contain' />
           }
           {!isRootSnippetsScreen &&
             <Pressable onPress={onBackTapped} hitSlop={20}>
-              <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={colors.white.hexCode} />
+              <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={themer.getColor('screenHeader1.foreground').hexCode} />
             </Pressable>
           }
           {!isRootSnippetsScreen &&
-            <Text style={styles.title} numberOfLines={2}>{parentSnippet ? parentSnippet.title : 'Snippeta'}</Text>
+            <Text style={[styles.title, { color: themer.getColor('screenHeader1.foreground').hexCode }]} numberOfLines={2}>{parentSnippet ? parentSnippet.title : 'Snippeta'}</Text>
           }
           {(!parentSnippet || parentSnippet.type == snippetTypes.SINGLE) &&
             <Pressable onPress={onSettingsTapped} hitSlop={20} disabled={isLoading || isUserLoading}>
-              <Image source={require('../assets/images/gear-gray.png')} style={styles.settingsIcon} tintColor={colors.white.hexCode} />
+              <Image source={require('../assets/images/gear-gray.png')} style={styles.settingsIcon} tintColor={themer.getColor('screenHeader1.foreground').hexCode} />
             </Pressable>
           }
           {(parentSnippet && parentSnippet.type == snippetTypes.MULTIPLE) &&
             <Pressable onPress={onEditTapped} hitSlop={20} disabled={isLoading || isUserLoading}>
-              <Image source={require('../assets/images/edit.png')} style={styles.editIcon} tintColor={colors.white.hexCode} />
+              <Image source={require('../assets/images/edit.png')} style={styles.editIcon} tintColor={themer.getColor('screenHeader1.foreground').hexCode} />
             </Pressable>
           }
         </View>
-        <ActionButton iconImageSource={require('../assets/images/plus.png')} text={'Add new snippet or list'} color={colors.nebulaBlue} disabled={isLoading || isUserLoading} onTapped={() => onNewSnippetTapped()} />
+        <ActionButton iconImageSource={require('../assets/images/plus.png')} text={'Add new snippet or list'} foregroundColor={themer.getColor('button1.foreground')} backgroundColor={themer.getColor('button1.background')} disabled={isLoading || isUserLoading} onTapped={() => onNewSnippetTapped()} />
       </View>
       { (isLoading || isUserLoading) &&
         <View style={styles.snippetsList}>
@@ -298,7 +299,7 @@ const SnippetsScreen = ({ route, navigation }) => {
           sections={snippetSections}
           keyExtractor={(item, index) => item.id}
           stickySectionHeadersEnabled={false}
-          renderItem={({item}) => <SnippetView snippet={item} onSnippetTapped={onSnippetTapped} onSnippetMenuTapped={onSnippetMenuTapped} isHidden={item.source == snippetSources.STORAGE ? !isOnDeviceSectionVisible : !isCloudSectionVisible} />}
+          renderItem={({item}) => <SnippetView snippet={item} onSnippetTapped={onSnippetTapped} onSnippetMenuTapped={onSnippetMenuTapped} isHidden={item.source == snippetSources.STORAGE ? !isOnDeviceSectionVisible : !isCloudSectionVisible} themer={themer} />}
           renderSectionHeader={({section: {title}}) => ( title &&
             <>
               <Pressable 
@@ -307,17 +308,17 @@ const SnippetsScreen = ({ route, navigation }) => {
                 disabled={isLoading || isUserLoading}
               >
                 <View style={styles.sectionHeaderView}>
-                  <Text style={styles.sectionHeaderText}>{title == snippetSources.STORAGE ? '📱' : '☁️'} {title}</Text>
+                  <Text style={[styles.sectionHeaderText, { color: themer.getColor('listHeader1.foreground').hexCode }]}>{title == snippetSources.STORAGE ? '📱' : '☁️'} {title}</Text>
                   <Image
                     source={require('../assets/images/back-arrow.png')}
-                    style={[styles.sectionHeaderButtonIcon, { transform: [{ rotate: (title == snippetSources.STORAGE ? (isOnDeviceSectionVisible ? '-90deg' : '180deg') : (isCloudSectionVisible ? '-90deg' : '180deg')) }], }]}
-                    tintColor={colors.darkGray.hexCode}
+                    style={[styles.sectionHeaderButtonIcon, { color: themer.getColor('listHeader1.foreground').hexCode, transform: [{ rotate: (title == snippetSources.STORAGE ? (isOnDeviceSectionVisible ? '-90deg' : '180deg') : (isCloudSectionVisible ? '-90deg' : '180deg')) }], }]}
+                    tintColor={themer.getColor('listHeader1.foreground').hexCode}
                   />
                 </View>
               </Pressable>
               { ((title == snippetSources.API && snippetSections.find(x => x.title == snippetSources.API)?.data?.length == 0) && isCloudSectionVisible) &&
-                <SnippetaCloudView user={user} isLargeLogo={false} isCentered={false}>
-                  <ActionButton iconImageSource={require('../assets/images/cloud.png')} text={'Learn more'} color={colors.nebulaBlue} disabled={isLoading} onTapped={() => onSettingsTapped()} />
+                <SnippetaCloudView themer={themer} user={user} isLargeLogo={false} isCentered={false}>
+                  <ActionButton iconImageSource={require('../assets/images/cloud.png')} text={'Learn more'} foregroundColor={themer.getColor('button1.foreground')} backgroundColor={themer.getColor('button1.background')} disabled={isLoading || isUserLoading} onTapped={() => onSettingsTapped()} />
                 </SnippetaCloudView>
               }
             </>
@@ -333,12 +334,10 @@ const SnippetsScreen = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.gray.hexCode,
   },
   headerView: {
     padding: 20,
     paddingTop: 60,
-    backgroundColor: colors.darkGray.hexCode,
   },
   titleView: {
     flexDirection: 'row',
@@ -352,7 +351,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
-    color: colors.white.hexCode
   },
   logoIcon: {
     flex: 1,
@@ -392,13 +390,11 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 17,
     fontWeight: 'bold',
-    color: colors.darkGray.hexCode,
   },
   sectionHeaderButtonIcon: {
     width: 20,
     height: 20,
     resizeMode: 'cover',
-    color: colors.darkGray.hexCode,
     opacity: 0.25,
   },
 });

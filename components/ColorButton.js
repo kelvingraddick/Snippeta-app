@@ -2,9 +2,9 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 
 const ColorButton = (props) => {
-  const { color, isSelected, onTapped } = props;
+  const { id, hexCode, isSelected, onTapped } = props;
   return (
-    <TouchableOpacity style={[styles.container, isSelected ? styles.selectedContainer : null, { backgroundColor: color.hexCode }]} onPress={() => onTapped(color.id)} />
+    <TouchableOpacity style={[styles.container, isSelected ? styles.selectedContainer : null, { backgroundColor: hexCode }]} onPress={() => onTapped(id)} />
   );
 };
 
