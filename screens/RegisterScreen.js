@@ -83,27 +83,29 @@ const RegisterScreen = ({ navigation }) => {
         </View>
       </View>
       <KeyboardAwareScrollView
-        contentContainerStyle={styles.inputsView}
+        contentContainerStyle={styles.formView}
         extraHeight={100}
         enableOnAndroid={true}
       >
-        <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background').hexCode }]}>
-          <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground').hexCode }]} placeholder={'Email address..'} placeholderTextColor={themer.getColor('textInput1.foreground').hexCode} maxLength={50} keyboardType='email-address' autoCapitalize='none' onChangeText={onEmailAddressChangeText} />
-        </View>
-        <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background').hexCode }]}>
-          <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground').hexCode }]} placeholder={'Phone number..'} placeholderTextColor={themer.getColor('textInput1.foreground').hexCode} maxLength={50} keyboardType='phone-pad' autoCapitalize='none' onChangeText={onPhoneNumberChangeText} />
-        </View>
-        <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background').hexCode }]}>
-          <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground').hexCode }]} placeholder={'First name..'} placeholderTextColor={themer.getColor('textInput1.foreground').hexCode} maxLength={50} keyboardType='default' autoCapitalize='words' onChangeText={onFirstNameChangeText} />
-        </View>
-        <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background').hexCode }]}>
-          <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground').hexCode }]} placeholder={'Last name..'} placeholderTextColor={themer.getColor('textInput1.foreground').hexCode} maxLength={50} keyboardType='default' autoCapitalize='words' onChangeText={onLastNameChangeText} />
-        </View>
-        <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background').hexCode }]}>
-          <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground').hexCode }]} placeholder={'Password..'} placeholderTextColor={themer.getColor('textInput1.foreground').hexCode} maxLength={100} secureTextEntry={true} onChangeText={onPasswordChangeText} />
-        </View>
-        <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background').hexCode }]}>
-          <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground').hexCode }]} placeholder={'Password confirm..'} placeholderTextColor={themer.getColor('textInput1.foreground').hexCode} maxLength={100} secureTextEntry={true} onChangeText={onPasswordConfirmChangeText} />
+        <View style={styles.inputsView}>
+          <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background').hexCode }]}>
+            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground').hexCode }]} placeholder={'Email address..'} placeholderTextColor={themer.getColor('textInput1.foreground').hexCode} maxLength={50} keyboardType='email-address' autoCapitalize='none' onChangeText={onEmailAddressChangeText} />
+          </View>
+          <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background').hexCode }]}>
+            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground').hexCode }]} placeholder={'Phone number..'} placeholderTextColor={themer.getColor('textInput1.foreground').hexCode} maxLength={50} keyboardType='phone-pad' autoCapitalize='none' onChangeText={onPhoneNumberChangeText} />
+          </View>
+          <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background').hexCode }]}>
+            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground').hexCode }]} placeholder={'First name..'} placeholderTextColor={themer.getColor('textInput1.foreground').hexCode} maxLength={50} keyboardType='default' autoCapitalize='words' onChangeText={onFirstNameChangeText} />
+          </View>
+          <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background').hexCode }]}>
+            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground').hexCode }]} placeholder={'Last name..'} placeholderTextColor={themer.getColor('textInput1.foreground').hexCode} maxLength={50} keyboardType='default' autoCapitalize='words' onChangeText={onLastNameChangeText} />
+          </View>
+          <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background').hexCode }]}>
+            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground').hexCode }]} placeholder={'Password..'} placeholderTextColor={themer.getColor('textInput1.foreground').hexCode} maxLength={100} secureTextEntry={true} onChangeText={onPasswordChangeText} />
+          </View>
+          <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background').hexCode }]}>
+            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground').hexCode }]} placeholder={'Password confirm..'} placeholderTextColor={themer.getColor('textInput1.foreground').hexCode} maxLength={100} secureTextEntry={true} onChangeText={onPasswordConfirmChangeText} />
+          </View>
         </View>
         <ActionButton iconImageSource={require('../assets/images/list-icon.png')} text={'Register'} foregroundColor={themer.getColor('button3.foreground')} backgroundColor={themer.getColor('button3.background')} disabled={isLoading} onTapped={() => onRegisterTapped()} />
       </KeyboardAwareScrollView>
@@ -139,14 +141,17 @@ const styles = StyleSheet.create({
     width: 25,
     marginTop: 2,
   },
-  inputsView: {
+  formView: {
     flex: 1,
     padding: 20,
   },
+  inputsView: {
+    marginBottom: 10,
+  },
   inputView: {
-    marginBottom: 20,
     padding: 20,
     borderRadius: 30,
+    marginBottom: 10,
   },
   input: {
     fontSize: 17,

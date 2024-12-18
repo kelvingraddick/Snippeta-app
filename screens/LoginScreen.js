@@ -58,12 +58,14 @@ const LoginScreen = ({ navigation }) => {
           <View style={styles.placeholderIcon} />
         </View>
       </View>
-      <View style={styles.inputsView}>
-        <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background').hexCode }]}>
-          <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground').hexCode }]} placeholder={'Email or phone..'} placeholderTextColor={themer.getColor('textInput1.foreground').hexCode} maxLength={50} keyboardType='email-address' textContentType='username' autoCapitalize='none' onChangeText={onEmailOrPhoneChangeText} />
-        </View>
-        <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background').hexCode }]}>
-          <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground').hexCode }]} placeholder={'Password..'} placeholderTextColor={themer.getColor('textInput1.foreground').hexCode} maxLength={100} secureTextEntry={true} textContentType='password' onChangeText={onPasswordChangeText} />
+      <View style={styles.formView}>
+        <View style={styles.inputsView}>
+          <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background').hexCode }]}>
+            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground').hexCode }]} placeholder={'Email or phone..'} placeholderTextColor={themer.getColor('textInput1.foreground').hexCode} maxLength={50} keyboardType='email-address' textContentType='username' autoCapitalize='none' onChangeText={onEmailOrPhoneChangeText} />
+          </View>
+          <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background').hexCode }]}>
+            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground').hexCode }]} placeholder={'Password..'} placeholderTextColor={themer.getColor('textInput1.foreground').hexCode} maxLength={100} secureTextEntry={true} textContentType='password' onChangeText={onPasswordChangeText} />
+          </View>
         </View>
         <ActionButton iconImageSource={require('../assets/images/user.png')} text={'Login'} foregroundColor={themer.getColor('button2.foreground')} backgroundColor={themer.getColor('button2.background')} disabled={isLoading} onTapped={() => onLoginTapped()} />
         <ActionButton iconImageSource={require('../assets/images/gear-gray.png')} text={'Forgot Password'} foregroundColor={themer.getColor('button4.foreground')} backgroundColor={themer.getColor('button4.background')} onTapped={() => onForgotPasswordTapped()} />
@@ -100,14 +102,17 @@ const styles = StyleSheet.create({
     width: 25,
     marginTop: 2,
   },
-  inputsView: {
+  formView: {
     flex: 1,
     padding: 20,
   },
+  inputsView: {
+    marginBottom: 10,
+  },
   inputView: {
-    marginBottom: 20,
     padding: 20,
     borderRadius: 30,
+    marginBottom: 10,
   },
   input: {
     fontSize: 17,

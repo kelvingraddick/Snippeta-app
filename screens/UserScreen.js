@@ -143,11 +143,11 @@ const UserScreen = ({ navigation }) => {
         </View>
       </View>
       <KeyboardAwareScrollView
-        contentContainerStyle={styles.inputsView}
+        contentContainerStyle={styles.formView}
         extraHeight={100}
         enableOnAndroid={true}
       >
-        <View>
+        <View style={styles.inputsView}>
           <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background').hexCode }]}>
             <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground').hexCode }]} placeholder={'Email address..'} placeholderTextColor={themer.getColor('textInput1.foreground').hexCode} maxLength={50} keyboardType='email-address' autoCapitalize='none' value={editedUser.email_address} onChangeText={onEmailAddressChangeText} />
           </View>
@@ -166,11 +166,9 @@ const UserScreen = ({ navigation }) => {
           <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background').hexCode }]}>
             <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground').hexCode }]} placeholder={'Password confirm..'} placeholderTextColor={themer.getColor('textInput1.foreground').hexCode} maxLength={100} secureTextEntry={true} value={editedUser.password_confirm} onChangeText={onPasswordConfirmChangeText} />
           </View>
-          <ActionButton iconImageSource={require('../assets/images/checkmark.png')} text={'Save'} foregroundColor={themer.getColor('button2.foreground')} backgroundColor={themer.getColor('button2.background')} disabled={isLoading} onTapped={() => onSaveTapped()} />
         </View>
-        <View style={styles.deleteButtonView}>
-          <ActionButton iconImageSource={require('../assets/images/x.png')} text={'Delete account'} foregroundColor={themer.getColor('button4.foreground')} backgroundColor={themer.getColor('button4.background')} onTapped={() => onDeleteTapped()} />
-        </View> 
+        <ActionButton iconImageSource={require('../assets/images/checkmark.png')} text={'Save'} foregroundColor={themer.getColor('button2.foreground')} backgroundColor={themer.getColor('button2.background')} disabled={isLoading} onTapped={() => onSaveTapped()} />
+        <ActionButton iconImageSource={require('../assets/images/x.png')} text={'Delete account'} foregroundColor={themer.getColor('button4.foreground')} backgroundColor={themer.getColor('button4.background')} onTapped={() => onDeleteTapped()} />
       </KeyboardAwareScrollView>
     </View>
   );
@@ -204,15 +202,17 @@ const styles = StyleSheet.create({
     width: 25,
     marginTop: 2,
   },
-  inputsView: {
+  formView: {
     flex: 1,
-    justifyContent: 'space-between',
     padding: 20,
   },
+  inputsView: {
+    marginBottom: 10,
+  },
   inputView: {
-    marginBottom: 20,
     padding: 20,
     borderRadius: 30,
+    marginBottom: 10,
   },
   input: {
     fontSize: 17,
