@@ -150,8 +150,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerView: {
-    padding: 20,
+    paddingHorizontal: 20,
     paddingTop: 60,
+    paddingBottom: 5,
   },
   titleView: {
     flexDirection: 'row',

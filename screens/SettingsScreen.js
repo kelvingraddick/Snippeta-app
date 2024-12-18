@@ -143,9 +143,7 @@ const SettingsScreen = ({ navigation }) => {
           </View>
         }
         { subscription &&
-          <View style={styles.infoView}>
-            <Text style={[styles.descriptionText, { color: themer.getColor('screenHeader1.foreground').hexCode }]}>You are subscribed: <Text style={{ fontWeight: 'bold', color: colors.lightGreen.hexCode }}>{subscription.type}</Text></Text>
-          </View>
+          <Text style={[styles.descriptionText, { color: themer.getColor('screenHeader1.foreground').hexCode, marginBottom: 15 }]}>You are subscribed: <Text style={{ fontWeight: 'bold', color: colors.lightGreen.hexCode }}>{subscription.type}</Text></Text>
         }
         { !subscription && 
           <ActionButton iconImageSource={require('../assets/images/cart.png')} text={'Free trial • $1.99/month'} foregroundColor={themer.getColor('button1.foreground')} backgroundColor={themer.getColor('button1.background')} disabled={isLoading} onTapped={() => onSubscribeTapped()} />
@@ -190,14 +188,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerView: {
-    padding: 20,
+    paddingHorizontal: 20,
     paddingTop: 60,
+    paddingBottom: 15,
   },
   titleView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20
+    marginBottom: 15,
   },
   infoView: {
     marginBottom: 10

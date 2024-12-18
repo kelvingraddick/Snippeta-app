@@ -282,6 +282,7 @@ const SnippetsScreen = ({ route, navigation }) => {
             </Pressable>
           }
         </View>
+        {!isRootSnippetsScreen && <View style={{ height: 5 }}></View> }
         <ActionButton iconImageSource={require('../assets/images/plus.png')} text={'Add new snippet or list'} foregroundColor={themer.getColor('button1.foreground')} backgroundColor={themer.getColor('button1.background')} disabled={isLoading || isUserLoading} onTapped={() => onNewSnippetTapped()} />
       </View>
       { (isLoading || isUserLoading) &&
@@ -336,15 +337,16 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerView: {
-    padding: 20,
+    paddingHorizontal: 20,
     paddingTop: 60,
+    paddingBottom: 15,
   },
   titleView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     gap: 20,
-    marginBottom: 20
+    marginBottom: 15,
   },
   title: {
     flex: 1,
