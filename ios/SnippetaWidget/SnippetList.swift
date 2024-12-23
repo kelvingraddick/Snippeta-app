@@ -7,18 +7,6 @@ struct SnippetList: AppEntity, Decodable, Hashable {
   let title: String
   let content: String
   let color_id: Int
-  var colorHexCode: String {
-    switch color_id {
-      case 0: return "#fff"; // white
-      case 6: return "#f7f7f7"; // lightGray
-      case 1: return "#fad275"; // lightYellow
-      case 4: return "#a9cc8e"; // lightGreen
-      case 2: return "#3098c5"; // lightBlue
-      case 5: return "#986b9b"; // lightPurple
-      case 3: return "#fb7477"; // lightRed
-      default: return "#5c63ff"; // nebulaBlue
-    }
-  }
   let order_index: Int
   let snippets: [SnippetList]?
   

@@ -13,6 +13,10 @@ class Themer {
   getColor(key) {
     return themes[this.themeId]?.colors[key] ?? themes['default-light'].colors[key] ?? colors.black;
   }
+
+  getColors() {
+    return themes[this.themeId]?.colors ?? themes['default-light'].colors ?? {};
+  }
 }
 
 export default Themer;

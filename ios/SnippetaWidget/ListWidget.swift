@@ -24,7 +24,7 @@ struct ListWidgetEntryView : View {
         .font(.headline)
         .truncationMode(.tail).multilineTextAlignment(.leading)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .foregroundStyle(Color(hex: entry.configuration.snippetList!.colorHexCode) ?? Color.primary)
+        .foregroundStyle(Color(hex: entry.themer.getColor(id: entry.configuration.snippetList!.color_id).hexCode) ?? Color.primary)
       
       Spacer().frame(height: 0)
       
@@ -32,7 +32,7 @@ struct ListWidgetEntryView : View {
         .sorted(by: { ($0.source, $0.order_index) < ($1.source, $1.order_index) }) {
         let maxSnippets = (widgetFamily == .systemSmall || widgetFamily == .systemMedium) ? 3 : 8;
         ForEach((0...min((maxSnippets - 1), (snippets.count - 1))), id: \.self) {
-          getSnippetListButton(snippetList: snippets[$0], copiedSnippetId: entry.copiedSnippetId)
+          getSnippetListButton(snippetList: snippets[$0], themer: entry.themer)
         }
       }
     }
@@ -42,17 +42,16 @@ struct ListWidgetEntryView : View {
   }
 }
 
-private func getSnippetListButton(snippetList: SnippetList, copiedSnippetId: String?) -> some View {
+private func getSnippetListButton(snippetList: SnippetList, themer: Themer) -> some View {
   let url = snippetList.type == SnippetType.SINGLE.rawValue ? "snippeta://copy/\(snippetList.id)" : "snippeta://snippets/\(snippetList.id)"
   return
     Link(destination: URL(string: url)!) {
-    //Button(intent: CopyToClipboardAppIntent(snippetId: snippetList.id, text: snippetList.content)) {
       HStack(alignment: .center, spacing: 7) {
         
-        Rectangle().frame(width: 12).foregroundColor(Color(hex: snippetList.colorHexCode) ?? Color.primary);
+        Rectangle().frame(width: 12).foregroundColor(Color(hex: themer.getColor(id: snippetList.color_id).hexCode) ?? Color.primary);
         
         HStack(alignment: .center) {
-          Text(snippetList.id == copiedSnippetId ? "Copied!" : snippetList.title)
+          Text(snippetList.title)
             .font(.caption).foregroundColor(.primary)
             .truncationMode(.tail).multilineTextAlignment(.leading)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -68,71 +67,48 @@ private func getSnippetListButton(snippetList: SnippetList, copiedSnippetId: Str
 
 struct ListWidgetAppIntentTimelineProvider: AppIntentTimelineProvider {
   func placeholder(in context: Context) -> ListWidgetTimelineEntry {
-    ListWidgetTimelineEntry(date: Date(), configuration: ListWidgetConfigurationIntent(), copiedSnippetId: nil)
+    let themer = Themer()
+    return ListWidgetTimelineEntry(date: Date(), configuration: ListWidgetConfigurationIntent(), themer: themer)
   }
   
   func snapshot(for configuration: ListWidgetConfigurationIntent, in context: Context) async -> ListWidgetTimelineEntry {
-    ListWidgetTimelineEntry(date: Date(), configuration: configuration, copiedSnippetId: nil)
+    let themer = Themer()
+    return ListWidgetTimelineEntry(date: Date(), configuration: configuration, themer: themer)
   }
   
   func timeline(for configuration: ListWidgetConfigurationIntent, in context: Context) async -> Timeline<ListWidgetTimelineEntry> {
-    var entries: [ListWidgetTimelineEntry] = []
-    var currentDate = Date()
-    
-    // Handle if a snippet was just copied (notification message)
-    let sharedDefaults = UserDefaults(suiteName: "group.com.wavelinkllc.snippeta.shared")
-    let copiedSnippetId = sharedDefaults?.string(forKey: "copiedSnippetId")
-    if (copiedSnippetId != nil) {
-      let startDate = Date()
-      let endDate = startDate.addingTimeInterval(3)
-      currentDate = endDate
-      
-      let copiedSnippetEntry = ListWidgetTimelineEntry(date: startDate, configuration: configuration, copiedSnippetId: copiedSnippetId)
-      entries.append(copiedSnippetEntry)
-      
-      DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + endDate.timeIntervalSinceNow) {
-        let sharedDefaults = UserDefaults(suiteName: "group.com.wavelinkllc.snippeta.shared")
-        sharedDefaults?.removeObject(forKey: "copiedSnippetId")
-      }
-    }
-    
-    // Generate a timeline consisting of five entries an hour apart, starting from the current date.
-    for hourOffset in 0 ..< 5 {
-      let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-      let entry = ListWidgetTimelineEntry(date: entryDate, configuration: configuration, copiedSnippetId: nil)
-      entries.append(entry)
-    }
-    
-    return Timeline(entries: entries, policy: .atEnd)
+    let themer = Themer()
+    let entry = ListWidgetTimelineEntry(date: Date(), configuration: configuration, themer: themer)
+    return Timeline(entries: [entry], policy: .never)
   }
 }
 
 struct ListWidgetTimelineEntry: TimelineEntry {
   let date: Date
   let configuration: ListWidgetConfigurationIntent
-  let copiedSnippetId: String?
+  let themer: Themer
 }
 
 #Preview(as: .systemSmall) {
   ListWidget()
 } timeline: {
-  ListWidgetTimelineEntry(date: .now, configuration: .defaultValue, copiedSnippetId: nil)
+  ListWidgetTimelineEntry(date: .now, configuration: .defaultValue, themer: Themer())
 }
 
 #Preview(as: .systemMedium) {
   ListWidget()
 } timeline: {
-  ListWidgetTimelineEntry(date: .now, configuration: .defaultValue, copiedSnippetId: nil)
+  ListWidgetTimelineEntry(date: .now, configuration: .defaultValue, themer: Themer())
 }
 
 #Preview(as: .systemLarge) {
   ListWidget()
 } timeline: {
-  ListWidgetTimelineEntry(date: .now, configuration: .defaultValue, copiedSnippetId: nil)
+  ListWidgetTimelineEntry(date: .now, configuration: .defaultValue, themer: Themer())
 }
 
 #Preview(as: .systemExtraLarge) {
   ListWidget()
 } timeline: {
-  ListWidgetTimelineEntry(date: .now, configuration: .defaultValue, copiedSnippetId: nil)
+  ListWidgetTimelineEntry(date: .now, configuration: .defaultValue, themer: Themer())
 }

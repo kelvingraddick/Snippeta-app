@@ -201,6 +201,7 @@ export default function App() {
     try {
       const themer = new Themer(themeId);
       console.log(`App.js -> updateThemer: ${themeId ? `updated themer with id '${themeId}' and name '${themer.getName()}'` : `no theme found; using default '${themer.getName()}'`}`);
+      await widget.saveData('colors', themer.getColors());
       dispatch({ type: 'UPDATE_THEMER', payload: themer });
     } catch (error) {
       console.error('App.js -> updateThemer: updating themer failed with error: ' + error.message);
