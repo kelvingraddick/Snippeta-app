@@ -24,7 +24,7 @@ struct ListWidgetEntryView : View {
         .font(.headline)
         .truncationMode(.tail).multilineTextAlignment(.leading)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .foregroundStyle(Color(hex: entry.themer.getColor(id: entry.configuration.snippetList!.color_id).hexCode) ?? Color.primary)
+        .foregroundStyle(Color(hex: entry.themer.getColor(id: entry.configuration.snippetList!.color_id)) ?? Color.primary)
       
       Spacer().frame(height: 0)
       
@@ -48,7 +48,7 @@ private func getSnippetListButton(snippetList: SnippetList, themer: Themer) -> s
     Link(destination: URL(string: url)!) {
       HStack(alignment: .center, spacing: 7) {
         
-        Rectangle().frame(width: 12).foregroundColor(Color(hex: themer.getColor(id: snippetList.color_id).hexCode) ?? Color.primary);
+        Rectangle().frame(width: 12).foregroundColor(Color(hex: themer.getColor(id: snippetList.color_id)) ?? Color.primary);
         
         HStack(alignment: .center) {
           Text(snippetList.title)

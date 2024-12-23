@@ -1,4 +1,4 @@
-import colors from "../helpers/colors";
+import { colors } from "./colors";
 
 export const themes = {
   'default-light': {

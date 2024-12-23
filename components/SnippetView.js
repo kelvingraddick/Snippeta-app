@@ -6,22 +6,22 @@ const SnippetView = (props) => {
   const { snippet, onSnippetTapped, onSnippetMenuTapped, isHidden, themer } = props;
   return (
     !isHidden &&
-    <TouchableOpacity style={[styles.container, { backgroundColor: themer.getColor('content1.background').hexCode }]} onPress={() => onSnippetTapped(snippet)}>
-      <View style={[styles.barView, { backgroundColor: themer.getColor(snippet.color_id)?.hexCode }]}></View>
+    <TouchableOpacity style={[styles.container, { backgroundColor: themer.getColor('content1.background') }]} onPress={() => onSnippetTapped(snippet)}>
+      <View style={[styles.barView, { backgroundColor: themer.getColor(snippet.color_id) }]}></View>
       <View style={styles.contentView}>
         <View style={styles.titleView}>
           <Image
             source={snippet.type == snippetTypes.SINGLE ? require('../assets/images/copy-white.png') : require('../assets/images/list-icon.png')}
             style={[styles.titleIcon, snippet.type == snippetTypes.SINGLE ? styles.copyIcon : styles.listIcon]}
-            tintColor={themer.getColor('content1.foreground').hexCode}
+            tintColor={themer.getColor('content1.foreground')}
             resizeMode='stretch'
           />
-          <Text style={[styles.titleText, { color: themer.getColor('content1.foreground').hexCode }]} numberOfLines={1}>&nbsp;{snippet.title}</Text>
+          <Text style={[styles.titleText, { color: themer.getColor('content1.foreground') }]} numberOfLines={1}>&nbsp;{snippet.title}</Text>
         </View>
-        <Text style={[styles.contentText, { color: themer.getColor('content1.foreground').hexCode }]} numberOfLines={2}>{snippet.content}</Text>
+        <Text style={[styles.contentText, { color: themer.getColor('content1.foreground') }]} numberOfLines={2}>{snippet.content}</Text>
       </View>
       <TouchableOpacity onPress={() => onSnippetMenuTapped(snippet)} hitSlop={40}>
-        <Text style={[styles.menuIcon, { color: themer.getColor('content1.foreground').hexCode }]}>&middot;&middot;&middot;</Text>
+        <Text style={[styles.menuIcon, { color: themer.getColor('content1.foreground') }]}>&middot;&middot;&middot;</Text>
       </TouchableOpacity>
     </TouchableOpacity>
   );

@@ -103,17 +103,17 @@ const SearchScreen = ({ route, navigation }) => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: themer.getColor('background1').hexCode }]}>
-      <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background').hexCode } ]}>
+    <View style={[styles.container, { backgroundColor: themer.getColor('background1') }]}>
+      <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background') } ]}>
         <View style={styles.titleView}>
           <Pressable onPress={onBackTapped} hitSlop={20}>
-            <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={themer.getColor('screenHeader1.foreground').hexCode} />
+            <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={themer.getColor('screenHeader1.foreground')} />
           </Pressable>
-          <Text style={[styles.title, { color: themer.getColor('screenHeader1.foreground').hexCode }]}>Search</Text>
+          <Text style={[styles.title, { color: themer.getColor('screenHeader1.foreground') }]}>Search</Text>
           <View style={styles.placeholderIcon} />
         </View>
-        <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput2.background').hexCode }]}>
-          <TextInput style={[styles.input, { color: themer.getColor('textInput2.foreground').hexCode }]} placeholder={'Search text..'} placeholderTextColor={themer.getColor('textInput2.foreground').hexCode} maxLength={50} autoCapitalize='none' autoFocus value={query} onChangeText={onQueryChangeText} />
+        <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput2.background') }]}>
+          <TextInput style={[styles.input, { color: themer.getColor('textInput2.foreground') }]} placeholder={'Search text..'} placeholderTextColor={themer.getColor('textInput2.foreground')} maxLength={50} autoCapitalize='none' autoFocus value={query} onChangeText={onQueryChangeText} />
         </View>
       </View>
       { (isLoading || isUserLoading) &&
@@ -134,7 +134,7 @@ const SearchScreen = ({ route, navigation }) => {
           renderItem={({item}) => <SnippetView snippet={item} onSnippetTapped={onSnippetTapped} onSnippetMenuTapped={onSnippetMenuTapped} themer={themer} />}
           renderSectionHeader={({section: {title}}) => ( title &&
             <View style={styles.sectionHeaderView}>
-              <Text style={[styles.sectionHeaderText, { color: themer.getColor('listHeader1.foreground').hexCode }]}>{title == snippetSources.STORAGE ? '📱' : '☁️'} {title}</Text>
+              <Text style={[styles.sectionHeaderText, { color: themer.getColor('listHeader1.foreground') }]}>{title == snippetSources.STORAGE ? '📱' : '☁️'} {title}</Text>
             </View>
           )}
           renderSectionFooter={() => <View style={{ height: 10 }}></View>}

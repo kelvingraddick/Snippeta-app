@@ -1,5 +1,5 @@
 import { themes } from "../constants/themes";
-import colors from "./colors";
+import { colors } from "../constants/colors";
 
 class Themer {
   constructor(themeId) {

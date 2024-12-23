@@ -4,22 +4,22 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 const SnippetaCloudView = (props) => {
   const { children, themer, user, isLargeLogo, isCentered } = props;
   return (
-    <View style={[styles.container, { backgroundColor: themer.getColor('content1.background').hexCode, alignItems: isCentered ? 'center' : 'stretch', }]}>
+    <View style={[styles.container, { backgroundColor: themer.getColor('content1.background'), alignItems: isCentered ? 'center' : 'stretch', }]}>
       <View style={isLargeLogo ? styles.largeLogoView : styles.smallLogoView}>
-        <Image source={require('../assets/images/logo.png')} style={isLargeLogo ? styles.largeLogoIcon : styles.smallLogoIcon} tintColor={themer.getColor('content1.foreground').hexCode} resizeMode='contain' />
-        <Text style={[isLargeLogo ? styles.largeTitleText : styles.smallTitleText, { color: themer.getColor('content1.foreground').hexCode }]}>Cloud</Text>
+        <Image source={require('../assets/images/logo.png')} style={isLargeLogo ? styles.largeLogoIcon : styles.smallLogoIcon} tintColor={themer.getColor('content1.foreground')} resizeMode='contain' />
+        <Text style={[isLargeLogo ? styles.largeTitleText : styles.smallTitleText, { color: themer.getColor('content1.foreground') }]}>Cloud</Text>
       </View>
       { !user && 
         <View style={styles.contentView}>
-          <Text style={[styles.descriptionText, { color: themer.getColor('content1.foreground').hexCode, textAlign: isCentered ? 'center' : 'auto', }]}>Create an account for more features*</Text>
-          <Text style={[styles.featureText, { color: themer.getColor('content1.foreground').hexCode }]}>☁️ Sync & backup snippets to the Cloud</Text>
-          <Text style={[styles.featureText, { color: themer.getColor('content1.foreground').hexCode }]}>📱 Access your snippets on different devices</Text>
-          <Text style={[styles.featureText, { color: themer.getColor('content1.foreground').hexCode }]}>🛒 Unlock <Text style={{ fontWeight: 'bold' }}>Snippeta Pro</Text> on multiple devices</Text>
-          <Text style={[styles.featureText, { color: themer.getColor('content1.foreground').hexCode, textAlign: 'center', fontStyle: 'italic', opacity: 0.50, marginTop: 5 }]}>*Requires a Snippeta Pro subscription</Text>
+          <Text style={[styles.descriptionText, { color: themer.getColor('content1.foreground'), textAlign: isCentered ? 'center' : 'auto', }]}>Create an account for more features*</Text>
+          <Text style={[styles.featureText, { color: themer.getColor('content1.foreground') }]}>☁️ Sync & backup snippets to the Cloud</Text>
+          <Text style={[styles.featureText, { color: themer.getColor('content1.foreground') }]}>📱 Access your snippets on different devices</Text>
+          <Text style={[styles.featureText, { color: themer.getColor('content1.foreground') }]}>🛒 Unlock <Text style={{ fontWeight: 'bold' }}>Snippeta Pro</Text> on multiple devices</Text>
+          <Text style={[styles.featureText, { color: themer.getColor('content1.foreground'), textAlign: 'center', fontStyle: 'italic', opacity: 0.50, marginTop: 5 }]}>*Requires a Snippeta Pro subscription</Text>
         </View>
       }
       { user && user.first_name && user.last_name &&
-        <Text style={[styles.descriptionText, { color: themer.getColor('content1.foreground').hexCode }]}>You are logged in as <Text style={{ fontWeight: 'bold' }}>{user.first_name} {user.last_name}</Text></Text>
+        <Text style={[styles.descriptionText, { color: themer.getColor('content1.foreground') }]}>You are logged in as <Text style={{ fontWeight: 'bold' }}>{user.first_name} {user.last_name}</Text></Text>
       }
       <View style={styles.buttonsView}>
         {children}

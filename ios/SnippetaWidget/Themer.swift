@@ -2,14 +2,14 @@ import Foundation
 
 class Themer {
   
-  private let defaultColor0 = SnippetaColor(hexCode: "#fff") // white
-  private let defaultColor1 = SnippetaColor(hexCode: "#fad275") // lightYellow
-  private let defaultColor2 = SnippetaColor(hexCode: "#3098c5") // lightBlue
-  private let defaultColor3 = SnippetaColor(hexCode: "#fb7477") // lightRed
-  private let defaultColor4 = SnippetaColor(hexCode: "#a9cc8e") // lightGreen
-  private let defaultColor5 = SnippetaColor(hexCode: "#986b9b") // lightPurple
-  private let defaultColor6 = SnippetaColor(hexCode: "#f7f7f7") // lightGray
-  private let defaultColor100 = SnippetaColor(hexCode: "#5c63ff") // nebulaBlue
+  private let defaultColor0 = "#fff" // white
+  private let defaultColor1 = "#fad275" // lightYellow
+  private let defaultColor2 = "#3098c5" // lightBlue
+  private let defaultColor3 = "#fb7477" // lightRed
+  private let defaultColor4 = "#a9cc8e" // lightGreen
+  private let defaultColor5 = "#986b9b" // lightPurple
+  private let defaultColor6 = "#f7f7f7" // lightGray
+  private let defaultColor100 = "#5c63ff" // nebulaBlue
   private let defaultColors: Colors
   private let currentColors: Colors
   
@@ -30,9 +30,9 @@ class Themer {
     }
   }
   
-  public func getColor(id: Int) -> SnippetaColor {
+  public func getColor(id: Int) -> String {
     let mirror = Mirror(reflecting: currentColors)
-    if let value = mirror.children.first(where: { $0.label == "color\(id)" })?.value as? SnippetaColor {
+    if let value = mirror.children.first(where: { $0.label == "color\(id)" })?.value as? String {
       return value
     }
     return defaultColor100
@@ -40,14 +40,14 @@ class Themer {
 }
 
 struct Colors: Codable {
-  let color0: SnippetaColor
-  let color1: SnippetaColor
-  let color2: SnippetaColor
-  let color3: SnippetaColor
-  let color4: SnippetaColor
-  let color5: SnippetaColor
-  let color6: SnippetaColor
-  let color100: SnippetaColor
+  let color0: String
+  let color1: String
+  let color2: String
+  let color3: String
+  let color4: String
+  let color5: String
+  let color6: String
+  let color100: String
   
   enum CodingKeys: String, CodingKey {
     case color0 = "0"
@@ -60,7 +60,7 @@ struct Colors: Codable {
     case color100 = "100"
   }
   
-  init(color0: SnippetaColor, color1: SnippetaColor, color2: SnippetaColor, color3: SnippetaColor, color4: SnippetaColor, color5: SnippetaColor, color6: SnippetaColor, color100: SnippetaColor) {
+  init(color0: String, color1: String, color2: String, color3: String, color4: String, color5: String, color6: String, color100: String) {
     self.color0 = color0
     self.color1 = color1
     self.color2 = color2
@@ -73,30 +73,13 @@ struct Colors: Codable {
   
   init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
-    self.color0 = try container.decode(SnippetaColor.self, forKey: .color0)
-    self.color1 = try container.decode(SnippetaColor.self, forKey: .color1)
-    self.color2 = try container.decode(SnippetaColor.self, forKey: .color2)
-    self.color3 = try container.decode(SnippetaColor.self, forKey: .color3)
-    self.color4 = try container.decode(SnippetaColor.self, forKey: .color4)
-    self.color5 = try container.decode(SnippetaColor.self, forKey: .color5)
-    self.color6 = try container.decode(SnippetaColor.self, forKey: .color6)
-    self.color100 = try container.decode(SnippetaColor.self, forKey: .color100)
-  }
-}
-
-struct SnippetaColor: Codable {
-  let hexCode: String
-  
-  enum CodingKeys: String, CodingKey {
-    case hexCode
-  }
-  
-  init(hexCode: String) {
-    self.hexCode = hexCode
-  }
-  
-  init(from decoder: Decoder) throws {
-    let container = try decoder.container(keyedBy: CodingKeys.self)
-    self.hexCode = try container.decode(String.self, forKey: .hexCode)
+    self.color0 = try container.decode(String.self, forKey: .color0)
+    self.color1 = try container.decode(String.self, forKey: .color1)
+    self.color2 = try container.decode(String.self, forKey: .color2)
+    self.color3 = try container.decode(String.self, forKey: .color3)
+    self.color4 = try container.decode(String.self, forKey: .color4)
+    self.color5 = try container.decode(String.self, forKey: .color5)
+    self.color6 = try container.decode(String.self, forKey: .color6)
+    self.color100 = try container.decode(String.self, forKey: .color100)
   }
 }

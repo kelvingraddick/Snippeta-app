@@ -8,11 +8,11 @@ import { ApplicationContext } from '../ApplicationContext';
 import { snippetTypes } from '../constants/snippetTypes';
 import { snippetSources } from '../constants/snippetSources';
 import { storageKeys } from '../constants/storageKeys';
+import { colors } from '../constants/colors';
 import { colorIds } from '../constants/colorIds';
 import api from '../helpers/api';
 import storage from '../helpers/storage';
 import banner from '../helpers/banner';
-import colors from '../helpers/colors';
 import ActionButton from '../components/ActionButton';
 import SnippetView from '../components/SnippetView';
 import SnippetaCloudView from '../components/SnippetaCloudView';
@@ -200,7 +200,7 @@ const SnippetsScreen = ({ route, navigation }) => {
     showActionSheetWithOptions(
       {
         title: 'What do you want to add?',
-        tintColor: colors.white.hexCode,
+        tintColor: colors.white,
         options: Object.keys(options),
         cancelButtonIndex: options.Cancel,
       },
@@ -259,33 +259,33 @@ const SnippetsScreen = ({ route, navigation }) => {
   }
 
   return (
-    <View style={[styles.container, { backgroundColor: themer.getColor('background1').hexCode }]}>
-      <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background').hexCode } ]}>
+    <View style={[styles.container, { backgroundColor: themer.getColor('background1') }]}>
+      <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background') } ]}>
         <View style={styles.titleView}>
           {isRootSnippetsScreen && 
             <Pressable onPress={onSearchTapped} hitSlop={20}>
-              <Image source={require('../assets/images/search.png')} style={styles.searchIcon} tintColor={themer.getColor('screenHeader1.foreground').hexCode} />
+              <Image source={require('../assets/images/search.png')} style={styles.searchIcon} tintColor={themer.getColor('screenHeader1.foreground')} />
             </Pressable>
           }
           {isRootSnippetsScreen && 
-            <Image source={require('../assets/images/logo.png')} style={styles.logoIcon} tintColor={themer.getColor('screenHeader1.foreground').hexCode} resizeMode='contain' />
+            <Image source={require('../assets/images/logo.png')} style={styles.logoIcon} tintColor={themer.getColor('screenHeader1.foreground')} resizeMode='contain' />
           }
           {!isRootSnippetsScreen &&
             <Pressable onPress={onBackTapped} hitSlop={20}>
-              <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={themer.getColor('screenHeader1.foreground').hexCode} />
+              <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={themer.getColor('screenHeader1.foreground')} />
             </Pressable>
           }
           {!isRootSnippetsScreen &&
-            <Text style={[styles.title, { color: themer.getColor('screenHeader1.foreground').hexCode }]} numberOfLines={2}>{parentSnippet ? parentSnippet.title : 'Snippeta'}</Text>
+            <Text style={[styles.title, { color: themer.getColor('screenHeader1.foreground') }]} numberOfLines={2}>{parentSnippet ? parentSnippet.title : 'Snippeta'}</Text>
           }
           {(!parentSnippet || parentSnippet.type == snippetTypes.SINGLE) &&
             <Pressable onPress={onSettingsTapped} hitSlop={20} disabled={isLoading || isUserLoading}>
-              <Image source={require('../assets/images/gear-gray.png')} style={styles.settingsIcon} tintColor={themer.getColor('screenHeader1.foreground').hexCode} />
+              <Image source={require('../assets/images/gear-gray.png')} style={styles.settingsIcon} tintColor={themer.getColor('screenHeader1.foreground')} />
             </Pressable>
           }
           {(parentSnippet && parentSnippet.type == snippetTypes.MULTIPLE) &&
             <Pressable onPress={onEditTapped} hitSlop={20} disabled={isLoading || isUserLoading}>
-              <Image source={require('../assets/images/edit.png')} style={styles.editIcon} tintColor={themer.getColor('screenHeader1.foreground').hexCode} />
+              <Image source={require('../assets/images/edit.png')} style={styles.editIcon} tintColor={themer.getColor('screenHeader1.foreground')} />
             </Pressable>
           }
         </View>
@@ -316,11 +316,11 @@ const SnippetsScreen = ({ route, navigation }) => {
                 disabled={isLoading || isUserLoading}
               >
                 <View style={styles.sectionHeaderView}>
-                  <Text style={[styles.sectionHeaderText, { color: themer.getColor('listHeader1.foreground').hexCode }]}>{title == snippetSources.STORAGE ? '📱' : '☁️'} {title}</Text>
+                  <Text style={[styles.sectionHeaderText, { color: themer.getColor('listHeader1.foreground') }]}>{title == snippetSources.STORAGE ? '📱' : '☁️'} {title}</Text>
                   <Image
                     source={require('../assets/images/back-arrow.png')}
-                    style={[styles.sectionHeaderButtonIcon, { color: themer.getColor('listHeader1.foreground').hexCode, transform: [{ rotate: (title == snippetSources.STORAGE ? (isOnDeviceSectionVisible ? '-90deg' : '180deg') : (isCloudSectionVisible ? '-90deg' : '180deg')) }], }]}
-                    tintColor={themer.getColor('listHeader1.foreground').hexCode}
+                    style={[styles.sectionHeaderButtonIcon, { color: themer.getColor('listHeader1.foreground'), transform: [{ rotate: (title == snippetSources.STORAGE ? (isOnDeviceSectionVisible ? '-90deg' : '180deg') : (isCloudSectionVisible ? '-90deg' : '180deg')) }], }]}
+                    tintColor={themer.getColor('listHeader1.foreground')}
                   />
                 </View>
               </Pressable>

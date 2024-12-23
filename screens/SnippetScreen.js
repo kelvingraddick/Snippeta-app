@@ -18,8 +18,8 @@ const SnippetScreen = ({ route, navigation }) => {
   const { themer, user, isUserLoading } = useContext(ApplicationContext);
 
   const snippetColorOptions = [
-    { id: colorIds.COLOR_1, hexCode: themer.getColor(colorIds.COLOR_1).hexCode }, { id: colorIds.COLOR_4, hexCode: themer.getColor(colorIds.COLOR_4).hexCode  }, { id: colorIds.COLOR_2, hexCode: themer.getColor(colorIds.COLOR_2).hexCode },
-    { id: colorIds.COLOR_5, hexCode: themer.getColor(colorIds.COLOR_5).hexCode  }, { id: colorIds.COLOR_3, hexCode: themer.getColor(colorIds.COLOR_3).hexCode  }, { id: colorIds.COLOR_6, hexCode: themer.getColor(colorIds.COLOR_6).hexCode },
+    { id: colorIds.COLOR_1, hexCode: themer.getColor(colorIds.COLOR_1) }, { id: colorIds.COLOR_4, hexCode: themer.getColor(colorIds.COLOR_4) }, { id: colorIds.COLOR_2, hexCode: themer.getColor(colorIds.COLOR_2) },
+    { id: colorIds.COLOR_5, hexCode: themer.getColor(colorIds.COLOR_5) }, { id: colorIds.COLOR_3, hexCode: themer.getColor(colorIds.COLOR_3) }, { id: colorIds.COLOR_6, hexCode: themer.getColor(colorIds.COLOR_6) },
   ];
 
   const [isLoading, setIsLoading] = useState(false);
@@ -141,15 +141,15 @@ const SnippetScreen = ({ route, navigation }) => {
   }
 
   return (
-      <ScrollView style={[styles.container, { backgroundColor: themer.getColor('background2').hexCode }]}>
-        <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background').hexCode } ]}>
+      <ScrollView style={[styles.container, { backgroundColor: themer.getColor('background2') }]}>
+        <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background') } ]}>
           <View style={styles.titleView}>
             <Pressable onPress={onBackTapped} hitSlop={20}>
-              <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={themer.getColor('screenHeader1.foreground').hexCode} />
+              <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={themer.getColor('screenHeader1.foreground')} />
             </Pressable>
-            <Text style={[styles.title, { color: themer.getColor('screenHeader1.foreground').hexCode }]}>{`${snippet.id ? 'Edit' : 'New'} ${snippet.type == snippetTypes.SINGLE ? 'snippet' : 'list'}`}</Text>
+            <Text style={[styles.title, { color: themer.getColor('screenHeader1.foreground') }]}>{`${snippet.id ? 'Edit' : 'New'} ${snippet.type == snippetTypes.SINGLE ? 'snippet' : 'list'}`}</Text>
             <Pressable onPress={onSaveTapped} hitSlop={20} disabled={isLoading || !snippet.title || snippet.title.length == 0 || !snippet.content || snippet.content.length == 0}>
-              <Image source={require('../assets/images/checkmark.png')} style={[styles.saveIcon, { opacity: isLoading || !snippet.title || snippet.title.length == 0 || !snippet.content || snippet.content.length == 0 ? .1 : 1 }]} tintColor={themer.getColor('screenHeader1.foreground').hexCode} />
+              <Image source={require('../assets/images/checkmark.png')} style={[styles.saveIcon, { opacity: isLoading || !snippet.title || snippet.title.length == 0 || !snippet.content || snippet.content.length == 0 ? .1 : 1 }]} tintColor={themer.getColor('screenHeader1.foreground')} />
             </Pressable>
           </View>
           <View style={styles.buttonsView}>
@@ -158,11 +158,11 @@ const SnippetScreen = ({ route, navigation }) => {
             )}
           </View>
         </View>
-        <View style={[styles.titleInputView, { backgroundColor: themer.getColor(snippet.color_id)?.hexCode }]}>
-          <TextInput style={[styles.titleInput, { color: themer.getColor('textInput3.foreground').hexCode }]} placeholder={'Type or paste title here..'} placeholderTextColor={themer.getColor('textInput3.foreground').hexCode} multiline maxLength={50} onChangeText={onTitleChangeText}>{snippet.title}</TextInput>
+        <View style={[styles.titleInputView, { backgroundColor: themer.getColor(snippet.color_id) }]}>
+          <TextInput style={[styles.titleInput, { color: themer.getColor('textInput3.foreground') }]} placeholder={'Type or paste title here..'} placeholderTextColor={themer.getColor('textInput3.foreground')} multiline maxLength={50} onChangeText={onTitleChangeText}>{snippet.title}</TextInput>
         </View>
         <View style={styles.contentInputView}>
-          <TextInput style={[styles.contentInput, { color: themer.getColor('textArea1.foreground').hexCode }]} placeholder={'Type or paste content here..'} placeholderTextColor={themer.getColor('textArea1.foreground').hexCode} multiline maxLength={1000} onChangeText={onContentChangeText}>{snippet.content}</TextInput>
+          <TextInput style={[styles.contentInput, { color: themer.getColor('textArea1.foreground') }]} placeholder={'Type or paste content here..'} placeholderTextColor={themer.getColor('textArea1.foreground')} multiline maxLength={1000} onChangeText={onContentChangeText}>{snippet.content}</TextInput>
         </View>
       </ScrollView>
   );

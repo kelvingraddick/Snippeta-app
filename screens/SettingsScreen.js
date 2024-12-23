@@ -4,9 +4,9 @@ import { useActionSheet } from '@expo/react-native-action-sheet';
 import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
 import ReactNativeHapticFeedback from "react-native-haptic-feedback";
 import { ApplicationContext } from '../ApplicationContext';
-import colors from '../helpers/colors';
 import banner from '../helpers/banner';
 import storage from '../helpers/storage';
+import { colors } from '../constants/colors';
 import { themes } from '../constants/themes';
 import SnippetaCloudView from '../components/SnippetaCloudView';
 import ActionButton from '../components/ActionButton';
@@ -125,31 +125,31 @@ const SettingsScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={[styles.container, { backgroundColor: themer.getColor('background1').hexCode }]}>
-      <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background').hexCode } ]}>
+    <View style={[styles.container, { backgroundColor: themer.getColor('background1') }]}>
+      <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background') } ]}>
         <View style={styles.titleView}>
           <Pressable onPress={onBackTapped} disabled={isLoading} hitSlop={20}>
-            <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={themer.getColor('screenHeader1.foreground').hexCode} />
+            <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={themer.getColor('screenHeader1.foreground')} />
           </Pressable>
-          <Text style={[styles.title, { color: themer.getColor('screenHeader1.foreground').hexCode }]}>Settings</Text>
+          <Text style={[styles.title, { color: themer.getColor('screenHeader1.foreground') }]}>Settings</Text>
           <View style={styles.placeholderIcon} />
         </View>
         <View style={styles.logoView}>
-          <Image source={require('../assets/images/logo.png')} style={styles.logoIcon} tintColor={themer.getColor('screenHeader1.foreground').hexCode} resizeMode='contain' />
-          <Text style={[styles.subTitle, { color: themer.getColor('screenHeader1.foreground').hexCode }]}>Pro</Text>
+          <Image source={require('../assets/images/logo.png')} style={styles.logoIcon} tintColor={themer.getColor('screenHeader1.foreground')} resizeMode='contain' />
+          <Text style={[styles.subTitle, { color: themer.getColor('screenHeader1.foreground') }]}>Pro</Text>
         </View>
         { !subscription &&
           <View style={styles.infoView}>
-            <Text style={[styles.descriptionText, { color: themer.getColor('screenHeader1.foreground').hexCode }]}>Subscribe to access pro-level features</Text>
+            <Text style={[styles.descriptionText, { color: themer.getColor('screenHeader1.foreground') }]}>Subscribe to access pro-level features</Text>
             <View style={styles.infoView}>
-              <Text style={[styles.featureText, { color: themer.getColor('screenHeader1.foreground').hexCode }]}>☁️ Sync & backup snippets with <Text style={{ fontWeight: 'bold' }}>Snippeta Cloud</Text></Text>
-              <Text style={[styles.featureText, { color: themer.getColor('screenHeader1.foreground').hexCode }]}>🎨 Unlock pro-level themes, fonts, & sounds</Text>
-              <Text style={[styles.featureText, { color: themer.getColor('screenHeader1.foreground').hexCode }]}>📱 Personalize even more with pro <Text style={{ fontWeight: 'bold' }}>app icons</Text></Text>
+              <Text style={[styles.featureText, { color: themer.getColor('screenHeader1.foreground') }]}>☁️ Sync & backup snippets with <Text style={{ fontWeight: 'bold' }}>Snippeta Cloud</Text></Text>
+              <Text style={[styles.featureText, { color: themer.getColor('screenHeader1.foreground') }]}>🎨 Unlock pro-level themes, fonts, & sounds</Text>
+              <Text style={[styles.featureText, { color: themer.getColor('screenHeader1.foreground') }]}>📱 Personalize even more with pro <Text style={{ fontWeight: 'bold' }}>app icons</Text></Text>
             </View>
           </View>
         }
         { subscription &&
-          <Text style={[styles.descriptionText, { color: themer.getColor('screenHeader1.foreground').hexCode, marginBottom: 15 }]}>You are subscribed: <Text style={{ fontWeight: 'bold', color: colors.lightGreen.hexCode }}>{subscription.type}</Text></Text>
+          <Text style={[styles.descriptionText, { color: themer.getColor('screenHeader1.foreground'), marginBottom: 15 }]}>You are subscribed: <Text style={{ fontWeight: 'bold', color: colors.lightGreen }}>{subscription.type}</Text></Text>
         }
         { !subscription && 
           <ActionButton iconImageSource={require('../assets/images/cart.png')} text={'Free trial • $1.99/month'} foregroundColor={themer.getColor('button1.foreground')} backgroundColor={themer.getColor('button1.background')} disabled={isLoading} onTapped={() => onSubscribeTapped()} />
@@ -178,7 +178,7 @@ const SettingsScreen = ({ navigation }) => {
         }
         renderSectionHeader={({section: {title}}) => ( title &&
           <View style={styles.sectionHeaderView}>
-            <Text style={[styles.sectionHeaderText, { color: themer.getColor('listHeader1.foreground').hexCode }]}>{title}</Text>
+            <Text style={[styles.sectionHeaderText, { color: themer.getColor('listHeader1.foreground') }]}>{title}</Text>
           </View>
         )}
         renderItem={({item}) => <SettingView label={item.label} labelIconSource={item.labelIconSource} onTapped={item.onTapped} isSelectable={item.isSelectable} isSelected={item.isSelected} isSwitchEnabled={item.isSwitchEnabled} onSwitchToggled={item.onSwitchToggled} themer={themer} />}
