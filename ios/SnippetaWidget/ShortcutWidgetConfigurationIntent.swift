@@ -29,9 +29,9 @@ struct ShortcutWidgetConfigurationIntent: WidgetConfigurationIntent {
   public static var defaultValue: ShortcutWidgetConfigurationIntent {
     let intent = ShortcutWidgetConfigurationIntent()
     intent.snippetList1 = SnippetList(id: "-1", type: SnippetType.SINGLE.rawValue, source: SnippetSource.STORAGE.rawValue, title: "Example List 1", content: "This is example list 1.", color_id: -1, order_index: 0, snippets: [])
-    intent.snippetList2 = SnippetList(id: "-1", type: SnippetType.SINGLE.rawValue, source: SnippetSource.STORAGE.rawValue, title: "Example List 2", content: "This is example list 2.", color_id: -1, order_index: 1, snippets: [])
-    intent.snippetList3 = SnippetList(id: "-1", type: SnippetType.SINGLE.rawValue, source: SnippetSource.API.rawValue, title: "Example List 3", content: "This is example list 3.", color_id: -1, order_index: 2, snippets: [])
-    intent.snippetList4 = SnippetList(id: "-1", type: SnippetType.SINGLE.rawValue, source: SnippetSource.API.rawValue, title: "Example List 4", content: "This is example list 4.", color_id: -1, order_index: 3, snippets: [])
+    intent.snippetList2 = SnippetList(id: "-1", type: SnippetType.SINGLE.rawValue, source: SnippetSource.STORAGE.rawValue, title: "Example List 2", content: "This is example list 2.", color_id: 1, order_index: 1, snippets: [])
+    intent.snippetList3 = SnippetList(id: "-1", type: SnippetType.SINGLE.rawValue, source: SnippetSource.API.rawValue, title: "Example List 3", content: "This is example list 3.", color_id: 2, order_index: 2, snippets: [])
+    intent.snippetList4 = SnippetList(id: "-1", type: SnippetType.SINGLE.rawValue, source: SnippetSource.API.rawValue, title: "Example List 4", content: "This is example list 4.", color_id: 3, order_index: 3, snippets: [])
     return intent
   }
 }
