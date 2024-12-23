@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import { ApplicationContext } from '../ApplicationContext';
 import { storageKeys } from '../constants/storageKeys';
@@ -141,7 +142,7 @@ const SnippetScreen = ({ route, navigation }) => {
   }
 
   return (
-      <ScrollView style={[styles.container, { backgroundColor: themer.getColor('background2') }]}>
+      <KeyboardAwareScrollView style={[styles.container, { backgroundColor: themer.getColor('background2') }]}>
         <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background') } ]}>
           <View style={styles.titleView}>
             <Pressable onPress={onBackTapped} hitSlop={20}>
@@ -164,7 +165,7 @@ const SnippetScreen = ({ route, navigation }) => {
         <View style={styles.contentInputView}>
           <TextInput style={[styles.contentInput, { color: themer.getColor('textArea1.foreground') }]} placeholder={'Type or paste content here..'} placeholderTextColor={themer.getColor('textArea1.foreground')} multiline maxLength={1000} onChangeText={onContentChangeText}>{snippet.content}</TextInput>
         </View>
-      </ScrollView>
+      </KeyboardAwareScrollView>
   );
 };
 
