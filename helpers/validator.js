@@ -69,7 +69,7 @@ const isValidSnippet = (snippet) => {
   if (!snippet.content || snippet.title.length < 1 || snippet.title.length > 1000) {
     errorMessages.push('Snippet content must be between 1 and 1000 characters.');
   }
-  if (!Object.values(colorIds).includes(snippet.color_id)) {
+  if (!Object.values(colorIds).map(colorId => `${colorId}`).includes(`${snippet.color_id}`)) {
     errorMessages.push(`Snippet color ID must be a valid color ID (typically 0-6 or 100).'`);
   }
   if (isNaN(Date.parse(snippet.time))) {
