@@ -3,6 +3,7 @@ import { Dimensions, Image, Pressable, SectionList, StyleSheet, Text, View } fro
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import ReactNativeHapticFeedback from "react-native-haptic-feedback";
 import { ApplicationContext } from '../ApplicationContext';
 import { snippetTypes } from '../constants/snippetTypes';
 import { snippetSources } from '../constants/snippetSources';
@@ -91,6 +92,7 @@ const SnippetsScreen = ({ route, navigation }) => {
       // set snippets for display
       setSnippetSections(snippetSections);
       setIsLoading(false);
+      triggerHapticFeedback();
 
     } catch (error) {
       console.error('SnippetsScreen.js -> getSnippets: Loading snippets data failed with error: ' + error.message);
@@ -222,6 +224,7 @@ const SnippetsScreen = ({ route, navigation }) => {
     if (snippet.type == snippetTypes.SINGLE) {
       Clipboard.setString(snippet.content);
       banner.showSuccessMessage('The text was copied to the clipboard', `"${snippet.content}"`);
+      triggerHapticFeedback();
     } else { // snippetTypes.MULTIPLE
       navigation.push('Snippets', { parentSnippet: snippet, callbacks: callbacks.concat(getSnippets) });
     }
@@ -249,6 +252,10 @@ const SnippetsScreen = ({ route, navigation }) => {
         }
       }
     );
+  }
+
+  const triggerHapticFeedback = () => {
+    ReactNativeHapticFeedback.trigger('impactMedium', options = { enableVibrateFallback: true, ignoreAndroidSystemSettings: true, });
   }
 
   return (

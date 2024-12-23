@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Image, Pressable, SectionList, StyleSheet, Text, View } from 'react-native';
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
+import ReactNativeHapticFeedback from "react-native-haptic-feedback";
 import { ApplicationContext } from '../ApplicationContext';
 import colors from '../helpers/colors';
 import banner from '../helpers/banner';
@@ -44,6 +45,7 @@ const SettingsScreen = ({ navigation }) => {
     console.log(`SettingsScreen.js -> onThemeTapped: theme selected with ID ${themeId}`);
     await storage.saveThemeId(themeId);
     await updateThemer(themeId);
+    triggerHapticFeedback();
   };
 
   const onBackTapped = async () => {
@@ -117,6 +119,10 @@ const SettingsScreen = ({ navigation }) => {
       }
     );
   };
+
+  const triggerHapticFeedback = () => {
+    ReactNativeHapticFeedback.trigger('impactMedium', options = { enableVibrateFallback: true, ignoreAndroidSystemSettings: true, });
+  }
 
   return (
     <View style={[styles.container, { backgroundColor: themer.getColor('background1').hexCode }]}>

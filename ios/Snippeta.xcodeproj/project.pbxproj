@@ -50,6 +50,13 @@
 			remoteGlobalIDString = B68377362CC0B6E300BC1755;
 			remoteInfo = SnippetaWidgetExtension;
 		};
+		B6B6F6F82D153A38006518BD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B6B6F6F22D153A38006518BD /* RNHapticFeedback.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNHapticFeedback;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -101,6 +108,7 @@
 		B68377502CC0CAAE00BC1755 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B68377512CC0CAAE00BC1755 /* ShortcutWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutWidget.swift; sourceTree = "<group>"; };
 		B68377522CC0CAAE00BC1755 /* SnippetaWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetaWidgetBundle.swift; sourceTree = "<group>"; };
+		B6B6F6F22D153A38006518BD /* RNHapticFeedback.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNHapticFeedback.xcodeproj; path = "../node_modules/react-native-haptic-feedback/ios/RNHapticFeedback.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		B6CC09E22CC4B30300ABB709 /* SnippetaWidgetExtension-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SnippetaWidgetExtension-Bridging-Header.h"; sourceTree = "<group>"; };
 		B6D391DF2CB4F2AC00EC0846 /* Snippeta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Snippeta.entitlements; path = Snippeta/Snippeta.entitlements; sourceTree = "<group>"; };
 		E9E5E563F43D227E18278396 /* Pods-SnippetaWidgetExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnippetaWidgetExtension.release.xcconfig"; path = "Target Support Files/Pods-SnippetaWidgetExtension/Pods-SnippetaWidgetExtension.release.xcconfig"; sourceTree = "<group>"; };
@@ -186,6 +194,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				B6B6F6F22D153A38006518BD /* RNHapticFeedback.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -233,6 +242,14 @@
 				B6CC09E22CC4B30300ABB709 /* SnippetaWidgetExtension-Bridging-Header.h */,
 			);
 			path = SnippetaWidget;
+			sourceTree = "<group>";
+		};
+		B6B6F6F52D153A38006518BD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B6B6F6F92D153A38006518BD /* libRNHapticFeedback.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
@@ -346,6 +363,12 @@
 			mainGroup = 83CBB9F61A601CBA00E9B192;
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = B6B6F6F52D153A38006518BD /* Products */;
+					ProjectRef = B6B6F6F22D153A38006518BD /* RNHapticFeedback.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* Snippeta */,
@@ -354,6 +377,16 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		B6B6F6F92D153A38006518BD /* libRNHapticFeedback.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNHapticFeedback.a;
+			remoteRef = B6B6F6F82D153A38006518BD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		00E356EC1AD99517003FC87E /* Resources */ = {
