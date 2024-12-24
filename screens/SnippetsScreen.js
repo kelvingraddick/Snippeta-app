@@ -202,7 +202,6 @@ const SnippetsScreen = ({ route, navigation }) => {
     showActionSheetWithOptions(
       {
         title: 'What do you want to add?',
-        tintColor: colors.white,
         options: Object.keys(options),
         cancelButtonIndex: options.Cancel,
       },
