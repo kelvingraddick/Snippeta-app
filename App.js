@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer } from 'react';
-import { Linking, StyleSheet } from 'react-native';
+import { Linking, NativeModules, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { navigationRef } from './RootNavigation';
 import navigation from './RootNavigation';
@@ -55,6 +55,8 @@ const reducer = (state, action) => {
 
 const Stack = createNativeStackNavigator();
 
+const { WidgetNativeModule } = NativeModules;
+
 export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -81,7 +83,7 @@ export default function App() {
         await loginWithCredentials(credentials.emailOrPhone, credentials.password);
       } else {
         await updateSubscriptionStatus();
-        await getSnippetLists();
+        await updateSnippetLists();
         dispatch({ type: 'LOGGED_IN', payload: null });
       }
     } catch (error) {
@@ -103,7 +105,7 @@ export default function App() {
         await storage.saveCredentials(emailOrPhone, password);
         await RevenueCat.login(user.id);
         await updateSubscriptionStatus(user);
-        await getSnippetLists();
+        await updateSnippetLists();
       } else {
         console.log('App.js -> loginWithCredentials: Login failed with error code: ' + responseJson?.error_code);
       }
@@ -119,7 +121,7 @@ export default function App() {
     try {
       await storage.deleteCredentials();
       await updateSubscriptionStatus();
-      await getSnippetLists();
+      await updateSnippetLists();
       console.log('App.js -> logout: Deleted credentials from storage..');
     } catch (error) {
       console.error('App.js -> logout: Logging out user failed with error: ' + error.message);
@@ -167,8 +169,8 @@ export default function App() {
     }
   };
 
-  const getSnippetLists = async () => {
-    console.log('App.js -> getSnippetLists: about to get snippet lists for user');
+  const updateSnippetLists = async () => {
+    console.log('App.js -> updateSnippetLists: about to get snippet lists for user');
 
     // try to get storage snippet lists
     let storageSnippetLists = [];
@@ -183,12 +185,13 @@ export default function App() {
     apiSnippetLists = responseJson.lists ?? [];
     apiSnippetLists.forEach(x => { x.source = snippetSources.API; x.snippets.forEach(y => { y.source = snippetSources.API; }) });
     apiSnippetLists.sort((a, b) => a.order_index - b.order_index);
-    console.log(`App.js -> getSnippetLists: Got ${apiSnippetLists.length} snippet lists via API:`, JSON.stringify(apiSnippetLists.map(x => x.id)));
+    console.log(`App.js -> updateSnippetLists: Got ${apiSnippetLists.length} snippet lists via API:`, JSON.stringify(apiSnippetLists.map(x => x.id)));
 
     // set snippet lists data for widget
     let snippetLists = [];
     snippetLists = snippetLists.concat(storageSnippetLists).concat(apiSnippetLists);
     await widget.saveData('snippetLists', snippetLists);
+    updateWidgets();
   };
 
   const loadThemeFromStorage = async () => {
@@ -202,6 +205,7 @@ export default function App() {
       const themer = new Themer(themeId);
       console.log(`App.js -> updateThemer: ${themeId ? `updated themer with id '${themeId}' and name '${themer.getName()}'` : `no theme found; using default '${themer.getName()}'`}`);
       await widget.saveData('colors', themer.getColors());
+      updateWidgets();
       dispatch({ type: 'UPDATE_THEMER', payload: themer });
     } catch (error) {
       console.error('App.js -> updateThemer: updating themer failed with error: ' + error.message);
@@ -221,8 +225,22 @@ export default function App() {
     }
   };
 
+  const updateWidgets = () => {
+    try {
+      WidgetNativeModule.updateWidgets();
+      console.log('App.js -> updateWidgets: refreshing home screen widgets was successful');
+    } catch (error) {
+      console.error('App.js -> updateWidgets: failed with error: ' + error.message);
+    }
+  };
+
+  const onSnippetChanged = async () => {
+    console.log('App.js -> onSnippetChanged: snippet(s) was changed and need to refresh related state..');
+    await updateSnippetLists();
+  };
+
   return (
-    <ApplicationContext.Provider value={{...state, updateThemer, loginWithCredentials, logout, updateSubscriptionStatus}}>
+    <ApplicationContext.Provider value={{...state, onSnippetChanged, updateThemer, loginWithCredentials, logout, updateSubscriptionStatus}}>
       <ActionSheetProvider>
         <NavigationContainer ref={navigationRef}>
           <Stack.Navigator initialRouteName="Snippets">

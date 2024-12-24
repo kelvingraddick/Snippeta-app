@@ -16,7 +16,7 @@ import ColorButton from '../components/ColorButton';
 const SnippetScreen = ({ route, navigation }) => {
   const callbacks = route.params.callbacks || [];
 
-  const { themer, user, isUserLoading } = useContext(ApplicationContext);
+  const { themer, user, isUserLoading, onSnippetChanged } = useContext(ApplicationContext);
 
   const snippetColorOptions = [
     { id: colorIds.COLOR_1, hexCode: themer.getColor(colorIds.COLOR_1) }, { id: colorIds.COLOR_4, hexCode: themer.getColor(colorIds.COLOR_4) }, { id: colorIds.COLOR_2, hexCode: themer.getColor(colorIds.COLOR_2) },
@@ -84,6 +84,7 @@ const SnippetScreen = ({ route, navigation }) => {
       setIsLoading(false);
       callbacks.forEach(async callback => { await callback(); });
       navigation.goBack();
+      onSnippetChanged();
 
     } catch (error) {
       const errorMessage = 'Saving snippet failed with error: ' + error.message;

@@ -30,6 +30,8 @@
 		B68377552CC0CAAE00BC1755 /* ShortcutWidgetConfigurationIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B683774E2CC0CAAE00BC1755 /* ShortcutWidgetConfigurationIntent.swift */; };
 		B68377562CC0CAAE00BC1755 /* ShortcutWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68377512CC0CAAE00BC1755 /* ShortcutWidget.swift */; };
 		B68377572CC0CAAE00BC1755 /* SnippetaWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68377522CC0CAAE00BC1755 /* SnippetaWidgetBundle.swift */; };
+		B69798982D1A67D900331C52 /* WidgetNativeModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69798972D1A67D900331C52 /* WidgetNativeModule.swift */; };
+		B697989A2D1A67F600331C52 /* WidgetNativeModuleBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = B69798992D1A67F600331C52 /* WidgetNativeModuleBridge.m */; };
 		B6B6F7052D19346C006518BD /* Themer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B6F7042D19346C006518BD /* Themer.swift */; };
 		B6B6F7062D19346C006518BD /* Themer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B6F7042D19346C006518BD /* Themer.swift */; };
 		E5C4676548DEE7CB10F23EF6 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 42FB28459BF5265885BA2952 /* PrivacyInfo.xcprivacy */; };
@@ -107,6 +109,9 @@
 		B68377502CC0CAAE00BC1755 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B68377512CC0CAAE00BC1755 /* ShortcutWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutWidget.swift; sourceTree = "<group>"; };
 		B68377522CC0CAAE00BC1755 /* SnippetaWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetaWidgetBundle.swift; sourceTree = "<group>"; };
+		B69798972D1A67D900331C52 /* WidgetNativeModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetNativeModule.swift; sourceTree = "<group>"; };
+		B69798992D1A67F600331C52 /* WidgetNativeModuleBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WidgetNativeModuleBridge.m; sourceTree = "<group>"; };
+		B697989B2D1A682100331C52 /* Snippeta-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Snippeta-Bridging-Header.h"; sourceTree = "<group>"; };
 		B6B6F6F22D153A38006518BD /* RNHapticFeedback.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNHapticFeedback.xcodeproj; path = "../node_modules/react-native-haptic-feedback/ios/RNHapticFeedback.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		B6B6F7042D19346C006518BD /* Themer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Themer.swift; sourceTree = "<group>"; };
 		B6CC09E22CC4B30300ABB709 /* SnippetaWidgetExtension-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SnippetaWidgetExtension-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -174,6 +179,9 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
 				42FB28459BF5265885BA2952 /* PrivacyInfo.xcprivacy */,
+				B69798972D1A67D900331C52 /* WidgetNativeModule.swift */,
+				B69798992D1A67F600331C52 /* WidgetNativeModuleBridge.m */,
+				B697989B2D1A682100331C52 /* Snippeta-Bridging-Header.h */,
 			);
 			name = Snippeta;
 			sourceTree = "<group>";
@@ -238,8 +246,8 @@
 				B67D17D72CD6D40300DC3628 /* ListWidgetConfigurationIntent.swift */,
 				B67D17D42CD6CCB500DC3628 /* ColorExtension.swift */,
 				B68377522CC0CAAE00BC1755 /* SnippetaWidgetBundle.swift */,
-				B6CC09E22CC4B30300ABB709 /* SnippetaWidgetExtension-Bridging-Header.h */,
 				B6B6F7042D19346C006518BD /* Themer.swift */,
+				B6CC09E22CC4B30300ABB709 /* SnippetaWidgetExtension-Bridging-Header.h */,
 			);
 			path = SnippetaWidget;
 			sourceTree = "<group>";
@@ -582,7 +590,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B697989A2D1A67F600331C52 /* WidgetNativeModuleBridge.m in Sources */,
 				B67D17D92CD6D40300DC3628 /* ListWidgetConfigurationIntent.swift in Sources */,
+				B69798982D1A67D900331C52 /* WidgetNativeModule.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				B67D17DE2CD7239B00DC3628 /* SnippetList.swift in Sources */,

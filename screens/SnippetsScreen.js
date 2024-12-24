@@ -22,7 +22,7 @@ const SnippetsScreen = ({ route, navigation }) => {
   const isRootSnippetsScreen = !parentSnippet;
   const callbacks = route.params?.callbacks || [];
 
-  const { themer, user, isUserLoading } = useContext(ApplicationContext);
+  const { themer, user, isUserLoading, onSnippetChanged } = useContext(ApplicationContext);
 
   const [isLoading, setIsLoading] = useState(true);
   const [snippetSections, setSnippetSections] = useState([]);
@@ -122,6 +122,7 @@ const SnippetsScreen = ({ route, navigation }) => {
       }
       setIsLoading(false);
       await getSnippets();
+      onSnippetChanged();
 
     } catch (error) {
       const errorMessage = 'Deleting snippet failed with error: ' + error.message;
@@ -168,6 +169,7 @@ const SnippetsScreen = ({ route, navigation }) => {
       }
       setIsLoading(false);
       await getSnippets();
+      onSnippetChanged();
 
     } catch (error) {
       const errorMessage = 'Moving snippet failed with error: ' + error.message;
