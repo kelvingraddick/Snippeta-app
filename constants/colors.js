@@ -1,4 +1,5 @@
 export const colors = {
+  // default
   white: '#fff',
   black: '#000',
   gray: '#dfdfdf',
@@ -11,4 +12,12 @@ export const colors = {
   lightPurple: '#986b9b',
   lightRed: '#fb7477',
   nebulaBlue: '#5c63ff',
+  // beach sunset
+  sunset: '#F2CC8F',
+  lightSunset: '#F5D6A6',
+  whiteSunset: '#FAEBD4',
+  cambridgeBlue: '#81B29A',
+  delftBlue: '#3D405B',
+  burntSienna: '#E07A5F',
+  eggshell: '#F4F1DE',
 };
