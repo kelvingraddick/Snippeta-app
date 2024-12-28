@@ -73,7 +73,7 @@ const SnippetsScreen = ({ route, navigation }) => {
       let snippetSections = [];
       if (isRootSnippetsScreen) {
         if ((storageSnippets.length > 0 && apiSnippets.length > 0) || storageSnippets.length > 0) { snippetSections.push({ title: snippetSources.STORAGE, data: storageSnippets }, { title: snippetSources.API, data: apiSnippets }); }
-        else if (apiSnippets.length > 0) { snippetSections.push({ title: snippetSources.API, data: apiSnippets }); }
+        else if (apiSnippets.length > 0) { snippetSections.push({ data: apiSnippets }); }
       } else {
         if (storageSnippets.length > 0 && apiSnippets.length > 0) { snippetSections.push({ title: snippetSources.STORAGE, data: storageSnippets }, { title: snippetSources.API, data: apiSnippets }); }
         else if (storageSnippets.length > 0) { snippetSections.push({ data: storageSnippets }); }
