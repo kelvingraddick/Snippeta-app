@@ -4,14 +4,14 @@ import { Image, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-n
 const SettingView = (props) => {
   const { label, labelIconSource, isSelectable, isSelected, onTapped, isSwitchEnabled, onSwitchToggled, themer } = props;
   return (
-    <TouchableOpacity style={[styles.container, { backgroundColor: themer.getColor('content1.background') }]} onPress={onTapped}>
+    <TouchableOpacity style={[styles.container, { backgroundColor: themer.getColor('content2.background') }]} onPress={onTapped}>
       <Image
         source={labelIconSource}
         style={styles.labelIcon}
-        tintColor={themer.getColor('content1.foreground')}
+        tintColor={themer.getColor('content2.foreground')}
         resizeMode='stretch'
       />
-      <Text style={[styles.labelText, { color: themer.getColor('content1.foreground') }]} numberOfLines={1}>&nbsp;{label}</Text>
+      <Text style={[styles.labelText, { color: themer.getColor('content2.foreground') }]} numberOfLines={1}>&nbsp;{label}</Text>
       { onSwitchToggled ?
         <Switch
           trackColor={{false: '#767577', true: '#81b0ff'}}

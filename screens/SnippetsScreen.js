@@ -33,10 +33,10 @@ const SnippetsScreen = ({ route, navigation }) => {
 
   const tutorialSnippets = [
     { id: storageKeys.SNIPPET + 1, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Welcome to Snippeta!', content: 'Snippeta is the best way to copy, paste, and manage snippets of text! Copy text to your clipboard with a single tap; no highlighting or long-tapping!', color_id: colorIds.COLOR_1, time: new Date(), order_index: 0 },
-    { id: storageKeys.SNIPPET + 2, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'How to use:', content: 'Tap the button above to create a new snippet. Or tap on this snippet to copy it to your clipboard for pasting later!', color_id: colorIds.COLOR_4, time: new Date(), order_index: 1 },
-    { id: storageKeys.SNIPPET + 3, type: snippetTypes.MULTIPLE, source: snippetSources.STORAGE, title: 'Organize by creating lists', content: 'Create a snippet list to organize and nest snippets. Tap here to try it out!', color_id: colorIds.COLOR_2, time: new Date(), order_index: 2 },
-    { id: storageKeys.SNIPPET + 4, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Go PRO!', content: 'Want more out of Snippeta? Take your account pro and get access to create lists and more!', color_id: colorIds.COLOR_3, time: new Date(), order_index: 3 },
-    { id: storageKeys.SNIPPET + 5, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Add snippets to a list', content: 'Add a new snippet to this list. Tap the "New snippet" button above to try it out!', color_id: colorIds.COLOR_2, time: new Date(), order_index: 0, parent_id: storageKeys.SNIPPET + 3 },
+    { id: storageKeys.SNIPPET + 2, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'How to use', content: 'Tap the button above to create a new snippet. Or tap on this snippet to copy it to your clipboard for pasting later!', color_id: colorIds.COLOR_2, time: new Date(), order_index: 1 },
+    { id: storageKeys.SNIPPET + 3, type: snippetTypes.MULTIPLE, source: snippetSources.STORAGE, title: 'Organize by creating lists', content: 'Create a snippet list to organize and nest snippets. Tap here to try it out!', color_id: colorIds.COLOR_3, time: new Date(), order_index: 2 },
+    { id: storageKeys.SNIPPET + 4, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Go PRO!', content: 'Want more out of Snippeta? Take your account pro and get access to create lists and more!', color_id: colorIds.COLOR_4, time: new Date(), order_index: 3 },
+    { id: storageKeys.SNIPPET + 5, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Add snippets to a list', content: 'Add a new snippet to this list. Tap the "New snippet" button above to try it out!', color_id: colorIds.COLOR_3, time: new Date(), order_index: 0, parent_id: storageKeys.SNIPPET + 3 },
   ];
 
   useEffect(() => {
@@ -297,7 +297,7 @@ const SnippetsScreen = ({ route, navigation }) => {
         <View style={styles.snippetsList}>
           {[0, 1, 2, 3, 4, 5].map(x => (
             <SkeletonPlaceholder key={x} borderRadius={10} speed={300}>
-              <SkeletonPlaceholder.Item height={100} width={Dimensions.get('window').width - 40 } marginBottom={16} />
+              <SkeletonPlaceholder.Item height={80} width={Dimensions.get('window').width - 40 } marginBottom={16} />
             </SkeletonPlaceholder>
           ))}
         </View>
@@ -332,7 +332,7 @@ const SnippetsScreen = ({ route, navigation }) => {
               }
             </>
           )}
-          renderSectionFooter={() => <View style={{ height: 10 }}></View>}
+          renderSectionFooter={() => <View style={{ height: 17 }}></View>}
           ListFooterComponent={() => <View style={{ height: 50 }}></View>}
         />
       }

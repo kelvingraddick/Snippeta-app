@@ -19,8 +19,8 @@ const SnippetScreen = ({ route, navigation }) => {
   const { themer, user, isUserLoading, onSnippetChanged } = useContext(ApplicationContext);
 
   const snippetColorOptions = [
-    { id: colorIds.COLOR_1, hexCode: themer.getColor(colorIds.COLOR_1) }, { id: colorIds.COLOR_4, hexCode: themer.getColor(colorIds.COLOR_4) }, { id: colorIds.COLOR_2, hexCode: themer.getColor(colorIds.COLOR_2) },
-    { id: colorIds.COLOR_5, hexCode: themer.getColor(colorIds.COLOR_5) }, { id: colorIds.COLOR_3, hexCode: themer.getColor(colorIds.COLOR_3) }, { id: colorIds.COLOR_6, hexCode: themer.getColor(colorIds.COLOR_6) },
+    { id: colorIds.COLOR_1, hexCode: themer.getColor(colorIds.COLOR_1) }, { id: colorIds.COLOR_2, hexCode: themer.getColor(colorIds.COLOR_2) }, { id: colorIds.COLOR_3, hexCode: themer.getColor(colorIds.COLOR_3) },
+    { id: colorIds.COLOR_4, hexCode: themer.getColor(colorIds.COLOR_4) }, { id: colorIds.COLOR_5, hexCode: themer.getColor(colorIds.COLOR_5) }, { id: colorIds.COLOR_6, hexCode: themer.getColor(colorIds.COLOR_6) },
   ];
 
   const [isLoading, setIsLoading] = useState(false);
