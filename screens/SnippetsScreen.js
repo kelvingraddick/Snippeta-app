@@ -308,7 +308,7 @@ const SnippetsScreen = ({ route, navigation }) => {
           sections={snippetSections}
           keyExtractor={(item, index) => item.id}
           stickySectionHeadersEnabled={false}
-          renderItem={({item}) => <SnippetView snippet={item} onSnippetTapped={onSnippetTapped} onSnippetMenuTapped={onSnippetMenuTapped} isHidden={item.source == snippetSources.STORAGE ? !isOnDeviceSectionVisible : !isCloudSectionVisible} themer={themer} />}
+          renderItem={({item, index, section}) => <SnippetView snippet={item} onSnippetTapped={onSnippetTapped} onSnippetMenuTapped={onSnippetMenuTapped} isHidden={item.source == snippetSources.STORAGE ? !isOnDeviceSectionVisible : !isCloudSectionVisible} isTop={index === 0} isBottom={index === section.data.length - 1} themer={themer} />}
           renderSectionHeader={({section: {title}}) => ( title &&
             <>
               <Pressable 

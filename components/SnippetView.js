@@ -3,11 +3,11 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { snippetTypes } from '../constants/snippetTypes';
 
 const SnippetView = (props) => {
-  const { snippet, onSnippetTapped, onSnippetMenuTapped, isHidden, themer } = props;
+  const { snippet, onSnippetTapped, onSnippetMenuTapped, isHidden, isTop, isBottom, themer } = props;
   const [isCollapsed, setIsCollapsed] = useState(false);
   return (
     !isHidden &&
-    <TouchableOpacity style={[styles.container, { backgroundColor: themer.getColor(snippet.color_id) }]} onPress={() => onSnippetTapped(snippet)}>
+    <TouchableOpacity style={[styles.container, (isTop ? styles.topContainer : isBottom ? styles.bottomContainer : null), { backgroundColor: themer.getColor(snippet.color_id) }]} onPress={() => onSnippetTapped(snippet)}>
       <Image
         source={snippet.type == snippetTypes.SINGLE ? require('../assets/images/copy-white.png') : require('../assets/images/list-icon.png')}
         style={[styles.titleIcon, snippet.type == snippetTypes.SINGLE ? styles.copyIcon : styles.listIcon]}
@@ -31,11 +31,19 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     gap: 5,
-    borderRadius: 5,
+    borderRadius: 3,
     paddingLeft: 15,
     paddingRight: 15,
     paddingVertical: 20,
     marginBottom: 3,
+  },
+  topContainer: {
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+  },
+  bottomContainer: {
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
   },
   contentView: {
     flex: 1,
