@@ -7,7 +7,7 @@ const SnippetView = (props) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   return (
     !isHidden &&
-    <TouchableOpacity style={[styles.container, (isTop ? styles.topContainer : isBottom ? styles.bottomContainer : null), { backgroundColor: themer.getColor(snippet.color_id) }]} onPress={() => onSnippetTapped(snippet)}>
+    <TouchableOpacity style={[styles.container, (isTop ? styles.topContainer : null), (isBottom ? styles.bottomContainer : null), { backgroundColor: themer.getColor(snippet.color_id) }]} onPress={() => onSnippetTapped(snippet)}>
       <Image
         source={snippet.type == snippetTypes.SINGLE ? require('../assets/images/copy-white.png') : require('../assets/images/list-icon.png')}
         style={[styles.titleIcon, snippet.type == snippetTypes.SINGLE ? styles.copyIcon : styles.listIcon]}
