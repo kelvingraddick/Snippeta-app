@@ -19,8 +19,8 @@ const SnippetScreen = ({ route, navigation }) => {
   const { themer, user, isUserLoading, onSnippetChanged } = useContext(ApplicationContext);
 
   const snippetColorOptions = [
-    { id: colorIds.COLOR_1, hexCode: themer.getColor(colorIds.COLOR_1) }, { id: colorIds.COLOR_2, hexCode: themer.getColor(colorIds.COLOR_2) }, { id: colorIds.COLOR_3, hexCode: themer.getColor(colorIds.COLOR_3) },
-    { id: colorIds.COLOR_4, hexCode: themer.getColor(colorIds.COLOR_4) }, { id: colorIds.COLOR_5, hexCode: themer.getColor(colorIds.COLOR_5) }, { id: colorIds.COLOR_6, hexCode: themer.getColor(colorIds.COLOR_6) },
+    { id: colorIds.COLOR_1, color: themer.getColor(colorIds.COLOR_1) }, { id: colorIds.COLOR_2, color: themer.getColor(colorIds.COLOR_2) }, { id: colorIds.COLOR_3, color: themer.getColor(colorIds.COLOR_3) },
+    { id: colorIds.COLOR_4, color: themer.getColor(colorIds.COLOR_4) }, { id: colorIds.COLOR_5, color: themer.getColor(colorIds.COLOR_5) }, { id: colorIds.COLOR_6, color: themer.getColor(colorIds.COLOR_6) },
   ];
 
   const [isLoading, setIsLoading] = useState(false);
@@ -156,11 +156,11 @@ const SnippetScreen = ({ route, navigation }) => {
           </View>
           <View style={styles.buttonsView}>
             {snippetColorOptions.map((snippetColorOption, index) =>
-              (<ColorButton key={index} id={snippetColorOption.id} hexCode={snippetColorOption.hexCode} isSelected={snippet.color_id == snippetColorOption.id} onTapped={onColorButtonTapped} />)
+              (<ColorButton key={index} id={snippetColorOption.id} color={snippetColorOption.color} isSelected={snippet.color_id == snippetColorOption.id} onTapped={onColorButtonTapped} />)
             )}
           </View>
         </View>
-        <View style={[styles.titleInputView, { backgroundColor: themer.getColor(snippet.color_id) }]}>
+        <View style={[styles.titleInputView, { backgroundColor: themer.getColor('textInput3.background') }]}>
           <TextInput style={[styles.titleInput, { color: themer.getColor('textInput3.foreground') }]} placeholder={'Type or paste title here..'} placeholderTextColor={themer.getColor('textInput3.foreground')} multiline maxLength={50} onChangeText={onTitleChangeText}>{snippet.title}</TextInput>
         </View>
         <View style={styles.contentInputView}>

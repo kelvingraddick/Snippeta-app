@@ -91,7 +91,7 @@ private func getSnippetsListButton(snippetList: SnippetList, themer: Themer) -> 
           .resizable()
           .aspectRatio(contentMode: .fit)
           .frame(height: 20)
-          .foregroundStyle(Color(hex: themer.getColor(id: snippetList.color_id)) ?? Color.primary)
+          .foregroundStyle(themer.getColor(id: snippetList.color_id))
         
         Text(snippetList.title)
           .font(.footnote)

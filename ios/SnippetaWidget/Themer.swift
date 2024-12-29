@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 class Themer {
   
@@ -30,24 +31,32 @@ class Themer {
     }
   }
   
-  public func getColor(id: Int) -> String {
+  public func getColor(id: Int) -> Color {
     let mirror = Mirror(reflecting: currentColors)
-    if let value = mirror.children.first(where: { $0.label == "color\(id)" })?.value as? String {
-      return value
+    if let value = mirror.children.first(where: { $0.label == "color\(id)" })?.value as? [String] {
+      return Color(hex: value.first ?? defaultColor100) ?? Color.primary
     }
-    return defaultColor100
+    return Color(hex: defaultColor100) ?? Color.primary
+  }
+  
+  public func getColors(id: Int) -> [Color] {
+    let mirror = Mirror(reflecting: currentColors)
+    if let value = mirror.children.first(where: { $0.label == "color\(id)" })?.value as? [String] {
+      return value.map { Color(hex: $0) ?? Color.primary }
+    }
+    return [Color(hex: defaultColor100) ?? Color.primary]
   }
 }
 
 struct Colors: Codable {
-  let color0: String
-  let color1: String
-  let color2: String
-  let color3: String
-  let color4: String
-  let color5: String
-  let color6: String
-  let color100: String
+  let color0: [String]
+  let color1: [String]
+  let color2: [String]
+  let color3: [String]
+  let color4: [String]
+  let color5: [String]
+  let color6: [String]
+  let color100: [String]
   
   enum CodingKeys: String, CodingKey {
     case color0 = "0"
@@ -61,25 +70,36 @@ struct Colors: Codable {
   }
   
   init(color0: String, color1: String, color2: String, color3: String, color4: String, color5: String, color6: String, color100: String) {
-    self.color0 = color0
-    self.color1 = color1
-    self.color2 = color2
-    self.color3 = color3
-    self.color4 = color4
-    self.color5 = color5
-    self.color6 = color6
-    self.color100 = color100
+    self.color0 = [color0]
+    self.color1 = [color1]
+    self.color2 = [color2]
+    self.color3 = [color3]
+    self.color4 = [color4]
+    self.color5 = [color5]
+    self.color6 = [color6]
+    self.color100 = [color100]
   }
   
   init(from decoder: Decoder) throws {
+    self.color0 = try Colors.decode(key: .color0, decoder: decoder)
+    self.color1 = try Colors.decode(key: .color1, decoder: decoder)
+    self.color2 = try Colors.decode(key: .color2, decoder: decoder)
+    self.color3 = try Colors.decode(key: .color3, decoder: decoder)
+    self.color4 = try Colors.decode(key: .color4, decoder: decoder)
+    self.color5 = try Colors.decode(key: .color5, decoder: decoder)
+    self.color6 = try Colors.decode(key: .color6, decoder: decoder)
+    self.color100 = try Colors.decode(key: .color100, decoder: decoder)
+  }
+  
+  private static func decode(key: Colors.CodingKeys, decoder: Decoder) throws -> [String] {
     let container = try decoder.container(keyedBy: CodingKeys.self)
-    self.color0 = try container.decode(String.self, forKey: .color0)
-    self.color1 = try container.decode(String.self, forKey: .color1)
-    self.color2 = try container.decode(String.self, forKey: .color2)
-    self.color3 = try container.decode(String.self, forKey: .color3)
-    self.color4 = try container.decode(String.self, forKey: .color4)
-    self.color5 = try container.decode(String.self, forKey: .color5)
-    self.color6 = try container.decode(String.self, forKey: .color6)
-    self.color100 = try container.decode(String.self, forKey: .color100)
+    // Attempt to decode the value at the key as a String first, then as a String array if that fails
+    if let colorString = try? container.decode(String.self, forKey: key) {
+      return [colorString]
+    } else if let colorStringArray = try? container.decode([String].self, forKey: key) {
+      return colorStringArray
+    } else {
+      throw DecodingError.typeMismatch(String.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Expected key to be a String or [String]"))
+    }
   }
 }

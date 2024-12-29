@@ -1,10 +1,17 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
 const ColorButton = (props) => {
-  const { id, hexCode, isSelected, onTapped } = props;
+  const { id, color, isSelected, onTapped } = props;
+  const ContainerComponent = Array.isArray(color) ? LinearGradient : View;
+  const containerProps = Array.isArray(color) ?
+    { style: [styles.container, isSelected ? styles.selectedContainer : null], colors: color, start: {x: 0, y: 0}, end: {x: 1, y: 0}, } :
+    { style: [styles.container, isSelected ? styles.selectedContainer : null, { backgroundColor: color }], };
   return (
-    <TouchableOpacity style={[styles.container, isSelected ? styles.selectedContainer : null, { backgroundColor: hexCode }]} onPress={() => onTapped(id)} />
+    <TouchableOpacity onPress={() => onTapped(id)}>
+      <ContainerComponent {...containerProps} />
+    </TouchableOpacity>
   );
 };
 

@@ -1,26 +1,33 @@
 import React, { useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import { snippetTypes } from '../constants/snippetTypes';
 
 const SnippetView = (props) => {
   const { snippet, onSnippetTapped, onSnippetMenuTapped, isHidden, isTop, isBottom, themer } = props;
+  const ContainerComponent = Array.isArray(themer.getColor(snippet.color_id)) ? LinearGradient : View;
+  const containerProps = Array.isArray(themer.getColor(snippet.color_id)) ?
+    { style: [styles.container, (isTop ? styles.topContainer : null), (isBottom ? styles.bottomContainer : null)], colors: themer.getColor(snippet.color_id), start: {x: 0, y: 0}, end: {x: 1, y: 0}, } :
+    { style: [styles.container, (isTop ? styles.topContainer : null), (isBottom ? styles.bottomContainer : null), { backgroundColor: themer.getColor(snippet.color_id) }], };
   const [isCollapsed, setIsCollapsed] = useState(false);
   return (
     !isHidden &&
-    <TouchableOpacity style={[styles.container, (isTop ? styles.topContainer : null), (isBottom ? styles.bottomContainer : null), { backgroundColor: themer.getColor(snippet.color_id) }]} onPress={() => onSnippetTapped(snippet)}>
-      <Image
-        source={snippet.type == snippetTypes.SINGLE ? require('../assets/images/copy-white.png') : require('../assets/images/list-icon.png')}
-        style={[styles.titleIcon, snippet.type == snippetTypes.SINGLE ? styles.copyIcon : styles.listIcon]}
-        tintColor={themer.getColor('content1.foreground')}
-        resizeMode='stretch'
-      />
-      <View style={styles.contentView}>
-        <Text style={[styles.titleText, { color: themer.getColor('content1.foreground') }]} numberOfLines={1}>&nbsp;&nbsp;{snippet.title}</Text>
-        { !isCollapsed && <Text style={[styles.contentText, { color: themer.getColor('content1.foreground'), opacity: themer.getOpacity('content1.text2') }]} numberOfLines={1}>&nbsp;&nbsp;{snippet.content}</Text> }
-      </View>
-      <TouchableOpacity onPress={() => onSnippetMenuTapped(snippet)} hitSlop={40}>
-        <Text style={[styles.menuIcon, { color: themer.getColor('content1.foreground') }]}>&middot;&middot;&middot;</Text>
-      </TouchableOpacity>
+    <TouchableOpacity onPress={() => onSnippetTapped(snippet)}>
+      <ContainerComponent {...containerProps}>
+        <Image
+          source={snippet.type == snippetTypes.SINGLE ? require('../assets/images/copy-white.png') : require('../assets/images/list-icon.png')}
+          style={[styles.titleIcon, snippet.type == snippetTypes.SINGLE ? styles.copyIcon : styles.listIcon]}
+          tintColor={themer.getColor('content1.foreground')}
+          resizeMode='stretch'
+        />
+        <View style={styles.contentView}>
+          <Text style={[styles.titleText, { color: themer.getColor('content1.foreground') }]} numberOfLines={1}>&nbsp;&nbsp;{snippet.title}</Text>
+          { !isCollapsed && <Text style={[styles.contentText, { color: themer.getColor('content1.foreground'), opacity: themer.getOpacity('content1.text2') }]} numberOfLines={1}>&nbsp;&nbsp;{snippet.content}</Text> }
+        </View>
+        <TouchableOpacity onPress={() => onSnippetMenuTapped(snippet)} hitSlop={40}>
+          <Text style={[styles.menuIcon, { color: themer.getColor('content1.foreground') }]}>&middot;&middot;&middot;</Text>
+        </TouchableOpacity>
+      </ContainerComponent>
     </TouchableOpacity>
   );
 };

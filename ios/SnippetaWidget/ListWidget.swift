@@ -21,10 +21,10 @@ struct ListWidgetEntryView : View {
     VStack(alignment: .leading, spacing: 5) {
         
       Text(entry.configuration.snippetList?.title ?? "Text")
-        .font(.headline)
+        .font(.footnote)
+        .bold()
         .truncationMode(.tail).multilineTextAlignment(.leading)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .foregroundStyle(Color(hex: entry.themer.getColor(id: entry.configuration.snippetList!.color_id)) ?? Color.primary)
       
       Spacer().frame(height: 0)
       
@@ -46,21 +46,21 @@ private func getSnippetListButton(snippetList: SnippetList, themer: Themer) -> s
   let url = snippetList.type == SnippetType.SINGLE.rawValue ? "snippeta://copy/\(snippetList.id)" : "snippeta://snippets/\(snippetList.id)"
   return
     Link(destination: URL(string: url)!) {
-      HStack(alignment: .center, spacing: 7) {
-        
-        Rectangle().frame(width: 12).foregroundColor(Color(hex: themer.getColor(id: snippetList.color_id)) ?? Color.primary);
+      HStack(alignment: .center, spacing: 5) {
         
         HStack(alignment: .center) {
           Text(snippetList.title)
+            .bold()
             .font(.caption).foregroundColor(.primary)
-            .truncationMode(.tail).multilineTextAlignment(.leading)
+            .lineLimit(1).truncationMode(.tail)
+            .padding(5)
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(2)
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity)
-      .background(Color("WidgetButtonColor"))
-      .cornerRadius(3)
+      .background(LinearGradient(colors: themer.getColors(id: snippetList.color_id), startPoint: .leading, endPoint: .trailing))
+      .cornerRadius(5)
     }
     .buttonStyle(.borderless)
 }
