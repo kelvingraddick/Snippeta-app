@@ -165,7 +165,7 @@ export default function App() {
     } else if (path === 'add') {
       console.log(`App.js -> handleDeepLink: Navigating to Snippet screen to handle deep link`);
       navigation.popToTop();
-      navigation.navigate('Snippet', { snippet: { type: snippetTypes.SINGLE, color_id: colorIds.COLOR_0, }, callbacks: [refresh], });
+      navigation.navigate('Snippet', { snippet: { type: snippetTypes.SINGLE, color_id: colorIds.COLOR_1, }, callbacks: [refresh], });
     }
   };
 
