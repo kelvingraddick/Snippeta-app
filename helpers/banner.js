@@ -1,5 +1,5 @@
 import { Image, StyleSheet } from 'react-native';
-import { showMessage } from "react-native-flash-message";
+import { showMessage, hideMessage } from "react-native-flash-message";
 import { colors } from '../constants/colors';
 
 const showSuccessMessage = async (message, description) => {
@@ -23,6 +23,21 @@ const showErrorMessage = async (message) => {
   });
 };
 
+const showStatusMessage = async (message, duration, animated) => {
+  showMessage({
+    message: message,
+    hideOnPress: false,
+    duration: duration,
+    autoHide: duration ? true : false,
+    floating: true,
+    position: { bottom: 50, },
+    animated: animated,
+    backgroundColor: colors.white,
+    titleStyle: { fontWeight: 'bold', color: colors.darkGray, },
+    statusBarHeight: 50,
+  });
+};
+
 const styles = StyleSheet.create({
   messageIcon: {
     height: 20,
@@ -34,4 +49,6 @@ const styles = StyleSheet.create({
 export default {
   showSuccessMessage,
   showErrorMessage,
+  showStatusMessage,
+  hideMessage,
 };

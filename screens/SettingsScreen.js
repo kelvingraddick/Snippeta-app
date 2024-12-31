@@ -1,51 +1,98 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Image, Pressable, SectionList, StyleSheet, Text, View } from 'react-native';
+import React, { useCallback, useContext, useState } from 'react';
+import { ActivityIndicator, Image, Pressable, SectionList, StyleSheet, Text, View } from 'react-native';
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
 import ReactNativeHapticFeedback from "react-native-haptic-feedback";
 import { ApplicationContext } from '../ApplicationContext';
 import banner from '../helpers/banner';
 import storage from '../helpers/storage';
+import revenueCat from '../helpers/revenueCat';
 import { colors } from '../constants/colors';
 import { themes } from '../constants/themes';
+import { entitlementIds } from '../constants/entitlementIds';
 import SnippetaCloudView from '../components/SnippetaCloudView';
 import ActionButton from '../components/ActionButton';
 import SettingView from '../components/SettingView';
 
 const SettingsScreen = ({ navigation }) => {
   
-  const { themer, updateThemer, user, isUserLoading, logout, subscription, updateSubscriptionStatus } = useContext(ApplicationContext);
+  const { themer, updateThemer, previewTheme, isThemePreview, user, isUserLoading, logout, entitlements, updateEntitlements, subscription, } = useContext(ApplicationContext);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [settingSections, setSettingSections] = useState([]);
 
   const { showActionSheetWithOptions } = useActionSheet();
 
-  useEffect(() => {
-    console.log(`SettingsScreen.js -> useEffect: themer set with ID ${themer?.themeId}`);
-    getSettings();
-  }, [themer]);
-
-  const getSettings = async () => {
+  const getSettings = (themer) => {
+    let settings = [];
     try {
       let themeSettings = Object.keys(themes).map(themeId => {
         const theme = themes[themeId];
         const isSelected = themeId == themer.themeId || (!themer.themeId && theme == themes['default-light']);
         return { label: theme.name, labelIconSource: require('../assets/images/copy-white.png'), isSelectable: true, isSelected: isSelected, onTapped: () => { onThemeTapped(themeId); } };
       });      
-      let settingSections = [{ title: '🎨 Theme', data: themeSettings }];
-      // set settings for display
-      setSettingSections(settingSections);
+      settings.push({ title: '🎨 Theme', data: themeSettings });
     } catch (error) {
       console.error('SettingsScreen.js -> getSettings: Loading settings failed with error: ' + error.message);
     }
+    return settings;
   };
+  const settingSections = getSettings(themer);
 
   const onThemeTapped = async (themeId) => {
-    console.log(`SettingsScreen.js -> onThemeTapped: theme selected with ID ${themeId}`);
+    try {
+      if (!isThemePreview) {
+        console.log(`SettingsScreen.js -> onThemeTapped: theme selected with ID ${themeId}`);
+        triggerHapticFeedback();
+        const theme = themes[themeId];
+        if (theme.isPro && !subscription && !entitlements[themeId]) {
+          setIsLoading(true);
+          const options = { 'Preview': 0, 'Buy': 1, 'Subscribe to Snippeta Pro': 2, 'Cancel': 3 };
+          showActionSheetWithOptions(
+            {
+              title: 'This pro theme must be unlocked:\n• You can preview it, buy it now, or subscribe to Snippeta Pro to unlock all pro themes!',
+              options: Object.keys(options),
+              cancelButtonIndex: options.Cancel,
+            },
+            async (selectedIndex) => {
+              switch (selectedIndex) {
+                case options['Preview']:
+                  await previewTheme(themeId);
+                  break;
+                case options['Buy']:
+                  const entitlement = await revenueCat.purchasePackage(themeId, themeId, themeId);
+                  if (entitlement) {
+                    await updateEntitlements(user);
+                    await displayTheme(themeId);
+                  }
+                  break;
+                case options['Subscribe to Snippeta Pro']:
+                  await presentPaywallIfNeeded().then(async (paywallResult) => {
+                    if (paywallResult == PAYWALL_RESULT.PURCHASED || paywallResult == PAYWALL_RESULT.RESTORED) {
+                      await displayTheme(themeId);
+                    }
+                  });
+                  break;
+              }
+              setIsLoading(false);
+            }
+          );
+        } else {
+          await displayTheme(themeId);
+        }
+      } else {
+        console.log(`SettingsScreen.js -> onThemeTapped: cannot select theme because theme '${themer.getName()}' is being previewed`);
+      }
+    } catch (error) {
+      const errorMessage = 'Theme selection failed with error: ' + error.message;
+      console.error('SettingsScreen.js -> onThemeTapped: ' + errorMessage);
+      banner.showErrorMessage(errorMessage);
+      setIsLoading(false);
+    }
+  };
+
+  const displayTheme = async (themeId) => {
     await storage.saveThemeId(themeId);
     await updateThemer(themeId);
-    triggerHapticFeedback();
   };
 
   const onBackTapped = async () => {
@@ -53,7 +100,13 @@ const SettingsScreen = ({ navigation }) => {
   };
 
   const onSubscribeTapped = async () => {
-    await presentPaywallIfNeeded();
+    setIsLoading(true);
+    await presentPaywallIfNeeded().then((paywallResult) => {
+      if (paywallResult == PAYWALL_RESULT.PURCHASED || paywallResult == PAYWALL_RESULT.RESTORED) {
+
+      }
+      setIsLoading(false);
+    });
   };
 
   const onLoginTapped = async () => {
@@ -64,24 +117,24 @@ const SettingsScreen = ({ navigation }) => {
     if (subscription) {
       navigation.navigate('Register');
     } else {
+      setIsLoading(true);
       await presentPaywallIfNeeded().then((paywallResult) => {
         if (paywallResult == PAYWALL_RESULT.PURCHASED || paywallResult == PAYWALL_RESULT.RESTORED) {
           navigation.navigate('Register');
         }
+        setIsLoading(false);
       });
     }
   };
 
   const presentPaywallIfNeeded = async () => {
     try {
-      const paywallResult = await RevenueCatUI.presentPaywallIfNeeded({ requiredEntitlementIdentifier: 'Snippeta Pro' });
+      const paywallResult = await RevenueCatUI.presentPaywallIfNeeded({ requiredEntitlementIdentifier: entitlementIds.SNIPPETA_PRO });
       console.log('SettingsScreen.js -> presentPaywallIfNeeded: paywall closed result:', paywallResult);
       switch (paywallResult) {
         case PAYWALL_RESULT.PURCHASED:
         case PAYWALL_RESULT.RESTORED:
-          setIsLoading(true);
-          await updateSubscriptionStatus(user);
-          setIsLoading(false);
+          await updateEntitlements(user);
           break;
         // other cases: PAYWALL_RESULT.NOT_PRESENTED, PAYWALL_RESULT.ERROR, PAYWALL_RESULT.CANCELLED
       }
@@ -90,7 +143,6 @@ const SettingsScreen = ({ navigation }) => {
       const errorMessage = 'Paywall failed with error: ' + error.message;
       console.error('SettingsScreen.js -> presentPaywallIfNeeded: ' + errorMessage);
       banner.showErrorMessage(errorMessage);
-      setIsLoading(false);
       return null;
     }
   };
@@ -185,6 +237,11 @@ const SettingsScreen = ({ navigation }) => {
         renderSectionFooter={() => <View style={{ height: 10 }}></View>}
         ListFooterComponent={() => <View style={{ height: 50 }}></View>}
       />
+      { isLoading &&
+        <View style={styles.loadingView}>
+          <ActivityIndicator size="large" color={colors.white} />
+        </View>
+      }
     </View>
   );
 };
@@ -260,6 +317,12 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: 'bold',
   },
+  loadingView: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, .5)',
+  }
 });
 
 export default SettingsScreen;

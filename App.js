@@ -12,6 +12,8 @@ import { storageKeys } from './constants/storageKeys';
 import { snippetTypes } from './constants/snippetTypes';
 import { snippetSources } from './constants/snippetSources';
 import { colorIds } from './constants/colorIds';
+import { entitlementIds } from './constants/entitlementIds';
+import { themes } from './constants/themes';
 import Themer from './helpers/themer';
 import api from './helpers/api';
 import storage from './helpers/storage';
@@ -31,7 +33,9 @@ const initialState = {
   themer: new Themer('default-light'),
   user: undefined,
   isUserLoading: true,
+  entitlements: undefined,
   subscription: undefined,
+  isThemePreview: false,
 }
 
 const reducer = (state, action) => {
@@ -46,8 +50,12 @@ const reducer = (state, action) => {
       return { ...state, isUserLoading: true };
     case 'LOGGED_OUT':
       return { ...state, user: null, isUserLoading: false };
+    case 'UPDATE_ENTITLEMENTS':
+      return { ...state, entitlements: action.payload };
     case 'UPDATE_SUBSCRIPTION':
       return { ...state, subscription: action.payload };
+    case 'PREVIEWING_THEME':
+      return { ...state, isThemePreview: action.payload };
     default:
       return state;
   }
@@ -82,7 +90,7 @@ export default function App() {
       if (credentials) {
         await loginWithCredentials(credentials.emailOrPhone, credentials.password);
       } else {
-        await updateSubscriptionStatus();
+        await updateEntitlements();
         await updateSnippetLists();
         dispatch({ type: 'LOGGED_IN', payload: null });
       }
@@ -104,7 +112,7 @@ export default function App() {
         console.log(`App.js -> loginWithCredentials: Login successful with user ID ${user.id}`);
         await storage.saveCredentials(emailOrPhone, password);
         await RevenueCat.login(user.id);
-        await updateSubscriptionStatus(user);
+        await updateEntitlements(user);
         await updateSnippetLists();
       } else {
         console.log('App.js -> loginWithCredentials: Login failed with error code: ' + responseJson?.error_code);
@@ -120,7 +128,7 @@ export default function App() {
     dispatch({ type: 'LOGGING_OUT' });
     try {
       await storage.deleteCredentials();
-      await updateSubscriptionStatus();
+      await updateEntitlements();
       await updateSnippetLists();
       console.log('App.js -> logout: Deleted credentials from storage..');
     } catch (error) {
@@ -212,16 +220,49 @@ export default function App() {
     }
   }
 
-  const updateSubscriptionStatus = async (user) => {
+  const previewTheme = async (themeId) => {
     try {
-      const inAppSubscription = { type: 'IN-APP', data: (await RevenueCat.getSubscription() ?? null), };
+      if (state.isThemePreview) {
+        console.log(`App.js -> previewTheme: can't preview theme because already previewing for ID ${state.themer.themeId}`);
+      } else {
+        console.log(`App.js -> previewTheme: preview theme set with ID ${themeId}`);
+        dispatch({ type: 'PREVIEWING_THEME', payload: true });
+        let intervalId;
+        await updateThemer(themeId);
+        let seconds = 60;
+        const getStatusMessage = (seconds) => `Previewing the '${themes[themeId]?.name}' theme for ${seconds} seconds.`;
+        banner.showStatusMessage(getStatusMessage(seconds), null, true);
+        intervalId = setInterval(async () => {
+          if (seconds > 1) {
+            seconds--;
+            banner.showStatusMessage(getStatusMessage(seconds), null, false);
+          } else {
+            dispatch({ type: 'PREVIEWING_THEME', payload: false });
+            clearInterval(intervalId);
+            banner.hideMessage();
+            await loadThemeFromStorage();
+          }
+        }, 1000);
+      }
+    } catch (error) {
+      console.error('App.js -> previewTheme: previewing theme failed with error: ' + error.message);
+    }
+  }
+
+  const updateEntitlements = async (user) => {
+    try {  
+      // 1. fetch entitlements from RevenueCat
+      const entitlements = await RevenueCat.getEntitlements();
+      dispatch({ type: 'UPDATE_ENTITLEMENTS', payload: entitlements });
+      // 2. determine subscription status based on entitlements and current user
+      const inAppSubscription = { type: 'IN-APP', data: entitlements[entitlementIds.SNIPPETA_PRO], };
       const snippetaCloudSubscription = { type: 'SNIPPETA-CLOUD', data: (user?.type == 1 ? {} : null), };
-      console.log('App.js -> updateSubscriptionStatus: ' + (snippetaCloudSubscription?.data ? 'Found' : 'Did not find') + ' active Snippeta Cloud subscription');
+      console.log('App.js -> updateEntitlements: ' + (snippetaCloudSubscription?.data ? 'Found' : 'Did not find') + ' active Snippeta Cloud subscription');
       const activeSubscription = inAppSubscription.data ? inAppSubscription : (snippetaCloudSubscription.data ? snippetaCloudSubscription : null);
-      console.log('App.js -> updateSubscriptionStatus: ' + (activeSubscription?.type ?? 'No active subscription'));
+      console.log('App.js -> updateEntitlements: Active subscription type: ' + (activeSubscription?.type ?? 'No active subscription'));
       dispatch({ type: 'UPDATE_SUBSCRIPTION', payload: activeSubscription });
     } catch (error) {
-      console.error('App.js -> updateSubscriptionStatus: syncing subscription failed with error: ' + error.message);
+      console.error('App.js -> updateEntitlements: syncing entitlements failed with error: ' + error.message);
     }
   };
 
@@ -240,7 +281,7 @@ export default function App() {
   };
 
   return (
-    <ApplicationContext.Provider value={{...state, onSnippetChanged, updateThemer, loginWithCredentials, logout, updateSubscriptionStatus}}>
+    <ApplicationContext.Provider value={{...state, onSnippetChanged, updateThemer, previewTheme, loginWithCredentials, logout, updateEntitlements}}>
       <ActionSheetProvider>
         <NavigationContainer ref={navigationRef}>
           <Stack.Navigator initialRouteName="Snippets">

@@ -20,25 +20,41 @@ const login = async function (appUserId) {
   }
 };
 
-const getSubscription = async () => {
-  let subscription;
+const getEntitlements = async () => {
+  let entitlements;
   try {
     const customerInfo = await Purchases.getCustomerInfo();
-    //console.log('RevenueCat -> getSubscription: customer info:', customerInfo);
-    if (typeof customerInfo.entitlements.active['Snippeta Pro'] !== "undefined") {
-      console.log('RevenueCat -> getSubscription: Found active in-app subscription:', customerInfo.entitlements.active['Snippeta Pro']);
-      subscription = customerInfo.entitlements.active['Snippeta Pro'];
+    //console.log('RevenueCat -> getEntitlements: customer info:', customerInfo);
+    entitlements = customerInfo?.entitlements?.active;
+    console.log('RevenueCat -> getEntitlements: ' + (entitlements && Object.keys(entitlements).length > 0) ? `Found active entitlements: ${JSON.stringify(Object.keys(entitlements))}` : 'Found no active entitlements');
+  } catch (error) {
+    console.error('RevenueCat -> getEntitlements: loading entitlements failed with error: ' + error.message);
+  }
+  return entitlements;
+};
+
+const purchasePackage = async (offeringId, packageId, entitlementId) => {
+  let entitlement;
+  try {
+    const offerings = await Purchases.getOfferings();
+    const packageToPurchase = offerings?.all?.[offeringId]?.availablePackages?.find(x => x.identifier == packageId);
+    if (packageToPurchase) {
+      console.log(`RevenueCat -> purchasePackage: Found package for offering ID ${offeringId} and package ID ${packageId}:`);
+      const { customerInfo } = await Purchases.purchasePackage(packageToPurchase);
+      entitlement = customerInfo.entitlements.active[entitlementId];
+      console.log(`RevenueCat -> purchasePackage: Purchase attempt returned entitlement for ID ${entitlementId} with value:`, JSON.stringify(entitlement));
     } else {
-      console.log('RevenueCat -> getSubscription: Did not find active in-app subscription:');
+      console.log(`RevenueCat -> getPackage: Did not find package for offering ID ${offeringId} and package ID ${packageId}`);
     }
   } catch (error) {
-    console.error('RevenueCat -> getSubscription: loading subscription failed with error: ' + error.message);
+    console.error(`RevenueCat -> purchasePackage: purchasing package failed with error: ` + error.message);
   }
-  return subscription;
+  return entitlement;
 };
 
 export default {
   configure,
   login,
-  getSubscription,
+  getEntitlements,
+  purchasePackage,
 };

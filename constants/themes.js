@@ -1,8 +1,9 @@
 import { colors } from "./colors";
 
 export const themes = {
-  'rainbow-light': {
+  'theme.rainbow.light': {
     name: 'Rainbow (light)',
+    isPro: false,
     colors: {
       0: colors.white,
       1: [colors.orange, colors.darkOrange],
@@ -43,8 +44,9 @@ export const themes = {
       'content1.text2': .80,
     }
   },
-  'rainbow-dark': {
+  'theme.rainbow.dark': {
     name: 'Rainbow (dark)',
+    isPro: false,
     colors: {
       0: colors.white,
       1: [colors.orange, colors.darkOrange],
@@ -85,8 +87,9 @@ export const themes = {
       'content1.text2': .80,
     }
   },
-  'orange-light': {
+  'theme.orange.light': {
     name: 'Orange (light)',
+    isPro: false,
     colors: {
       0: colors.white,
       1: colors.orange1,
@@ -127,8 +130,9 @@ export const themes = {
       'content1.text2': 0.75,
     }
   },
-  'orange-dark': {
+  'theme.orange.dark': {
     name: 'Orange (dark)',
+    isPro: false,
     colors: {
       0: colors.gray,
       1: colors.orange1,
@@ -169,8 +173,9 @@ export const themes = {
       'content1.text2': 0.50
     }
   },
-  'stone': {
+  'theme.stone': {
     name: 'Stone',
+    isPro: true,
     colors: {
       0: colors.white,
       1: colors.silver1,
@@ -211,8 +216,9 @@ export const themes = {
       'content1.text2': 1,
     }
   },
-  'beach-sunset': {
+  'theme.beachsunset': {
     name: 'Beach Sunset',
+    isPro: true,
     colors: {
       0: colors.white,
       1: colors.sunset,
