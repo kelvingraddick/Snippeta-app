@@ -28,7 +28,7 @@ const SettingsScreen = ({ navigation }) => {
       let themeSettings = Object.keys(themes).map(themeId => {
         const theme = themes[themeId];
         const isSelected = themeId == themer.themeId || (!themer.themeId && theme == themes['default-light']);
-        return { label: theme.name, labelIconSource: require('../assets/images/copy-white.png'), isSelectable: true, isSelected: isSelected, onTapped: () => { onThemeTapped(themeId); } };
+        return { label: theme.name, labelIconSource: require('../assets/images/copy-white.png'), isPro: theme.isPro, isSelectable: true, isSelected: isSelected, onTapped: () => { onThemeTapped(themeId); } };
       });      
       settings.push({ title: '🎨 Theme', data: themeSettings });
     } catch (error) {
@@ -233,7 +233,7 @@ const SettingsScreen = ({ navigation }) => {
             <Text style={[styles.sectionHeaderText, { color: themer.getColor('listHeader1.foreground') }]}>{title}</Text>
           </View>
         )}
-        renderItem={({item}) => <SettingView label={item.label} labelIconSource={item.labelIconSource} onTapped={item.onTapped} isSelectable={item.isSelectable} isSelected={item.isSelected} isSwitchEnabled={item.isSwitchEnabled} onSwitchToggled={item.onSwitchToggled} themer={themer} />}
+        renderItem={({item}) => <SettingView label={item.label} labelIconSource={item.labelIconSource} isPro={item.isPro} onTapped={item.onTapped} isSelectable={item.isSelectable} isSelected={item.isSelected} isSwitchEnabled={item.isSwitchEnabled} onSwitchToggled={item.onSwitchToggled} themer={themer} />}
         renderSectionFooter={() => <View style={{ height: 10 }}></View>}
         ListFooterComponent={() => <View style={{ height: 50 }}></View>}
       />

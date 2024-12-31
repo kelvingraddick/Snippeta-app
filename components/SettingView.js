@@ -2,7 +2,7 @@ import React from 'react';
 import { Image, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 
 const SettingView = (props) => {
-  const { label, labelIconSource, isSelectable, isSelected, onTapped, isSwitchEnabled, onSwitchToggled, themer } = props;
+  const { label, labelIconSource, isPro, isSelectable, isSelected, onTapped, isSwitchEnabled, onSwitchToggled, themer } = props;
   return (
     <TouchableOpacity style={[styles.container, { backgroundColor: themer.getColor('content2.background') }]} onPress={onTapped}>
       <Image
@@ -11,7 +11,10 @@ const SettingView = (props) => {
         tintColor={themer.getColor('content2.foreground')}
         resizeMode='stretch'
       />
-      <Text style={[styles.labelText, { color: themer.getColor('content2.foreground') }]} numberOfLines={1}>&nbsp;{label}</Text>
+      <View style={[styles.labelView, {}]}>
+        <Text style={[styles.labelText, { color: themer.getColor('content2.foreground') }]} numberOfLines={1}>&nbsp;{label}</Text>
+        { isPro && <Text style={[styles.labelTag, { color: themer.getColor('content2.background'), backgroundColor: themer.getColor('content2.foreground'), }]} numberOfLines={1}>PRO</Text> }
+      </View>
       { onSwitchToggled ?
         <Switch
           trackColor={{false: '#767577', true: '#81b0ff'}}
@@ -42,12 +45,18 @@ const SettingView = (props) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     gap: 5,
     borderRadius: 5,
     padding: 15,
     marginBottom: 10,
+  },
+  labelView: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
   },
   labelIcon: {
     width: 17,
@@ -55,8 +64,15 @@ const styles = StyleSheet.create({
     opacity: 0.25,
   },
   labelText: {
-    flex: 1,
     fontSize: 17,
+    fontWeight: 'bold',
+  },
+  labelTag: {
+    paddingVertical: 3,
+    paddingHorizontal: 10,
+    borderRadius: 10,
+    overflow: 'hidden',
+    fontSize: 12,
     fontWeight: 'bold',
   },
   checkmarkIcon: {
