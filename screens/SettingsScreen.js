@@ -30,7 +30,9 @@ const SettingsScreen = ({ navigation }) => {
         const isSelected = themeId == themer.themeId || (!themer.themeId && theme == themes['default-light']);
         return { label: theme.name, labelIconSource: require('../assets/images/copy-white.png'), isPro: theme.isPro, isSelectable: true, isSelected: isSelected, onTapped: () => { onThemeTapped(themeId); } };
       });      
+      let widgetSettings = [{ label: 'Widget', labelIconSource: require('../assets/images/device.png'), onTapped: () => { navigation.navigate('Widget'); } }];
       settings.push({ title: '🎨 Theme', data: themeSettings });
+      settings.push({ title: '📱 App extensions', data: widgetSettings });   
     } catch (error) {
       console.error('SettingsScreen.js -> getSettings: Loading settings failed with error: ' + error.message);
     }

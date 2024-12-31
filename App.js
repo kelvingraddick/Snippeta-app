@@ -28,6 +28,7 @@ import LoginScreen from './screens/LoginScreen';
 import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import UserScreen from './screens/UserScreen';
+import WidgetScreen from './screens/WidgetScreen';
 
 const initialState = {
   themer: new Themer('default-light'),
@@ -285,46 +286,55 @@ export default function App() {
       <ActionSheetProvider>
         <NavigationContainer ref={navigationRef}>
           <Stack.Navigator initialRouteName="Snippets">
-            <Stack.Screen
-              name="Snippets"
-              component={SnippetsScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Snippet"
-              component={SnippetScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Search"
-              component={SearchScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Settings"
-              component={SettingsScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Login"
-              component={LoginScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="ForgotPassword"
-              component={ForgotPasswordScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Register"
-              component={RegisterScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="User"
-              component={UserScreen}
-              options={{ headerShown: false }}
-            />
+            <Stack.Group>
+              <Stack.Screen
+                name="Snippets"
+                component={SnippetsScreen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Snippet"
+                component={SnippetScreen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Search"
+                component={SearchScreen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Settings"
+                component={SettingsScreen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Login"
+                component={LoginScreen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="ForgotPassword"
+                component={ForgotPasswordScreen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Register"
+                component={RegisterScreen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="User"
+                component={UserScreen}
+                options={{ headerShown: false }}
+              />
+            </Stack.Group>
+            <Stack.Group screenOptions={{ presentation: 'modal' }}>
+              <Stack.Screen
+                name="Widget"
+                component={WidgetScreen}
+                options={{ headerShown: false }}
+              />
+            </Stack.Group>
           </Stack.Navigator>
           <FlashMessage position="top" />
         </NavigationContainer>
