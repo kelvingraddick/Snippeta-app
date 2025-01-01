@@ -42,6 +42,8 @@ export const themes = {
     },
     opacities: {
       'content1.text2': .80,
+      'content1.icon1': 1,
+      'content1.icon2': 1,
     }
   },
   'theme.rainbow.dark': {
@@ -85,6 +87,8 @@ export const themes = {
     },
     opacities: {
       'content1.text2': .80,
+      'content1.icon1': 0.25,
+      'content1.icon2': 0.25,
     }
   },
   'theme.orange.light': {
@@ -128,6 +132,8 @@ export const themes = {
     },
     opacities: {
       'content1.text2': 0.75,
+      'content1.icon1': 0.25,
+      'content1.icon2': 0.25,
     }
   },
   'theme.orange.dark': {
@@ -170,7 +176,9 @@ export const themes = {
       'button4.background': colors.gray,
     },
     opacities: {
-      'content1.text2': 0.50
+      'content1.text2': 0.50,
+      'content1.icon1': 0.25,
+      'content1.icon2': 0.25,
     }
   },
   'theme.stone': {
@@ -214,6 +222,8 @@ export const themes = {
     },
     opacities: {
       'content1.text2': 1,
+      'content1.icon1': 0.25,
+      'content1.icon2': 0.25,
     }
   },
   'theme.beachsunset': {
@@ -256,7 +266,9 @@ export const themes = {
       'button4.background': colors.lightSunset,
     },
     opacities: {
-      'content1.text2': 1
+      'content1.text2': 1,
+      'content1.icon1': 0.25,
+      'content1.icon2': 0.25,
     }
   }
 };
