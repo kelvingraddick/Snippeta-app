@@ -21,7 +21,7 @@ class Themer {
   }
 
   getOpacity(key) {
-    return themes[this.themeId]?.opacities?.[key] ?? themes[this.DEFAULT_THEME_ID].opacities?.[key] ?? 1;
+    return themes[this.themeId]?.opacities?.[key] ?? themes[this.DEFAULT_THEME_ID]?.opacities?.[key] ?? 1;
   }
 }
 
