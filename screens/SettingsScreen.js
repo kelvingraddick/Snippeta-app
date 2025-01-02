@@ -33,6 +33,10 @@ const SettingsScreen = ({ navigation }) => {
         return { label: theme.name, isPro: theme.isPro, isSelectable: true, isSelected: isSelected, onTapped: () => { onThemeTapped(themeId); } };
       });      
       let widgetSettings = [{ label: 'Widget', labelIconSource: require('../assets/images/device.png'), onTapped: () => { navigation.navigate('Widget'); } }];
+      let inAppPurchasesSettings = [
+        { label: 'Restore purchases', onTapped: () => { onRestorePurchasesTapped(); } },
+        { label: 'Manage subscription', onTapped: () => { Linking.openURL('https://apps.apple.com/account/subscriptions'); } },
+      ];
       let infoSettings = [
         { label: 'Privacy Policy', onTapped: () => { Linking.openURL('https://snippeta.com/privacy-policy/'); } },
         { label: 'Terms and Conditions', onTapped: () => { Linking.openURL('https://snippeta.com/terms-and-conditions/'); } },
@@ -41,6 +45,7 @@ const SettingsScreen = ({ navigation }) => {
       ];
       settings.push({ title: '🎨 Theme', data: themeSettings });
       settings.push({ title: '📱 App extensions', data: widgetSettings });   
+      settings.push({ title: '🛒 In-app purchase', data: inAppPurchasesSettings }); 
       settings.push({ title: 'ℹ️ Info', data: infoSettings });  
     } catch (error) {
       console.error('SettingsScreen.js -> getSettings: Loading settings failed with error: ' + error.message);
@@ -182,6 +187,30 @@ const SettingsScreen = ({ navigation }) => {
       }
     );
   };
+
+  const onRestorePurchasesTapped = async () => {
+    try {
+      setIsLoading(true);
+      await revenueCat.restorePurchases().then(async (entitlements) => {
+        if (entitlements && Object.keys(entitlements).length > 0) { // restoring was successful and entitlements were found
+          await updateEntitlements(user);
+          let entitlementNames = entitlements[entitlementIds.SNIPPETA_PRO] ? ['Snippeta Pro subscription'] : [];
+          entitlementNames.push(Object.keys(themes).filter((themeId) => entitlements[themeId]).map((themeId) => (`"${themes[themeId]?.name ?? themeId}"` + ' theme')));
+          banner.showSuccessMessage(`Successfully restored purchases for: ${(entitlementNames.length > 0 ? '\n• ' : '') + entitlementNames.join('\n• ')}`);
+        } else if (entitlements) { // restoring was successful BUT no entitlements were found
+          banner.showSuccessMessage('No subscription or purchases found to restore.');
+        } else { // restoring was NOT successful
+          throw new Error('In-app subscription/purchase service did not return any data.');
+        }
+        setIsLoading(false);
+      });
+    } catch (error) {
+      const errorMessage = 'There was an issue restoring purchases: ' + error.message;
+      console.error('SettingsScreen.js -> onRestorePurchasesTapped: ' + errorMessage);
+      banner.showErrorMessage(errorMessage);
+      setIsLoading(false);
+    }
+  }
 
   const triggerHapticFeedback = () => {
     ReactNativeHapticFeedback.trigger('impactMedium', options = { enableVibrateFallback: true, ignoreAndroidSystemSettings: true, });

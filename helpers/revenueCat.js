@@ -52,9 +52,20 @@ const purchasePackage = async (offeringId, packageId, entitlementId) => {
   return entitlement;
 };
 
+const restorePurchases = async () => {
+  let entitlements;
+  const customerInfo = await Purchases.restorePurchases();
+  if (customerInfo) {
+    entitlements = customerInfo.entitlements?.active;
+    console.log('RevenueCat -> restorePurchases: ' + (entitlements && Object.keys(entitlements).length > 0) ? `Restored active entitlements: ${JSON.stringify(Object.keys(entitlements))}` : 'No active entitlements restored');
+  }
+  return entitlements;
+};
+
 export default {
   configure,
   login,
   getEntitlements,
   purchasePackage,
+  restorePurchases,
 };
