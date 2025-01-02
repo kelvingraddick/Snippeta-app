@@ -236,7 +236,7 @@ const SettingsScreen = ({ navigation }) => {
           </View>
         )}
         renderItem={({item, index, section}) => <SettingView label={item.label} labelIconSource={item.labelIconSource} isPro={item.isPro} onTapped={item.onTapped} isSelectable={item.isSelectable} isSelected={item.isSelected} isSwitchEnabled={item.isSwitchEnabled} onSwitchToggled={item.onSwitchToggled} isTop={index === 0} isBottom={index === section.data.length - 1} themer={themer} />}
-        renderSectionFooter={() => <View style={{ height: 10 }}></View>}
+        renderSectionFooter={() => <View style={{ height: 20 }}></View>}
         ListFooterComponent={() => <View style={{ height: 50 }}></View>}
       />
       { isLoading &&
