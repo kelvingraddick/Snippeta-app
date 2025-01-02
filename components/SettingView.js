@@ -5,12 +5,6 @@ const SettingView = (props) => {
   const { label, labelIconSource, isPro, isSelectable, isSelected, onTapped, isSwitchEnabled, onSwitchToggled, isTop, isBottom, themer } = props;
   return (
     <TouchableOpacity style={[styles.container, (isTop ? styles.topContainer : null), (isBottom ? styles.bottomContainer : null), { backgroundColor: themer.getColor('content2.background') }]} onPress={onTapped}>
-      <Image
-        source={labelIconSource}
-        style={styles.labelIcon}
-        tintColor={themer.getColor('content2.foreground')}
-        resizeMode='stretch'
-      />
       <View style={[styles.labelView, {}]}>
         <Text style={[styles.labelText, { color: themer.getColor('content2.foreground') }]} numberOfLines={1}>&nbsp;{label}</Text>
         { isPro && <Text style={[styles.labelTag, { color: themer.getColor('content2.background'), backgroundColor: themer.getColor('content2.foreground'), }]} numberOfLines={1}>PRO</Text> }
@@ -65,11 +59,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
-  },
-  labelIcon: {
-    width: 17,
-    height: 17,
-    opacity: 0.25,
   },
   labelText: {
     fontSize: 17,
