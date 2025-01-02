@@ -22,6 +22,8 @@ const SettingsScreen = ({ navigation }) => {
 
   const { showActionSheetWithOptions } = useActionSheet();
 
+  const VERSION = '2.0';
+
   const getSettings = (themer) => {
     let settings = [];
     try {
@@ -237,7 +239,9 @@ const SettingsScreen = ({ navigation }) => {
         )}
         renderItem={({item, index, section}) => <SettingView label={item.label} labelIconSource={item.labelIconSource} isPro={item.isPro} onTapped={item.onTapped} isSelectable={item.isSelectable} isSelected={item.isSelected} isSwitchEnabled={item.isSwitchEnabled} onSwitchToggled={item.onSwitchToggled} isTop={index === 0} isBottom={index === section.data.length - 1} themer={themer} />}
         renderSectionFooter={() => <View style={{ height: 20 }}></View>}
-        ListFooterComponent={() => <View style={{ height: 50 }}></View>}
+        ListFooterComponent={() => <Text style={[styles.footerView, { color: themer.getColor('listHeader1.foreground') }]}>
+          <Text style={{ fontWeight: 'bold' }}>Version {VERSION}</Text> • <Text style={{ fontStyle: 'italic' }}>made with 🖤 by Wave Link</Text>
+        </Text>}
       />
       { isLoading &&
         <View style={styles.loadingView}>
@@ -318,6 +322,11 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 17,
     fontWeight: 'bold',
+  },
+  footerView: {
+    marginBottom: 75,
+    fontSize: 15,
+    textAlign: 'center',
   },
   loadingView: {
     ...StyleSheet.absoluteFillObject,
