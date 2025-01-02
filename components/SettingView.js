@@ -2,7 +2,7 @@ import React from 'react';
 import { Image, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 
 const SettingView = (props) => {
-  const { label, labelIconSource, isPro, isSelectable, isSelected, onTapped, isSwitchEnabled, onSwitchToggled, isTop, isBottom, themer } = props;
+  const { label, isPro, isSelectable, isSelected, onTapped, isSwitchEnabled, onSwitchToggled, isTop, isBottom, themer } = props;
   return (
     <TouchableOpacity style={[styles.container, (isTop ? styles.topContainer : null), (isBottom ? styles.bottomContainer : null), { backgroundColor: themer.getColor('content2.background') }]} onPress={onTapped}>
       <View style={[styles.labelView, {}]}>

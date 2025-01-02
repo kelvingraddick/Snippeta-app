@@ -30,14 +30,14 @@ const SettingsScreen = ({ navigation }) => {
       let themeSettings = Object.keys(themes).map(themeId => {
         const theme = themes[themeId];
         const isSelected = themeId == themer.themeId || (!themer.themeId && theme == themes['default-light']);
-        return { label: theme.name, labelIconSource: require('../assets/images/copy-white.png'), isPro: theme.isPro, isSelectable: true, isSelected: isSelected, onTapped: () => { onThemeTapped(themeId); } };
+        return { label: theme.name, isPro: theme.isPro, isSelectable: true, isSelected: isSelected, onTapped: () => { onThemeTapped(themeId); } };
       });      
       let widgetSettings = [{ label: 'Widget', labelIconSource: require('../assets/images/device.png'), onTapped: () => { navigation.navigate('Widget'); } }];
       let infoSettings = [
-        { label: 'Privacy Policy', labelIconSource: require('../assets/images/list-white.png'), onTapped: () => { Linking.openURL('https://snippeta.com/privacy-policy/'); } },
-        { label: 'Terms and Conditions', labelIconSource: require('../assets/images/list-white.png'), onTapped: () => { Linking.openURL('https://snippeta.com/terms-and-conditions/'); } },
-        { label: 'Wave Link (developer)', labelIconSource: require('../assets/images/gear-gray.png'), onTapped: () => { Linking.openURL('http://www.wavelinkllc.com'); } },
-        { label: 'KG.codes (developer)', labelIconSource: require('../assets/images/gear-gray.png'), onTapped: () => { Linking.openURL('https://www.kg.codes'); } },
+        { label: 'Privacy Policy', onTapped: () => { Linking.openURL('https://snippeta.com/privacy-policy/'); } },
+        { label: 'Terms and Conditions', onTapped: () => { Linking.openURL('https://snippeta.com/terms-and-conditions/'); } },
+        { label: 'Wave Link (developer)', onTapped: () => { Linking.openURL('http://www.wavelinkllc.com'); } },
+        { label: 'KG.codes (developer)', onTapped: () => { Linking.openURL('https://www.kg.codes'); } },
       ];
       settings.push({ title: '🎨 Theme', data: themeSettings });
       settings.push({ title: '📱 App extensions', data: widgetSettings });   
@@ -244,7 +244,7 @@ const SettingsScreen = ({ navigation }) => {
             <Text style={[styles.sectionHeaderText, { color: themer.getColor('listHeader1.foreground') }]}>{title}</Text>
           </View>
         )}
-        renderItem={({item, index, section}) => <SettingView label={item.label} labelIconSource={item.labelIconSource} isPro={item.isPro} onTapped={item.onTapped} isSelectable={item.isSelectable} isSelected={item.isSelected} isSwitchEnabled={item.isSwitchEnabled} onSwitchToggled={item.onSwitchToggled} isTop={index === 0} isBottom={index === section.data.length - 1} themer={themer} />}
+        renderItem={({item, index, section}) => <SettingView label={item.label} isPro={item.isPro} onTapped={item.onTapped} isSelectable={item.isSelectable} isSelected={item.isSelected} isSwitchEnabled={item.isSwitchEnabled} onSwitchToggled={item.onSwitchToggled} isTop={index === 0} isBottom={index === section.data.length - 1} themer={themer} />}
         renderSectionFooter={() => <View style={{ height: 20 }}></View>}
         ListFooterComponent={() => <Text style={[styles.footerView, { color: themer.getColor('listHeader1.foreground') }]}>
           <Text style={{ fontWeight: 'bold' }}>Version {VERSION}</Text> • <Text style={{ fontStyle: 'italic' }}>made with 🖤 by Wave Link</Text>
