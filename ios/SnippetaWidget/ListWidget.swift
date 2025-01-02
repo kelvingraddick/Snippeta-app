@@ -29,7 +29,10 @@ struct ListWidgetEntryView : View {
       Spacer().frame(height: 0)
       
       if let snippets = entry.configuration.snippetList!.snippets?
-        .sorted(by: { ($0.source, $0.order_index) < ($1.source, $1.order_index) }) {
+        .sorted(by: { return $0.source != $1.source ?
+          $0.source > $1.source : // Descending order for .source ("On device", then "Cloud")
+          $0.order_index < $1.order_index // Ascending order for .order_index
+        }) {
         let maxSnippets = (widgetFamily == .systemSmall || widgetFamily == .systemMedium) ? 3 : 8;
         ForEach((0...min((maxSnippets - 1), (snippets.count - 1))), id: \.self) {
           getSnippetListButton(snippetList: snippets[$0], themer: entry.themer)

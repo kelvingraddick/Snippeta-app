@@ -3,14 +3,15 @@ import SwiftUI
 
 class Themer {
   
-  private let defaultColor0 = "#fff" // white
-  private let defaultColor1 = "#fad275" // lightYellow
-  private let defaultColor2 = "#3098c5" // lightBlue
-  private let defaultColor3 = "#fb7477" // lightRed
-  private let defaultColor4 = "#a9cc8e" // lightGreen
-  private let defaultColor5 = "#986b9b" // lightPurple
-  private let defaultColor6 = "#f7f7f7" // lightGray
-  private let defaultColor100 = "#5c63ff" // nebulaBlue
+  private let defaultColor = "#000000"
+  private let defaultColor0 = [Color.white]
+  private let defaultColor1 = [Color.orange, Color.darkOrange]
+  private let defaultColor2 = [Color.darkBlue, Color.blue]
+  private let defaultColor3 = [Color.red, Color.lightRed]
+  private let defaultColor4 = [Color.green, Color.lightGreen]
+  private let defaultColor5 = [Color.darkYellow, Color.yellow]
+  private let defaultColor6 = [Color.purple, Color.lightPurple]
+  private let defaultColor100 = [Color.orange]
   private let defaultColors: Colors
   private let currentColors: Colors
   
@@ -34,9 +35,9 @@ class Themer {
   public func getColor(id: Int) -> Color {
     let mirror = Mirror(reflecting: currentColors)
     if let value = mirror.children.first(where: { $0.label == "color\(id)" })?.value as? [String] {
-      return Color(hex: value.first ?? defaultColor100) ?? Color.primary
+      return Color(hex: value.first ?? defaultColor100.first ?? defaultColor) ?? Color.primary
     }
-    return Color(hex: defaultColor100) ?? Color.primary
+    return Color(hex: defaultColor100.first ?? defaultColor) ?? Color.primary
   }
   
   public func getColors(id: Int) -> [Color] {
@@ -44,7 +45,7 @@ class Themer {
     if let value = mirror.children.first(where: { $0.label == "color\(id)" })?.value as? [String] {
       return value.map { Color(hex: $0) ?? Color.primary }
     }
-    return [Color(hex: defaultColor100) ?? Color.primary]
+    return defaultColor100.map { Color(hex: $0) ?? Color.primary }
   }
 }
 
@@ -78,6 +79,17 @@ struct Colors: Codable {
     self.color5 = [color5]
     self.color6 = [color6]
     self.color100 = [color100]
+  }
+  
+  init(color0: [String], color1: [String], color2: [String], color3: [String], color4: [String], color5: [String], color6: [String], color100: [String]) {
+    self.color0 = color0
+    self.color1 = color1
+    self.color2 = color2
+    self.color3 = color3
+    self.color4 = color4
+    self.color5 = color5
+    self.color6 = color6
+    self.color100 = color100
   }
   
   init(from decoder: Decoder) throws {
