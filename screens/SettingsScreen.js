@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useState } from 'react';
-import { ActivityIndicator, Image, Pressable, SectionList, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Image, Linking, Pressable, SectionList, StyleSheet, Text, View } from 'react-native';
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
 import ReactNativeHapticFeedback from "react-native-haptic-feedback";
@@ -33,8 +33,15 @@ const SettingsScreen = ({ navigation }) => {
         return { label: theme.name, labelIconSource: require('../assets/images/copy-white.png'), isPro: theme.isPro, isSelectable: true, isSelected: isSelected, onTapped: () => { onThemeTapped(themeId); } };
       });      
       let widgetSettings = [{ label: 'Widget', labelIconSource: require('../assets/images/device.png'), onTapped: () => { navigation.navigate('Widget'); } }];
+      let infoSettings = [
+        { label: 'Privacy Policy', labelIconSource: require('../assets/images/list-white.png'), onTapped: () => { Linking.openURL('https://snippeta.com/privacy-policy/'); } },
+        { label: 'Terms and Conditions', labelIconSource: require('../assets/images/list-white.png'), onTapped: () => { Linking.openURL('https://snippeta.com/terms-and-conditions/'); } },
+        { label: 'Wave Link (developer)', labelIconSource: require('../assets/images/gear-gray.png'), onTapped: () => { Linking.openURL('http://www.wavelinkllc.com'); } },
+        { label: 'KG.codes (developer)', labelIconSource: require('../assets/images/gear-gray.png'), onTapped: () => { Linking.openURL('https://www.kg.codes'); } },
+      ];
       settings.push({ title: '🎨 Theme', data: themeSettings });
       settings.push({ title: '📱 App extensions', data: widgetSettings });   
+      settings.push({ title: 'ℹ️ Info', data: infoSettings });  
     } catch (error) {
       console.error('SettingsScreen.js -> getSettings: Loading settings failed with error: ' + error.message);
     }
