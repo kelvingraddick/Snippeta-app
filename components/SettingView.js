@@ -2,9 +2,9 @@ import React from 'react';
 import { Image, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 
 const SettingView = (props) => {
-  const { label, labelIconSource, isPro, isSelectable, isSelected, onTapped, isSwitchEnabled, onSwitchToggled, themer } = props;
+  const { label, labelIconSource, isPro, isSelectable, isSelected, onTapped, isSwitchEnabled, onSwitchToggled, isTop, isBottom, themer } = props;
   return (
-    <TouchableOpacity style={[styles.container, { backgroundColor: themer.getColor('content2.background') }]} onPress={onTapped}>
+    <TouchableOpacity style={[styles.container, (isTop ? styles.topContainer : null), (isBottom ? styles.bottomContainer : null), { backgroundColor: themer.getColor('content2.background') }]} onPress={onTapped}>
       <Image
         source={labelIconSource}
         style={styles.labelIcon}
@@ -48,9 +48,17 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     gap: 5,
-    borderRadius: 5,
+    borderRadius: 3,
     padding: 15,
-    marginBottom: 10,
+    marginBottom: 3,
+  },
+  topContainer: {
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+  },
+  bottomContainer: {
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
   },
   labelView: {
     flex: 1,
