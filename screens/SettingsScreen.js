@@ -36,6 +36,7 @@ const SettingsScreen = ({ navigation }) => {
         { label: 'Widget', onTapped: () => { navigation.navigate('Widget'); }},
         { label: 'OS', onTapped: () => { Linking.openURL('app-settings:'); }},
       ];
+      let inAppPurchaseSettings = [
         { label: 'Restore purchases', onTapped: () => { onRestorePurchasesTapped(); } },
         { label: 'Manage subscription', onTapped: () => { Linking.openURL('https://apps.apple.com/account/subscriptions'); } },
       ];
@@ -46,8 +47,8 @@ const SettingsScreen = ({ navigation }) => {
         { label: 'KG.codes (developer)', onTapped: () => { Linking.openURL('https://www.kg.codes'); } },
       ];
       settings.push({ title: '🎨 Theme', data: themeSettings });
-      settings.push({ title: '🛒 In-app purchase', data: inAppPurchasesSettings }); 
       settings.push({ title: '📱 App extensions', data: appExtensionsSettings });   
+      settings.push({ title: '🛒 In-app purchase', data: inAppPurchaseSettings }); 
       settings.push({ title: 'ℹ️ Info', data: infoSettings });  
     } catch (error) {
       console.error('SettingsScreen.js -> getSettings: Loading settings failed with error: ' + error.message);
