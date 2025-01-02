@@ -1,6 +1,6 @@
 import AppIntents
 
-struct SnippetList: AppEntity, Decodable, Hashable {
+struct SnippetGroup: AppEntity, Decodable, Hashable {
   let id: String
   let type: Int
   let source: String
@@ -8,10 +8,10 @@ struct SnippetList: AppEntity, Decodable, Hashable {
   let content: String
   let color_id: Int
   let order_index: Int
-  let snippets: [SnippetList]?
+  let snippets: [SnippetGroup]?
   
-  static var typeDisplayRepresentation: TypeDisplayRepresentation = "Snippet List"
-  static var defaultQuery = SnippetListQuery()
+  static var typeDisplayRepresentation: TypeDisplayRepresentation = "Snippet Group"
+  static var defaultQuery = SnippetGroupQuery()
   
   var displayRepresentation: DisplayRepresentation {
     DisplayRepresentation(title: "\(title)")
@@ -28,7 +28,7 @@ struct SnippetList: AppEntity, Decodable, Hashable {
     case snippets
   }
   
-  init(id: String, type: Int, source: String, title: String, content: String, color_id: Int, order_index: Int, snippets: [SnippetList]?) {
+  init(id: String, type: Int, source: String, title: String, content: String, color_id: Int, order_index: Int, snippets: [SnippetGroup]?) {
     self.id = id
     self.type = type
     self.source = source
@@ -58,7 +58,7 @@ struct SnippetList: AppEntity, Decodable, Hashable {
     self.content = try container.decode(String.self, forKey: .content)
     self.color_id = try container.decode(Int.self, forKey: .color_id)
     self.order_index = try container.decode(Int.self, forKey: .order_index)
-    self.snippets = try container.decodeIfPresent([SnippetList].self, forKey: .snippets) ?? []
+    self.snippets = try container.decodeIfPresent([SnippetGroup].self, forKey: .snippets) ?? []
   }
 }
 
@@ -72,34 +72,34 @@ enum SnippetSource: String {
   case API = "Cloud"
 }
 
-struct SnippetListQuery: EntityQuery {
-  private func fetchSnippetLists() -> [SnippetList] {
+struct SnippetGroupQuery: EntityQuery {
+  private func fetchSnippetGroups() -> [SnippetGroup] {
     let sharedDefaults = UserDefaults(suiteName: "group.com.wavelinkllc.snippeta.shared")
-    guard let dataString = sharedDefaults?.string(forKey: "snippetLists"),
+    guard let dataString = sharedDefaults?.string(forKey: "snippetGroups"),
           let data = dataString.data(using: .utf8) else { return [] }
     do {
-      let results = try JSONDecoder().decode([SnippetList].self, from: data)
-      print("Success decoding snippet lists: \(results.count)")
+      let results = try JSONDecoder().decode([SnippetGroup].self, from: data)
+      print("Success decoding snippet groups: \(results.count)")
       return results
     } catch {
-      print("Error decoding snippet lists: \(error)")
+      print("Error decoding snippet groups: \(error)")
       return []
     }
   }
   
-  func entities(for identifiers: [SnippetList.ID]) async throws -> [SnippetList] {
-    let allSnippetLists = fetchSnippetLists()
-    print("Fetched snippet lists entitles: \(allSnippetLists.count)")
-    return allSnippetLists
+  func entities(for identifiers: [SnippetGroup.ID]) async throws -> [SnippetGroup] {
+    let allSnippetGroups = fetchSnippetGroups()
+    print("Fetched snippet groups entitles: \(allSnippetGroups.count)")
+    return allSnippetGroups
   }
   
-  func suggestedEntities() async throws -> [SnippetList] {
-    let allSnippetLists = fetchSnippetLists()
-    print("Fetched snippet lists suggested entitles: \(allSnippetLists.count)")
-    return allSnippetLists.filter { $0.id != "null" }
+  func suggestedEntities() async throws -> [SnippetGroup] {
+    let allSnippetGroups = fetchSnippetGroups()
+    print("Fetched snippet groups suggested entitles: \(allSnippetGroups.count)")
+    return allSnippetGroups.filter { $0.id != "null" }
   }
   
-  func defaultResult() async -> SnippetList? {
+  func defaultResult() async -> SnippetGroup? {
     try? await suggestedEntities().first
   }
 }

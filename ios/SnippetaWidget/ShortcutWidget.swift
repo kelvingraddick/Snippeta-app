@@ -9,7 +9,7 @@ struct ShortcutWidget: Widget {
       entry in ShortcutWidgetEntryView(entry: entry)
     }
     .configurationDisplayName("Shortcuts")
-    .description("Add shortcuts for snippet lists, adding a snippet, and search.")
+    .description("Add shortcuts for snippet groups, adding a snippet, and search.")
   }
 }
 
@@ -21,27 +21,27 @@ struct ShortcutWidgetEntryView : View {
     VStack(alignment: .leading, spacing: 0) {
         
       if widgetFamily == .systemSmall {
-        getSnippetsListButton(snippetList: entry.configuration.snippetList1!, themer: entry.themer)
+        getSnippetsGroupButton(snippetGroup: entry.configuration.snippetGroup1!, themer: entry.themer)
       } else if widgetFamily == .systemMedium {
         HStack(alignment: .center) {
-          getSnippetsListButton(snippetList: entry.configuration.snippetList1!, themer: entry.themer)
+          getSnippetsGroupButton(snippetGroup: entry.configuration.snippetGroup1!, themer: entry.themer)
           Rectangle().frame(width: 1).foregroundColor(.primary.opacity(0.10))
-          getSnippetsListButton(snippetList: entry.configuration.snippetList2!, themer: entry.themer)
+          getSnippetsGroupButton(snippetGroup: entry.configuration.snippetGroup2!, themer: entry.themer)
         }
         .frame(maxWidth: .infinity)
       } else { // .systemLarge or larger
         VStack(alignment: .leading, spacing: 0) {
           HStack(alignment: .top) {
-            getSnippetsListButton(snippetList: entry.configuration.snippetList1!, themer: entry.themer).padding(.top, 10)
+            getSnippetsGroupButton(snippetGroup: entry.configuration.snippetGroup1!, themer: entry.themer).padding(.top, 10)
             Rectangle().frame(width: 1).foregroundColor(.primary.opacity(0.10))
-            getSnippetsListButton(snippetList: entry.configuration.snippetList2!, themer: entry.themer).padding(.top, 10)
+            getSnippetsGroupButton(snippetGroup: entry.configuration.snippetGroup2!, themer: entry.themer).padding(.top, 10)
           }
           .frame(maxWidth: .infinity)
           Rectangle().frame(height: 1).foregroundColor(.primary.opacity(0.10))
           HStack(alignment: .top) {
-            getSnippetsListButton(snippetList: entry.configuration.snippetList3!, themer: entry.themer).padding(.top, 10)
+            getSnippetsGroupButton(snippetGroup: entry.configuration.snippetGroup3!, themer: entry.themer).padding(.top, 10)
             Rectangle().frame(width: 1).foregroundColor(.primary.opacity(0.10))
-            getSnippetsListButton(snippetList: entry.configuration.snippetList4!, themer: entry.themer).padding(.top, 10)
+            getSnippetsGroupButton(snippetGroup: entry.configuration.snippetGroup4!, themer: entry.themer).padding(.top, 10)
           }
           .frame(maxWidth: .infinity)
         }
@@ -83,17 +83,17 @@ struct ShortcutWidgetEntryView : View {
   }
 }
 
-private func getSnippetsListButton(snippetList: SnippetList, themer: Themer) -> some View {
+private func getSnippetsGroupButton(snippetGroup: SnippetGroup, themer: Themer) -> some View {
   return
-    Link(destination: URL(string: "snippeta://snippets/\(snippetList.id)")!) {
+    Link(destination: URL(string: "snippeta://snippets/\(snippetGroup.id)")!) {
       HStack(alignment: .center, spacing: 7) {
         Image(systemName: "rectangle.stack.fill")
           .resizable()
           .aspectRatio(contentMode: .fit)
           .frame(height: 20)
-          .foregroundStyle(themer.getColor(id: snippetList.color_id))
+          .foregroundStyle(themer.getColor(id: snippetGroup.color_id))
         
-        Text(snippetList.title)
+        Text(snippetGroup.title)
           .font(.footnote)
           .bold()
           .frame(maxWidth: .infinity, alignment: .leading)

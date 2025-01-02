@@ -76,10 +76,10 @@ const getSnippets = async (parentId, authorizationToken) => {
   });
 }
 
-const getSnippetLists = async (authorizationToken) => {
-  console.log(`api.js -> getSnippetLists: Get snippet lists.`);
+const getSnippetGroups = async (authorizationToken) => {
+  console.log(`api.js -> getSnippetGroups: Get snippet groups.`);
   
-  return await fetch(`http://www.snippeta.com/api/snippets/lists.php`, {
+  return await fetch(`http://www.snippeta.com/api/snippets/groups.php`, {
     method: 'GET',
     headers: { 
       'Authorization': `Basic ${authorizationToken}`,
@@ -151,7 +151,7 @@ export default {
   deleteUser,
   sendPasswordResetEmail,
   getSnippets,
-  getSnippetLists,
+  getSnippetGroups,
   searchSnippets,
   saveSnippet,
   deleteSnippet,

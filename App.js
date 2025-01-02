@@ -92,7 +92,7 @@ export default function App() {
         await loginWithCredentials(credentials.emailOrPhone, credentials.password);
       } else {
         await updateEntitlements();
-        await updateSnippetLists();
+        await updateSnippetGroups();
         dispatch({ type: 'LOGGED_IN', payload: null });
       }
     } catch (error) {
@@ -114,7 +114,7 @@ export default function App() {
         await storage.saveCredentials(emailOrPhone, password);
         await RevenueCat.login(user.id);
         await updateEntitlements(user);
-        await updateSnippetLists();
+        await updateSnippetGroups();
       } else {
         console.log('App.js -> loginWithCredentials: Login failed with error code: ' + responseJson?.error_code);
       }
@@ -130,7 +130,7 @@ export default function App() {
     try {
       await storage.deleteCredentials();
       await updateEntitlements();
-      await updateSnippetLists();
+      await updateSnippetGroups();
       console.log('App.js -> logout: Deleted credentials from storage..');
     } catch (error) {
       console.error('App.js -> logout: Logging out user failed with error: ' + error.message);
@@ -150,8 +150,8 @@ export default function App() {
     const [path, param] = route.split('/');
     if ((path === 'snippets' || path === 'copy') && param) {
       console.log(`App.js -> handleDeepLink: Getting shared data for snippet Id ${param}`);
-      const snippetLists = await widget.getData('snippetLists');
-      const snippet = snippetLists?.reduce((result, list) => result || list.snippets?.find(snippet => snippet.id == param) || (list.id == param ? list : null), null);
+      const snippetGroups = await widget.getData('snippetGroups');
+      const snippet = snippetGroups?.reduce((result, group) => result || group.snippets?.find(snippet => snippet.id == param) || (group.id == param ? group : null), null);
       if (snippet) {
         if (path === 'snippets') {
           console.log(`App.js -> handleDeepLink: Navigating to Snippets screen to handle deep link for snippet Id ${param}`);
@@ -178,28 +178,28 @@ export default function App() {
     }
   };
 
-  const updateSnippetLists = async () => {
-    console.log('App.js -> updateSnippetLists: about to get snippet lists for user');
+  const updateSnippetGroups = async () => {
+    console.log('App.js -> updateSnippetGroups: about to get snippet groups for user');
 
-    // try to get storage snippet lists
-    let storageSnippetLists = [];
-    storageSnippetLists = await storage.getSnippetLists();
-    storageSnippetLists.forEach(x => { x.source = snippetSources.STORAGE; x.snippets.forEach(y => { y.source = snippetSources.STORAGE; }) });
-    storageSnippetLists.sort((a, b) => a.order_index - b.order_index);
+    // try to get storage snippet groups
+    let storageSnippetGroups = [];
+    storageSnippetGroups = await storage.getSnippetGroups();
+    storageSnippetGroups.forEach(x => { x.source = snippetSources.STORAGE; x.snippets.forEach(y => { y.source = snippetSources.STORAGE; }) });
+    storageSnippetGroups.sort((a, b) => a.order_index - b.order_index);
 
-    // try to get API snippet lists
-    let apiSnippetLists = [];
-    let response = await api.getSnippetLists(await storage.getAuthorizationToken());
+    // try to get API snippet groups
+    let apiSnippetGroups = [];
+    let response = await api.getSnippetGroups(await storage.getAuthorizationToken());
     let responseJson = await response.json();
-    apiSnippetLists = responseJson.lists ?? [];
-    apiSnippetLists.forEach(x => { x.source = snippetSources.API; x.snippets.forEach(y => { y.source = snippetSources.API; }) });
-    apiSnippetLists.sort((a, b) => a.order_index - b.order_index);
-    console.log(`App.js -> updateSnippetLists: Got ${apiSnippetLists.length} snippet lists via API:`, JSON.stringify(apiSnippetLists.map(x => x.id)));
+    apiSnippetGroups = responseJson.groups ?? [];
+    apiSnippetGroups.forEach(x => { x.source = snippetSources.API; x.snippets.forEach(y => { y.source = snippetSources.API; }) });
+    apiSnippetGroups.sort((a, b) => a.order_index - b.order_index);
+    console.log(`App.js -> updateSnippetGroups: Got ${apiSnippetGroups.length} snippet groups via API:`, JSON.stringify(apiSnippetGroups.map(x => x.id)));
 
-    // set snippet lists data for widget
-    let snippetLists = [];
-    snippetLists = snippetLists.concat(storageSnippetLists).concat(apiSnippetLists);
-    await widget.saveData('snippetLists', snippetLists);
+    // set snippet groups data for widget
+    let snippetGroups = [];
+    snippetGroups = snippetGroups.concat(storageSnippetGroups).concat(apiSnippetGroups);
+    await widget.saveData('snippetGroups', snippetGroups);
     updateWidgets();
   };
 
@@ -278,7 +278,7 @@ export default function App() {
 
   const onSnippetChanged = async () => {
     console.log('App.js -> onSnippetChanged: snippet(s) was changed and need to refresh related state..');
-    await updateSnippetLists();
+    await updateSnippetGroups();
   };
 
   return (

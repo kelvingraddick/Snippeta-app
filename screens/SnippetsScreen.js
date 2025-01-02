@@ -34,9 +34,9 @@ const SnippetsScreen = ({ route, navigation }) => {
   const tutorialSnippets = [
     { id: storageKeys.SNIPPET + 1, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Welcome to Snippeta!', content: 'Snippeta is the best way to copy, paste, and manage snippets of text! Copy text to your clipboard with a single tap; no highlighting or long-tapping!', color_id: colorIds.COLOR_1, time: new Date(), order_index: 0 },
     { id: storageKeys.SNIPPET + 2, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'How to use', content: 'Tap the button above to create a new snippet. Or tap on this snippet to copy it to your clipboard for pasting later!', color_id: colorIds.COLOR_2, time: new Date(), order_index: 1 },
-    { id: storageKeys.SNIPPET + 3, type: snippetTypes.MULTIPLE, source: snippetSources.STORAGE, title: 'Organize by creating lists', content: 'Create a snippet list to organize and nest snippets. Tap here to try it out!', color_id: colorIds.COLOR_3, time: new Date(), order_index: 2 },
-    { id: storageKeys.SNIPPET + 4, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Go PRO!', content: 'Want more out of Snippeta? Take your account pro and get access to create lists and more!', color_id: colorIds.COLOR_4, time: new Date(), order_index: 3 },
-    { id: storageKeys.SNIPPET + 5, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Add snippets to a list', content: 'Add a new snippet to this list. Tap the "New snippet" button above to try it out!', color_id: colorIds.COLOR_3, time: new Date(), order_index: 0, parent_id: storageKeys.SNIPPET + 3 },
+    { id: storageKeys.SNIPPET + 3, type: snippetTypes.MULTIPLE, source: snippetSources.STORAGE, title: 'Organize by creating groups', content: 'Create a snippet group to organize and nest snippets. Tap here to try it out!', color_id: colorIds.COLOR_3, time: new Date(), order_index: 2 },
+    { id: storageKeys.SNIPPET + 4, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Go PRO!', content: 'Want more out of Snippeta? Take your account pro and get access to cloud backups, themes, creating sub-groups, and more!', color_id: colorIds.COLOR_4, time: new Date(), order_index: 3 },
+    { id: storageKeys.SNIPPET + 5, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Add snippets to a group', content: 'Add a new snippet to this group. Tap the "New snippet" button above to try it out!', color_id: colorIds.COLOR_3, time: new Date(), order_index: 0, parent_id: storageKeys.SNIPPET + 3 },
   ];
 
   useEffect(() => {
@@ -80,9 +80,9 @@ const SnippetsScreen = ({ route, navigation }) => {
         else if (apiSnippets.length > 0) { snippetSections.push({ data: apiSnippets }); }
       }
       
-      // if in root snippet list, and no snippets exist, then populate with tutorial snippets in storage
+      // if in root snippet group, and no snippets exist, then populate with tutorial snippets in storage
       if (isRootSnippetsScreen && storageSnippets.length == 0 && apiSnippets.length == 0) {
-        console.log('SnippetsScreen.js -> getSnippets: No snippets in root snippet list. Adding tutorial snippets..');
+        console.log('SnippetsScreen.js -> getSnippets: No snippets in root snippet group. Adding tutorial snippets..');
         for (const tutorialSnippet of tutorialSnippets) {
           await storage.saveSnippet(tutorialSnippet);
         }
@@ -198,7 +198,7 @@ const SnippetsScreen = ({ route, navigation }) => {
   };
 
   const onNewSnippetTapped = async () => {
-    const options = { 'New snippet (blank)': 0, 'New snippet (from clipboard)': 1, 'New list': 2, 'Cancel': 3 };
+    const options = { 'New snippet (blank)': 0, 'New snippet (from clipboard)': 1, 'New group': 2, 'Cancel': 3 };
     showActionSheetWithOptions(
       {
         title: 'What do you want to add?',
@@ -213,7 +213,7 @@ const SnippetsScreen = ({ route, navigation }) => {
           case options['New snippet (from clipboard)']:
             createSnippet(snippetTypes.SINGLE, await Clipboard.getString());
             break;
-          case options['New list']:
+          case options['New group']:
             createSnippet(snippetTypes.MULTIPLE);
             break;
         }
@@ -291,10 +291,10 @@ const SnippetsScreen = ({ route, navigation }) => {
           }
         </View>
         {!isRootSnippetsScreen && <View style={{ height: 5 }}></View> }
-        <ActionButton iconImageSource={require('../assets/images/plus.png')} text={'Add new snippet or list'} foregroundColor={themer.getColor('button1.foreground')} backgroundColor={themer.getColor('button1.background')} disabled={isLoading || isUserLoading} onTapped={() => onNewSnippetTapped()} />
+        <ActionButton iconImageSource={require('../assets/images/plus.png')} text={'Add new snippet or group'} foregroundColor={themer.getColor('button1.foreground')} backgroundColor={themer.getColor('button1.background')} disabled={isLoading || isUserLoading} onTapped={() => onNewSnippetTapped()} />
       </View>
       { (isLoading || isUserLoading) &&
-        <View style={styles.snippetsList}>
+        <View style={styles.snippetsGroup}>
           {[0, 1, 2, 3, 4, 5].map(x => (
             <SkeletonPlaceholder key={x} borderRadius={10} speed={300}>
               <SkeletonPlaceholder.Item height={80} width={Dimensions.get('window').width - 40 } marginBottom={16} />
@@ -304,7 +304,7 @@ const SnippetsScreen = ({ route, navigation }) => {
       }
       { (!isLoading && !isUserLoading) && 
         <SectionList
-          style={styles.snippetsList}
+          style={styles.snippetsGroup}
           sections={snippetSections}
           keyExtractor={(item, index) => item.id}
           stickySectionHeadersEnabled={false}
@@ -387,7 +387,7 @@ const styles = StyleSheet.create({
     width: 25,
     marginTop: 2,
   },
-  snippetsList: {
+  snippetsGroup: {
     padding: 20
   },
   sectionHeaderView: {

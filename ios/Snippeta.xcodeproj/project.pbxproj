@@ -15,13 +15,13 @@
 		7699B88040F8A987B510C191 /* libPods-Snippeta-SnippetaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-Snippeta-SnippetaTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		ABD44DBC6FC501B9FBB79BD7 /* libPods-SnippetaWidgetExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B32FBB9B8D99D29EFFC25E37 /* libPods-SnippetaWidgetExtension.a */; };
-		B67D17D22CD6CB1E00DC3628 /* ListWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17D12CD6CB1E00DC3628 /* ListWidget.swift */; };
+		B67D17D22CD6CB1E00DC3628 /* GroupWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17D12CD6CB1E00DC3628 /* GroupWidget.swift */; };
 		B67D17D52CD6CCB500DC3628 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17D42CD6CCB500DC3628 /* ColorExtension.swift */; };
 		B67D17D62CD6CCB500DC3628 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17D42CD6CCB500DC3628 /* ColorExtension.swift */; };
-		B67D17D82CD6D40300DC3628 /* ListWidgetConfigurationIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17D72CD6D40300DC3628 /* ListWidgetConfigurationIntent.swift */; };
-		B67D17D92CD6D40300DC3628 /* ListWidgetConfigurationIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17D72CD6D40300DC3628 /* ListWidgetConfigurationIntent.swift */; };
-		B67D17DE2CD7239B00DC3628 /* SnippetList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17DD2CD7239B00DC3628 /* SnippetList.swift */; };
-		B67D17DF2CD7239B00DC3628 /* SnippetList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17DD2CD7239B00DC3628 /* SnippetList.swift */; };
+		B67D17D82CD6D40300DC3628 /* GroupWidgetConfigurationIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17D72CD6D40300DC3628 /* GroupWidgetConfigurationIntent.swift */; };
+		B67D17D92CD6D40300DC3628 /* GroupWidgetConfigurationIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17D72CD6D40300DC3628 /* GroupWidgetConfigurationIntent.swift */; };
+		B67D17DE2CD7239B00DC3628 /* SnippetGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17DD2CD7239B00DC3628 /* SnippetGroup.swift */; };
+		B67D17DF2CD7239B00DC3628 /* SnippetGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17DD2CD7239B00DC3628 /* SnippetGroup.swift */; };
 		B68377392CC0B6E300BC1755 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B68377382CC0B6E300BC1755 /* WidgetKit.framework */; };
 		B683773B2CC0B6E300BC1755 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B683773A2CC0B6E300BC1755 /* SwiftUI.framework */; };
 		B68377482CC0B6E400BC1755 /* SnippetaWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B68377372CC0B6E300BC1755 /* SnippetaWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -95,10 +95,10 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Snippeta/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-Snippeta-SnippetaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Snippeta-SnippetaTests.release.xcconfig"; path = "Target Support Files/Pods-Snippeta-SnippetaTests/Pods-Snippeta-SnippetaTests.release.xcconfig"; sourceTree = "<group>"; };
 		B32FBB9B8D99D29EFFC25E37 /* libPods-SnippetaWidgetExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SnippetaWidgetExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B67D17D12CD6CB1E00DC3628 /* ListWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListWidget.swift; sourceTree = "<group>"; };
+		B67D17D12CD6CB1E00DC3628 /* GroupWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupWidget.swift; sourceTree = "<group>"; };
 		B67D17D42CD6CCB500DC3628 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
-		B67D17D72CD6D40300DC3628 /* ListWidgetConfigurationIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListWidgetConfigurationIntent.swift; sourceTree = "<group>"; };
-		B67D17DD2CD7239B00DC3628 /* SnippetList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetList.swift; sourceTree = "<group>"; };
+		B67D17D72CD6D40300DC3628 /* GroupWidgetConfigurationIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupWidgetConfigurationIntent.swift; sourceTree = "<group>"; };
+		B67D17DD2CD7239B00DC3628 /* SnippetGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetGroup.swift; sourceTree = "<group>"; };
 		B67D4F1D2CC4CF4D00818353 /* SnippetaWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SnippetaWidgetExtension.entitlements; sourceTree = "<group>"; };
 		B68377372CC0B6E300BC1755 /* SnippetaWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SnippetaWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		B68377382CC0B6E300BC1755 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
@@ -238,11 +238,11 @@
 			children = (
 				B683774F2CC0CAAE00BC1755 /* Assets.xcassets */,
 				B68377502CC0CAAE00BC1755 /* Info.plist */,
-				B67D17DD2CD7239B00DC3628 /* SnippetList.swift */,
+				B67D17DD2CD7239B00DC3628 /* SnippetGroup.swift */,
 				B68377512CC0CAAE00BC1755 /* ShortcutWidget.swift */,
 				B683774E2CC0CAAE00BC1755 /* ShortcutWidgetConfigurationIntent.swift */,
-				B67D17D12CD6CB1E00DC3628 /* ListWidget.swift */,
-				B67D17D72CD6D40300DC3628 /* ListWidgetConfigurationIntent.swift */,
+				B67D17D12CD6CB1E00DC3628 /* GroupWidget.swift */,
+				B67D17D72CD6D40300DC3628 /* GroupWidgetConfigurationIntent.swift */,
 				B67D17D42CD6CCB500DC3628 /* ColorExtension.swift */,
 				B68377522CC0CAAE00BC1755 /* SnippetaWidgetBundle.swift */,
 				B6B6F7042D19346C006518BD /* Themer.swift */,
@@ -590,11 +590,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				B697989A2D1A67F600331C52 /* WidgetNativeModuleBridge.m in Sources */,
-				B67D17D92CD6D40300DC3628 /* ListWidgetConfigurationIntent.swift in Sources */,
+				B67D17D92CD6D40300DC3628 /* GroupWidgetConfigurationIntent.swift in Sources */,
 				B69798982D1A67D900331C52 /* WidgetNativeModule.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				B67D17DE2CD7239B00DC3628 /* SnippetList.swift in Sources */,
+				B67D17DE2CD7239B00DC3628 /* SnippetGroup.swift in Sources */,
 				B6B6F7052D19346C006518BD /* Themer.swift in Sources */,
 				B67D17D62CD6CCB500DC3628 /* ColorExtension.swift in Sources */,
 			);
@@ -606,11 +606,11 @@
 			files = (
 				B68377552CC0CAAE00BC1755 /* ShortcutWidgetConfigurationIntent.swift in Sources */,
 				B68377562CC0CAAE00BC1755 /* ShortcutWidget.swift in Sources */,
-				B67D17DF2CD7239B00DC3628 /* SnippetList.swift in Sources */,
+				B67D17DF2CD7239B00DC3628 /* SnippetGroup.swift in Sources */,
 				B6B6F7062D19346C006518BD /* Themer.swift in Sources */,
 				B67D17D52CD6CCB500DC3628 /* ColorExtension.swift in Sources */,
-				B67D17D82CD6D40300DC3628 /* ListWidgetConfigurationIntent.swift in Sources */,
-				B67D17D22CD6CB1E00DC3628 /* ListWidget.swift in Sources */,
+				B67D17D82CD6D40300DC3628 /* GroupWidgetConfigurationIntent.swift in Sources */,
+				B67D17D22CD6CB1E00DC3628 /* GroupWidget.swift in Sources */,
 				B68377572CC0CAAE00BC1755 /* SnippetaWidgetBundle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

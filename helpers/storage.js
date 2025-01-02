@@ -49,8 +49,8 @@ const getSnippets = async (parentId) => {
   return snippets;
 };
 
-const getSnippetLists = async () => {
-  console.log('storage.js -> getSnippetLists: Getting snippet lists');
+const getSnippetGroups = async () => {
+  console.log('storage.js -> getSnippetGroups: Getting snippet groups');
   const allKeys = await AsyncStorage.getAllKeys();
   const snippetKeys = allKeys.filter(key => key.startsWith(storageKeys.SNIPPET));
   const snippets = [];
@@ -59,15 +59,15 @@ const getSnippetLists = async () => {
     const snippet = JSON.parse(item);
     snippets.push(snippet);
   }
-  let snippetLists = [{ id: storageKeys.SNIPPET + 0, type: snippetTypes.MULTIPLE, title: 'Default', content: "Default", color_id: colorIds.COLOR_100, order_index: 0 }]; // root snippet list
-  snippetLists = snippetLists.concat(snippets.filter(x => x.type === snippetTypes.MULTIPLE));
-  for (let i = 0; i < snippetLists.length; i++) {
-    snippetLists[i].snippets = snippetLists[i].id === storageKeys.SNIPPET + 0 ?
+  let snippetGroups = [{ id: storageKeys.SNIPPET + 0, type: snippetTypes.MULTIPLE, title: 'Snippets', content: 'Snippets', color_id: colorIds.COLOR_100, order_index: 0 }]; // root snippet group
+  snippetGroups = snippetGroups.concat(snippets.filter(x => x.type === snippetTypes.MULTIPLE));
+  for (let i = 0; i < snippetGroups.length; i++) {
+    snippetGroups[i].snippets = snippetGroups[i].id === storageKeys.SNIPPET + 0 ?
       snippets.filter(x => !x.parent_id) :
-      snippets.filter(x => x.parent_id === snippetLists[i].id)
+      snippets.filter(x => x.parent_id === snippetGroups[i].id)
   }
-  console.log(`storage.js -> getSnippetLists: Got ${snippetLists.length} snippet lists:`, JSON.stringify(snippetLists.map(x => x.id)));
-  return snippetLists;
+  console.log(`storage.js -> getSnippetGroups: Got ${snippetGroups.length} snippet groups:`, JSON.stringify(snippetGroups.map(x => x.id)));
+  return snippetGroups;
 };
 
 const searchSnippets = async (query) => {
@@ -143,7 +143,7 @@ export default {
   deleteCredentials,
   getAuthorizationToken,
   getSnippets,
-  getSnippetLists,
+  getSnippetGroups,
   searchSnippets,
   getSnippet,
   saveSnippet,
