@@ -32,8 +32,10 @@ const SettingsScreen = ({ navigation }) => {
         const isSelected = themeId == themer.themeId || (!themer.themeId && theme == themes['default-light']);
         return { label: theme.name, isPro: theme.isPro, isSelectable: true, isSelected: isSelected, onTapped: () => { onThemeTapped(themeId); } };
       });      
-      let widgetSettings = [{ label: 'Widget', labelIconSource: require('../assets/images/device.png'), onTapped: () => { navigation.navigate('Widget'); } }];
-      let inAppPurchasesSettings = [
+      let appExtensionsSettings = [
+        { label: 'Widget', onTapped: () => { navigation.navigate('Widget'); }},
+        { label: 'OS', onTapped: () => { Linking.openURL('app-settings:'); }},
+      ];
         { label: 'Restore purchases', onTapped: () => { onRestorePurchasesTapped(); } },
         { label: 'Manage subscription', onTapped: () => { Linking.openURL('https://apps.apple.com/account/subscriptions'); } },
       ];
@@ -44,8 +46,8 @@ const SettingsScreen = ({ navigation }) => {
         { label: 'KG.codes (developer)', onTapped: () => { Linking.openURL('https://www.kg.codes'); } },
       ];
       settings.push({ title: '🎨 Theme', data: themeSettings });
-      settings.push({ title: '📱 App extensions', data: widgetSettings });   
       settings.push({ title: '🛒 In-app purchase', data: inAppPurchasesSettings }); 
+      settings.push({ title: '📱 App extensions', data: appExtensionsSettings });   
       settings.push({ title: 'ℹ️ Info', data: infoSettings });  
     } catch (error) {
       console.error('SettingsScreen.js -> getSettings: Loading settings failed with error: ' + error.message);
