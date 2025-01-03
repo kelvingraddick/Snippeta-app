@@ -22,7 +22,7 @@ const SnippetsScreen = ({ route, navigation }) => {
   const isRootSnippetsScreen = !parentSnippet;
   const callbacks = route.params?.callbacks || [];
 
-  const { themer, user, isUserLoading, onSnippetChanged } = useContext(ApplicationContext);
+  const { themer, user, isUserLoading, subscription, onSnippetChanged } = useContext(ApplicationContext);
 
   const [isLoading, setIsLoading] = useState(true);
   const [snippetSections, setSnippetSections] = useState([]);
@@ -219,7 +219,13 @@ const SnippetsScreen = ({ route, navigation }) => {
   };
 
   const onNewGroupTapped = async () => {
-    createSnippet(snippetTypes.MULTIPLE);
+    // top-level groups are always allowed, but only allow a sub-group with subscription
+    if (isRootSnippetsScreen || subscription) {
+      createSnippet(snippetTypes.MULTIPLE);
+    } else {
+      onSettingsTapped();
+      banner.showErrorMessage('Creating a sub-group requires a Snippeta Pro subscription — Read this screen to learn more!');
+    }
   };
   
   const onSnippetTapped = (snippet) => {

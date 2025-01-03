@@ -14,9 +14,10 @@ const showSuccessMessage = async (message, description) => {
   });
 };
 
-const showErrorMessage = async (message) => {
+const showErrorMessage = async (message, duration) => {
   showMessage({
     message: message,
+    duration: duration ?? 5000,
     backgroundColor: colors.lightRed,
     titleStyle: { fontWeight: 'bold', color: colors.darkGray, },
     statusBarHeight: 50,

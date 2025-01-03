@@ -239,7 +239,7 @@ const SettingsScreen = ({ navigation }) => {
             <View style={styles.infoView}>
               <Text style={[styles.featureText, { color: themer.getColor('screenHeader1.foreground') }]}>☁️ Sync & backup snippets with <Text style={{ fontWeight: 'bold' }}>Snippeta Cloud</Text></Text>
               <Text style={[styles.featureText, { color: themer.getColor('screenHeader1.foreground') }]}>🎨 Unlock pro-level themes, fonts, & sounds</Text>
-              <Text style={[styles.featureText, { color: themer.getColor('screenHeader1.foreground') }]}>📱 Personalize even more with pro <Text style={{ fontWeight: 'bold' }}>app icons</Text></Text>
+              <Text style={[styles.featureText, { color: themer.getColor('screenHeader1.foreground') }]}>🧠 Organize better with nested <Text style={{ fontWeight: 'bold' }}>sub-groups</Text></Text>
             </View>
           </View>
         }
