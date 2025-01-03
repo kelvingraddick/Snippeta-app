@@ -40,6 +40,11 @@ const SettingsScreen = ({ navigation }) => {
         { label: 'Restore purchases', onTapped: () => { onRestorePurchasesTapped(); } },
         { label: 'Manage subscription', onTapped: () => { Linking.openURL('https://apps.apple.com/account/subscriptions'); } },
       ];
+      let getInTouchSettings = [
+        { label: 'Leave a review', onTapped: () => { Linking.openURL('https://apps.apple.com/app/id1282250868?action=write-review'); } },
+        { label: 'Get help / support', onTapped: () => { Linking.openURL('mailto:development@wavelinkllc.com?subject=Snippeta%20support%20request'); } },
+        { label: 'Request new feature', onTapped: () => { Linking.openURL('mailto:development@wavelinkllc.com?subject=Snippeta%20feature%20request'); } },
+      ];
       let infoSettings = [
         { label: 'Privacy Policy', onTapped: () => { Linking.openURL('https://snippeta.com/privacy-policy/'); } },
         { label: 'Terms and Conditions', onTapped: () => { Linking.openURL('https://snippeta.com/terms-and-conditions/'); } },
@@ -49,6 +54,7 @@ const SettingsScreen = ({ navigation }) => {
       settings.push({ title: '🎨 Theme', data: themeSettings });
       settings.push({ title: '📱 App extensions', data: appExtensionsSettings });   
       settings.push({ title: '🛒 In-app purchase', data: inAppPurchaseSettings }); 
+      settings.push({ title: '📝 Get in touch', data: getInTouchSettings }); 
       settings.push({ title: 'ℹ️ Info', data: infoSettings });  
     } catch (error) {
       console.error('SettingsScreen.js -> getSettings: Loading settings failed with error: ' + error.message);
