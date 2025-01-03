@@ -33,8 +33,8 @@ const SettingsScreen = ({ navigation }) => {
         return { label: theme.name, isPro: theme.isPro, isSelectable: true, isSelected: isSelected, onTapped: () => { onThemeTapped(themeId); } };
       });      
       let appExtensionsSettings = [
-        { label: 'Widget', onTapped: () => { navigation.navigate('Widget'); }},
-        { label: 'OS', onTapped: () => { Linking.openURL('app-settings:'); }},
+        { label: 'Home screen widget', onTapped: () => { navigation.navigate('Widget'); }},
+        { label: 'System settings', onTapped: () => { Linking.openURL('app-settings:'); }},
       ];
       let inAppPurchaseSettings = [
         { label: 'Restore purchases', onTapped: () => { onRestorePurchasesTapped(); } },
