@@ -149,7 +149,7 @@ const SnippetScreen = ({ route, navigation }) => {
             <Pressable onPress={onBackTapped} hitSlop={20}>
               <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={themer.getColor('screenHeader1.foreground')} />
             </Pressable>
-            <Text style={[styles.title, { color: themer.getColor('screenHeader1.foreground') }]}>{`${snippet.id ? 'Edit' : 'New'} ${snippet.type == snippetTypes.SINGLE ? 'snippet' : 'group'}`}</Text>
+            <Text style={[styles.title, { color: themer.getColor('screenHeader1.foreground') }]}>{`${snippet.id ? 'Edit' : 'New'} ${snippet.type == snippetTypes.SINGLE ? 'snippet' : (snippet.parent_id ? 'sub-group' : 'group')}`}</Text>
             <Pressable onPress={onSaveTapped} hitSlop={20} disabled={isLoading || !snippet.title || snippet.title.length == 0 || !snippet.content || snippet.content.length == 0}>
               <Image source={require('../assets/images/checkmark.png')} style={[styles.saveIcon, { opacity: isLoading || !snippet.title || snippet.title.length == 0 || !snippet.content || snippet.content.length == 0 ? .1 : 1 }]} tintColor={themer.getColor('screenHeader1.foreground')} />
             </Pressable>

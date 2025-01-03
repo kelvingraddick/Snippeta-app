@@ -197,28 +197,29 @@ const SnippetsScreen = ({ route, navigation }) => {
     navigation.navigate('Snippet', { snippet: parentSnippet, callbacks: callbacks.concat(getSnippets) });
   };
 
-  const onNewSnippetTapped = async () => {
-    const options = { 'New snippet (blank)': 0, 'New snippet (from clipboard)': 1, 'New group': 2, 'Cancel': 3 };
+  const onAddSnippetTapped = async () => {
+    const options = { 'New blank snippet': 0, 'Use text from clipboard': 1, 'Cancel': 2 };
     showActionSheetWithOptions(
       {
-        title: 'What do you want to add?',
+        title: 'How would you like to start creating the snippet?',
         options: Object.keys(options),
         cancelButtonIndex: options.Cancel,
       },
       async (selectedIndex) => {
         switch (selectedIndex) {
-          case options['New snippet (blank)']:
+          case options['New blank snippet']:
             createSnippet(snippetTypes.SINGLE);
             break;
-          case options['New snippet (from clipboard)']:
+          case options['Use text from clipboard']:
             createSnippet(snippetTypes.SINGLE, await Clipboard.getString());
-            break;
-          case options['New group']:
-            createSnippet(snippetTypes.MULTIPLE);
             break;
         }
       }
     );
+  };
+
+  const onNewGroupTapped = async () => {
+    createSnippet(snippetTypes.MULTIPLE);
   };
   
   const onSnippetTapped = (snippet) => {
@@ -291,7 +292,10 @@ const SnippetsScreen = ({ route, navigation }) => {
           }
         </View>
         {!isRootSnippetsScreen && <View style={{ height: 5 }}></View> }
-        <ActionButton iconImageSource={require('../assets/images/plus.png')} text={'Add new snippet or group'} foregroundColor={themer.getColor('button1.foreground')} backgroundColor={themer.getColor('button1.background')} disabled={isLoading || isUserLoading} onTapped={() => onNewSnippetTapped()} />
+        <View style={styles.buttonsView}>
+          <ActionButton iconImageSource={require('../assets/images/plus.png')} text={'Add snippet'} foregroundColor={themer.getColor('button1.foreground')} backgroundColor={themer.getColor('button1.background')} disabled={isLoading || isUserLoading} isLeft onTapped={() => onAddSnippetTapped()} />
+          <ActionButton iconImageSource={require('../assets/images/list-icon.png')} text={isRootSnippetsScreen ? 'New group  ' : 'New sub-group'} foregroundColor={themer.getColor('button1.foreground')} backgroundColor={themer.getColor('button1.background')} disabled={isLoading || isUserLoading} isRight onTapped={() => onNewGroupTapped()} />
+        </View>
       </View>
       { (isLoading || isUserLoading) &&
         <View style={styles.snippetsGroup}>
@@ -386,6 +390,12 @@ const styles = StyleSheet.create({
     height: 25,
     width: 25,
     marginTop: 2,
+  },
+  buttonsView: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 3,
   },
   snippetsGroup: {
     padding: 20
