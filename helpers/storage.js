@@ -137,6 +137,32 @@ const saveThemeId = async (themeId) => {
   console.log('storage.js -> saveTheme: Saved theme with ID', themeId);
 };
 
+const getMilestoneNumber = async () => {
+  const item = await AsyncStorage.getItem(storageKeys.MILESTONE_NUMBER);
+  const milestoneNumber  = JSON.parse(item);
+  console.log(`storage.js -> getMilestoneNumber: Got milestone number ${milestoneNumber}`);
+  return milestoneNumber;
+};
+
+const saveMilestoneNumber = async (milestoneNumber) => {
+  const item = JSON.stringify(milestoneNumber);
+  await AsyncStorage.setItem(storageKeys.MILESTONE_NUMBER, item);
+  console.log('storage.js -> saveMilestoneNumber: Saved milestone number', milestoneNumber);
+};
+
+const getLastReviewPromptDate = async () => {
+  const item = await AsyncStorage.getItem(storageKeys.LAST_REVIEW_PROMPT_DATE);
+  const lastReviewPromptDate = new Date(item);
+  console.log(`storage.js -> getLastReviewPromptDate: Got last review prompt date ${lastReviewPromptDate?.toJSON()}`);
+  return lastReviewPromptDate;
+};
+
+const saveLastReviewPromptDate = async (lastReviewPromptDate) => {
+  const item = lastReviewPromptDate?.toJSON();
+  await AsyncStorage.setItem(storageKeys.LAST_REVIEW_PROMPT_DATE, item);
+  console.log('storage.js -> saveLastReviewPromptDate: Saved last review prompt date', lastReviewPromptDate);
+};
+
 export default {
   getCredentials,
   saveCredentials,
@@ -151,4 +177,8 @@ export default {
   moveSnippet,
   getThemeId,
   saveThemeId,
+  getMilestoneNumber,
+  saveMilestoneNumber,
+  getLastReviewPromptDate,
+  saveLastReviewPromptDate,
 };

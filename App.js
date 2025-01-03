@@ -7,6 +7,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import FlashMessage from "react-native-flash-message";
 import Clipboard from '@react-native-clipboard/clipboard';
+import Rate from 'react-native-rate';
 import { ApplicationContext } from './ApplicationContext';
 import { storageKeys } from './constants/storageKeys';
 import { snippetTypes } from './constants/snippetTypes';
@@ -276,9 +277,48 @@ export default function App() {
     }
   };
 
+  const promptReviewIfReady = async () => {
+    try {
+      let milestoneNumber = await storage.getMilestoneNumber() ?? 0;
+      milestoneNumber++;
+      await storage.saveMilestoneNumber(milestoneNumber);
+
+      const lastReviewPromptDate = await storage.getLastReviewPromptDate();
+      const currentDate = new Date();
+      const REVIEW_PROMPT_MILESTONE_NUMBERS = [5, 25, 50];
+      const REVIEW_PROMPT_INTERVAL_MILLISECONDS = 604800000; // 7 days
+      
+      // decide whether to show review prompt
+      if (REVIEW_PROMPT_MILESTONE_NUMBERS.includes(milestoneNumber) && (!lastReviewPromptDate || ((currentDate.getTime() - lastReviewPromptDate.getTime()) > REVIEW_PROMPT_INTERVAL_MILLISECONDS))) {
+        console.log(`App.js -> updateMilestones: About to prompt app review at milestone number ${milestoneNumber} and last review prompt time ${JSON.stringify(lastReviewPromptDate)}`);
+        const options = {
+          AppleAppID: '1282250868',
+          GooglePackageName: 'com.wavelinkllc.snippeta',
+          preferInApp: true,
+          openAppStoreIfInAppFails: true,
+          fallbackPlatformURL: 'https://apps.apple.com/us/app/snippeta-copy-manage-paste/id1282250868',
+        };
+        Rate.rate(options, async (success, errorMessage) => {
+          if (success) { // this technically only tells us if the user successfully went to the Review Page. Whether they actually did anything, we do not know.
+            await storage.saveLastReviewPromptDate(new Date());
+            console.log(`App.js -> updateMilestones: Successfully prompt app review`);
+          }
+          if (errorMessage) { // errorMessage comes from the native code. Useful for debugging, but probably not for users to view
+            console.error('App.js -> updateMilestones: Rate call failed with error: ' + errorMessage);
+          }
+        });
+      } else {
+        console.log(`App.js -> updateMilestones: Not ready to prompt app review at milestone number ${milestoneNumber} and last review prompt time ${lastReviewPromptDate && JSON.stringify(lastReviewPromptDate)}`);
+      }
+    } catch (error) {
+      console.error('App.js -> updateMilestones: failed with error: ' + error.message);
+    }
+  };
+
   const onSnippetChanged = async () => {
     console.log('App.js -> onSnippetChanged: snippet(s) was changed and need to refresh related state..');
     await updateSnippetGroups();
+    await promptReviewIfReady();
   };
 
   return (

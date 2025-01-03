@@ -1188,6 +1188,8 @@ PODS:
   - RNPurchases (8.4.0):
     - PurchasesHybridCommon (= 13.12.0)
     - React-Core
+  - RNRate (1.2.12):
+    - React-Core
   - RNReactNativeHapticFeedback (2.3.3):
     - DoubleConversion
     - glog
@@ -1299,6 +1301,7 @@ DEPENDENCIES:
   - "RNCMaskedView (from `../node_modules/@react-native-masked-view/masked-view`)"
   - RNPaywalls (from `../node_modules/react-native-purchases-ui`)
   - RNPurchases (from `../node_modules/react-native-purchases`)
+  - RNRate (from `../node_modules/react-native-rate`)
   - RNReactNativeHapticFeedback (from `../node_modules/react-native-haptic-feedback`)
   - RNReactNativeSharedGroupPreferences (from `../node_modules/react-native-shared-group-preferences`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -1434,6 +1437,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-purchases-ui"
   RNPurchases:
     :path: "../node_modules/react-native-purchases"
+  RNRate:
+    :path: "../node_modules/react-native-rate"
   RNReactNativeHapticFeedback:
     :path: "../node_modules/react-native-haptic-feedback"
   RNReactNativeSharedGroupPreferences:
@@ -1508,6 +1513,7 @@ SPEC CHECKSUMS:
   RNCMaskedView: 090213d32d8b3bb83a4dcb7d12c18f0152591906
   RNPaywalls: d4bb8430f17a3a4376f1cf5913f53521543f561b
   RNPurchases: aafcf568c3ae6cdc70c654fb74b452cd9f9bc2cb
+  RNRate: ef3bcff84f39bb1d1e41c5593d3eea4aab2bd73a
   RNReactNativeHapticFeedback: 7c701396d35a0e8863d8d8f97a7273c5f8509b40
   RNReactNativeSharedGroupPreferences: 29092869fc2e40d5baca5e15d82fa5c24a668977
   RNScreens: 5aeecbb09aa7285379b6e9f3c8a3c859bb16401c
