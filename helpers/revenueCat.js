@@ -13,6 +13,7 @@ const configure = async function () {
 
 const login = async function (appUserId) {
   try {
+    if (!(await Purchases.isConfigured())) { await configure(true); }
     const { customerInfo } = await Purchases.logIn(appUserId);
     console.log(`RevenueCat -> login: logged in RevenueCat with app user ID ${appUserId} / stored: ${await Purchases.getAppUserID()} / original: ${customerInfo?.originalAppUserId} `);
   } catch (error) {
@@ -24,6 +25,7 @@ const login = async function (appUserId) {
 const getEntitlements = async () => {
   let entitlements;
   try {
+    if (!(await Purchases.isConfigured())) { await configure(true); }
     const customerInfo = await Purchases.getCustomerInfo();
     //console.log('RevenueCat -> getEntitlements: customer info:', customerInfo);
     entitlements = customerInfo?.entitlements?.active;
@@ -38,6 +40,7 @@ const getEntitlements = async () => {
 const purchasePackage = async (offeringId, packageId, entitlementId) => {
   let entitlement;
   try {
+    if (!(await Purchases.isConfigured())) { await configure(true); }
     const offerings = await Purchases.getOfferings();
     const packageToPurchase = offerings?.all?.[offeringId]?.availablePackages?.find(x => x.identifier == packageId);
     if (packageToPurchase) {
@@ -58,6 +61,7 @@ const purchasePackage = async (offeringId, packageId, entitlementId) => {
 const restorePurchases = async () => {
   let entitlements;
   try {
+    if (!(await Purchases.isConfigured())) { await configure(true); }
     const customerInfo = await Purchases.restorePurchases();
     if (customerInfo) {
       entitlements = customerInfo.entitlements?.active;
@@ -72,6 +76,7 @@ const restorePurchases = async () => {
 
 export default {
   configure,
+  isConfigured: Purchases.isConfigured,
   login,
   getEntitlements,
   purchasePackage,
