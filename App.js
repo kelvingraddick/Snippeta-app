@@ -189,28 +189,33 @@ export default function App() {
   };
 
   const updateSnippetGroups = async () => {
-    console.log('App.js -> updateSnippetGroups: about to get snippet groups for user');
+    try {
+      console.log('App.js -> updateSnippetGroups: about to get snippet groups for user');
 
-    // try to get storage snippet groups
-    let storageSnippetGroups = [];
-    storageSnippetGroups = await storage.getSnippetGroups();
-    storageSnippetGroups.forEach(x => { x.source = snippetSources.STORAGE; x.snippets.forEach(y => { y.source = snippetSources.STORAGE; }) });
-    storageSnippetGroups.sort((a, b) => a.order_index - b.order_index);
+      // try to get storage snippet groups
+      let storageSnippetGroups = [];
+      storageSnippetGroups = await storage.getSnippetGroups();
+      storageSnippetGroups.forEach(x => { x.source = snippetSources.STORAGE; x.snippets.forEach(y => { y.source = snippetSources.STORAGE; }) });
+      storageSnippetGroups.sort((a, b) => a.order_index - b.order_index);
 
-    // try to get API snippet groups
-    let apiSnippetGroups = [];
-    let response = await api.getSnippetGroups(await storage.getAuthorizationToken());
-    let responseJson = await response.json();
-    apiSnippetGroups = responseJson.groups ?? [];
-    apiSnippetGroups.forEach(x => { x.source = snippetSources.API; x.snippets.forEach(y => { y.source = snippetSources.API; }) });
-    apiSnippetGroups.sort((a, b) => a.order_index - b.order_index);
-    console.log(`App.js -> updateSnippetGroups: Got ${apiSnippetGroups.length} snippet groups via API:`, JSON.stringify(apiSnippetGroups.map(x => x.id)));
+      // try to get API snippet groups
+      let apiSnippetGroups = [];
+      let response = await api.getSnippetGroups(await storage.getAuthorizationToken());
+      let responseJson = await response.json();
+      apiSnippetGroups = responseJson.groups ?? [];
+      apiSnippetGroups.forEach(x => { x.source = snippetSources.API; x.snippets.forEach(y => { y.source = snippetSources.API; }) });
+      apiSnippetGroups.sort((a, b) => a.order_index - b.order_index);
+      console.log(`App.js -> updateSnippetGroups: Got ${apiSnippetGroups.length} snippet groups via API:`, JSON.stringify(apiSnippetGroups.map(x => x.id)));
 
-    // set snippet groups data for widget
-    let snippetGroups = [];
-    snippetGroups = snippetGroups.concat(storageSnippetGroups).concat(apiSnippetGroups);
-    await widget.saveData('snippetGroups', snippetGroups);
-    updateWidgets();
+      // set snippet groups data for widget
+      let snippetGroups = [];
+      snippetGroups = snippetGroups.concat(storageSnippetGroups).concat(apiSnippetGroups);
+      await widget.saveData('snippetGroups', snippetGroups);
+      updateWidgets();
+    } catch (error) {
+      console.error('App.js -> updateSnippetGroups: updating snippet groups failed with error: ' + error.message);
+      banner.showErrorMessage(readableErrorMessages.UPDATE_WIDGET_ERROR);
+    }
   };
 
   const loadThemeFromStorage = async () => {
