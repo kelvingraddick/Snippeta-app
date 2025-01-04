@@ -307,7 +307,7 @@ export default function App() {
 
       const lastReviewPromptDate = await storage.getLastReviewPromptDate();
       const currentDate = new Date();
-      const REVIEW_PROMPT_MILESTONE_NUMBERS = [5, 25, 50];
+      const REVIEW_PROMPT_MILESTONE_NUMBERS = [6, 26, 51];
       const REVIEW_PROMPT_INTERVAL_MILLISECONDS = 604800000; // 7 days
       
       // decide whether to show review prompt

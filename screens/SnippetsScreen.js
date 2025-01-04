@@ -86,7 +86,7 @@ const SnippetsScreen = ({ route, navigation }) => {
         for (const tutorialSnippet of tutorialSnippets) {
           await storage.saveSnippet(tutorialSnippet);
         }
-        await getSnippets(); return;
+        await getSnippets(); onSnippetChanged(); return;
       }
 
       // set snippets for display
