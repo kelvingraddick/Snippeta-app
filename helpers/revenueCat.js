@@ -50,6 +50,7 @@ const purchasePackage = async (offeringId, packageId, entitlementId) => {
     }
   } catch (error) {
     console.error(`RevenueCat -> purchasePackage: purchasing package failed with error: ` + error.message);
+    throw error;
   }
   return entitlement;
 };

@@ -10,6 +10,7 @@ import revenueCat from '../helpers/revenueCat';
 import { colors } from '../constants/colors';
 import { themes } from '../constants/themes';
 import { entitlementIds } from '../constants/entitlementIds';
+import { readableErrorMessages } from '../constants/readableErrorMessages';
 import SnippetaCloudView from '../components/SnippetaCloudView';
 import ActionButton from '../components/ActionButton';
 import SettingView from '../components/SettingView';
@@ -84,11 +85,7 @@ const SettingsScreen = ({ navigation }) => {
                   await previewTheme(themeId);
                   break;
                 case options['Buy']:
-                  const entitlement = await revenueCat.purchasePackage(themeId, themeId, themeId);
-                  if (entitlement) {
-                    await updateEntitlements(user);
-                    await displayTheme(themeId);
-                  }
+                  await buyTheme(themeId);
                   break;
                 case options['Subscribe to Snippeta Pro']:
                   await presentPaywallIfNeeded().then(async (paywallResult) => {
@@ -112,6 +109,21 @@ const SettingsScreen = ({ navigation }) => {
       console.error('SettingsScreen.js -> onThemeTapped: ' + errorMessage);
       banner.showErrorMessage(errorMessage);
       setIsLoading(false);
+    }
+  };
+
+  const buyTheme = async (themeId) => {
+    let entitlement;
+    try {
+      entitlement = await revenueCat.purchasePackage(themeId, themeId, themeId);
+    } catch (error) {
+      console.error('SettingsScreen.js -> buyTheme: buying theme failed with error: ' + error.message);
+      banner.showErrorMessage(readableErrorMessages.PURCHASE_ERROR);
+    } finally {
+      if (entitlement) {
+        await updateEntitlements(user);
+        await displayTheme(themeId);
+      }
     }
   };
 
