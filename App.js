@@ -201,6 +201,7 @@ export default function App() {
       // try to get API snippet groups
       let apiSnippetGroups = [];
       let response = await api.getSnippetGroups(await storage.getAuthorizationToken());
+      if (!response?.ok) { throw new Error(`HTTP error with status: ${response?.status}`); }
       let responseJson = await response.json();
       apiSnippetGroups = responseJson.groups ?? [];
       apiSnippetGroups.forEach(x => { x.source = snippetSources.API; x.snippets.forEach(y => { y.source = snippetSources.API; }) });
