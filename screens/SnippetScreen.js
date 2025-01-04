@@ -163,7 +163,7 @@ const SnippetScreen = ({ route, navigation }) => {
           </View>
         </View>
         <View style={[styles.titleInputView, { backgroundColor: themer.getColor('textInput3.background') }]}>
-          <TextInput style={[styles.titleInput, { color: themer.getColor('textInput3.foreground') }]} placeholder={'Type or paste title here..'} placeholderTextColor={themer.getPlaceholderTextColor('textInput3.foreground')} multiline maxLength={50} onChangeText={onTitleChangeText}>{snippet.title}</TextInput>
+          <TextInput style={[styles.titleInput, { color: themer.getColor('textInput3.foreground') }]} placeholder={'Type or paste title here..'} placeholderTextColor={themer.getPlaceholderTextColor('textInput3.foreground')} multiline maxLength={50} autoFocus onChangeText={onTitleChangeText}>{snippet.title}</TextInput>
         </View>
         <View style={styles.contentInputView}>
           <TextInput style={[styles.contentInput, { color: themer.getColor('textArea1.foreground') }]} placeholder={'Type or paste content here..'} placeholderTextColor={themer.getPlaceholderTextColor('textArea1.foreground')} multiline scrollEnabled={false} maxLength={1000} onChangeText={onContentChangeText}>{snippet.content}</TextInput>
