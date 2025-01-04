@@ -17,6 +17,7 @@ const login = async function (appUserId) {
     console.log(`RevenueCat -> login: logged in RevenueCat with app user ID ${appUserId} / stored: ${await Purchases.getAppUserID()} / original: ${customerInfo?.originalAppUserId} `);
   } catch (error) {
     console.error('RevenueCat -> login: failed with error:', error.message);
+    throw error;
   }
 };
 

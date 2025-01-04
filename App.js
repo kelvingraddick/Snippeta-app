@@ -114,7 +114,7 @@ export default function App() {
         delete user.password;
         console.log(`App.js -> loginWithCredentials: Login successful with user ID ${user.id}`);
         await storage.saveCredentials(emailOrPhone, password);
-        await RevenueCat.login(user.id);
+        await loginToRevenueCat(user.id);
         await updateEntitlements(user);
         await updateSnippetGroups();
       } else {
@@ -125,6 +125,14 @@ export default function App() {
     }
     dispatch({ type: 'LOGGED_IN', payload: user ?? null });
     return responseJson;
+  };
+  
+  const loginToRevenueCat = async (userId) => {
+    try { await RevenueCat.login(userId); }
+    catch (error) { 
+      console.error('App.js -> loginToRevenueCat: RevenueCat login failed with error: ' + error.message);
+      banner.showErrorMessage(readableErrorMessages.SUBSCRIPTION_OR_PURCHASE_DATA);
+    }
   };
 
   const logout = async () => {
