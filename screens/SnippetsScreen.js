@@ -33,10 +33,10 @@ const SnippetsScreen = ({ route, navigation }) => {
 
   const tutorialSnippets = [
     { id: storageKeys.SNIPPET + 1, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Welcome to Snippeta!', content: 'Snippeta is the best way to copy, paste, and manage snippets of text! Copy text to your clipboard with a single tap; no highlighting or long-tapping!', color_id: colorIds.COLOR_1, time: new Date(), order_index: 0 },
-    { id: storageKeys.SNIPPET + 2, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'How to use', content: 'Tap the button above to create a new snippet. Or tap on this snippet to copy it to your clipboard for pasting later!', color_id: colorIds.COLOR_2, time: new Date(), order_index: 1 },
+    { id: storageKeys.SNIPPET + 2, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Getting started', content: 'Tap here to copy this snippet to your clipboard, or tap the "Add snippet" button above to create a new snippet!', color_id: colorIds.COLOR_2, time: new Date(), order_index: 1 },
     { id: storageKeys.SNIPPET + 3, type: snippetTypes.MULTIPLE, source: snippetSources.STORAGE, title: 'Organize by creating groups', content: 'Create a snippet group to organize and nest snippets. Tap here to try it out!', color_id: colorIds.COLOR_3, time: new Date(), order_index: 2 },
-    { id: storageKeys.SNIPPET + 4, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Go PRO!', content: 'Want more out of Snippeta? Take your account pro and get access to cloud backups, themes, creating sub-groups, and more!', color_id: colorIds.COLOR_4, time: new Date(), order_index: 3 },
-    { id: storageKeys.SNIPPET + 5, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Add snippets to a group', content: 'Add a new snippet to this group. Tap the "New snippet" button above to try it out!', color_id: colorIds.COLOR_3, time: new Date(), order_index: 0, parent_id: storageKeys.SNIPPET + 3 },
+    { id: storageKeys.SNIPPET + 4, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Go PRO to do more!', content: 'Get access to Cloud sync, creating sub-groups, pro themes, and more with a Snippeta Pro subscription!', color_id: colorIds.COLOR_4, time: new Date(), order_index: 3 },
+    { id: storageKeys.SNIPPET + 5, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Add snippets to this group', content: 'Tap the "Add snippet" button above to try it out!', color_id: colorIds.COLOR_3, time: new Date(), order_index: 0, parent_id: storageKeys.SNIPPET + 3 },
   ];
 
   useEffect(() => {
