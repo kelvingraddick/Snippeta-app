@@ -57,10 +57,15 @@ const purchasePackage = async (offeringId, packageId, entitlementId) => {
 
 const restorePurchases = async () => {
   let entitlements;
-  const customerInfo = await Purchases.restorePurchases();
-  if (customerInfo) {
-    entitlements = customerInfo.entitlements?.active;
-    console.log('RevenueCat -> restorePurchases: ' + (entitlements && Object.keys(entitlements).length > 0) ? `Restored active entitlements: ${JSON.stringify(Object.keys(entitlements))}` : 'No active entitlements restored');
+  try {
+    const customerInfo = await Purchases.restorePurchases();
+    if (customerInfo) {
+      entitlements = customerInfo.entitlements?.active;
+      console.log('RevenueCat -> restorePurchases: ' + (entitlements && Object.keys(entitlements).length > 0) ? `Restored active entitlements: ${JSON.stringify(Object.keys(entitlements))}` : 'No active entitlements restored');
+    }
+  } catch (error) {
+    console.error(`RevenueCat -> restorePurchases: restoring purchases failed with error: ` + error.message);
+    throw error;
   }
   return entitlements;
 };

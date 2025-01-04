@@ -226,9 +226,8 @@ const SettingsScreen = ({ navigation }) => {
         setIsLoading(false);
       });
     } catch (error) {
-      const errorMessage = 'There was an issue restoring purchases: ' + error.message;
-      console.error('SettingsScreen.js -> onRestorePurchasesTapped: ' + errorMessage);
-      banner.showErrorMessage(errorMessage);
+      console.error('SettingsScreen.js -> onRestorePurchasesTapped: restoring purchases failed with error: ' + error.message);
+      banner.showErrorMessage(readableErrorMessages.RESTORE_PURCHASES_ERROR);
       setIsLoading(false);
     }
   }
