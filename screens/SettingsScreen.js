@@ -69,7 +69,7 @@ const SettingsScreen = ({ navigation }) => {
         console.log(`SettingsScreen.js -> onThemeTapped: theme selected with ID ${themeId}`);
         triggerHapticFeedback();
         const theme = themes[themeId];
-        if (theme.isPro && !subscription && !entitlements[themeId]) {
+        if (theme.isPro && !subscription && !entitlements?.[themeId]) {
           setIsLoading(true);
           const options = { 'Preview': 0, 'Buy': 1, 'Subscribe to Snippeta Pro': 2, 'Cancel': 3 };
           showActionSheetWithOptions(
