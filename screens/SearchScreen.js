@@ -113,7 +113,7 @@ const SearchScreen = ({ route, navigation }) => {
           <View style={styles.placeholderIcon} />
         </View>
         <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput2.background') }]}>
-          <TextInput style={[styles.input, { color: themer.getColor('textInput2.foreground') }]} placeholder={'Search text..'} placeholderTextColor={themer.getColor('textInput2.foreground')} maxLength={50} autoCapitalize='none' autoFocus value={query} onChangeText={onQueryChangeText} />
+          <TextInput style={[styles.input, { color: themer.getColor('textInput2.foreground') }]} placeholder={'Search text..'} placeholderTextColor={themer.getPlaceholderTextColor('textInput2.foreground')} maxLength={50} autoCapitalize='none' autoFocus value={query} onChangeText={onQueryChangeText} />
         </View>
       </View>
       { (isLoading || isUserLoading) &&

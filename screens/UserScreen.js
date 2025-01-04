@@ -149,22 +149,22 @@ const UserScreen = ({ navigation }) => {
       >
         <View style={styles.inputsView}>
           <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background') }]}>
-            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={'Email address..'} placeholderTextColor={themer.getColor('textInput1.foreground')} maxLength={50} keyboardType='email-address' autoCapitalize='none' value={editedUser.email_address} onChangeText={onEmailAddressChangeText} />
+            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={'Email address..'} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={50} keyboardType='email-address' autoCapitalize='none' value={editedUser.email_address} onChangeText={onEmailAddressChangeText} />
           </View>
           <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background') }]}>
-            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={'Phone number..'} placeholderTextColor={themer.getColor('textInput1.foreground')} maxLength={50} keyboardType='phone-pad' autoCapitalize='none' value={editedUser.phone_number} onChangeText={onPhoneNumberChangeText} />
+            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={'Phone number..'} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={50} keyboardType='phone-pad' autoCapitalize='none' value={editedUser.phone_number} onChangeText={onPhoneNumberChangeText} />
           </View>
           <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background') }]}>
-            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={'First name..'} placeholderTextColor={themer.getColor('textInput1.foreground')} maxLength={50} keyboardType='default' autoCapitalize='words' value={editedUser.first_name} onChangeText={onFirstNameChangeText} />
+            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={'First name..'} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={50} keyboardType='default' autoCapitalize='words' value={editedUser.first_name} onChangeText={onFirstNameChangeText} />
           </View>
           <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background') }]}>
-            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={'Last name..'} placeholderTextColor={themer.getColor('textInput1.foreground')} maxLength={50} keyboardType='default' autoCapitalize='words' value={editedUser.last_name} onChangeText={onLastNameChangeText} />
+            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={'Last name..'} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={50} keyboardType='default' autoCapitalize='words' value={editedUser.last_name} onChangeText={onLastNameChangeText} />
           </View>
           <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background') }]}>
-            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={'Password..'} placeholderTextColor={themer.getColor('textInput1.foreground')} maxLength={100} secureTextEntry={true} value={editedUser.password} onChangeText={onPasswordChangeText} />
+            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={'Password..'} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={100} secureTextEntry={true} value={editedUser.password} onChangeText={onPasswordChangeText} />
           </View>
           <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background') }]}>
-            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={'Password confirm..'} placeholderTextColor={themer.getColor('textInput1.foreground')} maxLength={100} secureTextEntry={true} value={editedUser.password_confirm} onChangeText={onPasswordConfirmChangeText} />
+            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={'Password confirm..'} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={100} secureTextEntry={true} value={editedUser.password_confirm} onChangeText={onPasswordConfirmChangeText} />
           </View>
         </View>
         <ActionButton iconImageSource={require('../assets/images/checkmark.png')} text={'Save'} foregroundColor={themer.getColor('button2.foreground')} backgroundColor={themer.getColor('button2.background')} disabled={isLoading} onTapped={() => onSaveTapped()} />

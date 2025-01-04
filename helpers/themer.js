@@ -16,6 +16,10 @@ class Themer {
     return themes[this.themeId]?.colors?.[key] ?? themes[this.DEFAULT_THEME_ID]?.colors?.[key] ?? colors.black;
   }
 
+  getPlaceholderTextColor(key) {
+    return this.getColor(key) + 'BF'; // 75% opacity
+  }
+
   getColors() {
     return themes[this.themeId]?.colors ?? themes[this.DEFAULT_THEME_ID]?.colors ?? {};
   }
