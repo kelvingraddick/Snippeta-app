@@ -21,15 +21,10 @@ const login = async function (appUserId) {
 };
 
 const getEntitlements = async () => {
-  let entitlements;
-  try {
-    const customerInfo = await Purchases.getCustomerInfo();
-    //console.log('RevenueCat -> getEntitlements: customer info:', customerInfo);
-    entitlements = customerInfo?.entitlements?.active;
-    console.log('RevenueCat -> getEntitlements: ' + (entitlements && Object.keys(entitlements).length > 0) ? `Found active entitlements: ${JSON.stringify(Object.keys(entitlements))}` : 'Found no active entitlements');
-  } catch (error) {
-    console.error('RevenueCat -> getEntitlements: loading entitlements failed with error: ' + error.message);
-  }
+  const customerInfo = await Purchases.getCustomerInfo();
+  //console.log('RevenueCat -> getEntitlements: customer info:', customerInfo);
+  const entitlements = customerInfo?.entitlements?.active;
+  console.log('RevenueCat -> getEntitlements: ' + (entitlements && Object.keys(entitlements).length > 0) ? `Found active entitlements: ${JSON.stringify(Object.keys(entitlements))}` : 'Found no active entitlements');
   return entitlements;
 };
 

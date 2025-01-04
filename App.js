@@ -15,6 +15,7 @@ import { snippetSources } from './constants/snippetSources';
 import { colorIds } from './constants/colorIds';
 import { entitlementIds } from './constants/entitlementIds';
 import { themes } from './constants/themes';
+import { readableErrorMessages } from './constants/readableErrorMessages';
 import Themer from './helpers/themer';
 import api from './helpers/api';
 import storage from './helpers/storage';
@@ -252,12 +253,18 @@ export default function App() {
   }
 
   const updateEntitlements = async (user) => {
+    // 1. fetch entitlements from RevenueCat
+    let entitlements;
     try {  
-      // 1. fetch entitlements from RevenueCat
-      const entitlements = await RevenueCat.getEntitlements();
+      entitlements = await RevenueCat.getEntitlements();
       dispatch({ type: 'UPDATE_ENTITLEMENTS', payload: entitlements });
-      // 2. determine subscription status based on entitlements and current user
-      const inAppSubscription = { type: 'IN-APP', data: entitlements[entitlementIds.SNIPPETA_PRO], };
+    } catch (error) {
+      console.error('App.js -> updateEntitlements: syncing entitlements failed with error: ' + error.message);
+      banner.showErrorMessage(readableErrorMessages.SUBSCRIPTION_OR_PURCHASE_DATA);
+    }
+    // 2. determine subscription status based on entitlements and current user
+    try {  
+      const inAppSubscription = { type: 'IN-APP', data: entitlements?.[entitlementIds.SNIPPETA_PRO], };
       const snippetaCloudSubscription = { type: 'SNIPPETA-CLOUD', data: (user?.type == 1 ? {} : null), };
       console.log('App.js -> updateEntitlements: ' + (snippetaCloudSubscription?.data ? 'Found' : 'Did not find') + ' active Snippeta Cloud subscription');
       const activeSubscription = inAppSubscription.data ? inAppSubscription : (snippetaCloudSubscription.data ? snippetaCloudSubscription : null);
@@ -265,6 +272,7 @@ export default function App() {
       dispatch({ type: 'UPDATE_SUBSCRIPTION', payload: activeSubscription });
     } catch (error) {
       console.error('App.js -> updateEntitlements: syncing entitlements failed with error: ' + error.message);
+      banner.showErrorMessage(readableErrorMessages.SUBSCRIPTION_OR_PURCHASE_DATA);
     }
   };
 
