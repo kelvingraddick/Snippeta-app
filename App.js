@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer } from 'react';
-import { Linking, NativeModules, StyleSheet } from 'react-native';
+import { Linking, NativeModules } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { navigationRef } from './RootNavigation';
 import navigation from './RootNavigation';
