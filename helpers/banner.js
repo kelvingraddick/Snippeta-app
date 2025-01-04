@@ -2,10 +2,11 @@ import { Image, StyleSheet } from 'react-native';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import { colors } from '../constants/colors';
 
-const showSuccessMessage = async (message, description) => {
+const showSuccessMessage = async (message, description, duration) => {
   showMessage({
     message: message,
     description: description,
+    duration: duration ?? 5000,
     icon: { icon: () => <Image source={require('../assets/images/checkmark.png')} style={styles.messageIcon} tintColor={colors.lightGreen} />, position: 'right' },
     backgroundColor: colors.white,
     titleStyle: { fontWeight: 'bold', color: colors.darkGray, },
