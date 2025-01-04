@@ -131,7 +131,7 @@ export default function App() {
     try { await RevenueCat.login(userId); }
     catch (error) { 
       console.error('App.js -> loginToRevenueCat: RevenueCat login failed with error: ' + error.message);
-      banner.showErrorMessage(readableErrorMessages.SUBSCRIPTION_OR_PURCHASE_DATA);
+      banner.showErrorMessage(readableErrorMessages.GET_PURCHASE_DATA_ERROR);
     }
   };
 
@@ -274,7 +274,7 @@ export default function App() {
       dispatch({ type: 'UPDATE_ENTITLEMENTS', payload: entitlements });
     } catch (error) {
       console.error('App.js -> updateEntitlements: syncing entitlements failed with error: ' + error.message);
-      banner.showErrorMessage(readableErrorMessages.SUBSCRIPTION_OR_PURCHASE_DATA);
+      banner.showErrorMessage(readableErrorMessages.GET_PURCHASE_DATA_ERROR);
     }
     // 2. determine subscription status based on entitlements and current user
     try {  
@@ -286,7 +286,7 @@ export default function App() {
       dispatch({ type: 'UPDATE_SUBSCRIPTION', payload: activeSubscription });
     } catch (error) {
       console.error('App.js -> updateEntitlements: syncing entitlements failed with error: ' + error.message);
-      banner.showErrorMessage(readableErrorMessages.SUBSCRIPTION_OR_PURCHASE_DATA);
+      banner.showErrorMessage(readableErrorMessages.GET_PURCHASE_DATA_ERROR);
     }
   };
 
