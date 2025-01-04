@@ -49,12 +49,14 @@ const SnippetScreen = ({ route, navigation }) => {
       // if source is storage, save in storage
       if (snippet.source == snippetSources.STORAGE) {
         const id = snippet.id ?? (storageKeys.SNIPPET + generateRandomString(10));
-        await storage.saveSnippet({
+        const snippetToSave = {
           ...snippet,
           id: id,
           time: snippet.time ?? new Date(),
           order_index: snippet.order_index ?? 0,
-        });
+        };
+        if (snippetToSave.order_index == 0) { await storage.moveSnippet(snippetToSave); } 
+        else { await storage.saveSnippet(snippetToSave); }
         console.log('SnippetScreen.js -> onSaveTapped: Saved snippet to storage with ID ' + id);
       }
       // if source is api, save via api
