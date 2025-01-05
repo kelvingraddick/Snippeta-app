@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer, useRef } from 'react';
 import { Linking, NativeModules } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { navigationRef } from './RootNavigation';
@@ -70,6 +70,7 @@ const { WidgetNativeModule } = NativeModules;
 
 export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const themePreviewStatusIntervalId = useRef();
 
   useEffect(() => {
     console.log('\n\n\nApp.js -> useEffect: STARTING APP');
@@ -237,34 +238,43 @@ export default function App() {
     }
   }
 
-  const previewTheme = async (themeId) => {
+  const startThemePreview = async (themeId) => {
     try {
-      if (state.isThemePreview) {
-        console.log(`App.js -> previewTheme: can't preview theme because already previewing for ID ${state.themer.themeId}`);
-      } else {
-        console.log(`App.js -> previewTheme: preview theme set with ID ${themeId}`);
-        dispatch({ type: 'PREVIEWING_THEME', payload: true });
-        let intervalId;
-        await updateThemer(themeId);
-        let seconds = 60;
-        const getStatusMessage = (seconds) => `Previewing the '${themes[themeId]?.name}' theme for ${seconds} seconds.`;
-        banner.showStatusMessage(getStatusMessage(seconds), null, true);
-        intervalId = setInterval(async () => {
-          if (seconds > 1) {
-            seconds--;
-            banner.showStatusMessage(getStatusMessage(seconds), null, false);
-          } else {
-            dispatch({ type: 'PREVIEWING_THEME', payload: false });
-            clearInterval(intervalId);
-            banner.hideMessage();
-            await loadThemeFromStorage();
-          }
-        }, 1000);
-      }
+      if (state.isThemePreview || themePreviewStatusIntervalId.current) { await endThemePreview(); }
+      console.log(`App.js -> startThemePreview: request to preview theme with ID ${themeId}`);
+      dispatch({ type: 'PREVIEWING_THEME', payload: true });
+      await updateThemer(themeId);
+      let seconds = 60;
+      const getStatusMessage = (seconds) => `Previewing the '${themes[themeId]?.name}' theme for ${seconds} seconds.`;
+      banner.showStatusMessage(getStatusMessage(seconds), null, true);
+      themePreviewStatusIntervalId.current = setInterval(async () => {
+        if (seconds > 1) {
+          seconds--;
+          banner.showStatusMessage(getStatusMessage(seconds), null, false);
+        } else {
+          await endThemePreview();
+        }
+      }, 1000);
     } catch (error) {
-      console.error('App.js -> previewTheme: previewing theme failed with error: ' + error.message);
+      console.error('App.js -> startThemePreview: previewing theme failed with error: ' + error.message);
+      banner.showErrorMessage(readableErrorMessages.THEME_PREVIEW_ERROR);
     }
   }
+
+  const endThemePreview = async () => {
+    try {
+      if (state.isThemePreview || themePreviewStatusIntervalId.current) { 
+        console.log('App.js -> endThemePreview: request to end current theme preview');
+        dispatch({ type: 'PREVIEWING_THEME', payload: false });
+        clearInterval(themePreviewStatusIntervalId.current);
+        themePreviewStatusIntervalId.current = undefined;
+        banner.hideMessage();
+        await loadThemeFromStorage();
+      }
+    } catch (error) {
+      console.error('App.js -> endThemePreview: ending theme preview failed with error: ' + error.message);
+    }
+  };
 
   const updateEntitlements = async (user) => {
     // 1. fetch entitlements from RevenueCat
@@ -344,7 +354,7 @@ export default function App() {
   };
 
   return (
-    <ApplicationContext.Provider value={{...state, onSnippetChanged, updateThemer, previewTheme, loginWithCredentials, logout, updateEntitlements}}>
+    <ApplicationContext.Provider value={{...state, onSnippetChanged, updateThemer, startThemePreview, endThemePreview, loginWithCredentials, logout, updateEntitlements}}>
       <ActionSheetProvider>
         <NavigationContainer ref={navigationRef}>
           <Stack.Navigator initialRouteName="Snippets">

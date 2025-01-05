@@ -17,7 +17,7 @@ import SettingView from '../components/SettingView';
 
 const SettingsScreen = ({ navigation }) => {
   
-  const { themer, updateThemer, previewTheme, isThemePreview, user, isUserLoading, logout, entitlements, updateEntitlements, subscription, } = useContext(ApplicationContext);
+  const { themer, updateThemer, startThemePreview, endThemePreview, isThemePreview, user, isUserLoading, logout, entitlements, updateEntitlements, subscription, } = useContext(ApplicationContext);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -66,43 +66,40 @@ const SettingsScreen = ({ navigation }) => {
 
   const onThemeTapped = async (themeId) => {
     try {
-      if (!isThemePreview) {
-        console.log(`SettingsScreen.js -> onThemeTapped: theme selected with ID ${themeId}`);
-        triggerHapticFeedback();
-        const theme = themes[themeId];
-        if (theme.isPro && !subscription && !entitlements?.[themeId]) {
-          setIsLoading(true);
-          const options = { 'Preview': 0, 'Buy': 1, 'Subscribe to Snippeta Pro': 2, 'Cancel': 3 };
-          showActionSheetWithOptions(
-            {
-              title: 'This pro theme must be unlocked:\n• You can preview it, buy it now, or subscribe to Snippeta Pro to unlock all pro themes!',
-              options: Object.keys(options),
-              cancelButtonIndex: options.Cancel,
-            },
-            async (selectedIndex) => {
-              switch (selectedIndex) {
-                case options['Preview']:
-                  await previewTheme(themeId);
-                  break;
-                case options['Buy']:
-                  await buyTheme(themeId);
-                  break;
-                case options['Subscribe to Snippeta Pro']:
-                  await presentPaywallIfNeeded().then(async (paywallResult) => {
-                    if (paywallResult == PAYWALL_RESULT.PURCHASED || paywallResult == PAYWALL_RESULT.RESTORED) {
-                      await displayTheme(themeId);
-                    }
-                  });
-                  break;
-              }
-              setIsLoading(false);
+      console.log(`SettingsScreen.js -> onThemeTapped: theme selected with ID ${themeId}`);
+      triggerHapticFeedback();
+      if (isThemePreview) { await endThemePreview(); }
+      const theme = themes[themeId];
+      if (theme.isPro && !subscription && !entitlements?.[themeId]) {
+        setIsLoading(true);
+        const options = { 'Preview': 0, 'Buy': 1, 'Subscribe to Snippeta Pro': 2, 'Cancel': 3 };
+        showActionSheetWithOptions(
+          {
+            title: 'This pro theme must be unlocked:\n• You can preview it, buy it now, or subscribe to Snippeta Pro to unlock all pro themes!',
+            options: Object.keys(options),
+            cancelButtonIndex: options.Cancel,
+          },
+          async (selectedIndex) => {
+            switch (selectedIndex) {
+              case options['Preview']:
+                await startThemePreview(themeId);
+                break;
+              case options['Buy']:
+                await buyTheme(themeId);
+                break;
+              case options['Subscribe to Snippeta Pro']:
+                await presentPaywallIfNeeded().then(async (paywallResult) => {
+                  if (paywallResult == PAYWALL_RESULT.PURCHASED || paywallResult == PAYWALL_RESULT.RESTORED) {
+                    await displayTheme(themeId);
+                  }
+                });
+                break;
             }
-          );
-        } else {
-          await displayTheme(themeId);
-        }
+            setIsLoading(false);
+          }
+        );
       } else {
-        console.log(`SettingsScreen.js -> onThemeTapped: cannot select theme because theme '${themer.getName()}' is being previewed`);
+        await displayTheme(themeId);
       }
     } catch (error) {
       const errorMessage = 'Theme selection failed with error: ' + error.message;
