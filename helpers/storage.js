@@ -3,6 +3,7 @@ import validator from './validator';
 import { colorIds } from '../constants/colorIds';
 import { storageKeys } from '../constants/storageKeys';
 import { snippetTypes } from '../constants/snippetTypes';
+import { moveSnippetOptions } from '../constants/moveSnippetOptions';
 
 const getCredentials = async () => {
   const item = await AsyncStorage.getItem(storageKeys.CREDENTIALS);
@@ -112,13 +113,23 @@ const deleteSnippet = async (id) => {
   }
 };
 
-const moveSnippet = async (snippet) => {
-  console.log('storage.js -> moveSnippet: Moving snippet with ID', snippet?.id);
+const moveSnippet = async (snippet, option) => {
+  console.log(`storage.js -> moveSnippet: request to move snippet with option ${option} and ID ${snippet?.id}`);
+  switch (option) {
+    case moveSnippetOptions.TO_TOP: await _moveSnippetToTop(snippet); break;
+    case moveSnippetOptions.UP: await _moveSnippetUp(snippet); break;
+    case moveSnippetOptions.DOWN: await _moveSnippetDown(snippet); break;
+    case moveSnippetOptions.TO_BOTTOM: default: await _moveSnippetToBottom(snippet); break;
+  };
+};
+
+const _moveSnippetToTop = async (snippet) => {
+  console.log('storage.js -> _moveSnippetToTop: Moving snippet to top with ID', snippet?.id);
   if (validator.isValidSnippet(snippet)) {
     let orderIndex = 0;
     snippet.order_index = orderIndex++;
     await saveSnippet(snippet);
-    const siblingSnippets = (await getSnippets(snippet?.parent_id)).filter(x => x.id != snippet.id);
+    const siblingSnippets = (await getSnippets(snippet.parent_id)).filter(x => x.id != snippet.id);
     siblingSnippets.sort((a, b) => a.order_index - b.order_index);
     for (const siblingSnippet of siblingSnippets) {
       siblingSnippet.order_index = orderIndex++;
@@ -126,6 +137,53 @@ const moveSnippet = async (snippet) => {
     }
   }
 };
+
+const _moveSnippetUp = async (snippet) => {
+  console.log('storage.js -> _moveSnippetUp: Moving snippet up with ID', snippet?.id);
+  if (validator.isValidSnippet(snippet)) {
+    const snippetAndSiblingSnippets = await getSnippets(snippet.parent_id);
+    snippetAndSiblingSnippets.sort((a, b) => a.order_index - b.order_index);
+    const snippetIndex = snippetAndSiblingSnippets.findIndex(x => x.id === snippet.id);
+    if (snippetIndex <= 0) return;
+    const snippetAbove = snippetAndSiblingSnippets[snippetIndex - 1];
+    const snippetAboveOrderIndex = snippetAbove.order_index;
+    snippetAbove.order_index = snippet.order_index;
+    snippet.order_index = snippetAboveOrderIndex;
+    await saveSnippet(snippetAbove);
+    await saveSnippet(snippet);
+  }
+};
+
+const _moveSnippetDown = async (snippet) => {
+  console.log('storage.js -> _moveSnippetDown: Moving snippet down with ID', snippet?.id);
+  if (validator.isValidSnippet(snippet)) {
+    const snippetAndSiblingSnippets = await getSnippets(snippet.parent_id);
+    snippetAndSiblingSnippets.sort((a, b) => a.order_index - b.order_index);
+    const snippetIndex = snippetAndSiblingSnippets.findIndex(x => x.id === snippet.id);
+    if (snippetIndex === -1 || snippetIndex === snippetAndSiblingSnippets.length - 1) return;
+    const snippetBelow = snippetAndSiblingSnippets[snippetIndex + 1];
+    const snippetBelowOrderIndex = snippetBelow.order_index;
+    snippetBelow.order_index = snippet.order_index;
+    snippet.order_index = snippetBelowOrderIndex;
+    await saveSnippet(snippetBelow);
+    await saveSnippet(snippet);
+  }
+};
+
+const _moveSnippetToBottom = async (snippet) => {
+  console.log('storage.js -> _moveSnippetToBottom: Moving snippet to bottom with ID', snippet?.id);
+  if (validator.isValidSnippet(snippet)) {
+    const siblingSnippets = (await getSnippets(snippet.parent_id)).filter(x => x.id != snippet.id);
+    siblingSnippets.sort((a, b) => a.order_index - b.order_index);
+    let orderIndex = 0;
+    for (const siblingSnippet of siblingSnippets) {
+      siblingSnippet.order_index = orderIndex++;
+      await saveSnippet(siblingSnippet);
+    }
+    snippet.order_index = orderIndex;
+    await saveSnippet(snippet);
+  }
+}
 
 const getThemeId = async () => {
   return await AsyncStorage.getItem(storageKeys.THEME_ID);

@@ -10,6 +10,7 @@ import api from '../helpers/api';
 import banner from '../helpers/banner';
 import { snippetSources } from '../constants/snippetSources';
 import { errorCodeMessages } from '../constants/errorCodeMessages';
+import { moveSnippetOptions } from '../constants/moveSnippetOptions';
 import { colorIds } from '../constants/colorIds';
 import ColorButton from '../components/ColorButton';
 
@@ -55,7 +56,7 @@ const SnippetScreen = ({ route, navigation }) => {
           time: snippet.time ?? new Date(),
           order_index: snippet.order_index ?? 0,
         };
-        if (snippetToSave.order_index == 0) { await storage.moveSnippet(snippetToSave); } 
+        if (snippetToSave.order_index == 0) { await storage.moveSnippet(snippetToSave, moveSnippetOptions.TO_BOTTOM); } 
         else { await storage.saveSnippet(snippetToSave); }
         console.log('SnippetScreen.js -> onSaveTapped: Saved snippet to storage with ID ' + id);
       }

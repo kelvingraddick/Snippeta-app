@@ -129,8 +129,8 @@ const deleteSnippet = async (id, authorizationToken) => {
   });
 };
 
-const moveSnippet = async (snippet, authorizationToken) => {
-  console.log(`api.js -> moveSnippet: Moving snippet with ID ${snippet?.id}.`);
+const moveSnippet = async (snippet, option, authorizationToken) => {
+  console.log(`api.js -> moveSnippet: Moving snippet with option ${option} and ID ${snippet?.id}.`);
   if (validator.isValidSnippet(snippet)) {
     return await fetch('http://www.snippeta.com/api/snippet/move.php', {
       method: 'POST',
@@ -138,7 +138,7 @@ const moveSnippet = async (snippet, authorizationToken) => {
         'Authorization': `Basic ${authorizationToken}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ id: snippet?.id }),
+      body: JSON.stringify({ id: snippet?.id, option }),
     });
   }
   return null;

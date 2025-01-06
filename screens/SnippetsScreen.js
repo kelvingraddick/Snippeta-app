@@ -10,6 +10,7 @@ import { snippetSources } from '../constants/snippetSources';
 import { storageKeys } from '../constants/storageKeys';
 import { colors } from '../constants/colors';
 import { colorIds } from '../constants/colorIds';
+import { moveSnippetOptions } from '../constants/moveSnippetOptions';
 import api from '../helpers/api';
 import storage from '../helpers/storage';
 import banner from '../helpers/banner';
@@ -38,6 +39,12 @@ const SnippetsScreen = ({ route, navigation }) => {
     { id: storageKeys.SNIPPET + 4, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Go PRO to do more!', content: 'Get access to Cloud sync, creating sub-groups, pro themes, and more with a Snippeta Pro subscription!', color_id: colorIds.COLOR_4, time: new Date(), order_index: 3 },
     { id: storageKeys.SNIPPET + 5, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Add snippets to this group', content: 'Tap the "Add snippet" button above to try it out!', color_id: colorIds.COLOR_3, time: new Date(), order_index: 0, parent_id: storageKeys.SNIPPET + 3 },
   ];
+
+  const moveSnippetOptionNames = {};
+  moveSnippetOptionNames[moveSnippetOptions.TO_TOP] = 'Move to top ⎴';
+  moveSnippetOptionNames[moveSnippetOptions.UP] = 'Move up ↑';
+  moveSnippetOptionNames[moveSnippetOptions.DOWN] = 'Move down ↓';
+  moveSnippetOptionNames[moveSnippetOptions.TO_BOTTOM] = 'Move to bottom ⎵';
 
   useEffect(() => {
     if (!isUserLoading) {
@@ -147,17 +154,17 @@ const SnippetsScreen = ({ route, navigation }) => {
     );
   };
 
-  const moveSnippet = async (snippet) => {
+  const moveSnippet = async (snippet, option) => {
     try {
       setIsLoading(true);
       // if source is storage, move in storage
       if (snippet.source == snippetSources.STORAGE) {
-        await storage.moveSnippet(snippet);
-        console.log('SnippetScreen.js -> moveSnippet: Moved snippet in storage with ID ' + snippet.id);
+        await storage.moveSnippet(snippet, option);
+        console.log(`SnippetScreen.js -> moveSnippet: Moved snippet in storage with option ${option} and ID ${snippet.id}`);
       }
       // if source is API, move via API
       else if (snippet.source == snippetSources.API && user) {
-        const response = await api.moveSnippet(snippet, await storage.getAuthorizationToken());
+        const response = await api.moveSnippet(snippet, option, await storage.getAuthorizationToken());
         const responseJson = await response.json();
         if (responseJson && responseJson.success) {
           console.log('SnippetScreen.js -> moveSnippet: Moved snippet via API with ID ' + snippet.id);
@@ -239,7 +246,10 @@ const SnippetsScreen = ({ route, navigation }) => {
   };
 
   const onSnippetMenuTapped = (snippet) => {
-    const options = { 'Edit': 0, 'Move to top': 1, 'Delete': 2, 'Cancel': 3 };
+    const options = {}; let optionsIndex = 0;
+    options.Edit = optionsIndex++;
+    Object.values(moveSnippetOptions).forEach(moveSnippetOptionValue => options[moveSnippetOptionNames[moveSnippetOptionValue]] = optionsIndex++);
+    options.Delete = optionsIndex++; options.Cancel = optionsIndex++;
     showActionSheetWithOptions(
       {
         options: Object.keys(options),
@@ -249,13 +259,12 @@ const SnippetsScreen = ({ route, navigation }) => {
       async (selectedIndex) => {
         switch (selectedIndex) {
           case options.Edit:
-            navigation.navigate('Snippet', { snippet, callbacks: callbacks.concat(getSnippets) });
-            break;
-          case options['Move to top']:
-            await moveSnippet(snippet);
-            break;
+            navigation.navigate('Snippet', { snippet, callbacks: callbacks.concat(getSnippets) }); break;
           case options.Delete:
-            await deleteSnippet(snippet);
+            await deleteSnippet(snippet); break;
+          default:
+            const moveSnippetOptionValue = Object.values(moveSnippetOptions).find((moveSnippetOptionValue) => options[moveSnippetOptionNames[moveSnippetOptionValue]] === selectedIndex);
+            if (Object.values(moveSnippetOptions).includes(moveSnippetOptionValue)) { await moveSnippet(snippet, moveSnippetOptionValue); }
             break;
         }
       }
