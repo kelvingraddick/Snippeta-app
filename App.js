@@ -82,9 +82,8 @@ export default function App() {
     console.log('\n\n\nApp.js -> useEffect: STARTING APP');
 
     RevenueCat.configure()
-      .then(() => loadAppearanceFromStorage()
-      .then(() => loadThemeFromStorage()
-      .then(() => loginWithStorage())));
+      .then(() => loadThemeAppearanceFromStorage()
+      .then(() => loginWithStorage()));
 
     Linking.getInitialURL().then((url) => { if (url) { handleDeepLink({ url }); }}); // handle deep link from app launch
     const urlEventBinding = Linking.addEventListener('url', handleDeepLink);  // handle deep link while app running
@@ -227,25 +226,12 @@ export default function App() {
     }
   };
 
-  const loadAppearanceFromStorage = async () => {
-    console.log('App.js -> loadAppearanceFromStorage: about to load appearance mode from storage and set in app..');
-    const appearanceMode = await storage.getAppearanceMode() ?? appearanceModes.SYSTEM;
-    await updateAppearanceMode(appearanceMode);
-  };
-
-  const updateAppearanceMode = async (appearanceMode) => {
-    try {
-      dispatch({ type: 'UPDATE_APPEARANCE_MODE', payload: appearanceMode });
-      console.log(`App.js -> updateAppearanceMode: updated appearance mode to '${appearanceMode}'`);
-    } catch (error) {
-      console.error('App.js -> updateAppearanceMode: updating appearance mode failed with error: ' + error.message);
-    }
-  }
-
-  const loadThemeFromStorage = async () => {
-    console.log('App.js -> loadThemeFromStorage: about to load theme Id from storage and set in app..');
+  const loadThemeAppearanceFromStorage = async () => {
     const themeId = await storage.getThemeId();
-    await updateThemer(themeId, state.appearanceMode);
+    const appearanceMode = await storage.getAppearanceMode() ?? appearanceModes.SYSTEM;
+    console.log(`App.js -> loadThemeAppearanceFromStorage: found theme Id '${themeId}' and appearance mode '${appearanceMode}' in storage and about to set them in app..`);
+    await updateThemer(themeId, appearanceMode);
+    await updateAppearanceMode(appearanceMode);
   };
 
   const updateThemer = async (themeId, appearanceMode) => {
@@ -258,6 +244,15 @@ export default function App() {
       dispatch({ type: 'UPDATE_THEMER', payload: themer });
     } catch (error) {
       console.error('App.js -> updateThemer: updating themer failed with error: ' + error.message);
+    }
+  }
+
+  const updateAppearanceMode = async (appearanceMode) => {
+    try {
+      dispatch({ type: 'UPDATE_APPEARANCE_MODE', payload: appearanceMode });
+      console.log(`App.js -> updateAppearanceMode: updated appearance mode to '${appearanceMode}'`);
+    } catch (error) {
+      console.error('App.js -> updateAppearanceMode: updating appearance mode failed with error: ' + error.message);
     }
   }
 
@@ -292,7 +287,7 @@ export default function App() {
         clearInterval(themePreviewStatusIntervalId.current);
         themePreviewStatusIntervalId.current = undefined;
         banner.hideMessage();
-        await loadThemeFromStorage();
+        await loadThemeAppearanceFromStorage();
       }
     } catch (error) {
       console.error('App.js -> endThemePreview: ending theme preview failed with error: ' + error.message);
