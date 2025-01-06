@@ -131,6 +131,7 @@ const SearchScreen = ({ route, navigation }) => {
           sections={snippetSections}
           keyExtractor={(item, index) => item + index}
           stickySectionHeadersEnabled={false}
+          keyboardShouldPersistTaps={'handled'}
           renderItem={({item}) => <SnippetView snippet={item} onSnippetTapped={onSnippetTapped} onSnippetMenuTapped={onSnippetMenuTapped} themer={themer} />}
           renderSectionHeader={({section: {title}}) => ( title &&
             <View style={styles.sectionHeaderView}>

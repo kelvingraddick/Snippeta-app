@@ -146,7 +146,7 @@ const SnippetScreen = ({ route, navigation }) => {
   }
 
   return (
-      <KeyboardAwareScrollView style={[styles.container, { backgroundColor: themer.getColor('background2') }]}>
+      <KeyboardAwareScrollView style={[styles.container, { backgroundColor: themer.getColor('background2') }]} keyboardShouldPersistTaps={'handled'}>
         <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background') } ]}>
           <View style={styles.titleView}>
             <Pressable onPress={onBackTapped} hitSlop={20}>

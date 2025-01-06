@@ -86,6 +86,7 @@ const RegisterScreen = ({ navigation }) => {
         contentContainerStyle={styles.formView}
         extraHeight={100}
         enableOnAndroid={true}
+        keyboardShouldPersistTaps={'handled'}
       >
         <View style={styles.inputsView}>
           <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background') }]}>
