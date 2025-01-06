@@ -185,6 +185,16 @@ const _moveSnippetToBottom = async (snippet) => {
   }
 }
 
+const getAppearanceMode = async () => {
+  return await AsyncStorage.getItem(storageKeys.APPEARANCE_MODE);
+};
+
+const saveAppearanceMode = async (appearanceMode) => {
+  console.log('storage.js -> saveAppearanceMode: Saving appearance with mode', appearanceMode);
+  await AsyncStorage.setItem(storageKeys.APPEARANCE_MODE, appearanceMode);
+  console.log('storage.js -> saveAppearanceMode: Saved appearance with mode', appearanceMode);
+};
+
 const getThemeId = async () => {
   return await AsyncStorage.getItem(storageKeys.THEME_ID);
 };
@@ -233,6 +243,8 @@ export default {
   saveSnippet,
   deleteSnippet,
   moveSnippet,
+  getAppearanceMode,
+  saveAppearanceMode,
   getThemeId,
   saveThemeId,
   getMilestoneNumber,

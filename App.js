@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer, useRef } from 'react';
-import { Linking, NativeModules } from 'react-native';
+import { Linking, NativeModules, useColorScheme } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { navigationRef } from './RootNavigation';
 import navigation from './RootNavigation';
@@ -16,6 +16,8 @@ import { colorIds } from './constants/colorIds';
 import { entitlementIds } from './constants/entitlementIds';
 import { themes } from './constants/themes';
 import { readableErrorMessages } from './constants/readableErrorMessages';
+import { appearanceModes } from './constants/appearanceModes';
+import { themeAppearances } from './constants/themeAppearances';
 import Themer from './helpers/themer';
 import api from './helpers/api';
 import storage from './helpers/storage';
@@ -33,11 +35,12 @@ import UserScreen from './screens/UserScreen';
 import WidgetScreen from './screens/WidgetScreen';
 
 const initialState = {
-  themer: new Themer('default-light'),
+  themer: new Themer(Object.keys(themes)[0], themeAppearances.LIGHT),
   user: undefined,
   isUserLoading: true,
   entitlements: undefined,
   subscription: undefined,
+  appearanceMode: undefined,
   isThemePreview: false,
 }
 
@@ -57,6 +60,8 @@ const reducer = (state, action) => {
       return { ...state, entitlements: action.payload };
     case 'UPDATE_SUBSCRIPTION':
       return { ...state, subscription: action.payload };
+    case 'UPDATE_APPEARANCE_MODE':
+      return { ...state, appearanceMode: action.payload };
     case 'PREVIEWING_THEME':
       return { ...state, isThemePreview: action.payload };
     default:
@@ -70,14 +75,16 @@ const { WidgetNativeModule } = NativeModules;
 
 export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const systemThemeAppearance = useColorScheme();
   const themePreviewStatusIntervalId = useRef();
 
   useEffect(() => {
     console.log('\n\n\nApp.js -> useEffect: STARTING APP');
 
     RevenueCat.configure()
-      .then(loadThemeFromStorage())
-      .then(loginWithStorage());
+      .then(() => loadAppearanceFromStorage()
+      .then(() => loadThemeFromStorage()
+      .then(() => loginWithStorage())));
 
     Linking.getInitialURL().then((url) => { if (url) { handleDeepLink({ url }); }}); // handle deep link from app launch
     const urlEventBinding = Linking.addEventListener('url', handleDeepLink);  // handle deep link while app running
@@ -220,16 +227,32 @@ export default function App() {
     }
   };
 
+  const loadAppearanceFromStorage = async () => {
+    console.log('App.js -> loadAppearanceFromStorage: about to load appearance mode from storage and set in app..');
+    const appearanceMode = await storage.getAppearanceMode() ?? appearanceModes.SYSTEM;
+    await updateAppearanceMode(appearanceMode);
+  };
+
+  const updateAppearanceMode = async (appearanceMode) => {
+    try {
+      dispatch({ type: 'UPDATE_APPEARANCE_MODE', payload: appearanceMode });
+      console.log(`App.js -> updateAppearanceMode: updated appearance mode to '${appearanceMode}'`);
+    } catch (error) {
+      console.error('App.js -> updateAppearanceMode: updating appearance mode failed with error: ' + error.message);
+    }
+  }
+
   const loadThemeFromStorage = async () => {
     console.log('App.js -> loadThemeFromStorage: about to load theme Id from storage and set in app..');
     const themeId = await storage.getThemeId();
-    await updateThemer(themeId);
+    await updateThemer(themeId, state.appearanceMode);
   };
 
-  const updateThemer = async (themeId) => {
+  const updateThemer = async (themeId, appearanceMode) => {
     try {
-      const themer = new Themer(themeId);
-      console.log(`App.js -> updateThemer: ${themeId ? `updated themer with id '${themeId}' and name '${themer.getName()}'` : `no theme found; using default '${themer.getName()}'`}`);
+      const themeAppearance = (!appearanceMode || appearanceMode == appearanceModes.SYSTEM) ? (systemThemeAppearance || themeAppearances.LIGHT) : appearanceMode;
+      const themer = new Themer(themeId, themeAppearance);
+      console.log(`App.js -> updateThemer: ${themer?.themeId ? `updated themer with id '${themer.themeId}', name '${themer.getName()}', and appearance '${themer.themeAppearance}'` : `no theme found; using default '${themer.getName()}'`}`);
       await widget.saveData('colors', themer.getColors());
       updateWidgets();
       dispatch({ type: 'UPDATE_THEMER', payload: themer });
@@ -243,7 +266,7 @@ export default function App() {
       if (state.isThemePreview || themePreviewStatusIntervalId.current) { await endThemePreview(); }
       console.log(`App.js -> startThemePreview: request to preview theme with ID ${themeId}`);
       dispatch({ type: 'PREVIEWING_THEME', payload: true });
-      await updateThemer(themeId);
+      await updateThemer(themeId, state.appearanceMode);
       let seconds = 60;
       const getStatusMessage = (seconds) => `Previewing the '${themes[themeId]?.name}' theme for ${seconds} seconds.`;
       banner.showStatusMessage(getStatusMessage(seconds), null, true);
@@ -354,7 +377,7 @@ export default function App() {
   };
 
   return (
-    <ApplicationContext.Provider value={{...state, onSnippetChanged, updateThemer, startThemePreview, endThemePreview, loginWithCredentials, logout, updateEntitlements}}>
+    <ApplicationContext.Provider value={{...state, onSnippetChanged, updateThemer, startThemePreview, endThemePreview, updateAppearanceMode, loginWithCredentials, logout, updateEntitlements}}>
       <ActionSheetProvider>
         <NavigationContainer ref={navigationRef}>
           <Stack.Navigator initialRouteName="Snippets">

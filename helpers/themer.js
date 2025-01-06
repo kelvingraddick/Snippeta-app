@@ -1,19 +1,29 @@
 import { themes } from "../constants/themes";
 import { colors } from "../constants/colors";
+import { themeAppearances } from "../constants/themeAppearances";
 
 class Themer {
   DEFAULT_THEME_ID = Object.keys(themes)[0];
 
-  constructor(themeId) {
+  constructor(themeId, themeAppearance) {
     this.themeId = themeId;
+    this.themeAppearance = themeAppearance;
+  }
+
+  getCurrentTheme() {
+    return themes[this.themeId]?.[this.themeAppearance] ?? themes[this.themeId]?.[themeAppearances.LIGHT] ?? themes[this.themeId]?.[themeAppearances.DARK] ?? themes[this.themeId];
+  }
+
+  getDefaultTheme() {
+    return themes[this.DEFAULT_THEME_ID]?.[this.themeAppearance] ?? themes[this.DEFAULT_THEME_ID]?.[themeAppearances.LIGHT] ?? themes[this.DEFAULT_THEME_ID]?.[themeAppearances.DARK] ?? themes[this.DEFAULT_THEME_ID];
   }
 
   getName() {
-    return themes[this.themeId]?.name ?? themes[this.DEFAULT_THEME_ID]?.name ?? 'Undefined';
+    return this.getCurrentTheme()?.name ?? this.getDefaultTheme()?.name ?? 'Undefined';
   }
 
   getColor(key) {
-    return themes[this.themeId]?.colors?.[key] ?? themes[this.DEFAULT_THEME_ID]?.colors?.[key] ?? colors.black;
+    return this.getCurrentTheme()?.colors?.[key] ?? this.getDefaultTheme()?.colors?.[key] ?? colors.black;
   }
 
   getPlaceholderTextColor(key) {
@@ -21,11 +31,11 @@ class Themer {
   }
 
   getColors() {
-    return themes[this.themeId]?.colors ?? themes[this.DEFAULT_THEME_ID]?.colors ?? {};
+    return this.getCurrentTheme()?.colors ?? this.getDefaultTheme()?.colors ?? {};
   }
 
   getOpacity(key) {
-    return themes[this.themeId]?.opacities?.[key] ?? themes[this.DEFAULT_THEME_ID]?.opacities?.[key] ?? 1;
+    return this.getCurrentTheme()?.opacities?.[key] ?? this.getDefaultTheme()?.opacities?.[key] ?? 1;
   }
 }
 

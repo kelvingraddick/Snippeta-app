@@ -11,13 +11,14 @@ import { colors } from '../constants/colors';
 import { themes } from '../constants/themes';
 import { entitlementIds } from '../constants/entitlementIds';
 import { readableErrorMessages } from '../constants/readableErrorMessages';
+import { appearanceModes } from '../constants/appearanceModes';
 import SnippetaCloudView from '../components/SnippetaCloudView';
 import ActionButton from '../components/ActionButton';
 import SettingView from '../components/SettingView';
 
 const SettingsScreen = ({ navigation }) => {
   
-  const { themer, updateThemer, startThemePreview, endThemePreview, isThemePreview, user, isUserLoading, logout, entitlements, updateEntitlements, subscription, } = useContext(ApplicationContext);
+  const { themer, updateThemer, startThemePreview, endThemePreview, isThemePreview, appearanceMode, updateAppearanceMode, user, isUserLoading, logout, entitlements, updateEntitlements, subscription, } = useContext(ApplicationContext);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -25,14 +26,17 @@ const SettingsScreen = ({ navigation }) => {
 
   const VERSION = '2.0';
 
-  const getSettings = (themer) => {
+  const getSettings = (themer, appearanceMode) => {
     let settings = [];
     try {
       let themeSettings = Object.keys(themes).map(themeId => {
         const theme = themes[themeId];
         const isSelected = themeId == themer.themeId || (!themer.themeId && theme == themes['default-light']);
         return { label: theme.name, isPro: theme.isPro, isSelectable: true, isSelected: isSelected, onTapped: () => { onThemeTapped(themeId); } };
-      });      
+      });     
+      let appearanceSettings = [
+        { label: `Light/dark mode: ${appearanceMode}`, onTapped: () => { onAppearanceModeTapped(); }},
+      ]; 
       let appExtensionsSettings = [
         { label: 'Home screen widget', onTapped: () => { navigation.navigate('Widget'); }},
         { label: 'System settings', onTapped: () => { Linking.openURL('app-settings:'); }},
@@ -53,6 +57,7 @@ const SettingsScreen = ({ navigation }) => {
         { label: 'KG.codes (developer)', onTapped: () => { Linking.openURL('https://www.kg.codes'); } },
       ];
       settings.push({ title: '🎨 Theme', data: themeSettings });
+      settings.push({ title: '🌗 Appearance', data: appearanceSettings });
       settings.push({ title: '📱 App extensions', data: appExtensionsSettings });   
       settings.push({ title: '🛒 In-app purchase', data: inAppPurchaseSettings }); 
       settings.push({ title: '📝 Get in touch', data: getInTouchSettings }); 
@@ -62,7 +67,7 @@ const SettingsScreen = ({ navigation }) => {
     }
     return settings;
   };
-  const settingSections = getSettings(themer);
+  const settingSections = getSettings(themer, appearanceMode);
 
   const onThemeTapped = async (themeId) => {
     try {
@@ -126,8 +131,28 @@ const SettingsScreen = ({ navigation }) => {
 
   const displayTheme = async (themeId) => {
     await storage.saveThemeId(themeId);
-    await updateThemer(themeId);
+    await updateThemer(themeId, appearanceMode);
   };
+
+  const onAppearanceModeTapped = async () => {
+    const options = {}; let optionsIndex = 0;
+    Object.values(appearanceModes).forEach(appearanceModeValue => options[getCapitalizedWord(appearanceModeValue)] = optionsIndex++);
+    options.Cancel = optionsIndex++;
+    showActionSheetWithOptions(
+      {
+        options: Object.keys(options),
+        cancelButtonIndex: options.Cancel,
+      },
+      async (selectedIndex) => {
+        const appearanceModeValue = Object.values(appearanceModes).find((appearanceModeValue) => options[getCapitalizedWord(appearanceModeValue)] === selectedIndex);
+        if (Object.values(appearanceModes).includes(appearanceModeValue)) { 
+          await storage.saveAppearanceMode(appearanceModeValue);
+          await updateAppearanceMode(appearanceModeValue);
+          await updateThemer(themer.themeId, appearanceModeValue);
+        }
+      }
+    );
+  }
 
   const onBackTapped = async () => {
     navigation.goBack();
@@ -232,6 +257,12 @@ const SettingsScreen = ({ navigation }) => {
   const triggerHapticFeedback = () => {
     ReactNativeHapticFeedback.trigger('impactMedium', options = { enableVibrateFallback: true, ignoreAndroidSystemSettings: true, });
   }
+
+  const getCapitalizedWord = (word) => {
+    return (word && word.length > 0) ?
+      word.charAt(0).toUpperCase() + word.slice(1) :
+      word;
+  };
 
   return (
     <View style={[styles.container, { backgroundColor: themer.getColor('background1') }]}>
