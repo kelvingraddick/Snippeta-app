@@ -55,12 +55,12 @@ export const colors = {
   ashGrayLighterShade1: '#D4DCD0',
   ashGrayLighterShade2: '#DFE5DC',
   // pastels
-  pastelsYellow: '#fbf8cc',
-  pastelsOrange: '#ffcfd2',
-  pastelsRed: '#f1c0e8',
-  pastelsPurple: '#cfbaf0',
+  pastelsYellow: '#ffe5d9',
+  pastelsOrange: '#ffcad4',
+  pastelsRed: '#f4acb7',
+  pastelsBrown: '#9d8189',
   pastelsBlue: '#a3c4f3',
-  pastelsGreen: '#b9fbc0',
+  pastelsGreen: '#d8e2dc',
   // seashell
   seashell1: '#edede9',
   seashell1Dark: '#E3E3DD',
