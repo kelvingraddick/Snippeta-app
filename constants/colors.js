@@ -31,6 +31,8 @@ export const colors = {
   burntSienna: '#E07A5F',
   eggshell: '#F4F1DE',
   // orange
+  orange1LighterShade2: '#F9B58B',
+  orange1LighterShade1: '#F8A977',
   orange1: '#F79D65',
   orange2: '#F4845F',
   orange3: '#F27059',
