@@ -49,7 +49,7 @@ const purchasePackage = async (offeringId, packageId, entitlementId) => {
       entitlement = customerInfo.entitlements.active[entitlementId];
       console.log(`RevenueCat -> purchasePackage: Purchase attempt returned entitlement for ID ${entitlementId} with value:`, JSON.stringify(entitlement));
     } else {
-      console.log(`RevenueCat -> getPackage: Did not find package for offering ID ${offeringId} and package ID ${packageId}`);
+      throw new Error(`Did not find package for offering ID ${offeringId} and package ID ${packageId}`);
     }
   } catch (error) {
     console.error(`RevenueCat -> purchasePackage: purchasing package failed with error: ` + error.message);
