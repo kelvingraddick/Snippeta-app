@@ -146,9 +146,14 @@ const SettingsScreen = ({ navigation }) => {
       async (selectedIndex) => {
         const appearanceModeValue = Object.values(appearanceModes).find((appearanceModeValue) => options[getCapitalizedWord(appearanceModeValue)] === selectedIndex);
         if (Object.values(appearanceModes).includes(appearanceModeValue)) { 
+          triggerHapticFeedback();
           await storage.saveAppearanceMode(appearanceModeValue);
-          await updateAppearanceMode(appearanceModeValue);
-          await updateThemer(themer.themeId, appearanceModeValue);
+          if (isThemePreview) {
+            await endThemePreview();
+          } else {
+            await updateAppearanceMode(appearanceModeValue);
+            await updateThemer(themer.themeId, appearanceModeValue);
+          }
         }
       }
     );
