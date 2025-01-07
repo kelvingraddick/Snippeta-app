@@ -44,4 +44,14 @@ export const colors = {
   silver4: '#ccd0d9',
   silver5: '#c1c6d1',
   silver6: '#b6bcc9',
+  // emerald
+  charcoal: '#2F3E46',
+  charcoalDarkerShade1: '#29363D',
+  charcoalDarkerShade2: '#212B31',
+  darkSlateGray: '#354F52',
+  hookersGreen: '#52796F',
+  cambridgeGreen: '#84A98C',
+  ashGray: '#CAD2C5',
+  ashGrayLighterShade1: '#D4DCD0',
+  ashGrayLighterShade2: '#DFE5DC',
 };
