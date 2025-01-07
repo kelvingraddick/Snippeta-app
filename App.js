@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer, useRef } from 'react';
-import { Linking, NativeModules, useColorScheme } from 'react-native';
+import { Linking, NativeModules } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { navigationRef } from './RootNavigation';
 import navigation from './RootNavigation';
@@ -17,8 +17,7 @@ import { entitlementIds } from './constants/entitlementIds';
 import { themes } from './constants/themes';
 import { readableErrorMessages } from './constants/readableErrorMessages';
 import { appearanceModes } from './constants/appearanceModes';
-import { themeAppearances } from './constants/themeAppearances';
-import Themer from './helpers/themer';
+import { useThemer }from './helpers/themer';
 import api from './helpers/api';
 import storage from './helpers/storage';
 import widget from './helpers/widget';
@@ -35,7 +34,6 @@ import UserScreen from './screens/UserScreen';
 import WidgetScreen from './screens/WidgetScreen';
 
 const initialState = {
-  themer: new Themer(Object.keys(themes)[0], themeAppearances.LIGHT),
   user: undefined,
   isUserLoading: true,
   entitlements: undefined,
@@ -46,8 +44,6 @@ const initialState = {
 
 const reducer = (state, action) => {
   switch(action.type) {
-    case 'UPDATE_THEMER':
-      return { ...state, themer: action.payload };
     case 'LOGGING_IN':
       return { ...state, isUserLoading: true };
     case 'LOGGED_IN':
@@ -75,7 +71,7 @@ const { WidgetNativeModule } = NativeModules;
 
 export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const systemThemeAppearance = useColorScheme();
+  const themer = useThemer(Object.keys(themes)[0], appearanceModes.SYSTEM);
   const themePreviewStatusIntervalId = useRef();
 
   useEffect(() => {
@@ -236,12 +232,11 @@ export default function App() {
 
   const updateThemer = async (themeId, appearanceMode) => {
     try {
-      const themeAppearance = (!appearanceMode || appearanceMode == appearanceModes.SYSTEM) ? (systemThemeAppearance || themeAppearances.LIGHT) : appearanceMode;
-      const themer = new Themer(themeId, themeAppearance);
-      console.log(`App.js -> updateThemer: ${themer?.themeId ? `updated themer with id '${themer.themeId}', name '${themer.getName()}', and appearance '${themer.themeAppearance}'` : `no theme found; using default '${themer.getName()}'`}`);
+      themer.setThemeId(themeId);
+      themer.setAppearanceMode(appearanceMode);
+      console.log(`App.js -> updateThemer: ${themer.themeId ? `updated themer with id '${themer.themeId}', name '${themer.getName()}', and appearance '${themer.themeAppearance}'` : `no theme found; using default '${themer.getName()}'`}`);
       await widget.saveData('colors', themer.getColors());
       updateWidgets();
-      dispatch({ type: 'UPDATE_THEMER', payload: themer });
     } catch (error) {
       console.error('App.js -> updateThemer: updating themer failed with error: ' + error.message);
     }
@@ -372,7 +367,7 @@ export default function App() {
   };
 
   return (
-    <ApplicationContext.Provider value={{...state, onSnippetChanged, updateThemer, startThemePreview, endThemePreview, updateAppearanceMode, loginWithCredentials, logout, updateEntitlements}}>
+    <ApplicationContext.Provider value={{...state, themer, onSnippetChanged, updateThemer, startThemePreview, endThemePreview, updateAppearanceMode, loginWithCredentials, logout, updateEntitlements}}>
       <ActionSheetProvider>
         <NavigationContainer ref={navigationRef}>
           <Stack.Navigator initialRouteName="Snippets">

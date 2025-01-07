@@ -1,42 +1,58 @@
+import { useColorScheme } from 'react-native';
+import { useState, useEffect, useMemo } from 'react';
 import { themes } from "../constants/themes";
 import { colors } from "../constants/colors";
+import { appearanceModes } from "../constants/appearanceModes";
 import { themeAppearances } from "../constants/themeAppearances";
 
-class Themer {
-  DEFAULT_THEME_ID = Object.keys(themes)[0];
+export const useThemer = (initialThemeId, initialAppearanceMode) => {
+  const DEFAULT_THEME_ID = Object.keys(themes)[0];
+  const systemThemeAppearance = useColorScheme();
 
-  constructor(themeId, themeAppearance) {
-    this.themeId = themeId;
-    this.themeAppearance = themeAppearance;
-  }
+  const [themeId, setThemeId] = useState(initialThemeId || DEFAULT_THEME_ID);
+  const [appearanceMode, setAppearanceMode] = useState(initialAppearanceMode);
+  const themeAppearance = (appearanceMode === appearanceModes.SYSTEM) ? (systemThemeAppearance || themeAppearances.LIGHT) : appearanceMode;
 
-  getCurrentTheme() {
-    return themes[this.themeId]?.[this.themeAppearance] ?? themes[this.themeId]?.[themeAppearances.LIGHT] ?? themes[this.themeId]?.[themeAppearances.DARK] ?? themes[this.themeId];
-  }
+  const getCurrentTheme = useMemo(() => {
+    const currentTheme = themes[themeId];
+    return (
+      currentTheme?.[themeAppearance] ??
+      currentTheme?.[themeAppearances.LIGHT] ??
+      currentTheme?.[themeAppearances.DARK] ??
+      currentTheme
+    );
+  }, [themeId, themeAppearance]);
 
-  getDefaultTheme() {
-    return themes[this.DEFAULT_THEME_ID]?.[this.themeAppearance] ?? themes[this.DEFAULT_THEME_ID]?.[themeAppearances.LIGHT] ?? themes[this.DEFAULT_THEME_ID]?.[themeAppearances.DARK] ?? themes[this.DEFAULT_THEME_ID];
-  }
+  const getDefaultTheme = useMemo(() => {
+    const defaultTheme = themes[DEFAULT_THEME_ID];
+    return (
+      defaultTheme?.[themeAppearance] ??
+      defaultTheme?.[themeAppearances.LIGHT] ??
+      defaultTheme?.[themeAppearances.DARK] ??
+      defaultTheme
+    );
+  }, [DEFAULT_THEME_ID, themeAppearance]);
 
-  getName() {
-    return this.getCurrentTheme()?.name ?? this.getDefaultTheme()?.name ?? 'Undefined';
-  }
+  const getName = () => themes[themeId]?.name ?? themes[DEFAULT_THEME_ID]?.name ?? 'Undefined';
 
-  getColor(key) {
-    return this.getCurrentTheme()?.colors?.[key] ?? this.getDefaultTheme()?.colors?.[key] ?? colors.black;
-  }
+  const getColor = (key) => getCurrentTheme?.colors?.[key] ?? getDefaultTheme?.colors?.[key] ?? colors.black;
 
-  getPlaceholderTextColor(key) {
-    return this.getColor(key) + 'BF'; // 75% opacity
-  }
+  const getPlaceholderTextColor = (key) => getColor(key) + 'BF'; // 75% opacity
 
-  getColors() {
-    return this.getCurrentTheme()?.colors ?? this.getDefaultTheme()?.colors ?? {};
-  }
+  const getColors = () => getCurrentTheme?.colors ?? getDefaultTheme?.colors ?? {};
 
-  getOpacity(key) {
-    return this.getCurrentTheme()?.opacities?.[key] ?? this.getDefaultTheme()?.opacities?.[key] ?? 1;
-  }
-}
+  const getOpacity = (key) => getCurrentTheme?.opacities?.[key] ?? getDefaultTheme?.opacities?.[key] ?? 1;
 
-export default Themer;
+  return {
+    themeId,
+    appearanceMode,
+    themeAppearance,
+    setThemeId,
+    setAppearanceMode,
+    getName,
+    getColor,
+    getPlaceholderTextColor,
+    getColors,
+    getOpacity,
+  };
+};
