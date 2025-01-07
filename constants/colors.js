@@ -61,4 +61,12 @@ export const colors = {
   pastelsPurple: '#cfbaf0',
   pastelsBlue: '#a3c4f3',
   pastelsGreen: '#b9fbc0',
+  // seashell
+  seashell1: '#edede9',
+  seashell1Dark: '#E3E3DD',
+  seashell2: '#f5ebe0',
+  seashell3: '#e3d5ca',
+  seashell4: '#d6ccc2',
+  seashell5: '#d5bdaf',
+  seashell6: '#9a8c98',
 };
