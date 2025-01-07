@@ -54,4 +54,11 @@ export const colors = {
   ashGray: '#CAD2C5',
   ashGrayLighterShade1: '#D4DCD0',
   ashGrayLighterShade2: '#DFE5DC',
+  // pastels
+  pastelsYellow: '#fbf8cc',
+  pastelsOrange: '#ffcfd2',
+  pastelsRed: '#f1c0e8',
+  pastelsPurple: '#cfbaf0',
+  pastelsBlue: '#a3c4f3',
+  pastelsGreen: '#b9fbc0',
 };
