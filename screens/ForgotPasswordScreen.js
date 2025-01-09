@@ -21,6 +21,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
     try {
       setIsLoading(true);
       const response = await api.sendPasswordResetEmail(emailOrPhone);
+      if (!response?.ok) { throw new Error(`HTTP error with status ${response?.status}`); }
       let responseJson = await response.json();
       if (responseJson && responseJson.success) {
         console.log(`ForgotPasswordScreen.js -> onSubmitTapped: Password reset email sent. Going back to Login screen..`);

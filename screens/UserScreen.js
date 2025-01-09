@@ -40,6 +40,7 @@ const UserScreen = ({ navigation }) => {
         throw new Error('Password confirmation must match the password entered.');
       }
       const response = await api.saveUser(editedUser, await storage.getAuthorizationToken());
+      if (!response?.ok) { throw new Error(`HTTP error with status ${response?.status}`); }
       let responseJson = await response.json();
       if (responseJson && responseJson.success && responseJson.user) {
         console.log(`UserScreen.js -> onSaveTapped: User saved. Now logging user in again..`);
@@ -89,6 +90,7 @@ const UserScreen = ({ navigation }) => {
     try {
       setIsLoading(true);
       const response = await api.deleteUser(await storage.getAuthorizationToken());
+      if (!response?.ok) { throw new Error(`HTTP error with status ${response?.status}`); }
       let responseJson = await response.json();
       if (responseJson && responseJson.success) {
         console.log(`UserScreen.js -> deleteUser: User deleted. Now logging user out..`);

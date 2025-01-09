@@ -6,6 +6,7 @@ import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { ApplicationContext } from '../ApplicationContext';
 import { snippetTypes } from '../constants/snippetTypes';
 import { snippetSources } from '../constants/snippetSources';
+import { readableErrorMessages } from '../constants/readableErrorMessages';
 import api from '../helpers/api';
 import storage from '../helpers/storage';
 import banner from '../helpers/banner';
@@ -28,22 +29,33 @@ const SearchScreen = ({ route, navigation }) => {
       
       // search storage snippets for current query
       let storageSnippets = [];
-      if (query?.length > 1) {
-        storageSnippets = await storage.searchSnippets(query);
-        storageSnippets.forEach(x => { x.source = snippetSources.STORAGE; });
-        storageSnippets.sort((a, b) => a.order_index - b.order_index);
-        console.log(`SearchScreen.js -> searchSnippets: Got ${storageSnippets.length} snippets from storage for query ${query}:`, JSON.stringify(storageSnippets.map(x => x.id)));
+      try {
+        if (query?.length > 1) {
+          storageSnippets = await storage.searchSnippets(query);
+          storageSnippets.forEach(x => { x.source = snippetSources.STORAGE; });
+          storageSnippets.sort((a, b) => a.order_index - b.order_index);
+          console.log(`SearchScreen.js -> searchSnippets: Got ${storageSnippets.length} snippets from storage for query ${query}:`, JSON.stringify(storageSnippets.map(x => x.id)));
+        }
+      } catch (error) {
+        console.error('SearchScreen.js -> searchSnippets: searching snippets in storage failed with error: ' + error.message);
+        banner.showErrorMessage(readableErrorMessages.GET_SNIPPET_DATA_ERROR);
       }
       
       // search api snippets for current query
       let apiSnippets = [];
-      if (user && query?.length > 1) {
-        let response = await api.searchSnippets(query, await storage.getAuthorizationToken());
-        let responseJson = await response.json();
-        apiSnippets = responseJson.snippets ?? [];
-        apiSnippets.forEach(x => { x.source = snippetSources.API; });
-        apiSnippets.sort((a, b) => a.order_index - b.order_index);
-        console.log(`SearchScreen.js -> searchSnippets: Got ${apiSnippets.length} snippets for query ${query}:`, JSON.stringify(apiSnippets.map(x => x.id)));
+      try {
+        if (user && query?.length > 1) {
+          let response = await api.searchSnippets(query, await storage.getAuthorizationToken());
+          if (!response?.ok) { throw new Error(`HTTP error with status ${response?.status}`); }
+          let responseJson = await response.json();
+          apiSnippets = responseJson.snippets ?? [];
+          apiSnippets.forEach(x => { x.source = snippetSources.API; });
+          apiSnippets.sort((a, b) => a.order_index - b.order_index);
+          console.log(`SearchScreen.js -> searchSnippets: Got ${apiSnippets.length} snippets for query ${query}:`, JSON.stringify(apiSnippets.map(x => x.id)));
+        }
+      } catch (error) {
+        console.error('SearchScreen.js -> searchSnippets: searching snippets via API failed with error: ' + error.message);
+        banner.showErrorMessage(readableErrorMessages.GET_SNIPPET_DATA_ERROR);
       }
 
       // combine storage and api snippets
@@ -59,6 +71,7 @@ const SearchScreen = ({ route, navigation }) => {
 
     } catch (error) {
       console.error('SearchScreen.js -> searchSnippets: Loading snippets data failed with error: ' + error.message);
+      banner.showErrorMessage(readableErrorMessages.GET_SNIPPET_DATA_ERROR);
       setIsLoading(false);
     }
   };

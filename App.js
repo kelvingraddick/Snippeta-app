@@ -111,6 +111,7 @@ export default function App() {
     let responseJson;
     try {
       const response = await api.login(emailOrPhone, password);
+      if (!response?.ok) { throw new Error(`HTTP error with status ${response?.status}`); }
       responseJson = await response.json();
       if (responseJson && responseJson.success && responseJson.user) {
         user = responseJson.user;
@@ -125,6 +126,7 @@ export default function App() {
       }
     } catch (error) {
       console.error('App.js -> loginWithCredentials: Login failed with error: ' + error.message);
+      banner.showErrorMessage(readableErrorMessages.LOGIN_ERROR);
     }
     dispatch({ type: 'LOGGED_IN', payload: user ?? null });
     return responseJson;
@@ -195,23 +197,33 @@ export default function App() {
     try {
       console.log('App.js -> updateSnippetGroups: about to get snippet groups for user');
 
-      // try to get storage snippet groups
+      // 1. try to get storage snippet groups
       let storageSnippetGroups = [];
-      storageSnippetGroups = await storage.getSnippetGroups();
-      storageSnippetGroups.forEach(x => { x.source = snippetSources.STORAGE; x.snippets.forEach(y => { y.source = snippetSources.STORAGE; }) });
-      storageSnippetGroups.sort((a, b) => a.order_index - b.order_index);
+      try {
+        storageSnippetGroups = await storage.getSnippetGroups();
+        storageSnippetGroups.forEach(x => { x.source = snippetSources.STORAGE; x.snippets.forEach(y => { y.source = snippetSources.STORAGE; }) });
+        storageSnippetGroups.sort((a, b) => a.order_index - b.order_index);
+      } catch (error) {
+        console.error('App.js -> updateSnippetGroups: getting snippet groups from storage failed with error: ' + error.message);
+        banner.showErrorMessage(readableErrorMessages.UPDATE_WIDGET_ERROR);
+      }
 
-      // try to get API snippet groups
+      // 2. try to get API snippet groups
       let apiSnippetGroups = [];
-      let response = await api.getSnippetGroups(await storage.getAuthorizationToken());
-      if (!response?.ok) { throw new Error(`HTTP error with status: ${response?.status}`); }
-      let responseJson = await response.json();
-      apiSnippetGroups = responseJson.groups ?? [];
-      apiSnippetGroups.forEach(x => { x.source = snippetSources.API; x.snippets.forEach(y => { y.source = snippetSources.API; }) });
-      apiSnippetGroups.sort((a, b) => a.order_index - b.order_index);
-      console.log(`App.js -> updateSnippetGroups: Got ${apiSnippetGroups.length} snippet groups via API:`, JSON.stringify(apiSnippetGroups.map(x => x.id)));
+      try {
+        let response = await api.getSnippetGroups(await storage.getAuthorizationToken());
+        if (!response?.ok) { throw new Error(`HTTP error with status ${response?.status}`); }
+        let responseJson = await response.json();
+        apiSnippetGroups = responseJson.groups ?? [];
+        apiSnippetGroups.forEach(x => { x.source = snippetSources.API; x.snippets.forEach(y => { y.source = snippetSources.API; }) });
+        apiSnippetGroups.sort((a, b) => a.order_index - b.order_index);
+        console.log(`App.js -> updateSnippetGroups: Got ${apiSnippetGroups.length} snippet groups via API:`, JSON.stringify(apiSnippetGroups.map(x => x.id)));
+      } catch (error) {
+        console.error('App.js -> updateSnippetGroups: getting snippet groups from API failed with error: ' + error.message);
+        banner.showErrorMessage(readableErrorMessages.UPDATE_WIDGET_ERROR);
+      }
 
-      // set snippet groups data for widget
+      // 3. combine data and set snippet groups data for widget
       let snippetGroups = [];
       snippetGroups = snippetGroups.concat(storageSnippetGroups).concat(apiSnippetGroups);
       await widget.saveData('snippetGroups', snippetGroups);

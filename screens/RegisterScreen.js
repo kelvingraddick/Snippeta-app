@@ -24,7 +24,8 @@ const RegisterScreen = ({ navigation }) => {
       if (user.password != user.password_confirm) {
         throw new Error('Password confirmation must match the password entered.');
       }
-      const response= await api.register(user);
+      const response = await api.register(user);
+      if (!response?.ok) { throw new Error(`HTTP error with status ${response?.status}`); }
       let responseJson = await response.json();
       if (responseJson && responseJson.success && responseJson.user) {
         console.log(`RegisterScreen.js -> onRegisterTapped: User registered with email address ${user.email_address}. Now logging user in..`);

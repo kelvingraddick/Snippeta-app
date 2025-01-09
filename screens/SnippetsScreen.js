@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Dimensions, Image, Pressable, SectionList, StyleSheet, Text, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useActionSheet } from '@expo/react-native-action-sheet';
@@ -8,7 +8,7 @@ import { ApplicationContext } from '../ApplicationContext';
 import { snippetTypes } from '../constants/snippetTypes';
 import { snippetSources } from '../constants/snippetSources';
 import { storageKeys } from '../constants/storageKeys';
-import { colors } from '../constants/colors';
+import { readableErrorMessages } from '../constants/readableErrorMessages';
 import { colorIds } from '../constants/colorIds';
 import { moveSnippetOptions } from '../constants/moveSnippetOptions';
 import api from '../helpers/api';
@@ -29,6 +29,8 @@ const SnippetsScreen = ({ route, navigation }) => {
   const [snippetSections, setSnippetSections] = useState([]);
   const [isOnDeviceSectionVisible, setIsOnDeviceSectionVisible] = useState(true);
   const [isCloudSectionVisible, setIsCloudSectionVisible] = useState(true);
+
+  const isEligibleForTutorial = useRef(true);
 
   const { showActionSheetWithOptions } = useActionSheet();
 
@@ -59,21 +61,32 @@ const SnippetsScreen = ({ route, navigation }) => {
       
       // try to get storage snippets for current parent ID
       let storageSnippets = [];
-      if (isRootSnippetsScreen || parentSnippet.source == snippetSources.STORAGE) {
-        storageSnippets = await storage.getSnippets(parentSnippet?.id);
-        storageSnippets.forEach(x => { x.source = snippetSources.STORAGE; });
-        storageSnippets.sort((a, b) => a.order_index - b.order_index);
+      try {
+        if (isRootSnippetsScreen || parentSnippet.source == snippetSources.STORAGE) {
+          storageSnippets = await storage.getSnippets(parentSnippet?.id);
+          storageSnippets.forEach(x => { x.source = snippetSources.STORAGE; });
+          storageSnippets.sort((a, b) => a.order_index - b.order_index);
+        }
+      } catch (error) {
+        console.error('SnippetsScreen.js -> getSnippets: getting snippets from storage failed with error: ' + error.message);
+        banner.showErrorMessage(readableErrorMessages.GET_SNIPPET_DATA_ERROR);
       }
       
       // try to get API snippets for current parent ID
       let apiSnippets = [];
-      if (isRootSnippetsScreen || (parentSnippet.source == snippetSources.API && user)) {
-        let response = await api.getSnippets(parentSnippet?.id ?? 0, await storage.getAuthorizationToken());
-        let responseJson = await response.json();
-        apiSnippets = responseJson.child_snippets ?? [];
-        apiSnippets.forEach(x => { x.source = snippetSources.API; });
-        apiSnippets.sort((a, b) => a.order_index - b.order_index);
-        console.log(`SnippetsScreen.js -> getSnippets: Got ${apiSnippets.length} snippets from API for parent ID ${parentSnippet?.id ?? 0}:`, JSON.stringify(apiSnippets.map(x => x.id)));
+      try {
+        if (isRootSnippetsScreen || (parentSnippet.source == snippetSources.API && user)) {
+          let response = await api.getSnippets(parentSnippet?.id ?? 0, await storage.getAuthorizationToken());
+          if (!response?.ok) { throw new Error(`HTTP error with status ${response?.status}`); }
+          let responseJson = await response.json();
+          apiSnippets = responseJson.child_snippets ?? [];
+          apiSnippets.forEach(x => { x.source = snippetSources.API; });
+          apiSnippets.sort((a, b) => a.order_index - b.order_index);
+          console.log(`SnippetsScreen.js -> getSnippets: Got ${apiSnippets.length} snippets from API for parent ID ${parentSnippet?.id ?? 0}:`, JSON.stringify(apiSnippets.map(x => x.id)));
+        }
+      } catch (error) {
+        console.error('SnippetsScreen.js -> getSnippets: getting snippets from API failed with error: ' + error.message);
+        banner.showErrorMessage(readableErrorMessages.GET_SNIPPET_DATA_ERROR);
       }
 
       // combime storage and API snippets
@@ -88,11 +101,12 @@ const SnippetsScreen = ({ route, navigation }) => {
       }
       
       // if in root snippet group, and no snippets exist, then populate with tutorial snippets in storage
-      if (isRootSnippetsScreen && storageSnippets.length == 0 && apiSnippets.length == 0) {
+      if (isRootSnippetsScreen && isEligibleForTutorial.current && storageSnippets.length == 0 && apiSnippets.length == 0) {
         console.log('SnippetsScreen.js -> getSnippets: No snippets in root snippet group. Adding tutorial snippets..');
         for (const tutorialSnippet of tutorialSnippets) {
           await storage.saveSnippet(tutorialSnippet);
         }
+        isEligibleForTutorial.current = false;
         await getSnippets(); onSnippetChanged(); return;
       }
 
@@ -118,6 +132,7 @@ const SnippetsScreen = ({ route, navigation }) => {
       // if source is API, delete via API
       else if (snippet.source == snippetSources.API && user) {
         const response = await api.deleteSnippet(snippet.id, await storage.getAuthorizationToken());
+        if (!response?.ok) { throw new Error(`HTTP error with status ${response?.status}`); }
         const responseJson = await response.json();
         if (responseJson && responseJson.success) {
           console.log('SnippetScreen.js -> deleteSnippet: Deleted snippet via API with ID ' + snippet.id);
@@ -165,6 +180,7 @@ const SnippetsScreen = ({ route, navigation }) => {
       // if source is API, move via API
       else if (snippet.source == snippetSources.API && user) {
         const response = await api.moveSnippet(snippet, option, await storage.getAuthorizationToken());
+        if (!response?.ok) { throw new Error(`HTTP error with status ${response?.status}`); }
         const responseJson = await response.json();
         if (responseJson && responseJson.success) {
           console.log('SnippetScreen.js -> moveSnippet: Moved snippet via API with ID ' + snippet.id);

@@ -73,6 +73,7 @@ const SnippetScreen = ({ route, navigation }) => {
           },
           await storage.getAuthorizationToken()
         );
+        if (!response?.ok) { throw new Error(`HTTP error with status ${response?.status}`); }
         const responseJson = response && await response.json();
         if (responseJson && responseJson.success) {
           console.log('SnippetScreen.js -> onSaveTapped: Saved snippet via API with ID ' + id);
