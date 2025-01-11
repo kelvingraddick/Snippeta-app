@@ -25,6 +25,7 @@ const SettingsScreen = ({ navigation }) => {
   const { showActionSheetWithOptions } = useActionSheet();
 
   const VERSION = '2.0';
+  const BUILD = '36';
 
   const getSettings = (themer, appearanceMode) => {
     let settings = [];
@@ -329,7 +330,7 @@ const SettingsScreen = ({ navigation }) => {
         renderItem={({item, index, section}) => <SettingView label={item.label} isPro={item.isPro} onTapped={item.onTapped} isSelectable={item.isSelectable} isSelected={item.isSelected} isSwitchEnabled={item.isSwitchEnabled} onSwitchToggled={item.onSwitchToggled} isTop={index === 0} isBottom={index === section.data.length - 1} themer={themer} />}
         renderSectionFooter={() => <View style={{ height: 20 }}></View>}
         ListFooterComponent={() => <Text style={[styles.footerView, { color: themer.getColor('listHeader1.foreground') }]}>
-          <Text style={{ fontWeight: 'bold' }}>Version {VERSION}</Text> • <Text style={{ fontStyle: 'italic' }}>made with 🖤 by Wave Link</Text>
+          <Text style={{ fontWeight: 'bold' }}>v{VERSION}</Text> (<Text style={{ fontStyle: 'italic' }}>build {BUILD}</Text>) • made with 🖤 by Wave Link
         </Text>}
       />
       { isLoading &&
