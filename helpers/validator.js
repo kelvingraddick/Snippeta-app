@@ -2,6 +2,7 @@ import { colorIds } from '../constants/colorIds';
 import { snippetTypes } from '../constants/snippetTypes';
 import { snippetSources } from '../constants/snippetSources';
 import { storageKeys } from '../constants/storageKeys';
+import * as Sentry from '@sentry/react-native';
 
 const isValidCredentials = (credentials) => {
   let errorMessages = [];
@@ -79,6 +80,7 @@ const isValidSnippet = (snippet) => {
     errorMessages.push('Snippet order index must be a valid number.');
   }
   if (errorMessages.length > 0) {
+    Sentry.captureException(new Error(`The snippet was not valid (${errorMessages.join(' ')}); snippet: ${JSON.stringify(snippet)}`));
     throw new Error(errorMessages.join(' '));
   }
   return true;
