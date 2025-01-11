@@ -38,7 +38,7 @@ Sentry.init({
   dsn: '{{SENTRY_DSN}}',
   debug: false,
   release: '2.0',
-  dist: '36',
+  dist: '37',
   attachScreenshot: true,
   enableUserInteractionTracing: true,
   tracesSampleRate: 0.05,

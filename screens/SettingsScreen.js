@@ -25,7 +25,7 @@ const SettingsScreen = ({ navigation }) => {
   const { showActionSheetWithOptions } = useActionSheet();
 
   const VERSION = '2.0';
-  const BUILD = '36';
+  const BUILD = '37';
 
   const getSettings = (themer, appearanceMode) => {
     let settings = [];
