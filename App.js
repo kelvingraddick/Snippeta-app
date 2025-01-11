@@ -8,6 +8,7 @@ import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import FlashMessage from "react-native-flash-message";
 import Clipboard from '@react-native-clipboard/clipboard';
 import Rate from 'react-native-rate';
+import * as Sentry from '@sentry/react-native';
 import { ApplicationContext } from './ApplicationContext';
 import { storageKeys } from './constants/storageKeys';
 import { snippetTypes } from './constants/snippetTypes';
@@ -32,6 +33,16 @@ import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import UserScreen from './screens/UserScreen';
 import WidgetScreen from './screens/WidgetScreen';
+
+Sentry.init({
+  dsn: '{{SENTRY_DSN}}',
+  debug: false,
+  release: '2.0',
+  dist: '36',
+  attachScreenshot: true,
+  enableUserInteractionTracing: true,
+  tracesSampleRate: 0.05,
+});
 
 const initialState = {
   user: undefined,
@@ -121,6 +132,7 @@ export default function App() {
         await loginToRevenueCat(user.id);
         await updateEntitlements(user);
         await updateSnippetGroups();
+        Sentry.setUser({ id: user.id, email: user.email_address });
       } else {
         console.log('App.js -> loginWithCredentials: Login failed with error code: ' + responseJson?.error_code);
       }
@@ -146,6 +158,7 @@ export default function App() {
       await storage.deleteCredentials();
       await updateEntitlements();
       await updateSnippetGroups();
+      Sentry.setUser(null);
       console.log('App.js -> logout: Deleted credentials from storage..');
     } catch (error) {
       console.error('App.js -> logout: Logging out user failed with error: ' + error.message);
@@ -379,63 +392,65 @@ export default function App() {
   };
 
   return (
-    <ApplicationContext.Provider value={{...state, themer, onSnippetChanged, updateThemer, startThemePreview, endThemePreview, updateAppearanceMode, loginWithCredentials, logout, updateEntitlements}}>
-      <ActionSheetProvider>
-        <NavigationContainer ref={navigationRef}>
-          <Stack.Navigator initialRouteName="Snippets">
-            <Stack.Group>
-              <Stack.Screen
-                name="Snippets"
-                component={SnippetsScreen}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Snippet"
-                component={SnippetScreen}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Search"
-                component={SearchScreen}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Settings"
-                component={SettingsScreen}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Login"
-                component={LoginScreen}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="ForgotPassword"
-                component={ForgotPasswordScreen}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Register"
-                component={RegisterScreen}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="User"
-                component={UserScreen}
-                options={{ headerShown: false }}
-              />
-            </Stack.Group>
-            <Stack.Group screenOptions={{ presentation: 'modal' }}>
-              <Stack.Screen
-                name="Widget"
-                component={WidgetScreen}
-                options={{ headerShown: false }}
-              />
-            </Stack.Group>
-          </Stack.Navigator>
-          <FlashMessage position="top" />
-        </NavigationContainer>
-      </ActionSheetProvider>
-    </ApplicationContext.Provider>
+    <Sentry.TouchEventBoundary>
+      <ApplicationContext.Provider value={{...state, themer, onSnippetChanged, updateThemer, startThemePreview, endThemePreview, updateAppearanceMode, loginWithCredentials, logout, updateEntitlements}}>
+        <ActionSheetProvider>
+          <NavigationContainer ref={navigationRef}>
+            <Stack.Navigator initialRouteName="Snippets">
+              <Stack.Group>
+                <Stack.Screen
+                  name="Snippets"
+                  component={SnippetsScreen}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Snippet"
+                  component={SnippetScreen}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Search"
+                  component={SearchScreen}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Settings"
+                  component={SettingsScreen}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Login"
+                  component={LoginScreen}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="ForgotPassword"
+                  component={ForgotPasswordScreen}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Register"
+                  component={RegisterScreen}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="User"
+                  component={UserScreen}
+                  options={{ headerShown: false }}
+                />
+              </Stack.Group>
+              <Stack.Group screenOptions={{ presentation: 'modal' }}>
+                <Stack.Screen
+                  name="Widget"
+                  component={WidgetScreen}
+                  options={{ headerShown: false }}
+                />
+              </Stack.Group>
+            </Stack.Navigator>
+            <FlashMessage position="top" />
+          </NavigationContainer>
+        </ActionSheetProvider>
+      </ApplicationContext.Provider>
+    </Sentry.TouchEventBoundary>
   );
 }
