@@ -37,22 +37,23 @@ const SnippetScreen = ({ route, navigation }) => {
     try {
       setIsLoading(true);
 
-      // if no source selected, let the user choose, or default to storage
-      if (!snippet.source) {
-        let snippetSource = snippetSources.STORAGE;
+      let snippetSource = snippet.source;
+      if (!snippetSource) {  // if source is not pre-determined by parent, then let the user choose, or default to storage
         if (user) {
           snippetSource = await selectSnippetSource();
           if (!snippetSource) { setIsLoading(false); return; }
+        } else {
+          snippetSource = snippetSources.STORAGE;
         }
-        snippet.source = snippetSource;
       }
 
       // if source is storage, save in storage
-      if (snippet.source == snippetSources.STORAGE) {
+      if (snippetSource == snippetSources.STORAGE) {
         const id = snippet.id ?? (storageKeys.SNIPPET + generateRandomString(10));
         const snippetToSave = {
           ...snippet,
           id: id,
+          source: snippetSource,
           time: snippet.time ?? new Date(),
           order_index: snippet.order_index ?? 0,
         };
@@ -61,13 +62,14 @@ const SnippetScreen = ({ route, navigation }) => {
         console.log('SnippetScreen.js -> onSaveTapped: Saved snippet to storage with ID ' + id);
       }
       // if source is api, save via api
-      else if (snippet.source == snippetSources.API && user) {
+      else if (snippetSource == snippetSources.API && user) {
         const id = snippet.id ?? 0;
         const response = await api.saveSnippet(
           {
             ...snippet,
             id: id,
             parent_id: snippet.parent_id ?? 0,
+            source: snippetSource,
             time: snippet.time ?? new Date(),
             order_index: snippet.order_index ?? 0,
           },
