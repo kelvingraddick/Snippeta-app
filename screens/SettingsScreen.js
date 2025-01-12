@@ -7,6 +7,7 @@ import { ApplicationContext } from '../ApplicationContext';
 import banner from '../helpers/banner';
 import storage from '../helpers/storage';
 import revenueCat from '../helpers/revenueCat';
+import { appSettings } from '../constants/appSettings';
 import { colors } from '../constants/colors';
 import { themes } from '../constants/themes';
 import { entitlementIds } from '../constants/entitlementIds';
@@ -330,7 +331,7 @@ const SettingsScreen = ({ navigation }) => {
         renderItem={({item, index, section}) => <SettingView label={item.label} isPro={item.isPro} onTapped={item.onTapped} isSelectable={item.isSelectable} isSelected={item.isSelected} isSwitchEnabled={item.isSwitchEnabled} onSwitchToggled={item.onSwitchToggled} isTop={index === 0} isBottom={index === section.data.length - 1} themer={themer} />}
         renderSectionFooter={() => <View style={{ height: 20 }}></View>}
         ListFooterComponent={() => <Text style={[styles.footerView, { color: themer.getColor('listHeader1.foreground') }]}>
-          <Text style={{ fontWeight: 'bold' }}>Version {VERSION}</Text> (<Text style={{ fontStyle: 'italic' }}>b{BUILD}</Text>) • made with 🖤 by Wave Link
+          <Text style={{ fontWeight: 'bold' }}>Version {appSettings.VERSION_NUMBER}</Text> (<Text style={{ fontStyle: 'italic' }}>b{appSettings.BUILD_NUMBER}</Text>) • made with 🖤 by Wave Link
         </Text>}
       />
       { isLoading &&

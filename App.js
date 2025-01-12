@@ -10,6 +10,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import Rate from 'react-native-rate';
 import * as Sentry from '@sentry/react-native';
 import { ApplicationContext } from './ApplicationContext';
+import { appSettings } from './constants/appSettings';
 import { storageKeys } from './constants/storageKeys';
 import { snippetTypes } from './constants/snippetTypes';
 import { snippetSources } from './constants/snippetSources';
@@ -35,10 +36,10 @@ import UserScreen from './screens/UserScreen';
 import WidgetScreen from './screens/WidgetScreen';
 
 Sentry.init({
-  dsn: '{{SENTRY_DSN}}',
+  dsn: appSettings.SENTRY_DSN_URL,
   debug: false,
-  release: '2.0',
-  dist: '37',
+  release: appSettings.VERSION_NUMBER,
+  dist: appSettings.BUILD_NUMBER,
   attachScreenshot: true,
   enableUserInteractionTracing: true,
   tracesSampleRate: 0.05,
