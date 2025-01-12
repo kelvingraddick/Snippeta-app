@@ -4,6 +4,7 @@ import { colorIds } from '../constants/colorIds';
 import { storageKeys } from '../constants/storageKeys';
 import { snippetTypes } from '../constants/snippetTypes';
 import { moveSnippetOptions } from '../constants/moveSnippetOptions';
+import { snippetSources } from '../constants/snippetSources';
 
 const getCredentials = async () => {
   const item = await AsyncStorage.getItem(storageKeys.CREDENTIALS);
@@ -97,10 +98,17 @@ const getSnippet = async (id) => {
 
 const saveSnippet = async (snippet) => {
   console.log('storage.js -> saveSnippet: Saving snippet with ID', snippet?.id);
+  _enrichSnippet(snippet);
   if (validator.isValidSnippet(snippet)) {
     const item = JSON.stringify(snippet);
     await AsyncStorage.setItem(snippet.id, item);
     console.log('storage.js -> saveSnippet: Saved snippet with ID', snippet.id);
+  }
+};
+
+const _enrichSnippet = async (snippet) => {
+  if (typeof snippet === 'object' && snippet !== null) {
+    if (!snippet.source) { snippet.source = snippetSources.STORAGE; }
   }
 };
 
