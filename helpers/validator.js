@@ -80,8 +80,9 @@ const isValidSnippet = (snippet) => {
     errorMessages.push('Snippet order index must be a valid number.');
   }
   if (errorMessages.length > 0) {
-    Sentry.captureException(new Error(`The snippet was not valid (${errorMessages.join(' ')}); snippet: ${JSON.stringify(snippet)}`));
-    throw new Error(errorMessages.join(' '));
+    const error = new Error(errorMessages.join(' '));
+    Sentry.captureException(error, { attachments: [{ filename: "snippet.json", data: JSON.stringify(snippet), contentType: 'application/json' }] });
+    throw error;
   }
   return true;
 }
