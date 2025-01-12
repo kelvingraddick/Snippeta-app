@@ -54,6 +54,8 @@ const SnippetScreen = ({ route, navigation }) => {
           ...snippet,
           id: id,
           source: snippetSource,
+          title: snippet.title?.trim(),
+          content: snippet.content?.trim(),
           time: snippet.time ?? new Date(),
           order_index: snippet.order_index ?? 0,
         };
@@ -70,6 +72,8 @@ const SnippetScreen = ({ route, navigation }) => {
             id: id,
             parent_id: snippet.parent_id ?? 0,
             source: snippetSource,
+            title: snippet.title?.trim(),
+            content: snippet.content?.trim(),
             time: snippet.time ?? new Date(),
             order_index: snippet.order_index ?? 0,
           },
