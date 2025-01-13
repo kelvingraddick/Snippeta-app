@@ -36,6 +36,7 @@ import UserScreen from './screens/UserScreen';
 import WidgetScreen from './screens/WidgetScreen';
 
 Sentry.init({
+  enabled: appSettings.SENTRY_ENABLED,
   dsn: appSettings.SENTRY_DSN_URL,
   debug: false,
   release: appSettings.VERSION_NUMBER,
