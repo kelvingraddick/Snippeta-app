@@ -5,6 +5,7 @@ import { navigationRef } from './RootNavigation';
 import navigation from './RootNavigation';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
+import { FancyActionSheetProvider } from './components/FancyActionSheet';
 import FlashMessage from "react-native-flash-message";
 import Clipboard from '@react-native-clipboard/clipboard';
 import Rate from 'react-native-rate';
@@ -397,60 +398,62 @@ export default function App() {
     <Sentry.TouchEventBoundary>
       <ApplicationContext.Provider value={{...state, themer, onSnippetChanged, updateThemer, startThemePreview, endThemePreview, updateAppearanceMode, loginWithCredentials, logout, updateEntitlements}}>
         <ActionSheetProvider>
-          <NavigationContainer ref={navigationRef}>
-            <Stack.Navigator initialRouteName="Snippets">
-              <Stack.Group>
-                <Stack.Screen
-                  name="Snippets"
-                  component={SnippetsScreen}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="Snippet"
-                  component={SnippetScreen}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="Search"
-                  component={SearchScreen}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="Settings"
-                  component={SettingsScreen}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="Login"
-                  component={LoginScreen}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="ForgotPassword"
-                  component={ForgotPasswordScreen}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="Register"
-                  component={RegisterScreen}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="User"
-                  component={UserScreen}
-                  options={{ headerShown: false }}
-                />
-              </Stack.Group>
-              <Stack.Group screenOptions={{ presentation: 'modal' }}>
-                <Stack.Screen
-                  name="Widget"
-                  component={WidgetScreen}
-                  options={{ headerShown: false }}
-                />
-              </Stack.Group>
-            </Stack.Navigator>
-            <FlashMessage position="top" />
-          </NavigationContainer>
+          <FancyActionSheetProvider>
+            <NavigationContainer ref={navigationRef}>
+              <Stack.Navigator initialRouteName="Snippets">
+                <Stack.Group>
+                  <Stack.Screen
+                    name="Snippets"
+                    component={SnippetsScreen}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="Snippet"
+                    component={SnippetScreen}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="Search"
+                    component={SearchScreen}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="Settings"
+                    component={SettingsScreen}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="Login"
+                    component={LoginScreen}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="ForgotPassword"
+                    component={ForgotPasswordScreen}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="Register"
+                    component={RegisterScreen}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="User"
+                    component={UserScreen}
+                    options={{ headerShown: false }}
+                  />
+                </Stack.Group>
+                <Stack.Group screenOptions={{ presentation: 'modal' }}>
+                  <Stack.Screen
+                    name="Widget"
+                    component={WidgetScreen}
+                    options={{ headerShown: false }}
+                  />
+                </Stack.Group>
+              </Stack.Navigator>
+              <FlashMessage position="top" />
+            </NavigationContainer>
+          </FancyActionSheetProvider>
         </ActionSheetProvider>
       </ApplicationContext.Provider>
     </Sentry.TouchEventBoundary>
