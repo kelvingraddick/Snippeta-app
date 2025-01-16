@@ -5,7 +5,7 @@ import { navigationRef } from './RootNavigation';
 import navigation from './RootNavigation';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
-import { FancyActionSheetProvider } from './components/FancyActionSheet';
+import { FancyActionSheetProvider } from 'react-native-fancy-action-sheet';
 import FlashMessage from "react-native-flash-message";
 import Clipboard from '@react-native-clipboard/clipboard';
 import Rate from 'react-native-rate';

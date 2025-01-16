@@ -19,6 +19,7 @@
     "@sentry/react-native": "^6.5.0",
     "react": "18.2.0",
     "react-native": "0.74.1",
+    "react-native-fancy-action-sheet": "^0.0.1",
     "react-native-flash-message": "^0.4.2",
     "react-native-haptic-feedback": "^2.3.3",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
