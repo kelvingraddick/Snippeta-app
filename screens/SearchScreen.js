@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Dimensions, Image, Pressable, SectionList, StyleSheet, Text, TextInput, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { useActionSheet } from '@expo/react-native-action-sheet';
+import { useFancyActionSheet } from 'react-native-fancy-action-sheet';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { ApplicationContext } from '../ApplicationContext';
 import { snippetTypes } from '../constants/snippetTypes';
@@ -10,6 +10,7 @@ import { readableErrorMessages } from '../constants/readableErrorMessages';
 import api from '../helpers/api';
 import storage from '../helpers/storage';
 import banner from '../helpers/banner';
+import style from '../helpers/style';
 import SnippetView from '../components/SnippetView';
 
 const SearchScreen = ({ route, navigation }) => {
@@ -21,7 +22,7 @@ const SearchScreen = ({ route, navigation }) => {
   const [query, setQuery] = useState("");
   const [snippetSections, setSnippetSections] = useState([]);
 
-  const { showActionSheetWithOptions } = useActionSheet();
+  const { showFancyActionSheet } = useFancyActionSheet();
 
   const searchSnippets = async (query) => {
     try {
@@ -95,20 +96,18 @@ const SearchScreen = ({ route, navigation }) => {
   };
 
   const onSnippetMenuTapped = (snippet) => {
-    const options = { 'Edit': 0, 'Cancel': 1 };
-    showActionSheetWithOptions(
-      {
-        options: Object.keys(options),
-        cancelButtonIndex: options.Cancel,
-      },
-      async (selectedIndex) => {
-        switch (selectedIndex) {
-          case options.Edit:
-            navigation.navigate('Snippet', { snippet, callbacks: callbacks.concat(async () => { await searchSnippets(query); }) });
-            break;
+    const options = [{ id: 'Edit', name: 'Edit' }];
+    showFancyActionSheet({
+      title: '⚙️ Snippet options ‎ ‎',
+      ...style.getFancyActionSheetStyles(themer),
+      options: options,
+      onOptionPress: async (option) => {
+        switch (option.id) {
+          case 'Edit':
+            navigation.navigate('Snippet', { snippet, callbacks: callbacks.concat(async () => { await searchSnippets(query); }) }); break;
         }
-      }
-    );
+      },
+    });
   }
 
   const showErrorMessage = (message) => {

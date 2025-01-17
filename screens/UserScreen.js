@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { useActionSheet } from '@expo/react-native-action-sheet';
+import { useFancyActionSheet } from 'react-native-fancy-action-sheet';
 import { ApplicationContext } from '../ApplicationContext';
 import storage from '../helpers/storage';
+import style from '../helpers/style';
 import { errorCodeMessages } from '../constants/errorCodeMessages';
 import api from '../helpers/api';
 import banner from '../helpers/banner';
@@ -16,7 +17,7 @@ const UserScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [editedUser, setEditedUser] = useState(user);
 
-  const { showActionSheetWithOptions } = useActionSheet();
+  const { showFancyActionSheet } = useFancyActionSheet();
 
   useEffect(() => {
     getPasswordFromStorage();
@@ -68,22 +69,21 @@ const UserScreen = ({ navigation }) => {
   };
 
   const confirmDelete = async (count) => {
-    const options = { 'Delete': 0, 'Cancel': 1 };
-    showActionSheetWithOptions(
-      {
-        title: 'This is a permanent action. Are you sure you want to delete your account?',
-        options: Object.keys(options),
-        destructiveButtonIndex: options.Delete,
-        cancelButtonIndex: options.Cancel,
-      },
-      async (selectedIndex) => {
-        switch (selectedIndex) {
-          case options.Delete:
+    const options = [{ id: 'DELETE', name: 'Delete' }];
+    showFancyActionSheet({
+      title: '⚠️ Are you sure you want to delete your account?',
+      message: 'This is a permanent action.',
+      ...style.getFancyActionSheetStyles(themer),
+      options: options,
+      destructiveOptionId: 'DELETE',
+      onOptionPress: async (option) => {
+        switch (option.id) {
+          case 'DELETE':
             if (count > 0) { deleteUser() } else { confirmDelete(++count) }
             break;
         }
-      }
-    );
+      },
+    });
   }
 
   const deleteUser = async () => {

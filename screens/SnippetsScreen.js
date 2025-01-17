@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Dimensions, Image, Pressable, SectionList, StyleSheet, Text, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { useActionSheet } from '@expo/react-native-action-sheet';
+import { useFancyActionSheet } from 'react-native-fancy-action-sheet';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import ReactNativeHapticFeedback from "react-native-haptic-feedback";
 import { ApplicationContext } from '../ApplicationContext';
@@ -14,6 +14,7 @@ import { moveSnippetOptions } from '../constants/moveSnippetOptions';
 import api from '../helpers/api';
 import storage from '../helpers/storage';
 import banner from '../helpers/banner';
+import style from '../helpers/style';
 import ActionButton from '../components/ActionButton';
 import SnippetView from '../components/SnippetView';
 import SnippetaCloudView from '../components/SnippetaCloudView';
@@ -32,7 +33,7 @@ const SnippetsScreen = ({ route, navigation }) => {
 
   const isEligibleForTutorial = useRef(true);
 
-  const { showActionSheetWithOptions } = useActionSheet();
+  const { showFancyActionSheet } = useFancyActionSheet();
 
   const tutorialSnippets = [
     { id: storageKeys.SNIPPET + 1, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Welcome to Snippeta!', content: 'Snippeta is the best way to copy, paste, and manage snippets of text! Copy text to your clipboard with a single tap; no highlighting or long-tapping!', color_id: colorIds.COLOR_1, time: new Date(), order_index: 0 },
@@ -221,24 +222,24 @@ const SnippetsScreen = ({ route, navigation }) => {
   };
 
   const onAddSnippetTapped = async () => {
-    const options = { 'New blank snippet': 0, 'Use text from clipboard': 1, 'Cancel': 2 };
-    showActionSheetWithOptions(
-      {
-        title: 'How would you like to start creating the snippet?',
-        options: Object.keys(options),
-        cancelButtonIndex: options.Cancel,
-      },
-      async (selectedIndex) => {
-        switch (selectedIndex) {
-          case options['New blank snippet']:
+    triggerHapticFeedback();
+    const options = [{ id: 'NEW_BLANK_SNIPPET', name: 'New blank snippet' }, { id: 'USE_TEXT_FROM_CLIPBOARD', name: 'Use text from clipboard' }];
+    showFancyActionSheet({
+      title: '➕ New snippet options ‎ ‎',
+      message: 'Start blank, or copy text from the clipboard',
+      ...style.getFancyActionSheetStyles(themer),
+      options: options,
+      onOptionPress: async (option) => {
+        switch (option.id) {
+          case 'NEW_BLANK_SNIPPET':
             createSnippet(snippetTypes.SINGLE);
             break;
-          case options['Use text from clipboard']:
+          case 'USE_TEXT_FROM_CLIPBOARD':
             createSnippet(snippetTypes.SINGLE, await Clipboard.getString());
             break;
         }
-      }
-    );
+      },
+    });
   };
 
   const onNewGroupTapped = async () => {
@@ -262,29 +263,30 @@ const SnippetsScreen = ({ route, navigation }) => {
   };
 
   const onSnippetMenuTapped = (snippet) => {
-    const options = {}; let optionsIndex = 0;
-    options.Edit = optionsIndex++;
-    Object.values(moveSnippetOptions).forEach(moveSnippetOptionValue => options[moveSnippetOptionNames[moveSnippetOptionValue]] = optionsIndex++);
-    options.Delete = optionsIndex++; options.Cancel = optionsIndex++;
-    showActionSheetWithOptions(
-      {
-        options: Object.keys(options),
-        cancelButtonIndex: options.Cancel,
-        destructiveButtonIndex: options.Delete,
-      },
-      async (selectedIndex) => {
-        switch (selectedIndex) {
-          case options.Edit:
+    triggerHapticFeedback();
+    const options = [];
+    options.push({ id: 'Edit', name: 'Edit' });
+    options.push(...Object.values(moveSnippetOptions).map(moveSnippetOptionValue => { return { id: moveSnippetOptionValue, name: moveSnippetOptionNames[moveSnippetOptionValue] };}));
+    options.push({ id: 'Delete', name: 'Delete' });
+    showFancyActionSheet({
+      title: '⚙️ Snippet options ‎ ‎',
+      message: 'Edit, move, or delete this snippet',
+      ...style.getFancyActionSheetStyles(themer),
+      options: options,
+      destructiveOptionId: 'Delete',
+      onOptionPress: async (option) => {
+        switch (option.id) {
+          case 'Edit':
             navigation.navigate('Snippet', { snippet, callbacks: callbacks.concat(getSnippets) }); break;
-          case options.Delete:
+          case 'Delete':
             await deleteSnippet(snippet); break;
           default:
-            const moveSnippetOptionValue = Object.values(moveSnippetOptions).find((moveSnippetOptionValue) => options[moveSnippetOptionNames[moveSnippetOptionValue]] === selectedIndex);
+            const moveSnippetOptionValue = Object.values(moveSnippetOptions).find((moveSnippetOptionValue) => moveSnippetOptionValue == option.id);
             if (Object.values(moveSnippetOptions).includes(moveSnippetOptionValue)) { await moveSnippet(snippet, moveSnippetOptionValue); }
             break;
         }
-      }
-    );
+      },
+    });
   }
 
   const triggerHapticFeedback = () => {

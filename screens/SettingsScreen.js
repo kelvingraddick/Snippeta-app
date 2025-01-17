@@ -1,12 +1,13 @@
 import React, { useCallback, useContext, useState } from 'react';
 import { ActivityIndicator, Image, Linking, Pressable, SectionList, StyleSheet, Text, View } from 'react-native';
-import { useActionSheet } from '@expo/react-native-action-sheet';
+import { useFancyActionSheet } from 'react-native-fancy-action-sheet';
 import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
 import ReactNativeHapticFeedback from "react-native-haptic-feedback";
 import { ApplicationContext } from '../ApplicationContext';
 import banner from '../helpers/banner';
 import storage from '../helpers/storage';
 import revenueCat from '../helpers/revenueCat';
+import style from '../helpers/style';
 import { appSettings } from '../constants/appSettings';
 import { colors } from '../constants/colors';
 import { themes } from '../constants/themes';
@@ -23,10 +24,10 @@ const SettingsScreen = ({ navigation }) => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const { showActionSheetWithOptions } = useActionSheet();
 
   const VERSION = '2.0';
   const BUILD = '37';
+  const { showFancyActionSheet } = useFancyActionSheet();
 
   const getSettings = (themer, appearanceMode) => {
     let settings = [];
@@ -79,22 +80,21 @@ const SettingsScreen = ({ navigation }) => {
       const theme = themes[themeId];
       if (theme.isPro && !subscription && !entitlements?.[themeId]) {
         setIsLoading(true);
-        const options = { 'Preview': 0, 'Buy': 1, 'Subscribe to Snippeta Pro': 2, 'Cancel': 3 };
-        showActionSheetWithOptions(
-          {
-            title: 'This pro theme must be unlocked:\n• You can preview it, buy it now, or subscribe to Snippeta Pro to unlock all pro themes!',
-            options: Object.keys(options),
-            cancelButtonIndex: options.Cancel,
-          },
-          async (selectedIndex) => {
-            switch (selectedIndex) {
-              case options['Preview']:
+        const options = [{ id: 'PREVIEW', name: 'Preview' }, { id: 'BUY', name: 'Buy' }, { id: 'SUBSCRIBE', name: 'Subscribe to Snippeta Pro' }];
+        showFancyActionSheet({
+          title: '🔒 This pro theme must be unlocked',
+          message: 'You can preview it, buy it now, or subscribe to Snippeta Pro to unlock all pro themes!',
+          ...style.getFancyActionSheetStyles(themer),
+          options: options,
+          onOptionPress: async (option) => {
+            switch (option.id) {
+              case 'PREVIEW':
                 await startThemePreview(themeId);
                 break;
-              case options['Buy']:
+              case 'BUY':
                 await buyTheme(themeId);
                 break;
-              case options['Subscribe to Snippeta Pro']:
+              case 'SUBSCRIBE':
                 await presentPaywallIfNeeded().then(async (paywallResult) => {
                   if (paywallResult == PAYWALL_RESULT.PURCHASED || paywallResult == PAYWALL_RESULT.RESTORED) {
                     await displayTheme(themeId);
@@ -103,8 +103,8 @@ const SettingsScreen = ({ navigation }) => {
                 break;
             }
             setIsLoading(false);
-          }
-        );
+          },
+        });
       } else {
         await displayTheme(themeId);
       }
@@ -137,16 +137,14 @@ const SettingsScreen = ({ navigation }) => {
   };
 
   const onAppearanceModeTapped = async () => {
-    const options = {}; let optionsIndex = 0;
-    Object.values(appearanceModes).forEach(appearanceModeValue => options[getCapitalizedWord(appearanceModeValue)] = optionsIndex++);
-    options.Cancel = optionsIndex++;
-    showActionSheetWithOptions(
-      {
-        options: Object.keys(options),
-        cancelButtonIndex: options.Cancel,
-      },
-      async (selectedIndex) => {
-        const appearanceModeValue = Object.values(appearanceModes).find((appearanceModeValue) => options[getCapitalizedWord(appearanceModeValue)] === selectedIndex);
+    const options = Object.values(appearanceModes).map(appearanceModeValue => { return { id: appearanceModeValue, name: getCapitalizedWord(appearanceModeValue) };});
+    showFancyActionSheet({
+      title: '🌗 Theme appearance options ‎ ‎',
+      message: 'Select light, dark, or have it automatically controlled by the device\'s system setting',
+      ...style.getFancyActionSheetStyles(themer),
+      options: options,
+      onOptionPress: async (option) => {
+        const appearanceModeValue = Object.values(appearanceModes).find((appearanceModeValue) => appearanceModeValue == option.id);
         if (Object.values(appearanceModes).includes(appearanceModeValue)) { 
           triggerHapticFeedback();
           await storage.saveAppearanceMode(appearanceModeValue);
@@ -157,8 +155,8 @@ const SettingsScreen = ({ navigation }) => {
             await updateThemer(themer.themeId, appearanceModeValue);
           }
         }
-      }
-    );
+      },
+    });
   }
 
   const onBackTapped = async () => {
@@ -218,24 +216,23 @@ const SettingsScreen = ({ navigation }) => {
   };
 
   const onLogoutTapped = async () => {
-    const options = { 'Logout': 0, 'Cancel': 1 };
-    showActionSheetWithOptions(
-      {
-        title: 'Are you sure you want to logout of your account?',
-        options: Object.keys(options),
-        destructiveButtonIndex: options.Logout,
-        cancelButtonIndex: options.Cancel,
-      },
-      async (selectedIndex) => {
-        switch (selectedIndex) {
-          case options.Logout:
+    const options = [{ id: 'LOGOUT', name: 'Logout' }];
+    showFancyActionSheet({
+      title: '⚠️ Are you sure you want to logout?',
+      message: 'Cloud snippets will not be available, and some other functionality will be disabled.',
+      ...style.getFancyActionSheetStyles(themer),
+      options: options,
+      destructiveOptionId: 'LOGOUT',
+      onOptionPress: async (option) => {
+        switch (option.id) {
+          case 'LOGOUT':
             navigation.popToTop();
             await logout();
             banner.showSuccessMessage('Logged out!');
             break;
         }
-      }
-    );
+      },
+    });
   };
 
   const onRestorePurchasesTapped = async () => {

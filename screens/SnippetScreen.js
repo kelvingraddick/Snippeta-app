@@ -1,13 +1,14 @@
 import React, { useContext, useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { useActionSheet } from '@expo/react-native-action-sheet';
+import { useFancyActionSheet } from 'react-native-fancy-action-sheet';
 import { ApplicationContext } from '../ApplicationContext';
 import { storageKeys } from '../constants/storageKeys';
 import { snippetTypes } from '../constants/snippetTypes';
 import storage from '../helpers/storage';
 import api from '../helpers/api';
 import banner from '../helpers/banner';
+import style from '../helpers/style';
 import { snippetSources } from '../constants/snippetSources';
 import { errorCodeMessages } from '../constants/errorCodeMessages';
 import { moveSnippetOptions } from '../constants/moveSnippetOptions';
@@ -27,7 +28,7 @@ const SnippetScreen = ({ route, navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [snippet, setSnippet] = useState(route.params.snippet || {});
 
-  const { showActionSheetWithOptions } = useActionSheet();
+  const { showFancyActionSheet } = useFancyActionSheet();
 
   const onBackTapped = async () => {
     navigation.goBack();
@@ -121,24 +122,23 @@ const SnippetScreen = ({ route, navigation }) => {
 
   const selectSnippetSource = async () => {
     return new Promise((resolve, reject) => {
-      const options = {}; options[snippetSources.API] = 0; options[snippetSources.STORAGE] = 1; options.Cancel = 2;
-      showActionSheetWithOptions(
-        {
-          title: 'Where do you want to store this snippet?',
-          options: Object.keys(options),
-          cancelButtonIndex: options.Cancel,
-        },
-        async (selectedIndex) => {
-          switch (selectedIndex) {
-            case options[snippetSources.API]:
+      const options = [{ id: snippetSources.API, name: snippetSources.API }, { id: snippetSources.STORAGE, name: snippetSources.STORAGE }];
+      showFancyActionSheet({
+        title: '💾 Snippet saving options ‎ ‎',
+        message: 'It can be stored on this device, or in Snippeta Cloud',
+        ...style.getFancyActionSheetStyles(themer),
+        options: options,
+        onOptionPress: async (option) => {
+          switch (option.id) {
+            case snippetSources.API:
               resolve(snippetSources.API); break;
-            case options[snippetSources.STORAGE]:
+            case snippetSources.STORAGE:
               resolve(snippetSources.STORAGE); break;
             default:
               resolve(null);
           }
-        }
-      );
+        },
+      });
     });
   };
 
