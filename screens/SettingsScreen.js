@@ -24,9 +24,6 @@ const SettingsScreen = ({ navigation }) => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-
-  const VERSION = '2.0';
-  const BUILD = '37';
   const { showFancyActionSheet } = useFancyActionSheet();
 
   const getSettings = (themer, appearanceMode) => {
