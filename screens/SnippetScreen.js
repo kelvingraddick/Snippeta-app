@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useFancyActionSheet } from 'react-native-fancy-action-sheet';
@@ -27,6 +27,7 @@ const SnippetScreen = ({ route, navigation }) => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [snippet, setSnippet] = useState(route.params.snippet || {});
+  const contentCursorLineIndex = useRef();
 
   const { showFancyActionSheet } = useFancyActionSheet();
 
@@ -116,8 +117,22 @@ const SnippetScreen = ({ route, navigation }) => {
   };
 
   const onContentChangeText = async (text) => {
-    setSnippet({ ...snippet, content: text });
-    route.params.snippet.content = text;
+    const content = getFormattedContent(snippet?.content, text);
+    setSnippet({ ...snippet, content: content });
+    route.params.snippet.content = content;
+  };
+
+  const onContentSelectionChange = async ({ nativeEvent: { selection } }) => {
+    const { start } = selection; // Get the cursor position
+    const lines = snippet?.content?.split('\n') ?? []; // Split text into lines
+    let characterCount = 0;
+    for (let i = 0; i < lines.length; i++) {
+      characterCount += lines[i].length + 1; // +1 for the newline character
+      if (start < characterCount) {
+        contentCursorLineIndex.current = i;
+        break;
+      }
+    }
   };
 
   const selectSnippetSource = async () => {
@@ -152,6 +167,47 @@ const SnippetScreen = ({ route, navigation }) => {
     return result;
   }
 
+  const getFormattedContent = (oldText, newText) => {
+    try {
+      let isNewLineProcessed = false;
+      const oldLines = oldText?.split('\n') ?? [];
+      const newLines = newText?.split('\n') ?? [];
+      if (newLines.length === oldLines.length + 1) { // Only format if there is exactly one new line
+        return newLines
+          .map((newLine, index) => {
+            // Find the index of the newly added line based on last cursor position
+            if (!isNewLineProcessed && index == contentCursorLineIndex.current + 1) {
+              isNewLineProcessed = true;
+              const previousLine = newLines[index - 1];
+              if (newLine.length === 0 && previousLine) {
+                // 1. Continue unordered dashed list if the previous line was a (non-empty) list item
+                if (previousLine.startsWith('- ') && previousLine.trim() !== '-') {
+                  return '- ';
+                }
+                // 2. Continue unordered bullet-point list if the previous line was a (non-empty) list item
+                if (previousLine.startsWith('• ') && previousLine.trim() !== '•') {
+                  return '• ';
+                }
+                // 3. Continue ordered list if the previous line was ordered
+                if (/^\d+\.\s/.test(previousLine) && !/^\d+\.$/.test(previousLine.trim())) {
+                  const previousNumber = parseInt(previousLine.match(/\d+/)[0], 10);
+                  return `${previousNumber + 1}. `;
+                }
+              }
+            }
+            // 4. return unchanged line
+            return newLine;
+          })
+          .join('\n');
+      }
+    } catch (error) {
+      const errorMessage = 'Formatting snippet content failed with error: ' + error.message;
+      console.error('SnippetScreen.js -> onSaveTapped: ' + errorMessage);
+      banner.showErrorMessage(errorMessage);
+    }
+    return newText;  // return unmodified code if more than one new line
+  };
+
   return (
       <KeyboardAwareScrollView style={[styles.container, { backgroundColor: themer.getColor('background2') }]} keyboardShouldPersistTaps={'handled'}>
         <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background') } ]}>
@@ -174,7 +230,7 @@ const SnippetScreen = ({ route, navigation }) => {
           <TextInput style={[styles.titleInput, { color: themer.getColor('textInput3.foreground') }]} placeholder={`Type ${snippet.type == snippetTypes.SINGLE ? 'title' : `title of ${(snippet.parent_id ? 'sub-group' : 'group')}`} here..`} placeholderTextColor={themer.getPlaceholderTextColor('textInput3.foreground')} multiline maxLength={50} autoFocus onChangeText={onTitleChangeText}>{snippet.title}</TextInput>
         </View>
         <View style={styles.contentInputView}>
-          <TextInput style={[styles.contentInput, { color: themer.getColor('textArea1.foreground') }]} placeholder={`Type ${snippet.type == snippetTypes.SINGLE ? 'content' : `description of ${(snippet.parent_id ? 'sub-group' : 'group')}`} here..`} placeholderTextColor={themer.getPlaceholderTextColor('textArea1.foreground')} multiline scrollEnabled={false} maxLength={1000} onChangeText={onContentChangeText}>{snippet.content}</TextInput>
+          <TextInput style={[styles.contentInput, { color: themer.getColor('textArea1.foreground') }]} placeholder={`Type ${snippet.type == snippetTypes.SINGLE ? 'content' : `description of ${(snippet.parent_id ? 'sub-group' : 'group')}`} here..`} placeholderTextColor={themer.getPlaceholderTextColor('textArea1.foreground')} multiline scrollEnabled={false} maxLength={1000} onChangeText={onContentChangeText} onSelectionChange={onContentSelectionChange}>{snippet.content}</TextInput>
         </View>
       </KeyboardAwareScrollView>
   );
