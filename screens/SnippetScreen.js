@@ -51,6 +51,7 @@ const SnippetScreen = ({ route, navigation }) => {
 
       // if source is storage, save in storage
       if (snippetSource == snippetSources.STORAGE) {
+        const isNew = (snippet.id == null || snippet.id == undefined) ? true : false;
         const id = snippet.id ?? (storageKeys.SNIPPET + generateRandomString(10));
         const snippetToSave = {
           ...snippet,
@@ -61,7 +62,7 @@ const SnippetScreen = ({ route, navigation }) => {
           time: snippet.time ?? new Date(),
           order_index: snippet.order_index ?? 0,
         };
-        if (snippetToSave.order_index == 0) { await storage.moveSnippet(snippetToSave, moveSnippetOptions.TO_BOTTOM); } 
+        if (isNew) { await storage.moveSnippet(snippetToSave, moveSnippetOptions.TO_BOTTOM); } 
         else { await storage.saveSnippet(snippetToSave); }
         console.log('SnippetScreen.js -> onSaveTapped: Saved snippet to storage with ID ' + id);
       }
