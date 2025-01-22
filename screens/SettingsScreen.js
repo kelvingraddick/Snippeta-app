@@ -54,7 +54,7 @@ const SettingsScreen = ({ navigation }) => {
         { label: 'Privacy Policy', onTapped: () => { Linking.openURL('https://snippeta.com/privacy-policy/'); } },
         { label: 'Terms and Conditions', onTapped: () => { Linking.openURL('https://snippeta.com/terms-and-conditions/'); } },
         { label: 'Wave Link (developer)', onTapped: () => { Linking.openURL('http://www.wavelinkllc.com'); } },
-        { label: 'KG.codes (developer)', onTapped: () => { Linking.openURL('https://www.kg.codes'); } },
+        { label: 'KG.codes (developer)', onTapped: () => { Linking.openURL('https://linktr.ee/kg.codes'); } },
       ];
       settings.push({ title: '🎨 Theme', data: themeSettings });
       settings.push({ title: '🌗 Appearance', data: appearanceSettings });
