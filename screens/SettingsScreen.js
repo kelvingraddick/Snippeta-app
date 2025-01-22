@@ -284,7 +284,7 @@ const SettingsScreen = ({ navigation }) => {
             <Text style={[styles.descriptionText, { color: themer.getColor('screenHeader1.foreground') }]}>Subscribe to access pro-level features</Text>
             <View style={styles.infoView}>
               <Text style={[styles.featureText, { color: themer.getColor('screenHeader1.foreground') }]}>☁️ Sync & backup snippets with <Text style={{ fontWeight: 'bold' }}>Snippeta Cloud</Text></Text>
-              <Text style={[styles.featureText, { color: themer.getColor('screenHeader1.foreground') }]}>🎨 Unlock pro-level themes, fonts, & sounds</Text>
+              <Text style={[styles.featureText, { color: themer.getColor('screenHeader1.foreground') }]}>🎨 Unlock <Text style={{ fontWeight: 'bold' }}>pro themes</Text> to find your own style</Text>
               <Text style={[styles.featureText, { color: themer.getColor('screenHeader1.foreground') }]}>🧠 Organize better with nested <Text style={{ fontWeight: 'bold' }}>sub-groups</Text></Text>
             </View>
           </View>
