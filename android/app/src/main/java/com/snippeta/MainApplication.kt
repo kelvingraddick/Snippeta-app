@@ -1,4 +1,4 @@
-package com.snippeta
+package com.wavelinkllc.snippeta
 
 import android.app.Application
 import com.facebook.react.PackageList

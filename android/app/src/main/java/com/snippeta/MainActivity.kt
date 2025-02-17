@@ -1,4 +1,4 @@
-package com.snippeta
+package com.wavelinkllc.snippeta
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

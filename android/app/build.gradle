@@ -75,9 +75,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.snippeta"
+    namespace "com.wavelinkllc.snippeta"
     defaultConfig {
-        applicationId "com.snippeta"
+        applicationId "com.wavelinkllc.snippeta"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
