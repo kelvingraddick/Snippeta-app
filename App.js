@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer, useRef } from 'react';
-import { Linking, NativeModules } from 'react-native';
+import { Linking, NativeModules, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { navigationRef } from './RootNavigation';
 import navigation from './RootNavigation';
@@ -343,8 +343,10 @@ export default function App() {
 
   const updateWidgets = () => {
     try {
-      WidgetNativeModule.updateWidgets();
-      console.log('App.js -> updateWidgets: refreshing home screen widgets was successful');
+      if (Platform.OS === 'ios') { // TODO: add android widget support
+        WidgetNativeModule.updateWidgets();
+        console.log('App.js -> updateWidgets: refreshing home screen widgets was successful');
+      }
     } catch (error) {
       console.error('App.js -> updateWidgets: failed with error: ' + error.message);
     }
