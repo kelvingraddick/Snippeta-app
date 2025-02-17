@@ -39,14 +39,14 @@ const SettingsScreen = ({ navigation }) => {
       ]; 
       let appExtensionsSettings = [
         { label: 'Home screen widget', onTapped: () => { navigation.navigate('Widget'); }},
-        { label: 'System settings', onTapped: () => { Linking.openURL('app-settings:'); }},
+        { label: 'System settings', onTapped: () => { Platform.OS === 'ios' ? Linking.openURL('app-settings:') : Linking.openSettings(); }},
       ];
       let inAppPurchaseSettings = [
         { label: 'Restore purchases', onTapped: () => { onRestorePurchasesTapped(); } },
-        { label: 'Manage subscription', onTapped: () => { Linking.openURL('https://apps.apple.com/account/subscriptions'); } },
+        { label: 'Manage subscription', onTapped: () => { Linking.openURL(Platform.OS === 'ios' ? 'https://apps.apple.com/account/subscriptions' : 'https://play.google.com/store/account/subscriptions'); } }, // alternative Android: 'https://play.google.com/store/account/subscriptions?sku=YOUR_SUBSCRIPTION_ID&package=YOUR_APP_PACKAGE_NAME'
       ];
       let getInTouchSettings = [
-        { label: 'Leave a review', onTapped: () => { Linking.openURL('https://apps.apple.com/app/id1282250868?action=write-review'); } },
+        { label: 'Leave a review', onTapped: () => { Linking.openURL(Platform.OS === 'ios' ? 'https://apps.apple.com/app/id1282250868?action=write-review' : 'market://details?id=com.wavelinkllc.snippeta&showAllReviews=true'); } },
         { label: 'Get help / support', onTapped: () => { Linking.openURL('mailto:development@wavelinkllc.com?subject=Snippeta%20support%20request'); } },
         { label: 'Request new feature', onTapped: () => { Linking.openURL('mailto:development@wavelinkllc.com?subject=Snippeta%20feature%20request'); } },
       ];

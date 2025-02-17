@@ -371,7 +371,7 @@ export default function App() {
           GooglePackageName: 'com.wavelinkllc.snippeta',
           preferInApp: true,
           openAppStoreIfInAppFails: true,
-          fallbackPlatformURL: 'https://apps.apple.com/us/app/snippeta-copy-manage-paste/id1282250868',
+          fallbackPlatformURL: Platform.OS === 'ios' ? 'https://apps.apple.com/us/app/snippeta-copy-manage-paste/id1282250868' : 'market://details?id=com.wavelinkllc.snippeta&showAllReviews=true',
         };
         Rate.rate(options, async (success, errorMessage) => {
           if (success) { // this technically only tells us if the user successfully went to the Review Page. Whether they actually did anything, we do not know.
