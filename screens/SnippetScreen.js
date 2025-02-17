@@ -277,8 +277,8 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     marginHorizontal: 10,
     paddingHorizontal: 20,
-    paddingTop: 15,
-    paddingBottom: 20,
+    paddingTop: Platform.OS === 'ios' ? 15 : 10,
+    paddingBottom: Platform.OS === 'ios' ? 20 : 10,
     borderRadius: 30,
   },
   titleInput: {

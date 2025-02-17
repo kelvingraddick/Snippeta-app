@@ -192,7 +192,8 @@ const styles = StyleSheet.create({
   },
   inputView: {
     marginBottom: 20,
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingVertical: Platform.OS === 'ios' ? 20 : 10,
     borderRadius: 30,
   },
   input: {

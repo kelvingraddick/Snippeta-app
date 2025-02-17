@@ -449,6 +449,7 @@ const styles = StyleSheet.create({
     height: 20,
     resizeMode: 'cover',
     opacity: 0.25,
+    marginTop: Platform.OS === 'ios' ? 0 : 4,
   },
 });
 

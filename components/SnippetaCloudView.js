@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, Platform, StyleSheet, Text, View } from 'react-native';
 
 const SnippetaCloudView = (props) => {
   const { children, themer, user, isLargeLogo, isCentered } = props;
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   smallLogoIcon: {
     height: 25,
     width: 105,
-    marginTop: 1,
+    marginTop: Platform.OS === 'ios' ? 1 : 5,
   },
   largeTitleText: {
     fontSize: 30,

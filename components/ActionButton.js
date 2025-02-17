@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 17,
     fontWeight: 'bold',
+    marginTop: Platform.OS === 'ios' ? 0 : -4,
   },
   icon: {
     height: 14,

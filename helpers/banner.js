@@ -1,6 +1,8 @@
-import { Image, StyleSheet } from 'react-native';
+import { Image, Platform, StyleSheet } from 'react-native';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import { colors } from '../constants/colors';
+
+const statusBarHeight = Platform.OS === 'ios' ? 50 : 10;
 
 const showSuccessMessage = async (message, description, duration) => {
   showMessage({
@@ -11,7 +13,7 @@ const showSuccessMessage = async (message, description, duration) => {
     backgroundColor: colors.white,
     titleStyle: { fontWeight: 'bold', color: colors.darkGray, },
     textStyle: { fontStyle: 'italic', color: colors.darkGray, },
-    statusBarHeight: 50,
+    statusBarHeight: statusBarHeight,
   });
 };
 
@@ -21,7 +23,7 @@ const showErrorMessage = async (message, duration) => {
     duration: duration ?? 5000,
     backgroundColor: colors.lightRed,
     titleStyle: { fontWeight: 'bold', color: colors.darkGray, },
-    statusBarHeight: 50,
+    statusBarHeight: statusBarHeight,
   });
 };
 
@@ -36,7 +38,7 @@ const showStatusMessage = async (message, duration, animated) => {
     animated: animated,
     backgroundColor: colors.white,
     titleStyle: { fontWeight: 'bold', color: colors.darkGray, },
-    statusBarHeight: 50,
+    statusBarHeight: statusBarHeight,
   });
 };
 
