@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useState } from 'react';
-import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Image, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useFancyActionSheet } from 'react-native-fancy-action-sheet';
 import { ApplicationContext } from '../ApplicationContext';
@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
   },
   headerView: {
     paddingHorizontal: 20,
-    paddingTop: 60,
+    paddingTop: Platform.OS === 'ios' ? 60 : 17.5,
     paddingBottom: 15,
   },
   titleView: {

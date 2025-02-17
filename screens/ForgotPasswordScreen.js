@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Image, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { ApplicationContext } from '../ApplicationContext';
 import { errorCodeMessages } from '../constants/errorCodeMessages';
 import banner from '../helpers/banner';
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   },
   headerView: {
     paddingHorizontal: 20,
-    paddingTop: 60,
+    paddingTop: Platform.OS === 'ios' ? 60 : 17.5,
   },
   titleView: {
     flexDirection: 'row',

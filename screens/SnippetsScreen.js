@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Dimensions, Image, Pressable, SectionList, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Image, Platform, Pressable, SectionList, StyleSheet, Text, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useFancyActionSheet } from 'react-native-fancy-action-sheet';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
@@ -383,7 +383,7 @@ const styles = StyleSheet.create({
   },
   headerView: {
     paddingHorizontal: 20,
-    paddingTop: 60,
+    paddingTop: Platform.OS === 'ios' ? 60 : 17.5,
     paddingBottom: 15,
   },
   titleView: {

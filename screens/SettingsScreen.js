@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useState } from 'react';
-import { ActivityIndicator, Image, Linking, Pressable, SectionList, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Image, Linking, Platform, Pressable, SectionList, StyleSheet, Text, View } from 'react-native';
 import { useFancyActionSheet } from 'react-native-fancy-action-sheet';
 import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
 import ReactNativeHapticFeedback from "react-native-haptic-feedback";
@@ -343,7 +343,7 @@ const styles = StyleSheet.create({
   },
   headerView: {
     paddingHorizontal: 20,
-    paddingTop: 60,
+    paddingTop: Platform.OS === 'ios' ? 60 : 17.5,
     paddingBottom: 15,
   },
   titleView: {
