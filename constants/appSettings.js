@@ -1,5 +1,5 @@
 export const appSettings = {
-  VERSION_NUMBER: '2.0.1',
+  VERSION_NUMBER: '2.0.2',
   BUILD_NUMBER: 1,
   SENTRY_ENABLED: true,
   SENTRY_DSN_URL: '{{SENTRY_DSN_URL}}',
