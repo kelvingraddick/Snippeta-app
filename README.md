@@ -57,9 +57,27 @@ Now that you have successfully run the app, let's modify it.
 
    For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
 
+## Step 4: Publishing your App
+
+### For Android
+
+Pre-req.: Follow the instructions here to setup upload key: https://reactnative.dev/docs/signed-apk-android
+1. Bump the version and/or build number in `~/android/app/build.gradle`
+2. Run `npx react-native build-android --mode=release` in the console
+3. The generated AAB can be found under `~/android/app/build/outputs/bundle/release/app-release.aab`, and is ready to be uploaded to Google Play; where it can be used as a release or beta test build
+
+### For iOS
+
+1. Open iOS project in Xcode
+2. Bump the version and/or build number under the General settings on the main app target
+3. In the menu, go to "Product", then "Archive"
+4. Once built successfully, the new version will show in the Organizer; select it
+5. Click "Distribute App" and follow the wizard
+6. To app will be uploaded to App Store Connect, where it can be used as a release or beta test build
+
 ## Congratulations! :tada:
 
-You've successfully run and modified your React Native App. :partying_face:
+You've successfully ran, modified, and published your React Native App. :partying_face:
 
 ### Now what?
 
