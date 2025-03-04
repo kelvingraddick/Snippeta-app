@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:minWidth="120dp"
+  android:minHeight="0dp"
+  android:updatePeriodMillis="0"
+  android:initialLayout="@layout/group_widget_layout"
+  android:resizeMode="horizontal|vertical"
+  android:widgetFeatures="reconfigurable"
+  android:configure="com.wavelinkllc.snippeta.GroupWidgetConfigureActivity"
+/>

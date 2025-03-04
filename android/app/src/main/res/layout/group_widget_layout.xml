@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/widget_container"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="#FFFFFF"
+  android:orientation="vertical"
+  android:padding="12dp">
+
+  <!-- Title -->
+  <TextView
+    android:id="@+id/widgetTitle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Widget"
+    android:textSize="12sp"
+    android:textColor="#000000"
+    android:textStyle="bold"
+    android:gravity="start" />
+
+  <!-- Button 1  -->
+  <Button
+    android:id="@+id/button1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Button 1"
+    android:textSize="12sp"
+    android:textAllCaps="false"
+    android:gravity="start|center_vertical"
+    android:textAlignment="gravity"
+    android:padding="12dp"
+    android:layout_marginTop="12dp" />
+
+  <!-- Button 2 -->
+  <Button
+    android:id="@+id/button2"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Button 2"
+    android:textSize="12sp"
+    android:textAllCaps="false"
+    android:gravity="start|center_vertical"
+    android:textAlignment="gravity"    
+    android:padding="12dp"
+    android:layout_marginTop="5dp" />
+
+  <!-- Button 3 -->
+  <Button
+    android:id="@+id/button3"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Button 3"
+    android:textSize="12sp"
+    android:textAllCaps="false"
+    android:gravity="start|center_vertical"
+    android:textAlignment="gravity"
+    android:padding="12dp"
+    android:layout_marginTop="5dp" />
+</LinearLayout>

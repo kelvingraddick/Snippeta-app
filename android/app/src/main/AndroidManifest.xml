@@ -25,16 +25,26 @@
         </intent-filter>
       </activity>
 
+      <activity
+        android:name=".GroupWidgetConfigureActivity"
+        android:label="Widget Configure"
+        android:exported="true">
+      </activity>
+
       <receiver
-        android:name=".WidgetProvider"
-        android:label="Widget"
+        android:name=".GroupWidgetProvider"
+        android:label="Snippet Group"
         android:exported="false">
         <intent-filter>
           <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
         </intent-filter>
         <meta-data
           android:name="android.appwidget.provider"
-          android:resource="@xml/widget_info" />
+          android:resource="@xml/group_widget_info" />
+      </receiver>
+
+      <receiver android:name=".CopyBroadcastReceiver"
+        android:exported="false">
       </receiver>
 
     </application>
