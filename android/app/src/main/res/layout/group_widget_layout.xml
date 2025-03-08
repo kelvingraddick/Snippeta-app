@@ -57,4 +57,43 @@
     android:textAlignment="gravity"
     android:padding="12dp"
     android:layout_marginTop="5dp" />
+
+  <!-- Button 4 -->
+  <Button
+    android:id="@+id/button4"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Button 4"
+    android:textSize="12sp"
+    android:textAllCaps="false"
+    android:gravity="start|center_vertical"
+    android:textAlignment="gravity"    
+    android:padding="12dp"
+    android:layout_marginTop="5dp" />
+
+  <!-- Button 5 -->
+  <Button
+    android:id="@+id/button5"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Button 5"
+    android:textSize="12sp"
+    android:textAllCaps="false"
+    android:gravity="start|center_vertical"
+    android:textAlignment="gravity"    
+    android:padding="12dp"
+    android:layout_marginTop="5dp" />
+
+  <!-- Button 6 -->
+  <Button
+    android:id="@+id/button6"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Button 6"
+    android:textSize="12sp"
+    android:textAllCaps="false"
+    android:gravity="start|center_vertical"
+    android:textAlignment="gravity"
+    android:padding="12dp"
+    android:layout_marginTop="5dp" />
 </LinearLayout>

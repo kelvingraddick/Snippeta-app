@@ -40,6 +40,9 @@ class GroupWidgetProvider : AppWidgetProvider() {
                     0 -> R.id.button1
                     1 -> R.id.button2
                     2 -> R.id.button3
+                    3 -> R.id.button4
+                    4 -> R.id.button5
+                    5 -> R.id.button6
                     else -> continue
                 }
                 if (snippet == null) {
@@ -49,9 +52,17 @@ class GroupWidgetProvider : AppWidgetProvider() {
                     views.setTextViewText(buttonId, snippet.title)
                     views.setInt(buttonId, "setBackgroundColor", themer.getColor(snippet.colorId ?: 0))
                     // set button click event/intent
-                    val copyIntent = Intent(context, CopyBroadcastReceiver::class.java).apply { putExtra("text_to_copy", snippet.content) }
-                    val copyPendingIntent = PendingIntent.getBroadcast(context, i, copyIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-                    views.setOnClickPendingIntent(buttonId, copyPendingIntent)
+                    if (snippet.type === 0) {
+                        val copyIntent = Intent(context, CopyBroadcastReceiver::class.java).apply { putExtra("text_to_copy", snippet.content) }
+                        val copyPendingIntent = PendingIntent.getBroadcast(context, i, copyIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+                        views.setOnClickPendingIntent(buttonId, copyPendingIntent)
+                    } else {
+                        var snippetId = snippet.id
+                        val deepLinkUri = Uri.parse("snippeta://snippets/$snippetId")
+                        val openAppIntent = Intent(Intent.ACTION_VIEW, deepLinkUri).apply { addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) }
+                        val openAppPendingIntent = PendingIntent.getActivity(context, i, openAppIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+                        views.setOnClickPendingIntent(buttonId, openAppPendingIntent)
+                    }
                 }
             }
             appWidgetManager.updateAppWidget(appWidgetId, views)
