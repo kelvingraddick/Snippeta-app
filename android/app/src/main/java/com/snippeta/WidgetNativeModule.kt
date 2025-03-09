@@ -1,5 +1,6 @@
 package com.wavelinkllc.snippeta
 
+import android.content.ComponentName
 import android.content.Intent
 import android.util.Log
 import com.facebook.react.bridge.ReactApplicationContext
@@ -14,7 +15,11 @@ class WidgetNativeModule(private val reactContext: ReactApplicationContext)
     @ReactMethod
     fun updateWidgets() {
         Log.i("ReactNative: WidgetNativeModule", "updateWidgets for " + GroupWidgetProvider.ACTION_UPDATE_WIDGET)
-        val intent = Intent(GroupWidgetProvider.ACTION_UPDATE_WIDGET)
-        reactContext.sendBroadcast(intent)
+        val context = reactApplicationContext
+        val intent = Intent(GroupWidgetProvider.ACTION_UPDATE_WIDGET).apply {
+            component = ComponentName(context, GroupWidgetProvider::class.java)
+            putExtra("extra_data_key", "data") // optional, pass data
+        }
+        context.sendBroadcast(intent)
     }
 }
