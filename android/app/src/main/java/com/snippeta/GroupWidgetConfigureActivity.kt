@@ -55,7 +55,7 @@ class GroupWidgetConfigureActivity : AppCompatActivity() {
             listView.adapter = adapter
 
             listView.setOnItemClickListener { _, _, position, _ ->
-                onSnippetGroupSelected(snippetGroups[position])
+                onSnippetGroupSelected(snippetGroups[position].id)
             }
         }
     }
@@ -84,16 +84,10 @@ class GroupWidgetConfigureActivity : AppCompatActivity() {
     /**
      * Call this when the user selects a snippet group in your UI.
      */
-    private fun onSnippetGroupSelected(selectedGroup: SnippetGroup) {
-        // Convert the entire snippetGroup object to JSON
-        val gson = GsonBuilder()
-            .registerTypeAdapter(SnippetGroup::class.java, SnippetGroupAdapter())
-            .create()
-        val snippetGroupJson = gson.toJson(selectedGroup)
-
-        // Save the JSON string to SharedPreferences, keyed by widget ID
+    private fun onSnippetGroupSelected(selectedSnippetGroupId: String) {
+        // Save the selected snippet group Id to SharedPreferences, keyed by widget ID
         val prefs = getSharedPreferences("SnippetWidgetPrefs", Context.MODE_PRIVATE)
-        prefs.edit().putString("snippetGroup_$appWidgetId", snippetGroupJson).apply()
+        prefs.edit().putString("snippetGroup_$appWidgetId", selectedSnippetGroupId).apply()
 
         // Optionally: update the widget right away
         val appWidgetManager = AppWidgetManager.getInstance(this)

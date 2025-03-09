@@ -47,10 +47,10 @@ class Themer(context: Context) {
             // Attempt to parse
             currentColors = try {
                 val parsed = Gson().fromJson(dataString, Colors::class.java)
-                Log.d("Themer", "Success decoding colors. Color0 is: ${parsed.color0}")
+                Log.d("ReactNative: Themer", "Success decoding colors. Color1 is: ${parsed.color1}")
                 parsed
             } catch (e: JsonSyntaxException) {
-                Log.e("Themer", "Error decoding colors: ${e.message}")
+                Log.e("ReactNative: Themer", "Error decoding colors: ${e.message}")
                 defaultColors
             }
         }

@@ -343,10 +343,8 @@ export default function App() {
 
   const updateWidgets = () => {
     try {
-      if (Platform.OS === 'ios') { // TODO: add android widget support
-        WidgetNativeModule.updateWidgets();
-        console.log('App.js -> updateWidgets: refreshing home screen widgets was successful');
-      }
+      WidgetNativeModule.updateWidgets();
+      console.log('App.js -> updateWidgets: refreshing home screen widgets was successful');
     } catch (error) {
       console.error('App.js -> updateWidgets: failed with error: ' + error.message);
     }
