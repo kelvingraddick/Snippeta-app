@@ -13,7 +13,7 @@ class WidgetNativeModule(private val reactContext: ReactApplicationContext)
 
     @ReactMethod
     fun updateWidgets() {
-        Log.i("KG: WidgetNativeModule", "updateWidgets for " + GroupWidgetProvider.ACTION_UPDATE_WIDGET)
+        Log.i("ReactNative: WidgetNativeModule", "updateWidgets for " + GroupWidgetProvider.ACTION_UPDATE_WIDGET)
         val intent = Intent(GroupWidgetProvider.ACTION_UPDATE_WIDGET)
         reactContext.sendBroadcast(intent)
     }
