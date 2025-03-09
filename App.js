@@ -103,6 +103,11 @@ export default function App() {
     };
   }, []);
 
+  useEffect(() => {
+    console.log(`App.js -> useEffect: ${themer.themeId ? `updated themer with id '${themer.themeId}', name '${themer.getName()}', and appearance '${themer.themeAppearance}'` : `no theme found; using default '${themer.getName()}'`}`);
+    widget.saveData('colors', themer.getColors()).then(() => updateWidgets());
+  }, [themer.themeId, themer.appearanceMode]);
+
   const loginWithStorage = async () => {
     try {
       console.log('App.js -> loginWithStorage: Attempt to get credentials from storage..');
@@ -262,9 +267,6 @@ export default function App() {
     try {
       themer.setThemeId(themeId);
       themer.setAppearanceMode(appearanceMode);
-      console.log(`App.js -> updateThemer: ${themer.themeId ? `updated themer with id '${themer.themeId}', name '${themer.getName()}', and appearance '${themer.themeAppearance}'` : `no theme found; using default '${themer.getName()}'`}`);
-      await widget.saveData('colors', themer.getColors());
-      updateWidgets();
     } catch (error) {
       console.error('App.js -> updateThemer: updating themer failed with error: ' + error.message);
     }
