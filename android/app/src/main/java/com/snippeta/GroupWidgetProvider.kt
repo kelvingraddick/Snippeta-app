@@ -51,7 +51,7 @@ class GroupWidgetProvider : AppWidgetProvider() {
             val title = snippetGroup?.title
             views.setTextViewText(R.id.widgetTitle, title)
             // set widget buttons based on sub-snippets
-            val snippets = snippetGroup?.snippets ?: emptyList()
+            val snippets = snippetGroup?.snippets?.sortedBy { it.orderIndex } ?: emptyList()
             for (i in 0 until 6) {
                 val snippet = snippets.getOrNull(i)
                 val buttonId = when (i) {
