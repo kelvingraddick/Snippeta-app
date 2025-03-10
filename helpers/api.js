@@ -3,7 +3,7 @@ import validator from "./validator";
 const register = async (user) => {
   console.log(`api.js -> register: Attempt to request register with email address ${user?.email_address}.`);
   if (validator.isValidUser(user)) {
-    return await fetch('http://www.snippeta.com/api/user/register.php', {
+    return await fetch('https://www.snippeta.com/api/user/register.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(user)
@@ -20,7 +20,7 @@ const login = async (emailOrPhone, password) => {
     password: password,
   };
 
-  return await fetch('http://www.snippeta.com/api/user/login.php', {
+  return await fetch('https://www.snippeta.com/api/user/login.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body)
@@ -30,7 +30,7 @@ const login = async (emailOrPhone, password) => {
 const saveUser = async (user, authorizationToken) => {
   console.log(`api.js -> saveUser: Attempt to request saving user with id ${user?.id}.`);
   if (validator.isValidUser(user)) {
-    return await fetch('http://www.snippeta.com/api/user/save.php', {
+    return await fetch('https://www.snippeta.com/api/user/save.php', {
       method: 'POST',
       headers: {
         'Authorization': `Basic ${authorizationToken}`,
@@ -44,7 +44,7 @@ const saveUser = async (user, authorizationToken) => {
 
 const deleteUser = async (authorizationToken) => {
   console.log(`api.js -> deleteUser: Attempt to request deleting current user.`);
-  return await fetch('http://www.snippeta.com/api/user/delete.php', {
+  return await fetch('https://www.snippeta.com/api/user/delete.php', {
     method: 'POST',
     headers: {
       'Authorization': `Basic ${authorizationToken}`,
@@ -56,7 +56,7 @@ const deleteUser = async (authorizationToken) => {
 
 const sendPasswordResetEmail = async (emailOrPhone) => {
   console.log(`api.js -> passwordResetEmail: Attempt to request password reset email for ${emailOrPhone}.`);
-  return await fetch('http://www.snippeta.com/api/user/password/reset/email.php', {
+  return await fetch('https://www.snippeta.com/api/user/password/reset/email.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email_or_phone: emailOrPhone })
@@ -67,7 +67,7 @@ const sendPasswordResetEmail = async (emailOrPhone) => {
 const getSnippets = async (parentId, authorizationToken) => {
   console.log(`api.js -> getSnippets: Get snippets for parent ID ${parentId}.`);
   
-  return await fetch(`http://www.snippeta.com/api/snippets/get.php?parent_id=${parentId}`, {
+  return await fetch(`https://www.snippeta.com/api/snippets/get.php?parent_id=${parentId}`, {
     method: 'GET',
     headers: { 
       'Authorization': `Basic ${authorizationToken}`,
@@ -79,7 +79,7 @@ const getSnippets = async (parentId, authorizationToken) => {
 const getSnippetGroups = async (authorizationToken) => {
   console.log(`api.js -> getSnippetGroups: Get snippet groups.`);
   
-  return await fetch(`http://www.snippeta.com/api/snippets/groups.php`, {
+  return await fetch(`https://www.snippeta.com/api/snippets/groups.php`, {
     method: 'GET',
     headers: { 
       'Authorization': `Basic ${authorizationToken}`,
@@ -92,7 +92,7 @@ const searchSnippets = async (query, authorizationToken) => {
   console.log(`api.js -> searchSnippets: Search snippets with query ${query}.`);
   query = query && query.toLowerCase ? query.toLowerCase() : '';
   
-  return await fetch(`http://www.snippeta.com/api/snippets/search.php?query=${query}`, {
+  return await fetch(`https://www.snippeta.com/api/snippets/search.php?query=${query}`, {
     method: 'GET',
     headers: { 
       'Authorization': `Basic ${authorizationToken}`,
@@ -104,7 +104,7 @@ const searchSnippets = async (query, authorizationToken) => {
 const saveSnippet = async (snippet, authorizationToken) => {
   console.log(`api.js -> saveSnippet: Saving snippet with ID ${snippet?.id}.`);
   if (validator.isValidSnippet(snippet)) {
-    return await fetch('http://www.snippeta.com/api/snippet/save.php', {
+    return await fetch('https://www.snippeta.com/api/snippet/save.php', {
       method: 'POST',
       headers: { 
         'Authorization': `Basic ${authorizationToken}`,
@@ -119,7 +119,7 @@ const saveSnippet = async (snippet, authorizationToken) => {
 const deleteSnippet = async (id, authorizationToken) => {
   console.log(`api.js -> deleteSnippet: Deleting snippet with ID ${id}.`);
 
-  return await fetch('http://www.snippeta.com/api/snippet/remove.php', {
+  return await fetch('https://www.snippeta.com/api/snippet/remove.php', {
     method: 'POST',
     headers: { 
       'Authorization': `Basic ${authorizationToken}`,
@@ -132,7 +132,7 @@ const deleteSnippet = async (id, authorizationToken) => {
 const moveSnippet = async (snippet, option, authorizationToken) => {
   console.log(`api.js -> moveSnippet: Moving snippet with option ${option} and ID ${snippet?.id}.`);
   if (validator.isValidSnippet(snippet)) {
-    return await fetch('http://www.snippeta.com/api/snippet/move.php', {
+    return await fetch('https://www.snippeta.com/api/snippet/move.php', {
       method: 'POST',
       headers: { 
         'Authorization': `Basic ${authorizationToken}`,
