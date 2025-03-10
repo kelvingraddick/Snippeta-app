@@ -21,7 +21,7 @@ const WidgetScreen = ({ navigation }) => {
           <View style={styles.placeholderIcon} />
         </View>
       </View>
-      <Image source={Platform.OS === 'ios' ? require('../assets/images/widget-preview-ios.jpeg') : require('../assets/images/widget-preview-android.png')} style={styles.previewImage} />
+      <Image source={Platform.OS === 'ios' ? require('../assets/images/widget-preview-ios.jpeg') : require('../assets/images/widget-preview-android.jpeg')} style={styles.previewImage} />
       <View style={styles.contentView}>
         <Text style={[styles.titleText, { color: themer.getColor('content2.foreground') }]}>📱 Install the widget</Text>
         <Text style={[styles.descriptionText, { color: themer.getColor('content2.foreground') }]}>..to access snippets from the device home screen</Text>
