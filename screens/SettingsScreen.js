@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ActivityIndicator, Image, Linking, Platform, Pressable, SectionList, StyleSheet, Text, View } from 'react-native';
 import { useFancyActionSheet } from 'react-native-fancy-action-sheet';
 import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
@@ -23,8 +23,26 @@ const SettingsScreen = ({ navigation }) => {
   const { themer, updateThemer, startThemePreview, endThemePreview, isThemePreview, appearanceMode, updateAppearanceMode, user, isUserLoading, logout, entitlements, updateEntitlements, subscription, } = useContext(ApplicationContext);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [subscriptionPrice, setSubscriptionPrice] = useState();
 
   const { showFancyActionSheet } = useFancyActionSheet();
+
+  useEffect(() => {
+    getSubscriptionPackage();
+  }, []);
+
+  const getSubscriptionPackage = async () => {
+    try {
+      let subscriptionPackage = await revenueCat.getPackage('default', '$rc_monthly');
+      let subscriptionPrice = subscriptionPackage?.product?.pricePerMonthString;
+      setSubscriptionPrice(subscriptionPrice);
+      console.log('SettingsScreen.js -> getSubscriptionPackage: got subscription package with price:', subscriptionPrice);
+    } catch (error) {
+      const errorMessage = 'Failed to load current subscription price: ' + error.message;
+      console.error('SettingsScreen.js -> getSubscriptionPackage: ' + errorMessage);
+      banner.showErrorMessage(errorMessage);
+    }
+  };
 
   const getSettings = (themer, appearanceMode) => {
     let settings = [];
@@ -293,7 +311,7 @@ const SettingsScreen = ({ navigation }) => {
           <Text style={[styles.descriptionText, { color: themer.getColor('screenHeader1.foreground'), marginBottom: 15 }]}>You are subscribed: <Text style={{ fontWeight: 'bold', color: colors.lightGreen }}>{subscription.type}</Text></Text>
         }
         { !subscription && 
-          <ActionButton iconImageSource={require('../assets/images/cart.png')} text={'Free trial • $1.99/month'} foregroundColor={themer.getColor('button1.foreground')} backgroundColor={themer.getColor('button1.background')} disabled={isLoading} onTapped={() => onSubscribeTapped()} />
+          <ActionButton iconImageSource={require('../assets/images/cart.png')} text={(subscriptionPrice ? `Free trial • ${subscriptionPrice}/month` : 'Free trial')} foregroundColor={themer.getColor('button1.foreground')} backgroundColor={themer.getColor('button1.background')} disabled={isLoading} onTapped={() => onSubscribeTapped()} />
         }
       </View>
       <SectionList

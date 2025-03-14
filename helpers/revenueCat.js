@@ -38,6 +38,24 @@ const getEntitlements = async () => {
   return entitlements;
 };
 
+const getPackage = async (offeringId, packageId) => {
+  let foundPackage;
+  try {
+    if (!(await Purchases.isConfigured())) { await configure(true); }
+    const offerings = await Purchases.getOfferings();
+    foundPackage = offerings?.all?.[offeringId]?.availablePackages?.find(x => x.identifier == packageId);
+    if (foundPackage) {
+      console.log(`RevenueCat -> getPackage: Found package for offering ID ${offeringId} and package ID ${packageId}:`);
+    } else {
+      throw new Error(`Did not find package for offering ID ${offeringId} and package ID ${packageId}`);
+    }
+  } catch (error) {
+    console.error(`RevenueCat -> getPackage: getting package failed with error: ` + error.message);
+    throw error;
+  }
+  return foundPackage;
+};
+
 const purchasePackage = async (offeringId, packageId, entitlementId) => {
   let entitlement;
   try {
@@ -80,6 +98,7 @@ export default {
   isConfigured: Purchases.isConfigured,
   login,
   getEntitlements,
+  getPackage,
   purchasePackage,
   restorePurchases,
 };
