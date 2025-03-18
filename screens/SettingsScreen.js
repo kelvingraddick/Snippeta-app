@@ -3,6 +3,7 @@ import { ActivityIndicator, Image, Linking, Platform, Pressable, SectionList, St
 import { useFancyActionSheet } from 'react-native-fancy-action-sheet';
 import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
 import ReactNativeHapticFeedback from "react-native-haptic-feedback";
+import * as Sentry from '@sentry/react-native';
 import { ApplicationContext } from '../ApplicationContext';
 import banner from '../helpers/banner';
 import storage from '../helpers/storage';
@@ -32,15 +33,20 @@ const SettingsScreen = ({ navigation }) => {
   }, []);
 
   const getSubscriptionPackage = async () => {
+    let subscriptionPackage;
     try {
-      let subscriptionPackage = await revenueCat.getPackage('default', '$rc_monthly');
+      subscriptionPackage = await revenueCat.getPackage('default', '$rc_monthly');
       let subscriptionPrice = subscriptionPackage?.product?.pricePerMonthString;
-      setSubscriptionPrice(subscriptionPrice);
-      console.log('SettingsScreen.js -> getSubscriptionPackage: got subscription package with price:', subscriptionPrice);
+      if (subscriptionPrice) {
+        setSubscriptionPrice(subscriptionPrice);
+        console.log('SettingsScreen.js -> getSubscriptionPackage: got subscription package with price:', subscriptionPrice);
+      } else {
+        throw new Error('Subscription object was null/undefined.');
+      }
     } catch (error) {
-      const errorMessage = 'Failed to load current subscription price: ' + error.message;
-      console.error('SettingsScreen.js -> getSubscriptionPackage: ' + errorMessage);
-      banner.showErrorMessage(errorMessage);
+      console.error('SettingsScreen.js -> getSubscriptionPackage: Failed to load current subscription price: ' + error.message);
+      banner.showErrorMessage(readableErrorMessages.GET_PURCHASE_DATA_ERROR);
+      Sentry.captureException(error, { attachments: [{ filename: "subscriptionPackage.json", data: JSON.stringify(subscriptionPackage || {}), contentType: 'application/json' }] });
     }
   };
 
@@ -311,7 +317,7 @@ const SettingsScreen = ({ navigation }) => {
           <Text style={[styles.descriptionText, { color: themer.getColor('screenHeader1.foreground'), marginBottom: 15 }]}>You are subscribed: <Text style={{ fontWeight: 'bold', color: colors.lightGreen }}>{subscription.type}</Text></Text>
         }
         { !subscription && 
-          <ActionButton iconImageSource={require('../assets/images/cart.png')} text={(subscriptionPrice ? `Free trial • ${subscriptionPrice}/month` : 'Free trial')} foregroundColor={themer.getColor('button1.foreground')} backgroundColor={themer.getColor('button1.background')} disabled={isLoading} onTapped={() => onSubscribeTapped()} />
+          <ActionButton iconImageSource={require('../assets/images/cart.png')} text={(subscriptionPrice ? `Free trial • ${subscriptionPrice}/month` : 'Free trial • $1.99/month')} foregroundColor={themer.getColor('button1.foreground')} backgroundColor={themer.getColor('button1.background')} disabled={isLoading} onTapped={() => onSubscribeTapped()} />
         }
       </View>
       <SectionList
