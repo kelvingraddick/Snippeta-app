@@ -244,9 +244,17 @@ export default function App() {
         banner.showErrorMessage(readableErrorMessages.UPDATE_WIDGET_ERROR);
       }
 
-      // 3. combine data and set snippet groups data for widget
+      // 4. combine data from storage and API
       let snippetGroups = [];
       snippetGroups = snippetGroups.concat(storageSnippetGroups).concat(apiSnippetGroups);
+      let storageRootSnippetGroup = snippetGroups.find(x => x.id === (storageKeys.SNIPPET + 0));
+      let apiRootSnippetGroup = snippetGroups.find(x => x.id === 0);
+      let combinedRootSnippetGroup = { id: 0, type: snippetTypes.MULTIPLE, source: snippetSources.STORAGE, title: 'Snippets', content: 'Snippets', color_id: colorIds.COLOR_100, order_index: 0, snippets: [...(storageRootSnippetGroup?.snippets || []), ...(apiRootSnippetGroup?.snippets || [])] };
+      snippetGroups = snippetGroups.filter(x => x.id !== (storageKeys.SNIPPET + 0) && x.id !== 0);
+      snippetGroups.unshift(combinedRootSnippetGroup);
+      console.log(`App.js -> updateSnippetGroups: Combined ${snippetGroups.length} snippet groups from storage and API:`, JSON.stringify(snippetGroups.map(x => x.id)));
+
+      // 5. set snippet groups data for widget
       await widget.saveData('snippetGroups', snippetGroups);
       updateWidgets();
     } catch (error) {
