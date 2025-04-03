@@ -1235,7 +1235,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNSentry (6.5.0):
+  - RNSentry (6.10.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1256,9 +1256,9 @@ PODS:
     - React-utils
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - Sentry/HybridSDK (= 8.43.0)
+    - Sentry/HybridSDK (= 8.48.0)
     - Yoga
-  - Sentry/HybridSDK (8.43.0)
+  - Sentry/HybridSDK (8.48.0)
   - SocketRocket (0.7.0)
   - Yoga (0.0.0)
 
@@ -1545,8 +1545,8 @@ SPEC CHECKSUMS:
   RNReactNativeHapticFeedback: 7c701396d35a0e8863d8d8f97a7273c5f8509b40
   RNReactNativeSharedGroupPreferences: 29092869fc2e40d5baca5e15d82fa5c24a668977
   RNScreens: 5aeecbb09aa7285379b6e9f3c8a3c859bb16401c
-  RNSentry: aa75421e670b184b645fdd70a03c480056dc5bb4
-  Sentry: 532b281a53b1b45a523fd592f608956fb36e577c
+  RNSentry: fb9ca3a97dde88217eca1f791dc51c568bf007a4
+  Sentry: 1ca8405451040482877dcd344dfa3ef80b646631
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   Yoga: b9a182ab00cf25926e7f79657d08c5d23c2d03b0
 
