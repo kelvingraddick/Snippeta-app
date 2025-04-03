@@ -59,5 +59,7 @@
 	</array>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.productivity</string>
+  <key>UIRequiresFullScreen</key>
+  <true/>
 </dict>
 </plist>

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -15,6 +15,10 @@
 		7699B88040F8A987B510C191 /* libPods-Snippeta-SnippetaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-Snippeta-SnippetaTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		ABD44DBC6FC501B9FBB79BD7 /* libPods-SnippetaWidgetExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B32FBB9B8D99D29EFFC25E37 /* libPods-SnippetaWidgetExtension.a */; };
+		B62C4FA22D9A4D1C0006DFE1 /* SnippetaKeyboard.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B62C4F9B2D9A4D1C0006DFE1 /* SnippetaKeyboard.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B62C4FAD2D9A56710006DFE1 /* SnippetGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17DD2CD7239B00DC3628 /* SnippetGroup.swift */; };
+		B62C4FAE2D9A568F0006DFE1 /* Themer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B6F7042D19346C006518BD /* Themer.swift */; };
+		B62C4FAF2D9A56990006DFE1 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17D42CD6CCB500DC3628 /* ColorExtension.swift */; };
 		B67D17D22CD6CB1E00DC3628 /* GroupWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17D12CD6CB1E00DC3628 /* GroupWidget.swift */; };
 		B67D17D52CD6CCB500DC3628 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17D42CD6CCB500DC3628 /* ColorExtension.swift */; };
 		B67D17D62CD6CCB500DC3628 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17D42CD6CCB500DC3628 /* ColorExtension.swift */; };
@@ -45,6 +49,13 @@
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = Snippeta;
 		};
+		B62C4FA02D9A4D1C0006DFE1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B62C4F9A2D9A4D1C0006DFE1;
+			remoteInfo = SnippetaKeyboard;
+		};
 		B68377462CC0B6E400BC1755 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
@@ -69,6 +80,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				B68377482CC0B6E400BC1755 /* SnippetaWidgetExtension.appex in Embed Foundation Extensions */,
+				B62C4FA22D9A4D1C0006DFE1 /* SnippetaKeyboard.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -96,6 +108,7 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Snippeta/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-Snippeta-SnippetaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Snippeta-SnippetaTests.release.xcconfig"; path = "Target Support Files/Pods-Snippeta-SnippetaTests/Pods-Snippeta-SnippetaTests.release.xcconfig"; sourceTree = "<group>"; };
 		B32FBB9B8D99D29EFFC25E37 /* libPods-SnippetaWidgetExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SnippetaWidgetExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B62C4F9B2D9A4D1C0006DFE1 /* SnippetaKeyboard.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SnippetaKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		B67D17D12CD6CB1E00DC3628 /* GroupWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupWidget.swift; sourceTree = "<group>"; };
 		B67D17D42CD6CCB500DC3628 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		B67D17D72CD6D40300DC3628 /* GroupWidgetConfigurationIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupWidgetConfigurationIntent.swift; sourceTree = "<group>"; };
@@ -121,6 +134,20 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		B62C4FA32D9A4D1C0006DFE1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = B62C4F9A2D9A4D1C0006DFE1 /* SnippetaKeyboard */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		B62C4F9C2D9A4D1C0006DFE1 /* SnippetaKeyboard */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (B62C4FA32D9A4D1C0006DFE1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = SnippetaKeyboard; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		00E356EB1AD99517003FC87E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -135,6 +162,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C80B921A6F3F58F76C31292 /* libPods-Snippeta.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B62C4F982D9A4D1C0006DFE1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -181,6 +215,9 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
 				42FB28459BF5265885BA2952 /* PrivacyInfo.xcprivacy */,
+				B67D17DD2CD7239B00DC3628 /* SnippetGroup.swift */,
+				B6B6F7042D19346C006518BD /* Themer.swift */,
+				B67D17D42CD6CCB500DC3628 /* ColorExtension.swift */,
 				B69798972D1A67D900331C52 /* WidgetNativeModule.swift */,
 				B69798992D1A67F600331C52 /* WidgetNativeModuleBridge.m */,
 				B697989B2D1A682100331C52 /* Snippeta-Bridging-Header.h */,
@@ -197,6 +234,7 @@
 				B68377382CC0B6E300BC1755 /* WidgetKit.framework */,
 				B683773A2CC0B6E300BC1755 /* SwiftUI.framework */,
 				B32FBB9B8D99D29EFFC25E37 /* libPods-SnippetaWidgetExtension.a */,
+				83CBBA001A601CBA00E9B192 /* Products */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -217,7 +255,7 @@
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* SnippetaTests */,
 				B683773C2CC0B6E300BC1755 /* SnippetaWidget */,
-				83CBBA001A601CBA00E9B192 /* Products */,
+				B62C4F9C2D9A4D1C0006DFE1 /* SnippetaKeyboard */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
 			);
@@ -232,6 +270,7 @@
 				13B07F961A680F5B00A75B9A /* Snippeta.app */,
 				00E356EE1AD99517003FC87E /* SnippetaTests.xctest */,
 				B68377372CC0B6E300BC1755 /* SnippetaWidgetExtension.appex */,
+				B62C4F9B2D9A4D1C0006DFE1 /* SnippetaKeyboard.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -241,14 +280,11 @@
 			children = (
 				B683774F2CC0CAAE00BC1755 /* Assets.xcassets */,
 				B68377502CC0CAAE00BC1755 /* Info.plist */,
-				B67D17DD2CD7239B00DC3628 /* SnippetGroup.swift */,
 				B68377512CC0CAAE00BC1755 /* ShortcutWidget.swift */,
 				B683774E2CC0CAAE00BC1755 /* ShortcutWidgetConfigurationIntent.swift */,
 				B67D17D12CD6CB1E00DC3628 /* GroupWidget.swift */,
 				B67D17D72CD6D40300DC3628 /* GroupWidgetConfigurationIntent.swift */,
-				B67D17D42CD6CCB500DC3628 /* ColorExtension.swift */,
 				B68377522CC0CAAE00BC1755 /* SnippetaWidgetBundle.swift */,
-				B6B6F7042D19346C006518BD /* Themer.swift */,
 				B6CC09E22CC4B30300ABB709 /* SnippetaWidgetExtension-Bridging-Header.h */,
 			);
 			path = SnippetaWidget;
@@ -317,11 +353,34 @@
 			);
 			dependencies = (
 				B68377472CC0B6E400BC1755 /* PBXTargetDependency */,
+				B62C4FA12D9A4D1C0006DFE1 /* PBXTargetDependency */,
 			);
 			name = Snippeta;
 			productName = Snippeta;
 			productReference = 13B07F961A680F5B00A75B9A /* Snippeta.app */;
 			productType = "com.apple.product-type.application";
+		};
+		B62C4F9A2D9A4D1C0006DFE1 /* SnippetaKeyboard */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B62C4FA42D9A4D1C0006DFE1 /* Build configuration list for PBXNativeTarget "SnippetaKeyboard" */;
+			buildPhases = (
+				B62C4F972D9A4D1C0006DFE1 /* Sources */,
+				B62C4F982D9A4D1C0006DFE1 /* Frameworks */,
+				B62C4F992D9A4D1C0006DFE1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				B62C4F9C2D9A4D1C0006DFE1 /* SnippetaKeyboard */,
+			);
+			name = SnippetaKeyboard;
+			packageProductDependencies = (
+			);
+			productName = SnippetaKeyboard;
+			productReference = B62C4F9B2D9A4D1C0006DFE1 /* SnippetaKeyboard.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 		B68377362CC0B6E300BC1755 /* SnippetaWidgetExtension */ = {
 			isa = PBXNativeTarget;
@@ -347,7 +406,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1610;
+				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1210;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -356,6 +415,9 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						LastSwiftMigration = 1610;
+					};
+					B62C4F9A2D9A4D1C0006DFE1 = {
+						CreatedOnToolsVersion = 16.2;
 					};
 					B68377362CC0B6E300BC1755 = {
 						CreatedOnToolsVersion = 16.1;
@@ -385,6 +447,7 @@
 				13B07F861A680F5B00A75B9A /* Snippeta */,
 				00E356ED1AD99517003FC87E /* SnippetaTests */,
 				B68377362CC0B6E300BC1755 /* SnippetaWidgetExtension */,
+				B62C4F9A2D9A4D1C0006DFE1 /* SnippetaKeyboard */,
 			);
 		};
 /* End PBXProject section */
@@ -415,6 +478,13 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				B6FA6AB42D40B44A005699F4 /* Assets.xcassets in Resources */,
 				E5C4676548DEE7CB10F23EF6 /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B62C4F992D9A4D1C0006DFE1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -453,9 +523,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Snippeta/Pods-Snippeta-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Snippeta/Pods-Snippeta-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -550,9 +624,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Snippeta-SnippetaTests/Pods-Snippeta-SnippetaTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Snippeta-SnippetaTests/Pods-Snippeta-SnippetaTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -567,9 +645,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Snippeta/Pods-Snippeta-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Snippeta/Pods-Snippeta-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -584,9 +666,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Snippeta-SnippetaTests/Pods-Snippeta-SnippetaTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Snippeta-SnippetaTests/Pods-Snippeta-SnippetaTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -619,6 +705,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B62C4F972D9A4D1C0006DFE1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B62C4FAE2D9A568F0006DFE1 /* Themer.swift in Sources */,
+				B62C4FAD2D9A56710006DFE1 /* SnippetGroup.swift in Sources */,
+				B62C4FAF2D9A56990006DFE1 /* ColorExtension.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B68377332CC0B6E300BC1755 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -641,6 +737,11 @@
 			isa = PBXTargetDependency;
 			target = 13B07F861A680F5B00A75B9A /* Snippeta */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
+		};
+		B62C4FA12D9A4D1C0006DFE1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B62C4F9A2D9A4D1C0006DFE1 /* SnippetaKeyboard */;
+			targetProxy = B62C4FA02D9A4D1C0006DFE1 /* PBXContainerItemProxy */;
 		};
 		B68377472CC0B6E400BC1755 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -924,6 +1025,89 @@
 			};
 			name = Release;
 		};
+		B62C4FA52D9A4D1C0006DFE1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = SnippetaKeyboard/SnippetaKeyboard.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = HCQ2A438C7;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SnippetaKeyboard/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SnippetaKeyboard;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wavelinkllc.snippeta.SnippetaKeyboard;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B62C4FA62D9A4D1C0006DFE1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = SnippetaKeyboard/SnippetaKeyboard.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = HCQ2A438C7;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SnippetaKeyboard/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SnippetaKeyboard;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wavelinkllc.snippeta.SnippetaKeyboard;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		B683774A2CC0B6E400BC1755 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 07DBF2D47281CBABF061068A /* Pods-SnippetaWidgetExtension.debug.xcconfig */;
@@ -1045,6 +1229,15 @@
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
 				83CBBA211A601CBA00E9B192 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B62C4FA42D9A4D1C0006DFE1 /* Build configuration list for PBXNativeTarget "SnippetaKeyboard" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B62C4FA52D9A4D1C0006DFE1 /* Debug */,
+				B62C4FA62D9A4D1C0006DFE1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
