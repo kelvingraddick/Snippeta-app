@@ -64,7 +64,7 @@ const SnippetsScreen = ({ route, navigation }) => {
       let storageSnippets = [];
       try {
         if (isRootSnippetsScreen || parentSnippet.source == snippetSources.STORAGE) {
-          storageSnippets = await storage.getSnippets(parentSnippet?.id);
+          storageSnippets = await storage.getSnippets(parentSnippet?.id, false);
           storageSnippets.forEach(x => { x.source = snippetSources.STORAGE; });
           storageSnippets.sort((a, b) => a.order_index - b.order_index);
         }
@@ -77,7 +77,7 @@ const SnippetsScreen = ({ route, navigation }) => {
       let apiSnippets = [];
       try {
         if (isRootSnippetsScreen || (parentSnippet.source == snippetSources.API && user)) {
-          let response = await api.getSnippets(parentSnippet?.id ?? 0, await storage.getAuthorizationToken());
+          let response = await api.getSnippets(parentSnippet?.id ?? 0, false, await storage.getAuthorizationToken());
           if (!response?.ok) { throw new Error(`HTTP error with status ${response?.status}`); }
           let responseJson = await response.json();
           apiSnippets = responseJson.child_snippets ?? [];

@@ -1,6 +1,6 @@
 import AppIntents
 
-struct SnippetGroup: AppEntity, Decodable, Hashable {
+struct Snippet: AppEntity, Decodable, Hashable {
   let id: String
   let type: Int
   let source: String
@@ -8,10 +8,10 @@ struct SnippetGroup: AppEntity, Decodable, Hashable {
   let content: String
   let color_id: Int
   let order_index: Int
-  let snippets: [SnippetGroup]?
+  let child_snippets: [Snippet]?
   
-  static var typeDisplayRepresentation: TypeDisplayRepresentation = "Snippet Group"
-  static var defaultQuery = SnippetGroupQuery()
+  static var typeDisplayRepresentation: TypeDisplayRepresentation = "Snippet"
+  static var defaultQuery = SnippetQuery()
   
   var displayRepresentation: DisplayRepresentation {
     DisplayRepresentation(title: "\(title)")
@@ -25,10 +25,10 @@ struct SnippetGroup: AppEntity, Decodable, Hashable {
     case content
     case color_id
     case order_index
-    case snippets
+    case child_snippets
   }
   
-  init(id: String, type: Int, source: String, title: String, content: String, color_id: Int, order_index: Int, snippets: [SnippetGroup]?) {
+  init(id: String, type: Int, source: String, title: String, content: String, color_id: Int, order_index: Int, child_snippets: [Snippet]?) {
     self.id = id
     self.type = type
     self.source = source
@@ -36,7 +36,7 @@ struct SnippetGroup: AppEntity, Decodable, Hashable {
     self.content = content
     self.color_id = color_id
     self.order_index = order_index
-    self.snippets = snippets
+    self.child_snippets = child_snippets
   }
   
   init(from decoder: Decoder) throws {
@@ -58,38 +58,38 @@ struct SnippetGroup: AppEntity, Decodable, Hashable {
     self.content = try container.decode(String.self, forKey: .content)
     self.color_id = try container.decode(Int.self, forKey: .color_id)
     self.order_index = try container.decode(Int.self, forKey: .order_index)
-    self.snippets = try container.decodeIfPresent([SnippetGroup].self, forKey: .snippets) ?? []
+    self.child_snippets = try container.decodeIfPresent([Snippet].self, forKey: .child_snippets) ?? []
   }
 }
 
-struct SnippetGroupQuery: EntityQuery {
-  private func fetchSnippetGroups() -> [SnippetGroup] {
+struct SnippetQuery: EntityQuery {
+  private func fetchSnippets() -> [Snippet] {
     let sharedDefaults = UserDefaults(suiteName: "group.com.wavelinkllc.snippeta.shared")
-    guard let dataString = sharedDefaults?.string(forKey: "snippetGroups"),
+    guard let dataString = sharedDefaults?.string(forKey: "snippets"),
           let data = dataString.data(using: .utf8) else { return [] }
     do {
-      let results = try JSONDecoder().decode([SnippetGroup].self, from: data)
-      print("Success decoding snippet groups: \(results.count)")
+      let results = try JSONDecoder().decode([Snippet].self, from: data)
+      print("Success decoding snippets: \(results.count)")
       return results
     } catch {
-      print("Error decoding snippet groups: \(error)")
+      print("Error decoding snippets: \(error)")
       return []
     }
   }
   
-  func entities(for identifiers: [SnippetGroup.ID]) async throws -> [SnippetGroup] {
-    let allSnippetGroups = fetchSnippetGroups()
-    print("Fetched snippet groups entitles: \(allSnippetGroups.count)")
-    return allSnippetGroups
+  func entities(for identifiers: [Snippet.ID]) async throws -> [Snippet] {
+    let allSnippets = fetchSnippets()
+    print("Fetched snippets entitles: \(allSnippets.count)")
+    return allSnippets
   }
   
-  func suggestedEntities() async throws -> [SnippetGroup] {
-    let allSnippetGroups = fetchSnippetGroups()
-    print("Fetched snippet groups suggested entitles: \(allSnippetGroups.count)")
-    return allSnippetGroups.filter { $0.id != "null" }
+  func suggestedEntities() async throws -> [Snippet] {
+    let allSnippets = fetchSnippets()
+    print("Fetched snippets suggested entitles: \(allSnippets.count)")
+    return allSnippets.filter { $0.id != "null" }
   }
   
-  func defaultResult() async -> SnippetGroup? {
+  func defaultResult() async -> Snippet? {
     try? await suggestedEntities().first
   }
 }

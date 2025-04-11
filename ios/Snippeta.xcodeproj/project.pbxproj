@@ -16,7 +16,6 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		ABD44DBC6FC501B9FBB79BD7 /* libPods-SnippetaWidgetExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B32FBB9B8D99D29EFFC25E37 /* libPods-SnippetaWidgetExtension.a */; };
 		B62C4FA22D9A4D1C0006DFE1 /* SnippetaKeyboard.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B62C4F9B2D9A4D1C0006DFE1 /* SnippetaKeyboard.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		B62C4FAD2D9A56710006DFE1 /* SnippetGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17DD2CD7239B00DC3628 /* SnippetGroup.swift */; };
 		B62C4FAE2D9A568F0006DFE1 /* Themer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B6F7042D19346C006518BD /* Themer.swift */; };
 		B62C4FAF2D9A56990006DFE1 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17D42CD6CCB500DC3628 /* ColorExtension.swift */; };
 		B67D17D22CD6CB1E00DC3628 /* GroupWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17D12CD6CB1E00DC3628 /* GroupWidget.swift */; };
@@ -35,6 +34,14 @@
 		B68377572CC0CAAE00BC1755 /* SnippetaWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68377522CC0CAAE00BC1755 /* SnippetaWidgetBundle.swift */; };
 		B69798982D1A67D900331C52 /* WidgetNativeModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69798972D1A67D900331C52 /* WidgetNativeModule.swift */; };
 		B697989A2D1A67F600331C52 /* WidgetNativeModuleBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = B69798992D1A67F600331C52 /* WidgetNativeModuleBridge.m */; };
+		B6AF7A662DA7756800BC9794 /* Snippet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AF7A652DA7756000BC9794 /* Snippet.swift */; };
+		B6AF7A682DA7765F00BC9794 /* SnippetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AF7A672DA7765400BC9794 /* SnippetType.swift */; };
+		B6AF7A6A2DA7768800BC9794 /* SnippetSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AF7A692DA7768600BC9794 /* SnippetSource.swift */; };
+		B6AF7A6B2DA7779A00BC9794 /* Snippet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AF7A652DA7756000BC9794 /* Snippet.swift */; };
+		B6AF7A6C2DA777AA00BC9794 /* SnippetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AF7A672DA7765400BC9794 /* SnippetType.swift */; };
+		B6AF7A6D2DA777AF00BC9794 /* SnippetSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AF7A692DA7768600BC9794 /* SnippetSource.swift */; };
+		B6AF7A6E2DA777E400BC9794 /* SnippetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AF7A672DA7765400BC9794 /* SnippetType.swift */; };
+		B6AF7A6F2DA777EB00BC9794 /* SnippetSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AF7A692DA7768600BC9794 /* SnippetSource.swift */; };
 		B6B6F7052D19346C006518BD /* Themer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B6F7042D19346C006518BD /* Themer.swift */; };
 		B6B6F7062D19346C006518BD /* Themer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B6F7042D19346C006518BD /* Themer.swift */; };
 		B6FA6AB42D40B44A005699F4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6FA6AB32D40B44A005699F4 /* Assets.xcassets */; };
@@ -125,6 +132,9 @@
 		B69798972D1A67D900331C52 /* WidgetNativeModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetNativeModule.swift; sourceTree = "<group>"; };
 		B69798992D1A67F600331C52 /* WidgetNativeModuleBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WidgetNativeModuleBridge.m; sourceTree = "<group>"; };
 		B697989B2D1A682100331C52 /* Snippeta-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Snippeta-Bridging-Header.h"; sourceTree = "<group>"; };
+		B6AF7A652DA7756000BC9794 /* Snippet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snippet.swift; sourceTree = "<group>"; };
+		B6AF7A672DA7765400BC9794 /* SnippetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetType.swift; sourceTree = "<group>"; };
+		B6AF7A692DA7768600BC9794 /* SnippetSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetSource.swift; sourceTree = "<group>"; };
 		B6B6F6F22D153A38006518BD /* RNHapticFeedback.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNHapticFeedback.xcodeproj; path = "../node_modules/react-native-haptic-feedback/ios/RNHapticFeedback.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		B6B6F7042D19346C006518BD /* Themer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Themer.swift; sourceTree = "<group>"; };
 		B6CC09E22CC4B30300ABB709 /* SnippetaWidgetExtension-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SnippetaWidgetExtension-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -215,7 +225,10 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
 				42FB28459BF5265885BA2952 /* PrivacyInfo.xcprivacy */,
+				B6AF7A652DA7756000BC9794 /* Snippet.swift */,
 				B67D17DD2CD7239B00DC3628 /* SnippetGroup.swift */,
+				B6AF7A672DA7765400BC9794 /* SnippetType.swift */,
+				B6AF7A692DA7768600BC9794 /* SnippetSource.swift */,
 				B6B6F7042D19346C006518BD /* Themer.swift */,
 				B67D17D42CD6CCB500DC3628 /* ColorExtension.swift */,
 				B69798972D1A67D900331C52 /* WidgetNativeModule.swift */,
@@ -697,7 +710,10 @@
 				B697989A2D1A67F600331C52 /* WidgetNativeModuleBridge.m in Sources */,
 				B67D17D92CD6D40300DC3628 /* GroupWidgetConfigurationIntent.swift in Sources */,
 				B69798982D1A67D900331C52 /* WidgetNativeModule.swift in Sources */,
+				B6AF7A662DA7756800BC9794 /* Snippet.swift in Sources */,
+				B6AF7A6A2DA7768800BC9794 /* SnippetSource.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
+				B6AF7A682DA7765F00BC9794 /* SnippetType.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				B67D17DE2CD7239B00DC3628 /* SnippetGroup.swift in Sources */,
 				B6B6F7052D19346C006518BD /* Themer.swift in Sources */,
@@ -709,8 +725,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6AF7A6B2DA7779A00BC9794 /* Snippet.swift in Sources */,
+				B6AF7A6C2DA777AA00BC9794 /* SnippetType.swift in Sources */,
+				B6AF7A6D2DA777AF00BC9794 /* SnippetSource.swift in Sources */,
 				B62C4FAE2D9A568F0006DFE1 /* Themer.swift in Sources */,
-				B62C4FAD2D9A56710006DFE1 /* SnippetGroup.swift in Sources */,
 				B62C4FAF2D9A56990006DFE1 /* ColorExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -719,11 +737,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B68377552CC0CAAE00BC1755 /* ShortcutWidgetConfigurationIntent.swift in Sources */,
-				B68377562CC0CAAE00BC1755 /* ShortcutWidget.swift in Sources */,
 				B67D17DF2CD7239B00DC3628 /* SnippetGroup.swift in Sources */,
+				B6AF7A6E2DA777E400BC9794 /* SnippetType.swift in Sources */,
+				B6AF7A6F2DA777EB00BC9794 /* SnippetSource.swift in Sources */,
 				B6B6F7062D19346C006518BD /* Themer.swift in Sources */,
 				B67D17D52CD6CCB500DC3628 /* ColorExtension.swift in Sources */,
+				B68377552CC0CAAE00BC1755 /* ShortcutWidgetConfigurationIntent.swift in Sources */,
+				B68377562CC0CAAE00BC1755 /* ShortcutWidget.swift in Sources */,
 				B67D17D82CD6D40300DC3628 /* GroupWidgetConfigurationIntent.swift in Sources */,
 				B67D17D22CD6CB1E00DC3628 /* GroupWidget.swift in Sources */,
 				B68377572CC0CAAE00BC1755 /* SnippetaWidgetBundle.swift in Sources */,

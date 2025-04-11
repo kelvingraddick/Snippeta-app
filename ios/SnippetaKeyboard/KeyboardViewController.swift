@@ -7,30 +7,30 @@ import UIKit
 
 class KeyboardViewController: UIInputViewController {
 
-  var snippetGroups: [SnippetGroup] = []
+  var allSnippets: [Snippet] = []
   var tableView: UITableView!
-  var currentSnippets: [SnippetGroup] = []
+  var currentSnippets: [Snippet] = []
   
   override func viewDidLoad() {
     print("viewDidload")
     super.viewDidLoad()
-    loadSnippetGroups()
+    loadAllSnippets()
     setupUI()
   }
   
   // MARK: - Load Snippets
-    func loadSnippetGroups() {
-      print("loadSnippetGroups")
+    func loadAllSnippets() {
+      print("loadAllSnippets")
       if let sharedDefaults = UserDefaults(suiteName: "group.com.wavelinkllc.snippeta.shared"),
-         let dataString = sharedDefaults.string(forKey: "snippetGroups"),
+         let dataString = sharedDefaults.string(forKey: "snippets"),
          let data = dataString.data(using: .utf8) {
         do {
-          let results = try JSONDecoder().decode([SnippetGroup].self, from: data)
-          self.snippetGroups = results
+          let results = try JSONDecoder().decode([Snippet].self, from: data)
+          self.allSnippets = results
           self.currentSnippets = results
-          print("Loaded \(results.count) snippet groups.")
+          print("Loaded \(results.count) snippets.")
         } catch {
-          print("Error decoding snippet groups: \(error)")
+          print("Error decoding snippets: \(error)")
         }
       }
     }
@@ -53,12 +53,12 @@ class KeyboardViewController: UIInputViewController {
   }
   
   // MARK: - Handle Snippet Tap
-  func handleSnippetTap(_ snippet: SnippetGroup) {
+  func handleSnippetTap(_ snippet: Snippet) {
     if snippet.type == SnippetType.SINGLE.rawValue {
       insertText(snippet.content)
     } else if snippet.type == SnippetType.MULTIPLE.rawValue {
       // Show nested snippets
-      if let childSnippets = snippet.snippets {
+      if let childSnippets = snippet.child_snippets {
         self.currentSnippets = childSnippets
         tableView.reloadData()
       }
@@ -81,11 +81,11 @@ extension KeyboardViewController: UITableViewDelegate, UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let snippetGroup = currentSnippets[indexPath.row]
+    let snippet = currentSnippets[indexPath.row]
     
     let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-    cell.textLabel?.text = snippetGroup.title
-    cell.accessoryType = snippetGroup.type == SnippetType.MULTIPLE.rawValue ? .disclosureIndicator : .none
+    cell.textLabel?.text = snippet.title
+    cell.accessoryType = snippet.type == SnippetType.MULTIPLE.rawValue ? .disclosureIndicator : .none
     return cell
   }
   

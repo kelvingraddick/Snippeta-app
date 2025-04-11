@@ -33,21 +33,42 @@ const getAuthorizationToken = async () => {
   return credentials ? btoa(`${credentials.emailOrPhone}:${credentials.password}`) : null;
 };
 
-const getSnippets = async (parentId) => {
-  console.log('storage.js -> getSnippets: Getting snippets for parent ID', parentId);
-  const allKeys = await AsyncStorage.getAllKeys();
-  //console.log('storage.js -> getSnippets: All storage keys:', JSON.stringify(allKeys));
-  const snippetKeys = allKeys.filter(key => key.startsWith(storageKeys.SNIPPET));
-  //console.log(`storage.js -> getSnippets: Storage keys with parent ID ${parentId}:`);
-  const snippets = [];
-  for (const snippetKey of snippetKeys) {
-    const item = await AsyncStorage.getItem(snippetKey);
-    const snippet = JSON.parse(item);
-    if (snippet?.parent_id === parentId) {
-      snippets.push(snippet);
+const getSnippets = async (parentId, includeNestedChildren) => {
+  console.log(`storage.js -> getSnippets: Getting snippets for parent ID ${parentId} and include nested children ${includeNestedChildren}`);
+  let snippets = [];
+  if (includeNestedChildren) {
+    const allKeys = await AsyncStorage.getAllKeys();
+    //console.log('storage.js -> getSnippets: All storage keys:', JSON.stringify(allKeys));
+    const snippetKeys = allKeys.filter(key => key.startsWith(storageKeys.SNIPPET));
+    //console.log(`storage.js -> getSnippets: Storage keys with parent ID ${parentId}:`);
+    const snippetKeyValues = await AsyncStorage.multiGet(snippetKeys);
+    snippets = getChildSnippets(parentId, snippetKeyValues);
+    function getChildSnippets(parentId, snippetKeyValues) {
+      const childSnippets = [];
+      for (const snippetKeyValue of snippetKeyValues) {
+        const value = snippetKeyValue[1]; // value
+        const childSnippet = JSON.parse(value);
+        if (childSnippet?.parent_id === parentId) {
+          childSnippet.child_snippets = getChildSnippets(childSnippet.id, snippetKeyValues);
+          childSnippets.push(childSnippet);
+        }
+      }
+      return childSnippets;
+    }
+  } else {
+    const allKeys = await AsyncStorage.getAllKeys();
+    //console.log('storage.js -> getSnippets: All storage keys:', JSON.stringify(allKeys));
+    const snippetKeys = allKeys.filter(key => key.startsWith(storageKeys.SNIPPET));
+    //console.log(`storage.js -> getSnippets: Storage keys with parent ID ${parentId}:`);
+    for (const snippetKey of snippetKeys) {
+      const item = await AsyncStorage.getItem(snippetKey);
+      const snippet = JSON.parse(item);
+      if (snippet?.parent_id === parentId) {
+        snippets.push(snippet);
+      }
     }
   }
-  console.log(`storage.js -> getSnippets: Got ${snippets.length} snippets for parent ID ${parentId}:`, JSON.stringify(snippets.map(x => x.id)));
+  console.log(`storage.js -> getSnippets: Got ${snippets.length} snippets for parent ID ${parentId} and include nested children ${includeNestedChildren}:`, JSON.stringify(snippets.map(x => x.id)));
   return snippets;
 };
 

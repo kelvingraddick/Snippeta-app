@@ -64,10 +64,10 @@ const sendPasswordResetEmail = async (emailOrPhone) => {
   return null;
 }
 
-const getSnippets = async (parentId, authorizationToken) => {
-  console.log(`api.js -> getSnippets: Get snippets for parent ID ${parentId}.`);
+const getSnippets = async (parentId, includeNestedChildren, authorizationToken) => {
+  console.log(`api.js -> getSnippets: Get snippets for parent ID ${parentId} and include nested children ${includeNestedChildren}.`);
   
-  return await fetch(`https://www.snippeta.com/api/snippets/get.php?parent_id=${parentId}`, {
+  return await fetch(`https://www.snippeta.com/api/snippets/get.php?parent_id=${parentId}&include_nested_children=${includeNestedChildren}`, {
     method: 'GET',
     headers: { 
       'Authorization': `Basic ${authorizationToken}`,

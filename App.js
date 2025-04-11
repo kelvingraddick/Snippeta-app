@@ -116,7 +116,8 @@ export default function App() {
         await loginWithCredentials(credentials.emailOrPhone, credentials.password);
       } else {
         await updateEntitlements();
-        await updateSnippetGroups();
+        await updateDataForWidgets();
+        await updateDataForKeyboard();
         dispatch({ type: 'LOGGED_IN', payload: null });
       }
     } catch (error) {
@@ -139,7 +140,8 @@ export default function App() {
         await storage.saveCredentials(emailOrPhone, password);
         await loginToRevenueCat(user.id);
         await updateEntitlements(user);
-        await updateSnippetGroups();
+        await updateDataForWidgets();
+        await updateDataForKeyboard();
         Sentry.setUser({ id: user.id, email: user.email_address });
       } else {
         console.log('App.js -> loginWithCredentials: Login failed with error code: ' + responseJson?.error_code);
@@ -165,7 +167,8 @@ export default function App() {
     try {
       await storage.deleteCredentials();
       await updateEntitlements();
-      await updateSnippetGroups();
+      await updateDataForWidgets();
+      await updateDataForKeyboard();
       Sentry.setUser(null);
       console.log('App.js -> logout: Deleted credentials from storage..');
     } catch (error) {
@@ -214,9 +217,9 @@ export default function App() {
     }
   };
 
-  const updateSnippetGroups = async () => {
+  const updateDataForWidgets = async () => {
     try {
-      console.log('App.js -> updateSnippetGroups: about to get snippet groups for user');
+      console.log('App.js -> updateDataForWidgets: about to get snippet groups for user');
 
       // 1. try to get storage snippet groups
       let storageSnippetGroups = [];
@@ -225,7 +228,7 @@ export default function App() {
         storageSnippetGroups.forEach(x => { x.source = snippetSources.STORAGE; x.snippets.forEach(y => { y.source = snippetSources.STORAGE; }) });
         storageSnippetGroups.sort((a, b) => a.order_index - b.order_index);
       } catch (error) {
-        console.error('App.js -> updateSnippetGroups: getting snippet groups from storage failed with error: ' + error.message);
+        console.error('App.js -> updateDataForWidgets: getting snippet groups from storage failed with error: ' + error.message);
         banner.showErrorMessage(readableErrorMessages.UPDATE_WIDGET_ERROR);
       }
 
@@ -238,9 +241,9 @@ export default function App() {
         apiSnippetGroups = responseJson.groups ?? [];
         apiSnippetGroups.forEach(x => { x.source = snippetSources.API; x.snippets.forEach(y => { y.source = snippetSources.API; }) });
         apiSnippetGroups.sort((a, b) => a.order_index - b.order_index);
-        console.log(`App.js -> updateSnippetGroups: Got ${apiSnippetGroups.length} snippet groups via API:`, JSON.stringify(apiSnippetGroups.map(x => x.id)));
+        console.log(`App.js -> updateDataForWidgets: Got ${apiSnippetGroups.length} snippet groups via API:`, JSON.stringify(apiSnippetGroups.map(x => x.id)));
       } catch (error) {
-        console.error('App.js -> updateSnippetGroups: getting snippet groups from API failed with error: ' + error.message);
+        console.error('App.js -> updateDataForWidgets: getting snippet groups from API failed with error: ' + error.message);
         banner.showErrorMessage(readableErrorMessages.UPDATE_WIDGET_ERROR);
       }
 
@@ -252,14 +255,60 @@ export default function App() {
       let combinedRootSnippetGroup = { id: 0, type: snippetTypes.MULTIPLE, source: snippetSources.STORAGE, title: 'Snippets', content: 'Snippets', color_id: colorIds.COLOR_100, order_index: 0, snippets: [...(storageRootSnippetGroup?.snippets || []), ...(apiRootSnippetGroup?.snippets || [])] };
       snippetGroups = snippetGroups.filter(x => x.id !== (storageKeys.SNIPPET + 0) && x.id !== 0);
       snippetGroups.unshift(combinedRootSnippetGroup);
-      console.log(`App.js -> updateSnippetGroups: Combined ${snippetGroups.length} snippet groups from storage and API:`, JSON.stringify(snippetGroups.map(x => x.id)));
+      console.log(`App.js -> updateDataForWidgets: Combined ${snippetGroups.length} snippet groups from storage and API:`, JSON.stringify(snippetGroups.map(x => x.id)));
 
       // 5. set snippet groups data for widget
       await widget.saveData('snippetGroups', snippetGroups);
       updateWidgets();
     } catch (error) {
-      console.error('App.js -> updateSnippetGroups: updating snippet groups failed with error: ' + error.message);
+      console.error('App.js -> updateDataForWidgets: updating snippet groups failed with error: ' + error.message);
       banner.showErrorMessage(readableErrorMessages.UPDATE_WIDGET_ERROR);
+    }
+  };
+
+  const updateDataForKeyboard = async () => {
+    try {
+      console.log('App.js -> updateDataForKeyboard: about to get snippets for user');
+
+      // 1. try to get storage snippets
+      let storageSnippets = [];
+      try {
+        storageSnippets = await storage.getSnippets(undefined, true);
+        _updateMetadata(storageSnippets, snippetSources.STORAGE);
+      } catch (error) {
+        console.error('App.js -> updateDataForKeyboard: getting snippets from storage failed with error: ' + error.message);
+        banner.showErrorMessage(readableErrorMessages.UPDATE_KEYBOARD_ERROR);
+      }
+
+      // 2. try to get API snippets
+      let apiSnippets = [];
+      try {
+        let response = await api.getSnippets(0, true, await storage.getAuthorizationToken());
+        if (!response?.ok) { throw new Error(`HTTP error with status ${response?.status}`); }
+        let responseJson = await response.json();
+        apiSnippets = responseJson.child_snippets ?? [];
+        _updateMetadata(apiSnippets, snippetSources.API);
+        console.log(`App.js -> updateDataForKeyboard: Got ${apiSnippets.length} snippets via API:`, JSON.stringify(apiSnippets.map(x => x.id)));
+      } catch (error) {
+        console.error('App.js -> updateDataForKeyboard: getting snippets from API failed with error: ' + error.message);
+        banner.showErrorMessage(readableErrorMessages.UPDATE_KEYBOARD_ERROR);
+      }
+        
+      // 4. combine data from storage and API
+      let snippets = [];
+      snippets = snippets.concat(storageSnippets).concat(apiSnippets);
+      console.log(`App.js -> updateDataForKeyboard: Combined  ${snippets.length} snippets from storage and API:`, JSON.stringify(snippets.map(x => x.id)));
+
+      // 5. set snippets data for keyboard
+      await widget.saveData('snippets', snippets);
+    } catch (error) {
+      console.error('App.js -> updateDataForKeyboard: updating snippets failed with error: ' + error.message);
+      banner.showErrorMessage(readableErrorMessages.UPDATE_KEYBOARD_ERROR);
+    }
+
+    function _updateMetadata(snippets, source) {
+      snippets.forEach(x => { x.source = source; _updateMetadata(x.child_snippets, source); });
+      snippets.sort((a, b) => a.order_index - b.order_index);
     }
   };
 
@@ -400,7 +449,8 @@ export default function App() {
 
   const onSnippetChanged = async () => {
     console.log('App.js -> onSnippetChanged: snippet(s) was changed and need to refresh related state..');
-    await updateSnippetGroups();
+    await updateDataForWidgets();
+    await updateDataForKeyboard();
     await promptReviewIfReady();
   };
 
