@@ -1,7 +1,7 @@
 export const colors = {
   // default
-  white: '#fff',
-  black: '#000',
+  white: '#ffffff',
+  black: '#000000',
   gray: '#dfdfdf',
   darkGray: '#1d2027',
   mediumGray: '#2e323e',

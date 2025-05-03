@@ -34,8 +34,18 @@ extension Color {
     self.init(red: r, green: g, blue: b, opacity: a)
   }
   
-  static let white = "#fff"
-  static let black = "#000"
+  public func isLightColor() -> Bool {
+    var red: CGFloat = 0
+    var green: CGFloat = 0
+    var blue: CGFloat = 0
+    var alpha: CGFloat = 0
+    UIColor(self).getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+    let brightness = (red * 299 + green * 587 + blue * 114) / 1000
+    return brightness > 0.6 // adjust this threshold as needed
+  }
+  
+  static let white = "#ffffff"
+  static let black = "#000000"
   static let gray = "#dfdfdf"
   static let darkGray = "#1d2027"
   static let mediumGray = "#2e323e"
