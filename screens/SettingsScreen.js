@@ -62,6 +62,7 @@ const SettingsScreen = ({ navigation }) => {
         { label: `Light/dark mode: ${appearanceMode}`, onTapped: () => { onAppearanceModeTapped(); }},
       ]; 
       let appExtensionsSettings = [
+        { label: 'Keyboard extension', onTapped: () => { navigation.navigate('Keyboard'); }},
         { label: 'Home screen widget', onTapped: () => { navigation.navigate('Widget'); }},
         { label: 'System settings', onTapped: () => { Platform.OS === 'ios' ? Linking.openURL('app-settings:') : Linking.openSettings(); }},
       ];

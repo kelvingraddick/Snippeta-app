@@ -34,6 +34,7 @@ import LoginScreen from './screens/LoginScreen';
 import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import UserScreen from './screens/UserScreen';
+import KeyboardScreen from './screens/KeyboardScreen';
 import WidgetScreen from './screens/WidgetScreen';
 
 Sentry.init({
@@ -504,6 +505,11 @@ export default function App() {
                   />
                 </Stack.Group>
                 <Stack.Group screenOptions={{ presentation: 'modal' }}>
+                  <Stack.Screen
+                    name="Keyboard"
+                    component={KeyboardScreen}
+                    options={{ headerShown: false }}
+                  />
                   <Stack.Screen
                     name="Widget"
                     component={WidgetScreen}
