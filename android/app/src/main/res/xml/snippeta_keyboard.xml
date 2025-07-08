@@ -1,0 +1,15 @@
+<!--
+  This XML file defines the input method (keyboard) service for Snippeta.
+  It should reference the SnippetaKeyboardService and set appropriate attributes.
+-->
+<input-method xmlns:android="http://schemas.android.com/apk/res/android"
+    android:settingsActivity="com.wavelinkllc.snippeta.SettingsActivity"
+    android:isDefault="false"
+    android:label="@string/keyboard_name"
+    android:icon="@mipmap/ic_launcher">
+    <subtype
+        android:label="@string/keyboard_subtype"
+        android:imeSubtypeLocale="en_US"
+        android:imeSubtypeMode="keyboard"
+        android:imeSubtypeExtraValue=""/>
+</input-method>

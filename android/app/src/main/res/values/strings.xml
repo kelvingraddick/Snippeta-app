@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Snippeta</string>
+    <string name="keyboard_name">Snippeta Keyboard</string>
+    <string name="keyboard_subtype">Text snippet pasteboard</string>
 </resources>

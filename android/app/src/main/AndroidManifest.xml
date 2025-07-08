@@ -54,5 +54,17 @@
         android:exported="false">
       </receiver>
 
+      <service
+        android:name=".SnippetaKeyboardService"
+        android:permission="android.permission.BIND_INPUT_METHOD"
+        android:exported="true">
+        <intent-filter>
+            <action android:name="android.view.InputMethod" />
+        </intent-filter>
+        <meta-data
+            android:name="android.view.im"
+            android:resource="@xml/snippeta_keyboard" />
+    </service>
+
     </application>
 </manifest>
