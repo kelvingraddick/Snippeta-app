@@ -26,29 +26,20 @@ const KeyboardScreen = ({ navigation }) => {
       </View>
       { !isInstructionsShowing &&
         <>
-          <Image source={Platform.OS === 'ios' ? require('../assets/images/keyboard-demo-ios.gif') : require('../assets/images/keyboard-demo-ios.gif')} style={[styles.previewImage, { backgroundColor: 'rgb(255, 252, 255)' }]} />
+          <Image source={Platform.OS === 'ios' ? require('../assets/images/keyboard-demo-ios.gif') : require('../assets/images/keyboard-demo-android.gif')} style={[styles.previewImage, { backgroundColor: Platform.OS === 'ios' ? 'rgb(255, 252, 255)' : '#F7F6FB' }]} />
           <View style={styles.contentView}>
             <Text style={[styles.titleText, { color: themer.getColor('content2.foreground') }]}>⌨️ The Snippeta Keyboard</Text>
             <Text style={[styles.descriptionText, { color: themer.getColor('content2.foreground') }]}>Quickly paste snippets into any other app</Text>
-            { Platform.OS === 'ios' &&
-              <>
-                <Text style={[styles.featureText, { color: themer.getColor('content2.foreground') }]}>• Tap a <Text style={{ fontWeight: 'bold' }}>snippet</Text> to paste it into the app you are in</Text>
-                <Text style={[styles.featureText, { color: themer.getColor('content2.foreground') }]}>• Dedicated buttons for <Text style={{ fontWeight: 'bold' }}>space</Text> and <Text style={{ fontWeight: 'bold' }}>backspace</Text></Text>
-                <Text style={[styles.featureText, { color: themer.getColor('content2.foreground'), marginBottom: 20 }]}>• After <Text style={{ fontStyle: 'italic' }}>installing</Text>, find it by cycling keyboards with the <Text style={{ fontWeight: 'bold' }}>globe 🌐︎</Text> button</Text>
-                <ActionButton iconImageSource={require('../assets/images/gear-gray.png')} text={'How to install'} foregroundColor={themer.getColor('button2.foreground')} backgroundColor={themer.getColor('button2.background')} onTapped={() => setIsInstructionsShowing(true)} />
-              </>
-            }
-            { Platform.OS === 'android' &&
-              <>
-                <Text style={[styles.featureText, { color: themer.getColor('content2.foreground'), textAlign: 'center', fontStyle: 'italic', opacity: 0.50, marginTop: 10 }]}>*Coming soon!</Text>
-              </>
-            }
+            <Text style={[styles.featureText, { color: themer.getColor('content2.foreground') }]}>• Tap a <Text style={{ fontWeight: 'bold' }}>snippet</Text> to paste it into the app you are in</Text>
+            <Text style={[styles.featureText, { color: themer.getColor('content2.foreground') }]}>• Dedicated buttons for <Text style={{ fontWeight: 'bold' }}>space</Text> and <Text style={{ fontWeight: 'bold' }}>backspace</Text></Text>
+            <Text style={[styles.featureText, { color: themer.getColor('content2.foreground'), marginBottom: 20 }]}>• After <Text style={{ fontStyle: 'italic' }}>installing</Text>, find it by cycling keyboards with the <Text style={{ fontWeight: 'bold' }}>{Platform.OS === 'ios' ? "globe 🌐" : "keyboard ⌨️"}</Text> button</Text>
+            <ActionButton iconImageSource={require('../assets/images/gear-gray.png')} text={'How to install'} foregroundColor={themer.getColor('button2.foreground')} backgroundColor={themer.getColor('button2.background')} onTapped={() => setIsInstructionsShowing(true)} />
           </View>
         </>
       }
       { isInstructionsShowing &&
         <>
-          <Image source={Platform.OS === 'ios' ? require('../assets/images/keyboard-install-ios.gif') : require('../assets/images/keyboard-install-ios.gif')} style={[styles.previewImage, { backgroundColor: 'rgb(242, 242, 247)' }]} />
+          <Image source={Platform.OS === 'ios' ? require('../assets/images/keyboard-install-ios.gif') : require('../assets/images/keyboard-install-android.gif')} style={[styles.previewImage, { backgroundColor: Platform.OS === 'ios' ? 'rgb(242, 242, 247)' : '#EFEEF1' }]} />
           <View style={styles.contentView}>
             <Text style={[styles.titleText, { color: themer.getColor('content2.foreground') }]}>⌨️ Install the keyboard</Text>
             <Text style={[styles.descriptionText, { color: themer.getColor('content2.foreground') }]}>..to quickly paste snippets into any other app</Text>
@@ -57,12 +48,17 @@ const KeyboardScreen = ({ navigation }) => {
                 <Text style={[styles.featureText, { color: themer.getColor('content2.foreground') }]}>1. Tap the <Text style={{ fontWeight: 'bold' }}>System settings</Text> button below</Text>
                 <Text style={[styles.featureText, { color: themer.getColor('content2.foreground') }]}>2. Tap the <Text style={{ fontWeight: 'bold' }}>Keyboards</Text> option</Text>
                 <Text style={[styles.featureText, { color: themer.getColor('content2.foreground'), marginBottom: 20 }]}>3. Toggle on the <Text style={{ fontWeight: 'bold' }}>Snippeta Keyboard</Text> option, then also toggle on <Text style={{ fontWeight: 'bold' }}>Allow Full Access</Text></Text>
-                <ActionButton iconImageSource={require('../assets/images/gear-gray.png')} text={'System settings'} foregroundColor={themer.getColor('button3.foreground')} backgroundColor={themer.getColor('button3.background')} onTapped={() => { Platform.OS === 'ios' ? Linking.openURL('app-settings:') : Linking.openSettings(); }} />
+                <ActionButton iconImageSource={require('../assets/images/gear-gray.png')} text={'System settings'} foregroundColor={themer.getColor('button3.foreground')} backgroundColor={themer.getColor('button3.background')} onTapped={() => Linking.openURL('app-settings:')} />
               </>
             }
             { Platform.OS === 'android' &&
               <>
-                <Text style={[styles.featureText, { color: themer.getColor('content2.foreground'), textAlign: 'center', fontStyle: 'italic', opacity: 0.50, marginTop: 10 }]}>*Coming soon!</Text>
+                <Text style={[styles.featureText, { color: themer.getColor('content2.foreground') }]}>1. Tap the <Text style={{ fontWeight: 'bold' }}>System settings</Text> button below</Text>
+                <Text style={[styles.featureText, { color: themer.getColor('content2.foreground') }]}>2. On the settings screen, tap <Text style={{ fontWeight: 'bold' }}>System</Text></Text>
+                <Text style={[styles.featureText, { color: themer.getColor('content2.foreground') }]}>3. Tap on <Text style={{ fontWeight: 'bold' }}>Languages & input</Text></Text>
+                <Text style={[styles.featureText, { color: themer.getColor('content2.foreground') }]}>4. Tap <Text style={{ fontWeight: 'bold' }}>On-screen keyboard</Text> or <Text style={{ fontWeight: 'bold' }}>Virtual keyboard</Text></Text>
+                <Text style={[styles.featureText, { color: themer.getColor('content2.foreground'), marginBottom: 20 }]}>5. Toggle on the <Text style={{ fontWeight: 'bold' }}>Snippeta Keyboard</Text> option</Text>
+                <ActionButton iconImageSource={require('../assets/images/gear-gray.png')} text={'System settings'} foregroundColor={themer.getColor('button3.foreground')} backgroundColor={themer.getColor('button3.background')} onTapped={() => Linking.sendIntent('android.settings.SETTINGS')} />
               </>
             }
           </View>
