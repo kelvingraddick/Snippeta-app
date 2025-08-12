@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -15,6 +15,7 @@
 		7699B88040F8A987B510C191 /* libPods-Snippeta-SnippetaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-Snippeta-SnippetaTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		ABD44DBC6FC501B9FBB79BD7 /* libPods-SnippetaWidgetExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B32FBB9B8D99D29EFFC25E37 /* libPods-SnippetaWidgetExtension.a */; };
+		B60B476D2E4B150B0030016A /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60B47692E4B150B0030016A /* KeyboardViewController.swift */; };
 		B62C4FA22D9A4D1C0006DFE1 /* SnippetaKeyboard.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B62C4F9B2D9A4D1C0006DFE1 /* SnippetaKeyboard.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B62C4FAE2D9A568F0006DFE1 /* Themer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B6F7042D19346C006518BD /* Themer.swift */; };
 		B62C4FAF2D9A56990006DFE1 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17D42CD6CCB500DC3628 /* ColorExtension.swift */; };
@@ -115,6 +116,9 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Snippeta/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-Snippeta-SnippetaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Snippeta-SnippetaTests.release.xcconfig"; path = "Target Support Files/Pods-Snippeta-SnippetaTests/Pods-Snippeta-SnippetaTests.release.xcconfig"; sourceTree = "<group>"; };
 		B32FBB9B8D99D29EFFC25E37 /* libPods-SnippetaWidgetExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SnippetaWidgetExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B60B47682E4B150B0030016A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B60B47692E4B150B0030016A /* KeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
+		B60B476A2E4B150B0030016A /* SnippetaKeyboard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SnippetaKeyboard.entitlements; sourceTree = "<group>"; };
 		B62C4F9B2D9A4D1C0006DFE1 /* SnippetaKeyboard.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SnippetaKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		B67D17D12CD6CB1E00DC3628 /* GroupWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupWidget.swift; sourceTree = "<group>"; };
 		B67D17D42CD6CCB500DC3628 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
@@ -143,20 +147,6 @@
 		E9E5E563F43D227E18278396 /* Pods-SnippetaWidgetExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnippetaWidgetExtension.release.xcconfig"; path = "Target Support Files/Pods-SnippetaWidgetExtension/Pods-SnippetaWidgetExtension.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		B62C4FA32D9A4D1C0006DFE1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = B62C4F9A2D9A4D1C0006DFE1 /* SnippetaKeyboard */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		B62C4F9C2D9A4D1C0006DFE1 /* SnippetaKeyboard */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (B62C4FA32D9A4D1C0006DFE1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = SnippetaKeyboard; sourceTree = "<group>"; };
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		00E356EB1AD99517003FC87E /* Frameworks */ = {
@@ -268,7 +258,7 @@
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* SnippetaTests */,
 				B683773C2CC0B6E300BC1755 /* SnippetaWidget */,
-				B62C4F9C2D9A4D1C0006DFE1 /* SnippetaKeyboard */,
+				B60B476B2E4B150B0030016A /* SnippetaKeyboard */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
 			);
@@ -286,6 +276,16 @@
 				B62C4F9B2D9A4D1C0006DFE1 /* SnippetaKeyboard.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B60B476B2E4B150B0030016A /* SnippetaKeyboard */ = {
+			isa = PBXGroup;
+			children = (
+				B60B47682E4B150B0030016A /* Info.plist */,
+				B60B47692E4B150B0030016A /* KeyboardViewController.swift */,
+				B60B476A2E4B150B0030016A /* SnippetaKeyboard.entitlements */,
+			);
+			path = SnippetaKeyboard;
 			sourceTree = "<group>";
 		};
 		B683773C2CC0B6E300BC1755 /* SnippetaWidget */ = {
@@ -385,12 +385,7 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				B62C4F9C2D9A4D1C0006DFE1 /* SnippetaKeyboard */,
-			);
 			name = SnippetaKeyboard;
-			packageProductDependencies = (
-			);
 			productName = SnippetaKeyboard;
 			productReference = B62C4F9B2D9A4D1C0006DFE1 /* SnippetaKeyboard.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -726,6 +721,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6AF7A6B2DA7779A00BC9794 /* Snippet.swift in Sources */,
+				B60B476D2E4B150B0030016A /* KeyboardViewController.swift in Sources */,
 				B6AF7A6C2DA777AA00BC9794 /* SnippetType.swift in Sources */,
 				B6AF7A6D2DA777AF00BC9794 /* SnippetSource.swift in Sources */,
 				B62C4FAE2D9A568F0006DFE1 /* Themer.swift in Sources */,
