@@ -9,11 +9,11 @@ PODS:
   - hermes-engine (0.74.1):
     - hermes-engine/Pre-built (= 0.74.1)
   - hermes-engine/Pre-built (0.74.1)
-  - PurchasesHybridCommon (13.12.0):
-    - RevenueCat (= 5.12.0)
-  - PurchasesHybridCommonUI (13.12.0):
-    - PurchasesHybridCommon (= 13.12.0)
-    - RevenueCatUI (= 5.12.0)
+  - PurchasesHybridCommon (16.2.0):
+    - RevenueCat (= 5.34.0)
+  - PurchasesHybridCommonUI (16.2.0):
+    - PurchasesHybridCommon (= 16.2.0)
+    - RevenueCatUI (= 5.34.0)
   - RCT-Folly (2024.01.01.00):
     - boost
     - DoubleConversion
@@ -1173,20 +1173,20 @@ PODS:
     - React-logger (= 0.74.1)
     - React-perflogger (= 0.74.1)
     - React-utils (= 0.74.1)
-  - RevenueCat (5.12.0)
-  - RevenueCatUI (5.12.0):
-    - RevenueCat (= 5.12.0)
+  - RevenueCat (5.34.0)
+  - RevenueCatUI (5.34.0):
+    - RevenueCat (= 5.34.0)
   - RNCAsyncStorage (1.24.0):
     - React-Core
   - RNCClipboard (1.14.1):
     - React-Core
   - RNCMaskedView (0.3.1):
     - React-Core
-  - RNPaywalls (8.4.0):
-    - PurchasesHybridCommonUI (= 13.12.0)
+  - RNPaywalls (9.2.0):
+    - PurchasesHybridCommonUI (= 16.2.0)
     - React-Core
-  - RNPurchases (8.4.0):
-    - PurchasesHybridCommon (= 13.12.0)
+  - RNPurchases (9.2.0):
+    - PurchasesHybridCommon (= 16.2.0)
     - React-Core
   - RNRate (1.2.12):
     - React-Core
@@ -1484,8 +1484,8 @@ SPEC CHECKSUMS:
   fmt: 4c2741a687cc09f0634a2e2c72a838b99f1ff120
   glog: c5d68082e772fa1c511173d6b30a9de2c05a69a2
   hermes-engine: 16b8530de1b383cdada1476cf52d1b52f0692cbc
-  PurchasesHybridCommon: 34be8fccff5e253c67ab624965e2cbda7f640632
-  PurchasesHybridCommonUI: 9b3ae9c4f3e16c3aea6bb051bc2e38ca8685a9f2
+  PurchasesHybridCommon: 55e97b4e090015ed138988e6559def2bd4c50ebe
+  PurchasesHybridCommonUI: 25c66f6ddcf8856ecbcffee897b2525eb272a5e7
   RCT-Folly: 02617c592a293bd6d418e0a88ff4ee1f88329b47
   RCTDeprecation: efb313d8126259e9294dc4ee0002f44a6f676aba
   RCTRequired: f49ea29cece52aee20db633ae7edc4b271435562
@@ -1534,13 +1534,13 @@ SPEC CHECKSUMS:
   React-runtimescheduler: e2152ed146b6a35c07386fc2ac4827b27e6aad12
   React-utils: 3285151c9d1e3a28a9586571fc81d521678c196d
   ReactCommon: f42444e384d82ab89184aed5d6f3142748b54768
-  RevenueCat: 459e3e60c895e20c0e7a2d767bece11140854306
-  RevenueCatUI: 5af11ea0dcea42317afde9f65157b8476c5b0a8e
+  RevenueCat: eb2aa042789d9c99ad5172bd96e28b96286d6ada
+  RevenueCatUI: 03025a80b64ce8ff8e43f47a7eb9dbbb6b4f486e
   RNCAsyncStorage: ec53e44dc3e75b44aa2a9f37618a49c3bc080a7a
   RNCClipboard: 0a720adef5ec193aa0e3de24c3977222c7e52a37
   RNCMaskedView: 090213d32d8b3bb83a4dcb7d12c18f0152591906
-  RNPaywalls: d4bb8430f17a3a4376f1cf5913f53521543f561b
-  RNPurchases: aafcf568c3ae6cdc70c654fb74b452cd9f9bc2cb
+  RNPaywalls: 7e1b3afa0752ef0088bb4bf35dd3b7189017051f
+  RNPurchases: 3a4d5e27fe3b01135779ced228532c4c93561e47
   RNRate: ef3bcff84f39bb1d1e41c5593d3eea4aab2bd73a
   RNReactNativeHapticFeedback: 7c701396d35a0e8863d8d8f97a7273c5f8509b40
   RNReactNativeSharedGroupPreferences: 29092869fc2e40d5baca5e15d82fa5c24a668977
