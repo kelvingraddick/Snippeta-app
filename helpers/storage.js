@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import validator from './validator';
 import { colorIds } from '../constants/colorIds';
 import { storageKeys } from '../constants/storageKeys';
+import { featureAlertTypes } from '../constants/featureAlertTypes';
 import { snippetTypes } from '../constants/snippetTypes';
 import { moveSnippetOptions } from '../constants/moveSnippetOptions';
 import { snippetSources } from '../constants/snippetSources';
@@ -260,6 +261,37 @@ const saveLastReviewPromptDate = async (lastReviewPromptDate) => {
   console.log('storage.js -> saveLastReviewPromptDate: Saved last review prompt date', lastReviewPromptDate);
 };
 
+const getIsFeatureAlertDismissed = async (alertType) => {
+  const storageKey = storageKeys.IS_FEATURE_ALERT_DISMISSED + alertType.toUpperCase();
+  
+  const item = await AsyncStorage.getItem(storageKey);
+  const isDismissed = item === 'true';
+  console.log(`storage.js -> getIsFeatureAlertDismissed: Got ${alertType} alert dismissed status: ${isDismissed}`);
+  return isDismissed;
+};
+
+const saveIsFeatureAlertDismissed = async (alertType, isDismissed) => {
+  const storageKey = storageKeys.IS_FEATURE_ALERT_DISMISSED + alertType.toUpperCase();
+  
+  const item = isDismissed ? 'true' : null;
+  if (item === null) {
+    await AsyncStorage.removeItem(storageKey);
+    console.log(`storage.js -> saveIsFeatureAlertDismissed: Removed ${alertType} alert dismissed flag`);
+  } else {
+    await AsyncStorage.setItem(storageKey, item);
+    console.log(`storage.js -> saveIsFeatureAlertDismissed: Saved ${alertType} alert dismissed status: ${isDismissed}`);
+  }
+};
+
+const resetAllFeatureAlerts = async () => {
+  console.log('storage.js -> resetAllFeatureAlerts: Resetting all feature alerts');
+  await Promise.all([
+    saveIsFeatureAlertDismissed(featureAlertTypes.KEYBOARD, false),
+    saveIsFeatureAlertDismissed(featureAlertTypes.WIDGET, false)
+  ]);
+  console.log('storage.js -> resetAllFeatureAlerts: Successfully reset all feature alerts');
+};
+
 export default {
   getCredentials,
   saveCredentials,
@@ -280,4 +312,7 @@ export default {
   saveMilestoneNumber,
   getLastReviewPromptDate,
   saveLastReviewPromptDate,
+  getIsFeatureAlertDismissed,
+  saveIsFeatureAlertDismissed,
+  resetAllFeatureAlerts,
 };

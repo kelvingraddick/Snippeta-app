@@ -18,6 +18,7 @@ import style from '../helpers/style';
 import ActionButton from '../components/ActionButton';
 import SnippetView from '../components/SnippetView';
 import SnippetaCloudView from '../components/SnippetaCloudView';
+import FeatureAlertsView from '../components/FeatureAlertsView';
 
 const SnippetsScreen = ({ route, navigation }) => {
   const parentSnippet = route.params?.parentSnippet;
@@ -293,6 +294,15 @@ const SnippetsScreen = ({ route, navigation }) => {
     ReactNativeHapticFeedback.trigger('impactMedium', options = { enableVibrateFallback: true, ignoreAndroidSystemSettings: true, });
   }
 
+  const onAlertDismissed = (alertId) => {
+    console.log(`SnippetsScreen: Alert dismissed: ${alertId}`);
+  };
+
+  const onAlertActionTapped = (alert) => {
+    console.log(`SnippetsScreen: Alert action tapped: ${alert.id}`);
+    navigation.navigate(alert.actionScreen);
+  };
+
   return (
     <View style={[styles.container, { backgroundColor: themer.getColor('background1') }]}>
       <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background') } ]}>
@@ -348,6 +358,16 @@ const SnippetsScreen = ({ route, navigation }) => {
           renderItem={({item, index, section}) => <SnippetView snippet={item} onSnippetTapped={onSnippetTapped} onSnippetMenuTapped={onSnippetMenuTapped} isHidden={item.source == snippetSources.STORAGE ? !isOnDeviceSectionVisible : !isCloudSectionVisible} isTop={index === 0} isBottom={index === section.data.length - 1} themer={themer} />}
           renderSectionHeader={({section: {title}}) => ( title &&
             <>
+              <View>
+              { isRootSnippetsScreen && title == snippetSources.API &&
+                <FeatureAlertsView
+                  themer={themer}
+                  user={user}
+                  onAlertDismissed={onAlertDismissed}
+                  onActionTapped={onAlertActionTapped}
+                />
+              }
+              </View>
               <Pressable 
                 onPress={() => { if (title == snippetSources.STORAGE) { setIsOnDeviceSectionVisible(!isOnDeviceSectionVisible); } else { setIsCloudSectionVisible(!isCloudSectionVisible); }}}
                 hitSlop={20}
