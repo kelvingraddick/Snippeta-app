@@ -4,7 +4,7 @@ import { appSettings } from '../constants/appSettings';
 
 const configure = async function () {
   try {
-    await Purchases.setLogLevel(LOG_LEVEL.VERBOSE);
+    await Purchases.setLogLevel(LOG_LEVEL.WARN);
     Purchases.configure({ apiKey: (Platform.OS === 'ios' ? appSettings.REVENUE_CAT_APPLE_API_KEY : appSettings.REVENUE_CAT_GOOGLE_API_KEY) });
     console.log('RevenueCat -> configure: in-app purchase library (RevenueCat) configued with app user Id ', await Purchases.getAppUserID());
   } catch (error) {
