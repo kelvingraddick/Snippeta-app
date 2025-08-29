@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Pressable } from 'react-native';
 import storage from '../helpers/storage';
 import { featureAlertTypes } from '../constants/featureAlertTypes';
+import { isKeyboardInstalled } from '../helpers/keyboard';
 
 const FeatureAlertsView = ({ themer, user, onAlertDismissed, onActionTapped }) => {
   const [alerts, setAlerts] = React.useState([]);
@@ -20,13 +21,24 @@ const FeatureAlertsView = ({ themer, user, onAlertDismissed, onActionTapped }) =
 
       const availableAlerts = [];
 
-      // Keyboard installation alert
+      let shouldShowKeyboard = false;
       if (!keyboardDismissed) {
+        try {
+          const keyboardInstalled = await isKeyboardInstalled();
+          shouldShowKeyboard = !keyboardInstalled;
+        } catch (error) {
+          console.error('Error checking keyboard installation; defaulting to showing alert. Error:', error);
+          shouldShowKeyboard = true;
+        }
+      }
+
+      // Keyboard installation alert
+      if (shouldShowKeyboard) {
         availableAlerts.push({
           id: featureAlertTypes.KEYBOARD,
           type: featureAlertTypes.KEYBOARD,
-          title: '⌨️ Install Custom Keyboard',
-          description: 'Get the full Snippeta experience with our custom keyboard!',
+          title: '⌨️ Enable the Snippeta keyboard',
+          description: 'Once enabled, you can open the keyboard in any other app to quickly paste snippets!',
           actionText: 'Learn More',
           actionScreen: 'Keyboard',
           icon: '⌨️'
@@ -38,7 +50,7 @@ const FeatureAlertsView = ({ themer, user, onAlertDismissed, onActionTapped }) =
         availableAlerts.push({
           id: featureAlertTypes.WIDGET,
           type: featureAlertTypes.WIDGET,
-          title: '📱 Add Home Screen Widget',
+          title: '📱 Add a home screen widget',
           description: 'Quick access to your snippets right from your home screen!',
           actionText: 'Learn More',
           actionScreen: 'Widget',
@@ -76,7 +88,7 @@ const FeatureAlertsView = ({ themer, user, onAlertDismissed, onActionTapped }) =
   return (
     <View style={styles.container}>
       {alerts.map((alert) => (
-        <View key={alert.id} style={[styles.alertContainer, { backgroundColor: themer.getColor('content2.background') }]} onTapped={() => handleAction(alert)}>
+        <Pressable key={alert.id} style={[styles.alertContainer, { backgroundColor: themer.getColor('content2.background') }]} onPress={() => handleAction(alert)}>
           <View style={styles.alertHeader}>
             <Text style={[styles.alertTitle, { color: themer.getColor('content2.foreground') }]}>
               {alert.title}
@@ -92,7 +104,7 @@ const FeatureAlertsView = ({ themer, user, onAlertDismissed, onActionTapped }) =
           <Text style={[styles.alertDescription, { color: themer.getColor('content2.foreground') }]}>
             {alert.description}
           </Text>
-        </View>
+        </Pressable>
       ))}
     </View>
   );

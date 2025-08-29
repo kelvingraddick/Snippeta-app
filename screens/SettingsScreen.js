@@ -66,7 +66,7 @@ const SettingsScreen = ({ navigation }) => {
         { label: 'Home screen widget', onTapped: () => { navigation.navigate('Widget'); }},
         { label: 'System settings', onTapped: () => { Platform.OS === 'ios' ? Linking.openURL('app-settings:') : Linking.openSettings(); }},
       ];
-      let featureAlertsSettings = [
+      let notificationSettings = [
         { label: 'Reset feature alerts', onTapped: () => { onResetFeatureAlertsTapped(); }},
       ];
       let inAppPurchaseSettings = [
@@ -87,7 +87,7 @@ const SettingsScreen = ({ navigation }) => {
       settings.push({ title: '🎨 Theme', data: themeSettings });
       settings.push({ title: '🌗 Appearance', data: appearanceSettings });
       settings.push({ title: '📱 App extensions', data: appExtensionsSettings });   
-      settings.push({ title: '🔔 Feature alerts', data: featureAlertsSettings }); 
+      settings.push({ title: '🔔 Notifications', data: notificationSettings }); 
       settings.push({ title: '🛒 In-app purchase', data: inAppPurchaseSettings }); 
       settings.push({ title: '📝 Get in touch', data: getInTouchSettings }); 
       settings.push({ title: 'ℹ️ Info', data: infoSettings });  
@@ -291,7 +291,7 @@ const SettingsScreen = ({ navigation }) => {
       // Reset all feature alerts
       await storage.resetAllFeatureAlerts();
       
-      banner.showSuccessMessage('Feature alerts have been reset! They will appear again when you return to the Snippets screen.');
+      banner.showSuccessMessage('Feature alerts have been reset! They will appear again on app relaunch.');
       setIsLoading(false);
     } catch (error) {
       console.error('SettingsScreen.js -> onResetFeatureAlertsTapped: resetting feature alerts failed with error: ' + error.message);

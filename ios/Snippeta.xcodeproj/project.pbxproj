@@ -45,6 +45,8 @@
 		B6AF7A6F2DA777EB00BC9794 /* SnippetSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AF7A692DA7768600BC9794 /* SnippetSource.swift */; };
 		B6B6F7052D19346C006518BD /* Themer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B6F7042D19346C006518BD /* Themer.swift */; };
 		B6B6F7062D19346C006518BD /* Themer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B6F7042D19346C006518BD /* Themer.swift */; };
+		B6CBF2B82E6246E700D5302D /* KeyboardNativeModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CBF2B72E6246E700D5302D /* KeyboardNativeModule.swift */; };
+		B6CBF2BA2E62470C00D5302D /* KeyboardNativeModuleBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CBF2B92E62470C00D5302D /* KeyboardNativeModuleBridge.m */; };
 		B6FA6AB42D40B44A005699F4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6FA6AB32D40B44A005699F4 /* Assets.xcassets */; };
 		E5C4676548DEE7CB10F23EF6 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 42FB28459BF5265885BA2952 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
@@ -141,6 +143,8 @@
 		B6AF7A692DA7768600BC9794 /* SnippetSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetSource.swift; sourceTree = "<group>"; };
 		B6B6F6F22D153A38006518BD /* RNHapticFeedback.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNHapticFeedback.xcodeproj; path = "../node_modules/react-native-haptic-feedback/ios/RNHapticFeedback.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		B6B6F7042D19346C006518BD /* Themer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Themer.swift; sourceTree = "<group>"; };
+		B6CBF2B72E6246E700D5302D /* KeyboardNativeModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardNativeModule.swift; sourceTree = "<group>"; };
+		B6CBF2B92E62470C00D5302D /* KeyboardNativeModuleBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KeyboardNativeModuleBridge.m; sourceTree = "<group>"; };
 		B6CC09E22CC4B30300ABB709 /* SnippetaWidgetExtension-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SnippetaWidgetExtension-Bridging-Header.h"; sourceTree = "<group>"; };
 		B6D391DF2CB4F2AC00EC0846 /* Snippeta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Snippeta.entitlements; path = Snippeta/Snippeta.entitlements; sourceTree = "<group>"; };
 		B6FA6AB32D40B44A005699F4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -223,6 +227,8 @@
 				B67D17D42CD6CCB500DC3628 /* ColorExtension.swift */,
 				B69798972D1A67D900331C52 /* WidgetNativeModule.swift */,
 				B69798992D1A67F600331C52 /* WidgetNativeModuleBridge.m */,
+				B6CBF2B72E6246E700D5302D /* KeyboardNativeModule.swift */,
+				B6CBF2B92E62470C00D5302D /* KeyboardNativeModuleBridge.m */,
 				B697989B2D1A682100331C52 /* Snippeta-Bridging-Header.h */,
 			);
 			name = Snippeta;
@@ -704,12 +710,14 @@
 			files = (
 				B697989A2D1A67F600331C52 /* WidgetNativeModuleBridge.m in Sources */,
 				B67D17D92CD6D40300DC3628 /* GroupWidgetConfigurationIntent.swift in Sources */,
+				B6CBF2B82E6246E700D5302D /* KeyboardNativeModule.swift in Sources */,
 				B69798982D1A67D900331C52 /* WidgetNativeModule.swift in Sources */,
 				B6AF7A662DA7756800BC9794 /* Snippet.swift in Sources */,
 				B6AF7A6A2DA7768800BC9794 /* SnippetSource.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				B6AF7A682DA7765F00BC9794 /* SnippetType.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				B6CBF2BA2E62470C00D5302D /* KeyboardNativeModuleBridge.m in Sources */,
 				B67D17DE2CD7239B00DC3628 /* SnippetGroup.swift in Sources */,
 				B6B6F7052D19346C006518BD /* Themer.swift in Sources */,
 				B67D17D62CD6CCB500DC3628 /* ColorExtension.swift in Sources */,
