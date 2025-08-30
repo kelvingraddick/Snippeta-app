@@ -5,11 +5,12 @@ import ActionButton from '../components/ActionButton';
 
 const KeyboardScreen = ({ navigation }) => {
 
-  const { themer } = useContext(ApplicationContext);
+  const { themer, refreshFeatureAlerts } = useContext(ApplicationContext);
 
   const [isInstructionsShowing, setIsInstructionsShowing] = useState(false);
 
   const onBackTapped = async () => {
+    refreshFeatureAlerts();
     navigation.goBack();
   };
 

@@ -295,11 +295,11 @@ const SnippetsScreen = ({ route, navigation }) => {
   }
 
   const onAlertDismissed = (alertId) => {
-    console.log(`SnippetsScreen: Alert dismissed: ${alertId}`);
+    console.log(`SnippetsScreen.js -> onAlertDismissed: Alert dismissed: ${alertId}`);
   };
 
   const onAlertActionTapped = (alert) => {
-    console.log(`SnippetsScreen: Alert action tapped: ${alert.id}`);
+    console.log(`SnippetsScreen.js -> onAlertActionTapped: Alert action tapped: ${alert.id}`);
     navigation.navigate(alert.actionScreen);
   };
 

@@ -9,15 +9,15 @@ const { KeyboardNativeModule } = NativeModules;
 export const isKeyboardInstalled = async () => {
   try {
     if (!KeyboardNativeModule) {
-      console.error('KeyboardNativeModule native module not available');
+      console.error('keyboard.js -> isKeyboardInstalled: KeyboardNativeModule native module not available');
       return false;
     }
     
     const isInstalled = await KeyboardNativeModule.isKeyboardInstalled();
-    console.log(`Keyboard detection: Keyboard is ${isInstalled ? 'installed' : 'not installed'}`);
+    console.log(`keyboard.js -> isKeyboardInstalled: Keyboard is ${isInstalled ? 'installed' : 'not installed'}`);
     return isInstalled;
   } catch (error) {
-    console.error('Error checking keyboard installation:', error);
+    console.error('keyboard.js -> isKeyboardInstalled: Error checking keyboard installation:', error);
     return false;
   }
 }

@@ -4,9 +4,10 @@ import { ApplicationContext } from '../ApplicationContext';
 
 const WidgetScreen = ({ navigation }) => {
 
-  const { themer } = useContext(ApplicationContext);
+  const { themer, refreshFeatureAlerts } = useContext(ApplicationContext);
 
   const onBackTapped = async () => {
+    refreshFeatureAlerts();
     navigation.goBack();
   };
 

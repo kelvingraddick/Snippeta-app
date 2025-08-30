@@ -21,7 +21,7 @@ import SettingView from '../components/SettingView';
 
 const SettingsScreen = ({ navigation }) => {
   
-  const { themer, updateThemer, startThemePreview, endThemePreview, isThemePreview, appearanceMode, updateAppearanceMode, user, isUserLoading, logout, entitlements, updateEntitlements, subscription, } = useContext(ApplicationContext);
+  const { themer, updateThemer, startThemePreview, endThemePreview, isThemePreview, appearanceMode, updateAppearanceMode, user, isUserLoading, logout, entitlements, updateEntitlements, refreshFeatureAlerts, subscription, } = useContext(ApplicationContext);
 
   const [isLoading, setIsLoading] = useState(false);
   const [subscriptionPrice, setSubscriptionPrice] = useState();
@@ -287,11 +287,9 @@ const SettingsScreen = ({ navigation }) => {
   const onResetFeatureAlertsTapped = async () => {
     try {
       setIsLoading(true);
-      
-      // Reset all feature alerts
       await storage.resetAllFeatureAlerts();
-      
-      banner.showSuccessMessage('Feature alerts have been reset! They will appear again on app relaunch.');
+      refreshFeatureAlerts();
+      banner.showSuccessMessage('Feature alerts have been reset! They will appear again on the main screen.');
       setIsLoading(false);
     } catch (error) {
       console.error('SettingsScreen.js -> onResetFeatureAlertsTapped: resetting feature alerts failed with error: ' + error.message);

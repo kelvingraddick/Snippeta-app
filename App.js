@@ -55,6 +55,7 @@ const initialState = {
   subscription: undefined,
   appearanceMode: undefined,
   isThemePreview: false,
+  featureAlertsRefreshTime: undefined,
 }
 
 const reducer = (state, action) => {
@@ -75,6 +76,8 @@ const reducer = (state, action) => {
       return { ...state, appearanceMode: action.payload };
     case 'PREVIEWING_THEME':
       return { ...state, isThemePreview: action.payload };
+    case 'REFRESH_FEATURE_ALERTS':
+      return { ...state, featureAlertsRefreshTime: new Date() };
     default:
       return state;
   }
@@ -455,9 +458,14 @@ export default function App() {
     await promptReviewIfReady();
   };
 
+  const refreshFeatureAlerts = () => {
+    console.log('App.js -> refreshFeatureAlerts: Triggering feature alerts refresh');
+    dispatch({ type: 'REFRESH_FEATURE_ALERTS' });
+  };
+
   return (
     <Sentry.TouchEventBoundary>
-      <ApplicationContext.Provider value={{...state, themer, onSnippetChanged, updateThemer, startThemePreview, endThemePreview, updateAppearanceMode, loginWithCredentials, logout, updateEntitlements}}>
+      <ApplicationContext.Provider value={{...state, themer, onSnippetChanged, updateThemer, startThemePreview, endThemePreview, updateAppearanceMode, loginWithCredentials, logout, updateEntitlements, refreshFeatureAlerts}}>
         <ActionSheetProvider>
           <FancyActionSheetProvider>
             <NavigationContainer ref={navigationRef}>

@@ -1,16 +1,25 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { ApplicationContext } from '../ApplicationContext';
 import storage from '../helpers/storage';
 import { featureAlertTypes } from '../constants/featureAlertTypes';
 import { isKeyboardInstalled } from '../helpers/keyboard';
 
 const FeatureAlertsView = ({ themer, user, onAlertDismissed, onActionTapped }) => {
-  const [alerts, setAlerts] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(true);
+  const { featureAlertsRefreshTime } = useContext(ApplicationContext);
+  const [alerts, setAlerts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  React.useEffect(() => {
+  useEffect(() => {
     loadAlerts();
   }, []);
+
+  useEffect(() => {
+    if (featureAlertsRefreshTime !== undefined) {
+      console.log('FeatureAlertsView.js -> useEffect: Refreshing alerts due to context featureAlertsRefreshTime change to', featureAlertsRefreshTime);
+      loadAlerts();
+    }
+  }, [featureAlertsRefreshTime]);
 
   const loadAlerts = async () => {
     try {
@@ -27,7 +36,7 @@ const FeatureAlertsView = ({ themer, user, onAlertDismissed, onActionTapped }) =
           const keyboardInstalled = await isKeyboardInstalled();
           shouldShowKeyboard = !keyboardInstalled;
         } catch (error) {
-          console.error('Error checking keyboard installation; defaulting to showing alert. Error:', error);
+          console.error('FeatureAlertsView.js -> loadAlerts: Error checking keyboard installation; defaulting to showing alert. Error:', error);
           shouldShowKeyboard = true;
         }
       }
@@ -61,7 +70,7 @@ const FeatureAlertsView = ({ themer, user, onAlertDismissed, onActionTapped }) =
       setAlerts(availableAlerts);
       setIsLoading(false);
     } catch (error) {
-      console.error('FeatureAlertsView: Error loading alerts:', error);
+      console.error('FeatureAlertsView.js -> loadAlerts: Error loading alerts:', error);
       setIsLoading(false);
     }
   };
@@ -73,7 +82,7 @@ const FeatureAlertsView = ({ themer, user, onAlertDismissed, onActionTapped }) =
       setAlerts(prev => prev.filter(alert => alert.id !== alertId));
       onAlertDismissed?.(alertId);
     } catch (error) {
-      console.error('FeatureAlertsView: Error dismissing alert:', error);
+      console.error('FeatureAlertsView.js -> handleDismiss: Error dismissing alert:', error);
     }
   };
 
