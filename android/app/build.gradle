@@ -80,8 +80,8 @@ android {
         applicationId "com.wavelinkllc.snippeta"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 2103 // "{major}{minor}{patch}{build}"
-        versionName "2.1"
+        versionCode 2201 // "{major}{minor}{patch}{build}"
+        versionName "2.2"
     }
     signingConfigs {
         debug {
