@@ -1,4 +1,4 @@
-package com.snippeta
+package com.wavelinkllc.snippeta
 
 import android.content.Context
 import android.view.inputmethod.InputMethodManager
