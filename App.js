@@ -10,6 +10,7 @@ import FlashMessage from "react-native-flash-message";
 import Clipboard from '@react-native-clipboard/clipboard';
 import Rate from 'react-native-rate';
 import * as Sentry from '@sentry/react-native';
+import OneSignal from './helpers/oneSignal';
 import { ApplicationContext } from './ApplicationContext';
 import { appSettings } from './constants/appSettings';
 import { storageKeys } from './constants/storageKeys';
@@ -99,6 +100,8 @@ export default function App() {
       .then(() => loadThemeAppearanceFromStorage()
       .then(() => loginWithStorage()));
 
+    OneSignal.initialize(appSettings.ONESIGNAL_APP_ID, handleNotificationClick, handleForegroundNotification);
+
     Linking.getInitialURL().then((url) => { if (url) { handleDeepLink({ url }); }}); // handle deep link from app launch
     const urlEventBinding = Linking.addEventListener('url', handleDeepLink);  // handle deep link while app running
 
@@ -143,6 +146,7 @@ export default function App() {
         console.log(`App.js -> loginWithCredentials: Login successful with user ID ${user.id}`);
         await storage.saveCredentials(emailOrPhone, password);
         await loginToRevenueCat(user.id);
+        await OneSignal.loginUser(user.id, { 'app_version': appSettings.VERSION_NUMBER, 'build_number': appSettings.BUILD_NUMBER });
         await updateEntitlements(user);
         await updateDataForWidgets();
         await updateDataForKeyboard();
@@ -170,6 +174,7 @@ export default function App() {
     dispatch({ type: 'LOGGING_OUT' });
     try {
       await storage.deleteCredentials();
+      OneSignal.logoutUser();  
       await updateEntitlements();
       await updateDataForWidgets();
       await updateDataForKeyboard();
@@ -185,6 +190,40 @@ export default function App() {
     console.log('App.js -> refresh: Refreshing login, snippets, widgets, etc.');
     loginWithStorage();
   };
+
+  const handleNotificationClick = async (event) => {
+    console.log('App.js -> handleNotificationClick: Handling notification click', event);
+    const notification = event.notification;
+    const additionalData = notification.additionalData;
+    if (additionalData) {
+      // Handle different notification types based on additional data
+      if (additionalData.snippetId) {
+        console.log(`App.js -> handleNotificationClick: Navigating to snippet ${additionalData.snippetId}`);
+        navigation.popToTop();
+        navigation.navigate('Snippets', { callbacks: [refresh] });
+      } else if (additionalData.action === 'open_settings') {
+        console.log('App.js -> handleNotificationClick: Opening settings');
+        navigation.popToTop();
+        navigation.navigate('Settings', { callbacks: [refresh] });
+      } else if (additionalData.action === 'open_search') {
+        console.log('App.js -> handleNotificationClick: Opening search');
+        navigation.popToTop();
+        navigation.navigate('Search', { callbacks: [refresh] });
+      } else if (additionalData.action === 'open_add_snippet') {
+        console.log('App.js -> handleNotificationClick: Opening add snippet');
+        navigation.popToTop();
+        navigation.navigate('Snippet', { 
+          snippet: { type: snippetTypes.SINGLE, color_id: colorIds.COLOR_1 }, 
+          callbacks: [refresh] 
+        });
+      }
+    }
+  };
+
+  const handleForegroundNotification = (event) => {
+    console.log('OneSignal: notification will display in foreground:', event);
+    event.preventDefault();
+  }
 
   const handleDeepLink = async (event) => {
     console.log('App.js -> handleDeepLink: Handling deep link', event?.url);

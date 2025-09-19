@@ -59,7 +59,11 @@
 	</array>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.productivity</string>
-  <key>UIRequiresFullScreen</key>
+	<key>UIRequiresFullScreen</key>
   <true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 </dict>
 </plist>
