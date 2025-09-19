@@ -94,8 +94,8 @@ const SnippetsScreen = ({ route, navigation }) => {
       // combime storage and API snippets
       let snippetSections = [];
       if (isRootSnippetsScreen) {
-        if ((storageSnippets.length > 0 && apiSnippets.length > 0) || storageSnippets.length > 0) { snippetSections.push({ title: snippetSources.STORAGE, data: storageSnippets }, { title: snippetSources.API, data: apiSnippets }); }
-        else if (apiSnippets.length > 0) { snippetSections.push({ data: apiSnippets }); }
+        if (storageSnippets.length > 0) { snippetSections.push({ title: snippetSources.STORAGE, data: storageSnippets }, { title: snippetSources.API, data: apiSnippets }); }
+        else if (apiSnippets.length > 0) { snippetSections.push({ title: snippetSources.API, data: apiSnippets }); }
       } else {
         if (storageSnippets.length > 0 && apiSnippets.length > 0) { snippetSections.push({ title: snippetSources.STORAGE, data: storageSnippets }, { title: snippetSources.API, data: apiSnippets }); }
         else if (storageSnippets.length > 0) { snippetSections.push({ data: storageSnippets }); }
@@ -349,7 +349,7 @@ const SnippetsScreen = ({ route, navigation }) => {
           ))}
         </View>
       }
-      { (!isLoading && !isUserLoading) && 
+      { (!isLoading && !isUserLoading && snippetSections.length > 0) && 
         <SectionList
           style={styles.snippetsGroup}
           sections={snippetSections}
@@ -392,6 +392,16 @@ const SnippetsScreen = ({ route, navigation }) => {
           renderSectionFooter={() => <View style={{ height: 17 }}></View>}
           ListFooterComponent={() => <View style={{ height: 50 }}></View>}
         />
+      }
+      { (isRootSnippetsScreen && !isLoading && !isUserLoading && snippetSections.length == 0) && 
+        <View style={styles.snippetsGroup}>
+          <FeatureAlertsView
+            themer={themer}
+            user={user}
+            onAlertDismissed={onAlertDismissed}
+            onActionTapped={onAlertActionTapped}
+          />
+        </View>
       }
     </View>
   );
