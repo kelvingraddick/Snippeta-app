@@ -30,10 +30,10 @@ export const initialize = (appId, onNotificationClick, onForegroundWillDisplay) 
  */
 export const loginUser = async (userId, tags = {}) => {
   try {
-    OneSignal.login(userId);
-    console.log('OneSignal: Logged in user:', userId);
+    const externalId = _getExternalId(userId);
+    OneSignal.login(externalId);
+    console.log('OneSignal: Logged in user with external ID:', externalId, '(user ID:', userId, ')');
     
-    // Set user tags if provided
     if (Object.keys(tags).length > 0) {
       await setUserTags(tags);
     }
@@ -192,6 +192,29 @@ export const sendTestNotification = async (message, userId = null) => {
   } catch (error) {
     console.error('OneSignal: Error sending test notification:', error);
   }
+};
+
+/**
+ * Get OneSignal-compatible External ID from user ID
+ * Prevents conflicts with restricted values: 1, 0, -1, NULL, NA, all, etc.
+ * @param {string|number} userId - The original user ID
+ * @returns {string} - OneSignal-compatible External ID
+ */
+const _getExternalId = (userId) => {
+  if (!userId) return null;
+  return `user_${userId}`;
+};
+
+/**
+ * Extract original user ID from OneSignal External ID
+ * @param {string} externalId - The OneSignal External ID
+ * @returns {string} - The original user ID
+ */
+const _getUserId = (externalId) => {
+  if (!externalId || !externalId.startsWith('user_')) {
+    return externalId;
+  }
+  return externalId.replace('user_', '');
 };
 
 export default {
