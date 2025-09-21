@@ -1,4 +1,5 @@
-import {LogLevel} from 'react-native-onesignal';
+import { LOG_LEVEL as REVENUE_CAT_LOG_LEVEL } from 'react-native-purchases';
+import { LogLevel as ONESIGNAL_LOG_LEVEL } from 'react-native-onesignal';
 export const appSettings = {
   VERSION_NUMBER: '2.2',
   BUILD_NUMBER: 1,
@@ -7,7 +8,8 @@ export const appSettings = {
   SENTRY_AUTH_TOKEN: '{{SENTRY_AUTH_TOKEN}}',
   REVENUE_CAT_APPLE_API_KEY: '{{REVENUE_CAT_APPLE_API_KEY}}',
   REVENUE_CAT_GOOGLE_API_KEY: '{{REVENUE_CAT_GOOGLE_API_KEY}}',
+  REVENUE_CAT_LOG_LEVEL: REVENUE_CAT_LOG_LEVEL.WARN,
   ONESIGNAL_APP_ID: '{{ONESIGNAL_APP_ID}}',
   ONESIGNAL_GOOGLE_PROJECT_NUMBER: '{{ONESIGNAL_GOOGLE_PROJECT_NUMBER}}',
-  ONESIGNAL_LOG_LEVEL: LogLevel.Warn,
+  ONESIGNAL_LOG_LEVEL: ONESIGNAL_LOG_LEVEL.Warn,
 };
