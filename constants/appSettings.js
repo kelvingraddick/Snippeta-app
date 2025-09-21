@@ -1,3 +1,4 @@
+import {LogLevel} from 'react-native-onesignal';
 export const appSettings = {
   VERSION_NUMBER: '2.2',
   BUILD_NUMBER: 1,
@@ -8,4 +9,5 @@ export const appSettings = {
   REVENUE_CAT_GOOGLE_API_KEY: '{{REVENUE_CAT_GOOGLE_API_KEY}}',
   ONESIGNAL_APP_ID: '{{ONESIGNAL_APP_ID}}',
   ONESIGNAL_GOOGLE_PROJECT_NUMBER: '{{ONESIGNAL_GOOGLE_PROJECT_NUMBER}}',
+  ONESIGNAL_LOG_LEVEL: LogLevel.Warn,
 };

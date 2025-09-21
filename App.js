@@ -146,7 +146,7 @@ export default function App() {
         console.log(`App.js -> loginWithCredentials: Login successful with user ID ${user.id}`);
         await storage.saveCredentials(emailOrPhone, password);
         await loginToRevenueCat(user.id);
-        await OneSignal.loginUser(user.id, { 'app_version': appSettings.VERSION_NUMBER, 'build_number': appSettings.BUILD_NUMBER });
+        await OneSignal.loginUser(user.id, { 'app_version': appSettings.VERSION_NUMBER, 'build_number': appSettings.BUILD_NUMBER.toString() });
         await updateEntitlements(user);
         await updateDataForWidgets();
         await updateDataForKeyboard();

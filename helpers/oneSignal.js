@@ -1,4 +1,4 @@
-import {OneSignal, LogLevel} from 'react-native-onesignal';
+import {OneSignal} from 'react-native-onesignal';
 import { appSettings } from '../constants/appSettings';
 
 /**
@@ -13,10 +13,10 @@ import { appSettings } from '../constants/appSettings';
  */
 export const initialize = (appId, onNotificationClick, onForegroundWillDisplay) => {
   try {
-    OneSignal.Debug.setLogLevel(LogLevel.Warn);
+    OneSignal.Debug.setLogLevel(appSettings.ONESIGNAL_LOG_LEVEL);
     OneSignal.initialize(appId);
-    console.log('OneSignal: Initialized with app ID and log level:', appId, LogLevel.Warn);
-    setupNotificationListeners(onNotificationClick, onForegroundWillDisplay);
+    console.log('OneSignal: Initialized with app ID and log level:', appId, appSettings.ONESIGNAL_LOG_LEVEL);
+    _setupNotificationListeners(onNotificationClick, onForegroundWillDisplay);
     OneSignal.Notifications.requestPermission(true)
   } catch (error) {
     console.error('OneSignal: Error initializing:', error);
@@ -156,7 +156,7 @@ export const getPlayerId = async () => {
  * @param {Function} onNotificationClick - Callback for notification clicks
  * @param {Function} onForegroundWillDisplay - Callback for foreground notifications
  */
-const setupNotificationListeners = (onNotificationClick, onForegroundWillDisplay) => {
+const _setupNotificationListeners = (onNotificationClick, onForegroundWillDisplay) => {
   try {
     // Notification click listener
     OneSignal.Notifications.addEventListener('click', (event) => {
@@ -177,20 +177,6 @@ const setupNotificationListeners = (onNotificationClick, onForegroundWillDisplay
     console.log('OneSignal: Event listeners set up successfully');
   } catch (error) {
     console.error('OneSignal: Error setting up event listeners:', error);
-  }
-};
-
-/**
- * Send a test notification (for development)
- * Note: This requires OneSignal REST API access
- */
-export const sendTestNotification = async (message, userId = null) => {
-  try {
-    // This would typically be done from your backend
-    // For now, we'll just log the intent
-    console.log('OneSignal: Would send test notification:', { message, userId });
-  } catch (error) {
-    console.error('OneSignal: Error sending test notification:', error);
   }
 };
 
@@ -228,5 +214,4 @@ export default {
   requestNotificationPermission,
   areNotificationsEnabled,
   getPlayerId,
-  sendTestNotification,
 };
