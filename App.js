@@ -551,7 +551,7 @@ export default function App() {
                     options={{ headerShown: false }}
                   />
                 </Stack.Group>
-                <Stack.Group screenOptions={{ presentation: 'modal' }}>
+                <Stack.Group screenOptions={{ presentation: Platform.isPad ? 'fullScreenModal' : 'modal' }}>
                   <Stack.Screen
                     name="Keyboard"
                     component={KeyboardScreen}
