@@ -17,7 +17,9 @@ class KeyboardViewController: UIInputViewController {
   
   var tableView: UITableView!
   var navBar: UIView!
+  var footerBar: UIView!
   var backButton: UIButton!
+  var keyboardSwitchButton: UIButton!
   var titleLabel: UILabel!
   var spaceButton: UIButton!
   var deleteButton: UIButton!
@@ -102,6 +104,22 @@ class KeyboardViewController: UIInputViewController {
     deleteButton.contentEdgeInsets = UIEdgeInsets(top: 10, left: 2, bottom: 10, right: 5)
     navBar.addSubview(deleteButton)
     
+    // Create footer bar (iPad only)
+    footerBar = UIView()
+    footerBar.translatesAutoresizingMaskIntoConstraints = false
+    footerBar.backgroundColor = .systemGray5
+    footerBar.isHidden = !isIPad()
+    view.addSubview(footerBar)
+    
+    // Create Keyboard Switch button in footer (iPad only)
+    keyboardSwitchButton = UIButton(type: .system)
+    keyboardSwitchButton.setImage(UIImage(systemName: "globe"), for: .normal)
+    keyboardSwitchButton.tintColor = .darkGray
+    keyboardSwitchButton.addTarget(self, action: #selector(didTapKeyboardSwitch), for: .touchUpInside)
+    keyboardSwitchButton.translatesAutoresizingMaskIntoConstraints = false
+    keyboardSwitchButton.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+    footerBar.addSubview(keyboardSwitchButton)
+    
     // Create and constrain the table view below the nav bar
     tableView = UITableView()
     tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -145,7 +163,19 @@ class KeyboardViewController: UIInputViewController {
       tableView.topAnchor.constraint(equalTo: navBar.bottomAnchor),
       tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-      tableView.heightAnchor.constraint(equalToConstant: 300)
+      tableView.heightAnchor.constraint(equalToConstant: 300),
+      tableView.bottomAnchor.constraint(equalTo: isIPad() ? footerBar.topAnchor : view.bottomAnchor),
+      
+      // Footer bar below table view (iPad only)
+      footerBar.topAnchor.constraint(equalTo: tableView.bottomAnchor),
+      footerBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      footerBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      footerBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+      footerBar.heightAnchor.constraint(equalToConstant: 50),
+      
+      // Keyboard switch button in footer left-aligned
+      keyboardSwitchButton.leadingAnchor.constraint(equalTo: footerBar.leadingAnchor, constant: 15),
+      keyboardSwitchButton.centerYAnchor.constraint(equalTo: footerBar.centerYAnchor)
     ])
   }
   
@@ -216,6 +246,14 @@ class KeyboardViewController: UIInputViewController {
   @objc func didTapSettings() {
     guard let url = URL(string: "snippeta://search") else { return }
     extensionContext?.open(url, completionHandler: nil)
+  }
+  
+  @objc func didTapKeyboardSwitch() {
+    advanceToNextInputMode()
+  }
+  
+  private func isIPad() -> Bool {
+    return UIDevice.current.userInterfaceIdiom == .pad
   }
   
   func insertText(_ text: String) {
