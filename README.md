@@ -38,7 +38,7 @@ yarn android
 # using npm
 npm run ios
 # using npm and specific device
-npm run ios --device "iPhone 15 Pro"   
+npm run ios --device "iPhone 16 Pro"
 
 # OR using Yarn
 yarn ios
