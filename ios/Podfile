@@ -5,7 +5,7 @@ require Pod::Executable.execute_command('node', ['-p',
     {paths: [process.argv[1]]},
   )', __dir__]).strip
 
-platform :ios, min_ios_version_supported
+platform :ios, '15.0'
 prepare_react_native_project!
 
 linkage = ENV['USE_FRAMEWORKS']
@@ -21,6 +21,9 @@ target 'Snippeta' do
     inherit! :search_paths
     # Add widget-specific pods here, if needed
   end
+
+  use_frameworks! :linkage => :static
+  $RNFirebaseAsStaticFramework = true
 
   use_react_native!(
     :path => config[:reactNativePath],
@@ -45,5 +48,6 @@ target 'Snippeta' do
 end
 
 target 'OneSignalNotificationServiceExtension' do
+  use_frameworks! :linkage => :static
   pod 'OneSignalXCFramework', '>= 5.0.0', '< 6.0'
 end
