@@ -8,6 +8,7 @@ import { snippetTypes } from '../constants/snippetTypes';
 import storage from '../helpers/storage';
 import api from '../helpers/api';
 import banner from '../helpers/banner';
+import analytics from '../helpers/analytics';
 import style from '../helpers/style';
 import { snippetSources } from '../constants/snippetSources';
 import { errorCodeMessages } from '../constants/errorCodeMessages';
@@ -94,6 +95,7 @@ const SnippetScreen = ({ route, navigation }) => {
         }
       }
 
+      await analytics.logEvent((snippet.id == null || snippet.id == undefined) ? 'snippet_created' : 'snippet_edited', { type: snippet.type, source: snippetSource });      
       setIsLoading(false);
       callbacks.forEach(async callback => { await callback(); });
       navigation.goBack();

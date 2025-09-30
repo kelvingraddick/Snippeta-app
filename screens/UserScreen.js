@@ -8,6 +8,7 @@ import style from '../helpers/style';
 import { errorCodeMessages } from '../constants/errorCodeMessages';
 import api from '../helpers/api';
 import banner from '../helpers/banner';
+import analytics from '../helpers/analytics';
 import ActionButton from '../components/ActionButton';
 
 const UserScreen = ({ navigation }) => {
@@ -44,6 +45,7 @@ const UserScreen = ({ navigation }) => {
       if (!response?.ok) { throw new Error(`HTTP error with status ${response?.status}`); }
       let responseJson = await response.json();
       if (responseJson && responseJson.success && responseJson.user) {
+        await analytics.logEvent('user_edited', { properties: Object.keys(editedUser).filter(key => editedUser[key] !== user[key]).length });
         console.log(`UserScreen.js -> onSaveTapped: User saved. Now logging user in again..`);
         responseJson = await loginWithCredentials(editedUser.email_address, editedUser.password);
         if (responseJson && responseJson.success && responseJson.user) {
@@ -93,6 +95,7 @@ const UserScreen = ({ navigation }) => {
       if (!response?.ok) { throw new Error(`HTTP error with status ${response?.status}`); }
       let responseJson = await response.json();
       if (responseJson && responseJson.success) {
+        await analytics.logEvent('user_deleted');
         console.log(`UserScreen.js -> deleteUser: User deleted. Now logging user out..`);
         navigation.popToTop();
         await logout();

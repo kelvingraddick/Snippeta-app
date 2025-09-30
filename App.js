@@ -27,6 +27,7 @@ import storage from './helpers/storage';
 import widget from './helpers/widget';
 import banner from './helpers/banner';
 import RevenueCat from './helpers/revenueCat';
+import analytics from './helpers/analytics';
 import SnippetsScreen from './screens/SnippetsScreen';
 import SnippetScreen from './screens/SnippetScreen';
 import SearchScreen from './screens/SearchScreen';
@@ -92,6 +93,7 @@ export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const themer = useThemer(Object.keys(themes)[0], appearanceModes.SYSTEM);
   const themePreviewStatusIntervalId = useRef();
+  const routeNameRef = useRef();
 
   useEffect(() => {
     console.log('\n\n\nApp.js -> useEffect: STARTING APP');
@@ -104,6 +106,8 @@ export default function App() {
 
     Linking.getInitialURL().then((url) => { if (url) { handleDeepLink({ url }); }}); // handle deep link from app launch
     const urlEventBinding = Linking.addEventListener('url', handleDeepLink);  // handle deep link while app running
+
+    analytics.setUserProperties({ app_version: appSettings.VERSION_NUMBER, build_number: appSettings.BUILD_NUMBER.toString() });
 
     return () => {
       urlEventBinding.remove();
@@ -151,6 +155,8 @@ export default function App() {
         await updateDataForWidgets();
         await updateDataForKeyboard();
         Sentry.setUser({ id: user.id, email: user.email_address });
+        await analytics.setUserId(user.id);
+        await analytics.setUserProperty('type', user.type?.toString());
       } else {
         console.log('App.js -> loginWithCredentials: Login failed with error code: ' + responseJson?.error_code);
       }
@@ -179,6 +185,8 @@ export default function App() {
       await updateDataForWidgets();
       await updateDataForKeyboard();
       Sentry.setUser(null);
+      await analytics.logEvent('logout');
+      await analytics.resetAnalyticsData(); 
       console.log('App.js -> logout: Deleted credentials from storage..');
     } catch (error) {
       console.error('App.js -> logout: Logging out user failed with error: ' + error.message);
@@ -217,6 +225,7 @@ export default function App() {
           callbacks: [refresh] 
         });
       }
+      await analytics.logEvent('notification_clicked', { action: additionalData.action });
     }
   };
 
@@ -227,6 +236,7 @@ export default function App() {
 
   const handleDeepLink = async (event) => {
     console.log('App.js -> handleDeepLink: Handling deep link', event?.url);
+    await analytics.logEvent('deep_linked', { url: event?.url });
     const url = event.url;
     const route = url.replace(/.*?:\/\//g, '');
     const [path, param] = route.split('/');
@@ -245,6 +255,7 @@ export default function App() {
           console.log(`App.js -> handleDeepLink: copy for snippet ID ${param}`);
           Clipboard.setString(snippet.content);
           banner.showSuccessMessage('The text was copied to the clipboard', `"${snippet.content}"`);
+          await analytics.logEvent('snippet_copied', { type: snippet.type, source: snippet.source });
         }
       } else {
         console.warn(`App.js -> handleDeepLink: could not find snippet for ID ${param}`);
@@ -318,6 +329,7 @@ export default function App() {
       try {
         storageSnippets = await storage.getSnippets(undefined, true);
         _updateMetadata(storageSnippets, snippetSources.STORAGE);
+        await analytics.setUserProperty('storage_snippet_count', storageSnippets.length.toString());
       } catch (error) {
         console.error('App.js -> updateDataForKeyboard: getting snippets from storage failed with error: ' + error.message);
         banner.showErrorMessage(readableErrorMessages.UPDATE_KEYBOARD_ERROR);
@@ -331,6 +343,7 @@ export default function App() {
         let responseJson = await response.json();
         apiSnippets = responseJson.child_snippets ?? [];
         _updateMetadata(apiSnippets, snippetSources.API);
+        await analytics.setUserProperty('api_snippet_count', apiSnippets.length.toString());
         console.log(`App.js -> updateDataForKeyboard: Got ${apiSnippets.length} snippets via API:`, JSON.stringify(apiSnippets.map(x => x.id)));
       } catch (error) {
         console.error('App.js -> updateDataForKeyboard: getting snippets from API failed with error: ' + error.message);
@@ -340,6 +353,8 @@ export default function App() {
       // 4. combine data from storage and API
       let snippets = [];
       snippets = snippets.concat(storageSnippets).concat(apiSnippets);
+      await analytics.setUserProperty('total_snippet_count', snippets.length.toString());
+      await analytics.setUserProperty('total_snippet_group_count', snippets.filter(x => x.type === snippetTypes.MULTIPLE).length.toString());
       console.log(`App.js -> updateDataForKeyboard: Combined  ${snippets.length} snippets from storage and API:`, JSON.stringify(snippets.map(x => x.id)));
 
       // 5. set snippets data for keyboard
@@ -358,6 +373,7 @@ export default function App() {
   const loadThemeAppearanceFromStorage = async () => {
     const themeId = await storage.getThemeId();
     const appearanceMode = await storage.getAppearanceMode() ?? appearanceModes.SYSTEM;
+    await analytics.setUserProperties({ theme_id: themeId, appearance_mode: appearanceMode });
     console.log(`App.js -> loadThemeAppearanceFromStorage: found theme Id '${themeId}' and appearance mode '${appearanceMode}' in storage and about to set them in app..`);
     await updateThemer(themeId, appearanceMode);
     await updateAppearanceMode(appearanceMode);
@@ -437,6 +453,7 @@ export default function App() {
       const activeSubscription = inAppSubscription.data ? inAppSubscription : (snippetaCloudSubscription.data ? snippetaCloudSubscription : null);
       console.log('App.js -> updateEntitlements: Active subscription type: ' + (activeSubscription?.type ?? 'No active subscription'));
       dispatch({ type: 'UPDATE_SUBSCRIPTION', payload: activeSubscription });
+      await analytics.setUserProperties({ subscription_type: activeSubscription?.type ?? 'No active subscription', entitlements: JSON.stringify(entitlements) });
     } catch (error) {
       console.error('App.js -> updateEntitlements: syncing entitlements failed with error: ' + error.message);
       banner.showErrorMessage(readableErrorMessages.GET_PURCHASE_DATA_ERROR);
@@ -482,6 +499,7 @@ export default function App() {
             console.error('App.js -> updateMilestones: Rate call failed with error: ' + errorMessage);
           }
         });
+        await analytics.logEvent('review_prompt_shown', { milestone_number: milestoneNumber.toString() });
       } else {
         console.log(`App.js -> updateMilestones: Not ready to prompt app review at milestone number ${milestoneNumber} and last review prompt time ${lastReviewPromptDate && JSON.stringify(lastReviewPromptDate)}`);
       }
@@ -507,7 +525,18 @@ export default function App() {
       <ApplicationContext.Provider value={{...state, themer, onSnippetChanged, updateThemer, startThemePreview, endThemePreview, updateAppearanceMode, loginWithCredentials, logout, updateEntitlements, refreshFeatureAlerts}}>
         <ActionSheetProvider>
           <FancyActionSheetProvider>
-            <NavigationContainer ref={navigationRef}>
+            <NavigationContainer 
+              ref={navigationRef}
+              onReady={() => { routeNameRef.current = navigationRef.current.getCurrentRoute().name; }}
+              onStateChange={async () => {
+                const previousRouteName = routeNameRef.current;
+                const currentRouteName = navigationRef.current.getCurrentRoute().name;
+                if (previousRouteName !== currentRouteName) {
+                  await analytics.logScreenView(currentRouteName);
+                }
+                routeNameRef.current = currentRouteName;
+              }}
+            >
               <Stack.Navigator initialRouteName="Snippets">
                 <Stack.Group>
                   <Stack.Screen

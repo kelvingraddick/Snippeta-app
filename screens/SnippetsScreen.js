@@ -19,6 +19,7 @@ import ActionButton from '../components/ActionButton';
 import SnippetView from '../components/SnippetView';
 import SnippetaCloudView from '../components/SnippetaCloudView';
 import FeatureAlertsView from '../components/FeatureAlertsView';
+import analytics from '../helpers/analytics';
 
 const SnippetsScreen = ({ route, navigation }) => {
   const parentSnippet = route.params?.parentSnippet;
@@ -129,6 +130,7 @@ const SnippetsScreen = ({ route, navigation }) => {
       // if source is storage, delete storage
       if (snippet.source == snippetSources.STORAGE) {
         await storage.deleteSnippet(snippet.id);
+        await analytics.logEvent('snippet_deleted', { type: snippet.type, source: snippet.source });
         console.log('SnippetScreen.js -> deleteSnippet: Deleted snippet from storage with ID ' + snippet.id);
       }
       // if source is API, delete via API
@@ -137,6 +139,7 @@ const SnippetsScreen = ({ route, navigation }) => {
         if (!response?.ok) { throw new Error(`HTTP error with status ${response?.status}`); }
         const responseJson = await response.json();
         if (responseJson && responseJson.success) {
+          await analytics.logEvent('snippet_deleted', { type: snippet.type, source: snippet.source });
           console.log('SnippetScreen.js -> deleteSnippet: Deleted snippet via API with ID ' + snippet.id);
         } else {
           const errorMessage = 'Deleting snippet failed with unknown error.';
@@ -177,6 +180,7 @@ const SnippetsScreen = ({ route, navigation }) => {
       // if source is storage, move in storage
       if (snippet.source == snippetSources.STORAGE) {
         await storage.moveSnippet(snippet, option);
+        await analytics.logEvent('snippet_moved', { type: snippet.type, source: snippet.source, option: option });
         console.log(`SnippetScreen.js -> moveSnippet: Moved snippet in storage with option ${option} and ID ${snippet.id}`);
       }
       // if source is API, move via API
@@ -185,6 +189,7 @@ const SnippetsScreen = ({ route, navigation }) => {
         if (!response?.ok) { throw new Error(`HTTP error with status ${response?.status}`); }
         const responseJson = await response.json();
         if (responseJson && responseJson.success) {
+          await analytics.logEvent('snippet_moved', { type: snippet.type, source: snippet.source, option: option });
           console.log('SnippetScreen.js -> moveSnippet: Moved snippet via API with ID ' + snippet.id);
         } else {
           const errorMessage = 'Moving snippet in failed with unknown error.';
@@ -239,6 +244,7 @@ const SnippetsScreen = ({ route, navigation }) => {
             createSnippet(snippetTypes.SINGLE, await Clipboard.getString());
             break;
         }
+        await analytics.logEvent('add_snippet_option_tapped', { option_id: option.id });
       },
     });
   };
@@ -251,6 +257,7 @@ const SnippetsScreen = ({ route, navigation }) => {
       onSettingsTapped();
       banner.showErrorMessage('Creating a sub-group requires a Snippeta Pro subscription — Read this screen to learn more!');
     }
+    await analytics.logEvent('new_group_tapped', { is_root_snippets_screen: isRootSnippetsScreen, has_subscription: (subscription ? true : false) });
   };
   
   const onSnippetTapped = (snippet) => {
@@ -258,6 +265,7 @@ const SnippetsScreen = ({ route, navigation }) => {
       Clipboard.setString(snippet.content);
       banner.showSuccessMessage('The text was copied to the clipboard', `"${snippet.content}"`);
       triggerHapticFeedback();
+      analytics.logEvent('snippet_content_copied', { type: snippet.type, source: snippet.source });
     } else { // snippetTypes.MULTIPLE
       navigation.push('Snippets', { parentSnippet: snippet, callbacks: callbacks.concat(getSnippets) });
     }
@@ -295,10 +303,12 @@ const SnippetsScreen = ({ route, navigation }) => {
   }
 
   const onAlertDismissed = (alertId) => {
+    analytics.logEvent('feature_alert_dismissed', { alert_id: alertId });
     console.log(`SnippetsScreen.js -> onAlertDismissed: Alert dismissed: ${alertId}`);
   };
 
   const onAlertActionTapped = (alert) => {
+    analytics.logEvent('feature_alert_tapped', { alert_id: alert.id });
     console.log(`SnippetsScreen.js -> onAlertActionTapped: Alert action tapped: ${alert.id}`);
     navigation.navigate(alert.actionScreen);
   };

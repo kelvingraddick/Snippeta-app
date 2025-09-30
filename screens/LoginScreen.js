@@ -3,6 +3,7 @@ import { Image, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'r
 import { ApplicationContext } from '../ApplicationContext';
 import { errorCodeMessages } from '../constants/errorCodeMessages';
 import banner from '../helpers/banner';
+import analytics from '../helpers/analytics';
 import ActionButton from '../components/ActionButton';
 
 const LoginScreen = ({ navigation }) => {
@@ -21,6 +22,7 @@ const LoginScreen = ({ navigation }) => {
       setIsLoading(true);
       const responseJson = await loginWithCredentials(credentials?.emailOrPhone, credentials?.password);
       if (responseJson && responseJson.success && responseJson.user) {
+        await analytics.logEvent('login', { method: 'email' });
         console.log(`LoginScreen.js -> onLoginTapped: User logged in. Going back to Settings screen..`);
         navigation.goBack();
       } else {

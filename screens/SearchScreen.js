@@ -10,6 +10,7 @@ import { readableErrorMessages } from '../constants/readableErrorMessages';
 import api from '../helpers/api';
 import storage from '../helpers/storage';
 import banner from '../helpers/banner';
+import analytics from '../helpers/analytics';
 import style from '../helpers/style';
 import SnippetView from '../components/SnippetView';
 
@@ -66,6 +67,8 @@ const SearchScreen = ({ route, navigation }) => {
         apiSnippets.length > 0 ? [{ data: apiSnippets }] :
         [];
       
+      await analytics.logEvent('snippets_searched', { query: query });
+      
       // set snippets for display
       setSnippetSections(snippetSections);
       setIsLoading(false);
@@ -90,6 +93,7 @@ const SearchScreen = ({ route, navigation }) => {
     if (snippet.type == snippetTypes.SINGLE) {
       Clipboard.setString(snippet.content);
       banner.showSuccessMessage('The text was copied to the clipboard', `"${snippet.content}"`);
+      analytics.logEvent('snippet_copied', { type: snippet.type, source: snippet.source });
     } else { // snippetTypes.MULTIPLE
       navigation.push('Snippets', { parentSnippet: snippet, callbacks: callbacks.concat(async () => { await searchSnippets(query); }) });
     }

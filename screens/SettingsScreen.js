@@ -8,6 +8,7 @@ import { ApplicationContext } from '../ApplicationContext';
 import banner from '../helpers/banner';
 import storage from '../helpers/storage';
 import revenueCat from '../helpers/revenueCat';
+import analytics from '../helpers/analytics';
 import style from '../helpers/style';
 import { appSettings } from '../constants/appSettings';
 import { colors } from '../constants/colors';
@@ -64,25 +65,25 @@ const SettingsScreen = ({ navigation }) => {
       let appExtensionsSettings = [
         { label: 'Keyboard extension', onTapped: () => { navigation.navigate('Keyboard'); }},
         { label: 'Home screen widget', onTapped: () => { navigation.navigate('Widget'); }},
-        { label: 'System settings', onTapped: () => { Platform.OS === 'ios' ? Linking.openURL('app-settings:') : Linking.openSettings(); }},
+        { label: 'System settings', onTapped: async () => {  Platform.OS === 'ios' ? Linking.openURL('app-settings:') : Linking.openSettings(); await analytics.logEvent('system_settings_tapped'); }},
       ];
       let notificationSettings = [
         { label: 'Reset feature alerts', onTapped: () => { onResetFeatureAlertsTapped(); }},
       ];
       let inAppPurchaseSettings = [
         { label: 'Restore purchases', onTapped: () => { onRestorePurchasesTapped(); } },
-        { label: 'Manage subscription', onTapped: () => { Linking.openURL(Platform.OS === 'ios' ? 'https://apps.apple.com/account/subscriptions' : 'https://play.google.com/store/account/subscriptions'); } }, // alternative Android: 'https://play.google.com/store/account/subscriptions?sku=YOUR_SUBSCRIPTION_ID&package=YOUR_APP_PACKAGE_NAME'
+        { label: 'Manage subscription', onTapped: async () => { Linking.openURL(Platform.OS === 'ios' ? 'https://apps.apple.com/account/subscriptions' : 'https://play.google.com/store/account/subscriptions'); await analytics.logEvent('manage_subscription_tapped'); } }, // alternative Android: 'https://play.google.com/store/account/subscriptions?sku=YOUR_SUBSCRIPTION_ID&package=YOUR_APP_PACKAGE_NAME'
       ];
       let getInTouchSettings = [
-        { label: 'Leave a review', onTapped: () => { Linking.openURL(Platform.OS === 'ios' ? 'https://apps.apple.com/app/id1282250868?action=write-review' : 'market://details?id=com.wavelinkllc.snippeta&showAllReviews=true'); } },
-        { label: 'Get help / support', onTapped: () => { Linking.openURL('mailto:development@wavelinkllc.com?subject=Snippeta%20support%20request'); } },
-        { label: 'Request new feature', onTapped: () => { Linking.openURL('mailto:development@wavelinkllc.com?subject=Snippeta%20feature%20request'); } },
+        { label: 'Leave a review', onTapped: async () => { Linking.openURL(Platform.OS === 'ios' ? 'https://apps.apple.com/app/id1282250868?action=write-review' : 'market://details?id=com.wavelinkllc.snippeta&showAllReviews=true'); await analytics.logEvent('leave_a_review_tapped'); } },
+        { label: 'Get help / support', onTapped: async () => { Linking.openURL('mailto:development@wavelinkllc.com?subject=Snippeta%20support%20request'); await analytics.logEvent('get_help_support_tapped'); } },
+        { label: 'Request new feature', onTapped: async () => { Linking.openURL('mailto:development@wavelinkllc.com?subject=Snippeta%20feature%20request'); await analytics.logEvent('request_new_feature_tapped'); } },
       ];
       let infoSettings = [
-        { label: 'Privacy Policy', onTapped: () => { Linking.openURL('https://snippeta.com/privacy-policy/'); } },
-        { label: 'Terms and Conditions', onTapped: () => { Linking.openURL('https://snippeta.com/terms-and-conditions/'); } },
-        { label: 'Wave Link (developer)', onTapped: () => { Linking.openURL('http://www.wavelinkllc.com'); } },
-        { label: 'KG.codes (developer)', onTapped: () => { Linking.openURL('https://linktr.ee/kg.codes'); } },
+        { label: 'Privacy Policy', onTapped: async () => { Linking.openURL('https://snippeta.com/privacy-policy/'); await analytics.logEvent('privacy_policy_tapped'); } },
+        { label: 'Terms and Conditions', onTapped: async () => { Linking.openURL('https://snippeta.com/terms-and-conditions/'); await analytics.logEvent('terms_and_conditions_tapped'); } },
+        { label: 'Wave Link (developer)', onTapped: async () => { Linking.openURL('http://www.wavelinkllc.com'); await analytics.logEvent('wave_link_developer_tapped'); } },
+        { label: 'KG.codes (developer)', onTapped: async () => { Linking.openURL('https://linktr.ee/kg.codes'); await analytics.logEvent('kg_codes_developer_tapped'); } },
       ];
       settings.push({ title: '🎨 Theme', data: themeSettings });
       settings.push({ title: '🌗 Appearance', data: appearanceSettings });
@@ -151,6 +152,7 @@ const SettingsScreen = ({ navigation }) => {
       banner.showErrorMessage(readableErrorMessages.PURCHASE_ERROR);
     } finally {
       if (entitlement) {
+        await analytics.logEvent('theme_purchased', { theme_id: themeId, entitlement: entitlement });
         await updateEntitlements(user);
         await displayTheme(themeId);
       }
@@ -160,6 +162,7 @@ const SettingsScreen = ({ navigation }) => {
   const displayTheme = async (themeId) => {
     await storage.saveThemeId(themeId);
     await updateThemer(themeId, appearanceMode);
+    await analytics.logEvent('theme_displayed', { theme_id: themeId });
   };
 
   const onAppearanceModeTapped = async () => {
@@ -180,6 +183,7 @@ const SettingsScreen = ({ navigation }) => {
             await updateAppearanceMode(appearanceModeValue);
             await updateThemer(themer.themeId, appearanceModeValue);
           }
+          await analytics.logEvent('appearance_mode_changed', { appearance_mode: appearanceModeValue });
         }
       },
     });
@@ -228,6 +232,7 @@ const SettingsScreen = ({ navigation }) => {
           break;
         // other cases: PAYWALL_RESULT.NOT_PRESENTED, PAYWALL_RESULT.ERROR, PAYWALL_RESULT.CANCELLED
       }
+      await analytics.logEvent('subscription_paywall_finished', { result: paywallResult });
       return paywallResult;
     } catch (error) {
       const errorMessage = 'Paywall failed with error: ' + error.message;
@@ -270,6 +275,7 @@ const SettingsScreen = ({ navigation }) => {
           let entitlementNames = entitlements[entitlementIds.SNIPPETA_PRO] ? ['Snippeta Pro subscription'] : [];
           entitlementNames.push(Object.keys(themes).filter((themeId) => entitlements[themeId]).map((themeId) => (`"${themes[themeId]?.name ?? themeId}"` + ' theme')));
           banner.showSuccessMessage(`Successfully restored purchases for: ${(entitlementNames.length > 0 ? '\n• ' : '') + entitlementNames.join('\n• ')}`);
+          await analytics.logEvent('purchases_restored');
         } else if (entitlements) { // restoring was successful BUT no entitlements were found
           banner.showSuccessMessage('No subscription or purchases found to restore.');
         } else { // restoring was NOT successful
@@ -290,6 +296,7 @@ const SettingsScreen = ({ navigation }) => {
       await storage.resetAllFeatureAlerts();
       refreshFeatureAlerts();
       banner.showSuccessMessage('Feature alerts have been reset! They will appear again on the main screen.');
+      await analytics.logEvent('feature_alerts_reset');
       setIsLoading(false);
     } catch (error) {
       console.error('SettingsScreen.js -> onResetFeatureAlertsTapped: resetting feature alerts failed with error: ' + error.message);

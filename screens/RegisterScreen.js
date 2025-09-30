@@ -5,6 +5,7 @@ import { ApplicationContext } from '../ApplicationContext';
 import { errorCodeMessages } from '../constants/errorCodeMessages';
 import api from '../helpers/api';
 import banner from '../helpers/banner';
+import analytics from '../helpers/analytics';
 import ActionButton from '../components/ActionButton';
 
 const RegisterScreen = ({ navigation }) => {
@@ -28,6 +29,7 @@ const RegisterScreen = ({ navigation }) => {
       if (!response?.ok) { throw new Error(`HTTP error with status ${response?.status}`); }
       let responseJson = await response.json();
       if (responseJson && responseJson.success && responseJson.user) {
+        await analytics.logEvent('signup', { user_id: responseJson.user.id });
         console.log(`RegisterScreen.js -> onRegisterTapped: User registered with email address ${user.email_address}. Now logging user in..`);
         responseJson = await loginWithCredentials(user.email_address, user.password);
         if (responseJson && responseJson.success && responseJson.user) {

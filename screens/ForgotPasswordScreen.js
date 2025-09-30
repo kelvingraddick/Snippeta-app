@@ -5,7 +5,7 @@ import { errorCodeMessages } from '../constants/errorCodeMessages';
 import banner from '../helpers/banner';
 import ActionButton from '../components/ActionButton';
 import api from '../helpers/api';
-
+import analytics from '../helpers/analytics';
 const ForgotPasswordScreen = ({ navigation }) => {
 
   const { themer } = useContext(ApplicationContext);
@@ -24,6 +24,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
       if (!response?.ok) { throw new Error(`HTTP error with status ${response?.status}`); }
       let responseJson = await response.json();
       if (responseJson && responseJson.success) {
+        analytics.logEvent('password_reset_email_sent');
         console.log(`ForgotPasswordScreen.js -> onSubmitTapped: Password reset email sent. Going back to Login screen..`);
         navigation.goBack();
         banner.showSuccessMessage('Email sent. Please check your email to continue resetting the password.');

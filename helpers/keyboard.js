@@ -1,5 +1,5 @@
 import { NativeModules, Platform } from 'react-native';
-
+import analytics from './analytics';
 const { KeyboardNativeModule } = NativeModules;
 
 /**
@@ -14,6 +14,7 @@ export const isKeyboardInstalled = async () => {
     }
     
     const isInstalled = await KeyboardNativeModule.isKeyboardInstalled();
+    await analytics.setUserProperty('keyboard_installed', isInstalled.toString());
     console.log(`keyboard.js -> isKeyboardInstalled: Keyboard is ${isInstalled ? 'installed' : 'not installed'}`);
     return isInstalled;
   } catch (error) {
