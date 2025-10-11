@@ -1347,7 +1347,7 @@ PODS:
     - Yoga
   - RNReactNativeSharedGroupPreferences (1.1.24):
     - React
-  - RNScreens (3.32.0):
+  - RNScreens (3.37.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1711,7 +1711,7 @@ SPEC CHECKSUMS:
   RNRate: ef3bcff84f39bb1d1e41c5593d3eea4aab2bd73a
   RNReactNativeHapticFeedback: dd1df8ab143dfd0ac79fe483cd08822d7a86fc85
   RNReactNativeSharedGroupPreferences: 29092869fc2e40d5baca5e15d82fa5c24a668977
-  RNScreens: fd2722bcc59f36a629205af8cc7b48e4bc0d09f5
+  RNScreens: b5ec99a7b9af5a8a6f23cc88716fe37be27aee97
   RNSentry: 26ffe810d388e88eabbf855b4a95239334aba083
   Sentry: 1ca8405451040482877dcd344dfa3ef80b646631
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
