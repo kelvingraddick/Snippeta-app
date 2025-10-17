@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Dimensions, Image, Platform, Pressable, SectionList, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Image, Platform, Pressable, RefreshControl, SectionList, StyleSheet, Text, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useFancyActionSheet } from 'react-native-fancy-action-sheet';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
@@ -29,6 +29,7 @@ const SnippetsScreen = ({ route, navigation }) => {
   const { themer, user, isUserLoading, subscription, onSnippetChanged } = useContext(ApplicationContext);
 
   const [isLoading, setIsLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [snippetSections, setSnippetSections] = useState([]);
   const [isOnDeviceSectionVisible, setIsOnDeviceSectionVisible] = useState(true);
   const [isCloudSectionVisible, setIsCloudSectionVisible] = useState(true);
@@ -122,6 +123,12 @@ const SnippetsScreen = ({ route, navigation }) => {
       console.error('SnippetsScreen.js -> getSnippets: Loading snippets data failed with error: ' + error.message);
       setIsLoading(false);
     }
+  };
+
+  const onRefresh = async () => {
+    setIsRefreshing(true);
+    await getSnippets(true);
+    setIsRefreshing(false);
   };
 
   const deleteSnippet = async (snippet) => {
@@ -365,6 +372,14 @@ const SnippetsScreen = ({ route, navigation }) => {
           sections={snippetSections}
           keyExtractor={(item, index) => item.id}
           stickySectionHeadersEnabled={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefreshing}
+              onRefresh={onRefresh}
+              tintColor={themer.getColor('screenHeader1.foreground')}
+              colors={[themer.getColor('screenHeader1.foreground')]}
+            />
+          }
           renderItem={({item, index, section}) => <SnippetView snippet={item} onSnippetTapped={onSnippetTapped} onSnippetMenuTapped={onSnippetMenuTapped} isHidden={item.source == snippetSources.STORAGE ? !isOnDeviceSectionVisible : !isCloudSectionVisible} isTop={index === 0} isBottom={index === section.data.length - 1} themer={themer} />}
           renderSectionHeader={({section: {title}}) => ( title &&
             <>
