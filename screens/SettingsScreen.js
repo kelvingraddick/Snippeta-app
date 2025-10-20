@@ -62,10 +62,13 @@ const SettingsScreen = ({ navigation }) => {
       let appearanceSettings = [
         { label: `Light/dark mode: ${appearanceMode}`, onTapped: () => { onAppearanceModeTapped(); }},
       ]; 
-      let appExtensionsSettings = [
+      let appExtensionsSettings = !Platform.constants.isMacCatalyst ? [
         { label: 'Keyboard extension', onTapped: () => { navigation.navigate('Keyboard'); }},
         { label: 'Home screen widget', onTapped: () => { navigation.navigate('Widget'); }},
         { label: 'System settings', onTapped: async () => {  Platform.OS === 'ios' ? Linking.openURL('app-settings:') : Linking.openSettings(); await analytics.logEvent('system_settings_tapped'); }},
+      ] : [
+        { label: 'Home screen widget', onTapped: () => { navigation.navigate('Widget'); }},
+        { label: 'System settings', onTapped: async () => { Linking.openURL('app-settings:'); await analytics.logEvent('system_settings_tapped'); }},
       ];
       let notificationSettings = [
         { label: 'Reset feature alerts', onTapped: () => { onResetFeatureAlertsTapped(); }},
