@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { StyleSheet, Text, View, Platform, Pressable } from 'react-native';
 import { ApplicationContext } from '../ApplicationContext';
 import storage from '../helpers/storage';
 import { featureAlertTypes } from '../constants/featureAlertTypes';
@@ -42,7 +42,7 @@ const FeatureAlertsView = ({ themer, user, onAlertDismissed, onActionTapped }) =
       }
 
       // Keyboard installation alert
-      if (shouldShowKeyboard) {
+      if (!Platform.constants.isMacCatalyst && shouldShowKeyboard) {
         availableAlerts.push({
           id: featureAlertTypes.KEYBOARD,
           type: featureAlertTypes.KEYBOARD,

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Dimensions, Image, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Image, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { ApplicationContext } from '../ApplicationContext';
 
 const WidgetScreen = ({ navigation }) => {
@@ -12,7 +12,7 @@ const WidgetScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: themer.getColor('background1') }]}>
+    <ScrollView style={[styles.container, { backgroundColor: themer.getColor('background1') }]}>
       <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background') } ]}>
         <View style={styles.titleView}>
           <Pressable onPress={onBackTapped} hitSlop={20}>
@@ -44,7 +44,7 @@ const WidgetScreen = ({ navigation }) => {
         }
         <Text style={[styles.featureText, { color: themer.getColor('content2.foreground'), textAlign: 'center', fontStyle: 'italic', opacity: 0.50, marginTop: 10 }]}>*Go to your device's Home Screen to start</Text>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
   previewImage: {
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').width,
+    alignSelf: 'center',
     resizeMode: 'cover',
   },
   contentView: {
