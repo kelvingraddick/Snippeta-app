@@ -1,7 +1,7 @@
 import { LOG_LEVEL as REVENUE_CAT_LOG_LEVEL } from 'react-native-purchases';
 export const appSettings = {
   VERSION_NUMBER: '2.3',
-  BUILD_NUMBER: 2,
+  BUILD_NUMBER: 44,
   SENTRY_ENABLED: true,
   SENTRY_DSN_URL: '{{SENTRY_DSN_URL}}',
   SENTRY_AUTH_TOKEN: '{{SENTRY_AUTH_TOKEN}}',
