@@ -1,15 +1,15 @@
 const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
+const SentryMetroPlugin = require('@sentry/react-native/metro');
 
-const {
- withSentryConfig
-} = require("@sentry/react-native/metro");
+const defaultConfig = getDefaultConfig(__dirname);
 
 /**
  * Metro configuration
  * https://reactnative.dev/docs/metro
- *
- * @type {import('metro-config').MetroConfig}
+ * @type {import('@react-native/metro-config').MetroConfig}
  */
-const config = {};
+const metroConfig = {transformer: SentryMetroPlugin.create  (defaultConfig.transformer, {
+  // Options for the Sentry Metro plugin if needed
+}),};
 
-module.exports = withSentryConfig(mergeConfig(getDefaultConfig(__dirname), config));
+module.exports = mergeConfig(defaultConfig, metroConfig);

@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { navigationRef } from './RootNavigation';
 import navigation from './RootNavigation';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import { FancyActionSheetProvider } from 'react-native-fancy-action-sheet';
 import FlashMessage from "react-native-flash-message";
@@ -89,7 +90,7 @@ const Stack = createNativeStackNavigator();
 
 const { WidgetNativeModule } = NativeModules;
 
-export default function App() {
+export default Sentry.wrap(function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const themer = useThemer(Object.keys(themes)[0], appearanceModes.SYSTEM);
   const themePreviewStatusIntervalId = useRef();
@@ -372,7 +373,7 @@ export default function App() {
 
   const loadThemeAppearanceFromStorage = async () => {
     const themeId = await storage.getThemeId();
-    const appearanceMode = await storage.getAppearanceMode() ?? appearanceModes.SYSTEM;
+    const appearanceMode = (await storage.getAppearanceMode()) ?? appearanceModes.SYSTEM;
     await analytics.setUserProperties({ theme_id: themeId, appearance_mode: appearanceMode });
     console.log(`App.js -> loadThemeAppearanceFromStorage: found theme Id '${themeId}' and appearance mode '${appearanceMode}' in storage and about to set them in app..`);
     await updateThemer(themeId, appearanceMode);
@@ -471,7 +472,7 @@ export default function App() {
 
   const promptReviewIfReady = async () => {
     try {
-      let milestoneNumber = await storage.getMilestoneNumber() ?? 0;
+      let milestoneNumber = (await storage.getMilestoneNumber()) ?? 0;
       milestoneNumber++;
       await storage.saveMilestoneNumber(milestoneNumber);
 
@@ -600,4 +601,4 @@ export default function App() {
       </ApplicationContext.Provider>
     </Sentry.TouchEventBoundary>
   );
-}
+});

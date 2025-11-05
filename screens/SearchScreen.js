@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Dimensions, Image, Platform, Pressable, SectionList, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useFancyActionSheet } from 'react-native-fancy-action-sheet';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
@@ -18,6 +19,8 @@ const SearchScreen = ({ route, navigation }) => {
   const callbacks = route.params.callbacks || [];
 
   const { themer, user, isUserLoading } = useContext(ApplicationContext);
+
+  const safeAreaInsets = useSafeAreaInsets();
 
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useState("");
@@ -120,7 +123,7 @@ const SearchScreen = ({ route, navigation }) => {
 
   return (
     <View style={[styles.container, { backgroundColor: themer.getColor('background1') }]}>
-      <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background') } ]}>
+      <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background'), paddingTop: Platform.OS === 'ios' ? 60 : (safeAreaInsets.top + 17.5) } ]}>
         <View style={styles.titleView}>
           <Pressable onPress={onBackTapped} hitSlop={20}>
             <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={themer.getColor('screenHeader1.foreground')} />
@@ -133,10 +136,10 @@ const SearchScreen = ({ route, navigation }) => {
         </View>
       </View>
       { (isLoading || isUserLoading) &&
-        <View style={styles.snippetsList}>
+        <View style={styles.placeholderView}>
           {[0, 1, 2, 3, 4, 5].map(x => (
-            <SkeletonPlaceholder borderRadius={10} speed={200}>
-              <SkeletonPlaceholder.Item height={100} width={Dimensions.get('window').width - 40 } marginBottom={16} />
+            <SkeletonPlaceholder key={x} borderRadius={10} speed={200}>
+              <SkeletonPlaceholder.Item height={100} width={Dimensions.get('window').width - 40 } marginBottom={16} marginHorizontal={20} />
             </SkeletonPlaceholder>
           ))}
         </View>
@@ -168,7 +171,6 @@ const styles = StyleSheet.create({
   },
   headerView: {
     paddingHorizontal: 20,
-    paddingTop: Platform.OS === 'ios' ? 60 : 17.5,
     paddingBottom: 5,
   },
   titleView: {
@@ -203,6 +205,10 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 17,
     fontWeight: 'bold',
+  },
+  placeholderView: {
+    paddingTop: 20,
+    backgroundColor: 'transparent',
   },
   snippetsList: {
     padding: 20

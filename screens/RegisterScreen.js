@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Image, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { ApplicationContext } from '../ApplicationContext';
 import { errorCodeMessages } from '../constants/errorCodeMessages';
@@ -11,6 +12,8 @@ import ActionButton from '../components/ActionButton';
 const RegisterScreen = ({ navigation }) => {
 
   const { themer, loginWithCredentials } = useContext(ApplicationContext);
+
+  const safeAreaInsets = useSafeAreaInsets();
 
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState({});
@@ -76,7 +79,7 @@ const RegisterScreen = ({ navigation }) => {
 
   return (
     <View style={[styles.container, { backgroundColor: themer.getColor('background1') }]}>
-      <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background') } ]}>
+      <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background'), paddingTop: Platform.OS === 'ios' ? 60 : (safeAreaInsets.top + 17.5) } ]}>
         <View style={styles.titleView}>
           <Pressable onPress={onBackTapped} hitSlop={20}>
             <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={themer.getColor('screenHeader1.foreground')} />
@@ -123,7 +126,6 @@ const styles = StyleSheet.create({
   },
   headerView: {
     paddingHorizontal: 20,
-    paddingTop: Platform.OS === 'ios' ? 60 : 17.5,
   },
   titleView: {
     flexDirection: 'row',
