@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Dimensions, Image, Platform, Pressable, RefreshControl, SectionList, StyleSheet, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useFancyActionSheet } from 'react-native-fancy-action-sheet';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
@@ -27,6 +28,8 @@ const SnippetsScreen = ({ route, navigation }) => {
   const callbacks = route.params?.callbacks || [];
 
   const { themer, user, isUserLoading, subscription, onSnippetChanged } = useContext(ApplicationContext);
+
+  const safeAreaInsets = useSafeAreaInsets();
 
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -322,7 +325,7 @@ const SnippetsScreen = ({ route, navigation }) => {
 
   return (
     <View style={[styles.container, { backgroundColor: themer.getColor('background1') }]}>
-      <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background') } ]}>
+      <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background'), paddingTop: Platform.OS === 'ios' ? 60 : (safeAreaInsets.top + 17.5) } ]}>
         <View style={styles.titleView}>
           {isRootSnippetsScreen && 
             <Pressable onPress={onSearchTapped} hitSlop={20}>
@@ -358,10 +361,10 @@ const SnippetsScreen = ({ route, navigation }) => {
         </View>
       </View>
       { (isLoading || isUserLoading) &&
-        <View style={styles.snippetsGroup}>
+        <View style={styles.placeholderView}>
           {[0, 1, 2, 3, 4, 5].map(x => (
             <SkeletonPlaceholder key={x} borderRadius={10} speed={300}>
-              <SkeletonPlaceholder.Item height={80} width={Dimensions.get('window').width - 40 } marginBottom={16} />
+              <SkeletonPlaceholder.Item height={80} width={Dimensions.get('window').width - 40 } marginBottom={16} marginHorizontal={20} />
             </SkeletonPlaceholder>
           ))}
         </View>
@@ -438,7 +441,6 @@ const styles = StyleSheet.create({
   },
   headerView: {
     paddingHorizontal: 20,
-    paddingTop: Platform.OS === 'ios' ? 60 : 17.5,
     paddingBottom: 15,
   },
   titleView: {
@@ -484,6 +486,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: 3,
+  },
+  placeholderView: {
+    paddingTop: 20,
+    backgroundColor: 'transparent',
   },
   snippetsGroup: {
     padding: 20

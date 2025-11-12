@@ -1,10 +1,13 @@
 import React, { useContext } from 'react';
 import { Dimensions, Image, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ApplicationContext } from '../ApplicationContext';
 
 const WidgetScreen = ({ navigation }) => {
 
   const { themer, refreshFeatureAlerts } = useContext(ApplicationContext);
+
+  const safeAreaInsets = useSafeAreaInsets();
 
   const onBackTapped = async () => {
     refreshFeatureAlerts();
@@ -13,7 +16,7 @@ const WidgetScreen = ({ navigation }) => {
 
   return (
     <ScrollView style={[styles.container, { backgroundColor: themer.getColor('background1') }]}>
-      <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background') } ]}>
+      <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background'), paddingTop: Platform.OS === 'ios' ? 60 : (safeAreaInsets.top + 17.5) } ]}>
         <View style={styles.titleView}>
           <Pressable onPress={onBackTapped} hitSlop={20}>
             <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={themer.getColor('screenHeader1.foreground')} />
@@ -54,7 +57,6 @@ const styles = StyleSheet.create({
   },
   headerView: {
     paddingHorizontal: 20,
-    paddingTop: 20,
   },
   titleView: {
     flexDirection: 'row',

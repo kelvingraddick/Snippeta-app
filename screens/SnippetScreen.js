@@ -1,5 +1,6 @@
 import React, { useContext, useRef, useState } from 'react';
 import { Image, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useFancyActionSheet } from 'react-native-fancy-action-sheet';
 import { ApplicationContext } from '../ApplicationContext';
@@ -20,6 +21,8 @@ const SnippetScreen = ({ route, navigation }) => {
   const callbacks = route.params.callbacks || [];
 
   const { themer, user, isUserLoading, onSnippetChanged } = useContext(ApplicationContext);
+
+  const safeAreaInsets = useSafeAreaInsets();
 
   const snippetColorOptions = [
     { id: colorIds.COLOR_1, color: themer.getColor(colorIds.COLOR_1) }, { id: colorIds.COLOR_2, color: themer.getColor(colorIds.COLOR_2) }, { id: colorIds.COLOR_3, color: themer.getColor(colorIds.COLOR_3) },
@@ -213,7 +216,7 @@ const SnippetScreen = ({ route, navigation }) => {
 
   return (
       <KeyboardAwareScrollView style={[styles.container, { backgroundColor: themer.getColor('background2') }]} keyboardShouldPersistTaps={'handled'}>
-        <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background') } ]}>
+        <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background'), paddingTop: Platform.OS === 'ios' ? 60 : (safeAreaInsets.top + 17.5) } ]}>
           <View style={styles.titleView}>
             <Pressable onPress={onBackTapped} hitSlop={20}>
               <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={themer.getColor('screenHeader1.foreground')} />
@@ -245,7 +248,6 @@ const styles = StyleSheet.create({
   },
   headerView: {
     paddingHorizontal: 20,
-    paddingTop: Platform.OS === 'ios' ? 60 : 17.5,
     paddingBottom: 15,
   },
   titleView: {
