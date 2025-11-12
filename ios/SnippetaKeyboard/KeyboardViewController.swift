@@ -4,7 +4,7 @@
 //
 
 import UIKit
-import SwiftUICore
+import SwiftUI
 
 class KeyboardViewController: UIInputViewController {
   
