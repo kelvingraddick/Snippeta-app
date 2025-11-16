@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Dimensions, Image, Platform, Pressable, RefreshControl, SectionList, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Image, Platform, Pressable, RefreshControl, SectionList, Share, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useFancyActionSheet } from 'react-native-fancy-action-sheet';
@@ -281,15 +281,40 @@ const SnippetsScreen = ({ route, navigation }) => {
     }
   };
 
+  const shareSnippet = async (snippet) => {
+    try {
+      const shareContent = snippet.type == snippetTypes.SINGLE 
+        ? snippet.content 
+        : `${snippet.title}\n\nThis is a snippet group. Share individual snippets from within the group.`;
+      
+      const result = await Share.share({
+        message: shareContent,
+        title: snippet.title,
+      });
+      console.log('SnippetsScreen.js -> shareSnippet: Result: ' + JSON.stringify(result));
+      
+      if (result.action === Share.sharedAction) {
+        await analytics.logEvent('snippet_shared', { type: snippet.type, source: snippet.source });
+        console.log('SnippetsScreen.js -> shareSnippet: Shared snippet with ID ' + snippet.id);
+      }
+    } catch (error) {
+      console.error('SnippetsScreen.js -> shareSnippet: Sharing snippet failed with error: ' + error.message);
+      banner.showErrorMessage('Sharing snippet failed: ' + error.message);
+    }
+  };
+
   const onSnippetMenuTapped = (snippet) => {
     triggerHapticFeedback();
     const options = [];
     options.push({ id: 'Edit', name: 'Edit' });
+    if (snippet.type == snippetTypes.SINGLE) {
+      options.push({ id: 'Share', name: 'Share' });
+    }
     options.push(...Object.values(moveSnippetOptions).map(moveSnippetOptionValue => { return { id: moveSnippetOptionValue, name: moveSnippetOptionNames[moveSnippetOptionValue] };}));
     options.push({ id: 'Delete', name: 'Delete' });
     showFancyActionSheet({
       title: '⚙️ Snippet options ‎ ‎',
-      message: 'Edit, move, or delete this snippet',
+      message: snippet.type == snippetTypes.SINGLE ? 'Edit, share, move, or delete this snippet' : 'Edit, move, or delete this snippet',
       ...style.getFancyActionSheetStyles(themer),
       options: options,
       destructiveOptionId: 'Delete',
@@ -297,6 +322,8 @@ const SnippetsScreen = ({ route, navigation }) => {
         switch (option.id) {
           case 'Edit':
             navigation.navigate('Snippet', { snippet, callbacks: callbacks.concat(getSnippets) }); break;
+          case 'Share':
+            setTimeout(async () => { await shareSnippet(snippet); }, 100); break;
           case 'Delete':
             await deleteSnippet(snippet); break;
           default:
