@@ -1,0 +1,20 @@
+{
+  "getPurchaseDataError": "Hubo un problema al cargar los datos de suscripción o compra. Por favor, inténtalo de nuevo, reinicia la aplicación o obtén ayuda en Configuración.",
+  "purchaseError": "Hubo un problema al realizar la compra. Por favor, inténtalo de nuevo u obtén ayuda en Configuración.",
+  "restorePurchasesError": "Hubo un problema al restaurar las compras. Por favor, inténtalo de nuevo u obtén ayuda en Configuración.",
+  "updateWidgetError": "Hubo un problema al actualizar los datos del widget, por lo que los widgets pueden no mostrar los datos correctos. Obtén ayuda en Configuración.",
+  "updateKeyboardError": "Hubo un problema al actualizar los datos del teclado, por lo que el teclado Snippeta puede no mostrar los datos correctos. Obtén ayuda en Configuración.",
+  "themePreviewError": "Hubo un problema al previsualizar el tema. Por favor, inténtalo de nuevo u obtén ayuda en Configuración",
+  "loginError": "Hubo un problema al iniciar sesión. Por favor, inténtalo de nuevo u obtén ayuda en Configuración",
+  "getSnippetDataError": "Hubo un problema al cargar los datos del snippet. Por favor, inténtalo de nuevo, reinicia la aplicación u obtén ayuda en Configuración.",
+  "errorCodes": {
+    "0": "Hubo un error desconocido en el servidor.",
+    "1": "Hubo un error en la respuesta del servidor.",
+    "2": "Hubo un error en la base de datos del servidor.",
+    "3": "Esta dirección de correo ya está en uso.",
+    "4": "Este número de teléfono ya está en uso.",
+    "5": "Las credenciales proporcionadas no eran válidas.",
+    "6": "Se necesita una compra/suscripción para completar esta función."
+  }
+}
+

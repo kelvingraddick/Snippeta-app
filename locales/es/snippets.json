@@ -1,0 +1,48 @@
+{
+  "title": "Snippeta",
+  "snippetOptions": {
+    "title": "⚙️ Opciones de snippet ‎ ‎",
+    "messageSingle": "Editar, compartir, mover o eliminar este snippet",
+    "messageMultiple": "Editar, mover o eliminar este snippet"
+  },
+  "newSnippetOptions": {
+    "title": "➕ Opciones de nuevo snippet ‎ ‎",
+    "message": "Comenzar en blanco o copiar texto del portapapeles",
+    "newBlankSnippet": "Nuevo snippet en blanco",
+    "useTextFromClipboard": "Usar texto del portapapeles"
+  },
+  "savingOptions": {
+    "title": "💾 Opciones de guardado de snippet ‎ ‎",
+    "message": "Puede almacenarse en este dispositivo o en Snippeta Cloud"
+  },
+  "sections": {
+    "onDevice": "📱 En el dispositivo",
+    "cloud": "☁️ Nube"
+  },
+  "subGroupRequiresPro": "Crear un subgrupo requiere una suscripción a Snippeta Pro — ¡Lee esta pantalla para saber más!",
+  "sharingFailed": "Error al compartir snippet: {{error}}",
+  "deletingFailed": "Error al eliminar snippet con error: {{error}}",
+  "deletingFailedUnknown": "Error al eliminar snippet con error desconocido.",
+  "movingFailed": "Error al mover snippet con error: {{error}}",
+  "movingFailedUnknown": "Error al mover snippet con error desconocido.",
+  "savingFailed": "Error al guardar snippet con error: {{error}}",
+  "savingFailedUnknown": "Error al guardar snippet con error desconocido.",
+  "savingFailedErrorCode": "Error al guardar snippet: {{errorMessage}}",
+  "formattingFailed": "Error al formatear contenido del snippet con error: {{error}}",
+  "edit": {
+    "title": "Editar {{type}}",
+    "new": "Nuevo {{type}}",
+    "snippet": "snippet",
+    "group": "grupo",
+    "subGroup": "subgrupo",
+    "titlePlaceholder": "Escribe {{text}} aquí..",
+    "titleSnippet": "título",
+    "titleGroup": "título del grupo",
+    "titleSubGroup": "título del subgrupo",
+    "contentPlaceholder": "Escribe {{text}} aquí..",
+    "contentSnippet": "contenido",
+    "contentGroup": "descripción del grupo",
+    "contentSubGroup": "descripción del subgrupo"
+  }
+}
+

@@ -6,14 +6,14 @@ import { useFancyActionSheet } from 'react-native-fancy-action-sheet';
 import { ApplicationContext } from '../ApplicationContext';
 import storage from '../helpers/storage';
 import style from '../helpers/style';
-import { errorCodeMessages } from '../constants/errorCodeMessages';
+import { useTranslation } from 'react-i18next';
 import api from '../helpers/api';
 import banner from '../helpers/banner';
 import analytics from '../helpers/analytics';
 import ActionButton from '../components/ActionButton';
 
 const UserScreen = ({ navigation }) => {
-
+  const { t } = useTranslation(['common', 'auth', 'errors']);
   const { themer, user, isUserLoading, loginWithCredentials, logout } = useContext(ApplicationContext);
 
   const safeAreaInsets = useSafeAreaInsets();
@@ -55,16 +55,15 @@ const UserScreen = ({ navigation }) => {
           console.log(`UserScreen.js -> onSaveTapped: User logged in. Going back to Settings screen..`);
           navigation.goBack();
         } else {
-          banner.showErrorMessage(responseJson?.error_code ? 'Login failed: ' + errorCodeMessages[responseJson.error_code] : 'Login failed with unknown error.');
+          banner.showErrorMessage(responseJson?.error_code ? t('auth:login.failed', { error: t(`errors:errorCodes.${responseJson.error_code}`) }) : t('auth:login.failedUnknown'));
         }
       } else {
-        banner.showErrorMessage(responseJson?.error_code ? 'Saving failed: ' + errorCodeMessages[responseJson.error_code] : 'Saving failed with unknown error.');
+        banner.showErrorMessage(responseJson?.error_code ? t('auth:user.savingFailed', { error: t(`errors:errorCodes.${responseJson.error_code}`) }) : t('auth:user.savingFailedUnknown'));
       }
       setIsLoading(false);
     } catch(error) {
-      const errorMessage = 'Saving failed with error: ' + error.message;
-      console.error('UserScreen.js -> onSaveTapped: ' + errorMessage);
-      banner.showErrorMessage(errorMessage);
+      console.error('UserScreen.js -> onSaveTapped: Saving user failed with error: ' + error.message);
+      banner.showErrorMessage(t('auth:user.savingFailedError', { error: error.message }));
       setIsLoading(false);
     }
   };
@@ -74,10 +73,10 @@ const UserScreen = ({ navigation }) => {
   };
 
   const confirmDelete = async (count) => {
-    const options = [{ id: 'DELETE', name: 'Delete' }];
+    const options = [{ id: 'DELETE', name: t('common:buttons.delete') }];
     showFancyActionSheet({
-      title: '⚠️ Are you sure you want to delete your account?',
-      message: 'This is a permanent action.',
+      title: t('auth:user.deleteConfirm.title'),
+      message: t('auth:user.deleteConfirm.message'),
       ...style.getFancyActionSheetStyles(themer),
       options: options,
       destructiveOptionId: 'DELETE',
@@ -102,15 +101,14 @@ const UserScreen = ({ navigation }) => {
         console.log(`UserScreen.js -> deleteUser: User deleted. Now logging user out..`);
         navigation.popToTop();
         await logout();
-        banner.showSuccessMessage('Logged out!');
+        banner.showSuccessMessage(t('common:messages.loggedOut'));
       } else {
-        banner.showErrorMessage(responseJson?.error_code ? 'Deleting failed: ' + errorCodeMessages[responseJson.error_code] : 'Deleting failed with unknown error.');
+        banner.showErrorMessage(responseJson?.error_code ? t('auth:user.deletingFailed', { error: t(`errors:errorCodes.${responseJson.error_code}`) }) : t('auth:user.deletingFailedUnknown'));
       }
       setIsLoading(false);
     } catch(error) {
-      const errorMessage = 'Deleting failed with error: ' + error.message;
-      console.error('UserScreen.js -> deleteUser: ' + errorMessage);
-      banner.showErrorMessage(errorMessage);
+      console.error('UserScreen.js -> deleteUser: Deleting user failed with error: ' + error.message);
+      banner.showErrorMessage(t('auth:user.deletingFailedError', { error: error.message }));
       setIsLoading(false);
     }
   };
@@ -146,7 +144,7 @@ const UserScreen = ({ navigation }) => {
           <Pressable onPress={onBackTapped} hitSlop={20}>
             <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={themer.getColor('screenHeader1.foreground')} />
           </Pressable>
-          <Text style={[styles.title, { color: themer.getColor('screenHeader1.foreground') }]}>Account</Text>
+          <Text style={[styles.title, { color: themer.getColor('screenHeader1.foreground') }]}>{t('auth:user.title')}</Text>
           <View style={styles.placeholderIcon} />
         </View>
       </View>
@@ -158,26 +156,26 @@ const UserScreen = ({ navigation }) => {
       >
         <View style={styles.inputsView}>
           <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background') }]}>
-            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={'Email address..'} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={50} keyboardType='email-address' autoCapitalize='none' value={editedUser.email_address} onChangeText={onEmailAddressChangeText} />
+            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={t('common:placeholders.emailAddress')} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={50} keyboardType='email-address' autoCapitalize='none' value={editedUser.email_address} onChangeText={onEmailAddressChangeText} />
           </View>
           <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background') }]}>
-            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={'Phone number..'} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={50} keyboardType='phone-pad' autoCapitalize='none' value={editedUser.phone_number} onChangeText={onPhoneNumberChangeText} />
+            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={t('common:placeholders.phoneNumber')} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={50} keyboardType='phone-pad' autoCapitalize='none' value={editedUser.phone_number} onChangeText={onPhoneNumberChangeText} />
           </View>
           <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background') }]}>
-            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={'First name..'} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={50} keyboardType='default' autoCapitalize='words' value={editedUser.first_name} onChangeText={onFirstNameChangeText} />
+            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={t('common:placeholders.firstName')} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={50} keyboardType='default' autoCapitalize='words' value={editedUser.first_name} onChangeText={onFirstNameChangeText} />
           </View>
           <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background') }]}>
-            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={'Last name..'} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={50} keyboardType='default' autoCapitalize='words' value={editedUser.last_name} onChangeText={onLastNameChangeText} />
+            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={t('common:placeholders.lastName')} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={50} keyboardType='default' autoCapitalize='words' value={editedUser.last_name} onChangeText={onLastNameChangeText} />
           </View>
           <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background') }]}>
-            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={'Password..'} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={100} secureTextEntry={true} value={editedUser.password} onChangeText={onPasswordChangeText} />
+            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={t('common:placeholders.password')} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={100} secureTextEntry={true} value={editedUser.password} onChangeText={onPasswordChangeText} />
           </View>
           <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background') }]}>
-            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={'Password confirm..'} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={100} secureTextEntry={true} value={editedUser.password_confirm} onChangeText={onPasswordConfirmChangeText} />
+            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={t('common:placeholders.passwordConfirm')} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={100} secureTextEntry={true} value={editedUser.password_confirm} onChangeText={onPasswordConfirmChangeText} />
           </View>
         </View>
-        <ActionButton iconImageSource={require('../assets/images/checkmark.png')} text={'Save'} foregroundColor={themer.getColor('button2.foreground')} backgroundColor={themer.getColor('button2.background')} disabled={isLoading} onTapped={() => onSaveTapped()} />
-        <ActionButton iconImageSource={require('../assets/images/x.png')} text={'Delete account'} foregroundColor={themer.getColor('button4.foreground')} backgroundColor={themer.getColor('button4.background')} onTapped={() => onDeleteTapped()} />
+        <ActionButton iconImageSource={require('../assets/images/checkmark.png')} text={t('common:buttons.save')} foregroundColor={themer.getColor('button2.foreground')} backgroundColor={themer.getColor('button2.background')} disabled={isLoading} onTapped={() => onSaveTapped()} />
+        <ActionButton iconImageSource={require('../assets/images/x.png')} text={t('common:buttons.deleteAccount')} foregroundColor={themer.getColor('button4.foreground')} backgroundColor={themer.getColor('button4.background')} onTapped={() => onDeleteTapped()} />
       </KeyboardAwareScrollView>
     </View>
   );

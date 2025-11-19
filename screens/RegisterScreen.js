@@ -2,15 +2,15 @@ import React, { useContext, useState } from 'react';
 import { Image, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useTranslation } from 'react-i18next';
 import { ApplicationContext } from '../ApplicationContext';
-import { errorCodeMessages } from '../constants/errorCodeMessages';
 import api from '../helpers/api';
 import banner from '../helpers/banner';
 import analytics from '../helpers/analytics';
 import ActionButton from '../components/ActionButton';
 
 const RegisterScreen = ({ navigation }) => {
-
+  const { t } = useTranslation(['common', 'auth', 'errors']);
   const { themer, loginWithCredentials } = useContext(ApplicationContext);
 
   const safeAreaInsets = useSafeAreaInsets();
@@ -26,7 +26,7 @@ const RegisterScreen = ({ navigation }) => {
     try {
       setIsLoading(true);
       if (user.password != user.password_confirm) {
-        throw new Error('Password confirmation must match the password entered.');
+        throw new Error(t('auth:passwordMismatch'));
       }
       const response = await api.register(user);
       if (!response?.ok) { throw new Error(`HTTP error with status ${response?.status}`); }
@@ -39,16 +39,15 @@ const RegisterScreen = ({ navigation }) => {
           console.log(`RegisterScreen.js -> onRegisterTapped: User logged in. Going back to Settings screen..`);
           navigation.goBack();
         } else {
-          banner.showErrorMessage(responseJson?.error_code ? 'Login failed: ' + errorCodeMessages[responseJson.error_code] : 'Login failed with unknown error.');
+          banner.showErrorMessage(responseJson?.error_code ? t('auth:login.failed', { error: t(`errors:errorCodes.${responseJson.error_code}`) }) : t('auth:login.failedUnknown'));
         }
       } else {
-        banner.showErrorMessage(responseJson?.error_code ? 'Registration failed: ' + errorCodeMessages[responseJson.error_code] : 'Registration failed with unknown error.');
+        banner.showErrorMessage(responseJson?.error_code ? t('auth:register.failed', { error: t(`errors:errorCodes.${responseJson.error_code}`) }) : t('auth:register.failedUnknown'));
       }
       setIsLoading(false);
     } catch(error) {
-      const errorMessage = 'Registration failed with error: ' + error.message;
-      console.error('RegisterScreen.js -> onRegisterTapped: ' + errorMessage);
-      banner.showErrorMessage(errorMessage);
+      console.error('RegisterScreen.js -> onRegisterTapped: Registration failed with error: ' + error.message);
+      banner.showErrorMessage(t('auth:register.failedError', { error: error.message }));
       setIsLoading(false);
     }
   };
@@ -84,7 +83,7 @@ const RegisterScreen = ({ navigation }) => {
           <Pressable onPress={onBackTapped} hitSlop={20}>
             <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={themer.getColor('screenHeader1.foreground')} />
           </Pressable>
-          <Text style={[styles.title, { color: themer.getColor('screenHeader1.foreground') }]}>Register</Text>
+          <Text style={[styles.title, { color: themer.getColor('screenHeader1.foreground') }]}>{t('auth:register.title')}</Text>
           <View style={styles.placeholderIcon} />
         </View>
       </View>
@@ -96,25 +95,25 @@ const RegisterScreen = ({ navigation }) => {
       >
         <View style={styles.inputsView}>
           <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background') }]}>
-            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={'Email address..'} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={50} keyboardType='email-address' autoCapitalize='none' onChangeText={onEmailAddressChangeText} />
+            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={t('common:placeholders.emailAddress')} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={50} keyboardType='email-address' autoCapitalize='none' onChangeText={onEmailAddressChangeText} />
           </View>
           <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background') }]}>
-            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={'Phone number..'} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={50} keyboardType='phone-pad' autoCapitalize='none' onChangeText={onPhoneNumberChangeText} />
+            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={t('common:placeholders.phoneNumber')} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={50} keyboardType='phone-pad' autoCapitalize='none' onChangeText={onPhoneNumberChangeText} />
           </View>
           <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background') }]}>
-            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={'First name..'} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={50} keyboardType='default' autoCapitalize='words' onChangeText={onFirstNameChangeText} />
+            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={t('common:placeholders.firstName')} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={50} keyboardType='default' autoCapitalize='words' onChangeText={onFirstNameChangeText} />
           </View>
           <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background') }]}>
-            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={'Last name..'} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={50} keyboardType='default' autoCapitalize='words' onChangeText={onLastNameChangeText} />
+            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={t('common:placeholders.lastName')} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={50} keyboardType='default' autoCapitalize='words' onChangeText={onLastNameChangeText} />
           </View>
           <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background') }]}>
-            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={'Password..'} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={100} secureTextEntry={true} onChangeText={onPasswordChangeText} />
+            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={t('common:placeholders.password')} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={100} secureTextEntry={true} onChangeText={onPasswordChangeText} />
           </View>
           <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background') }]}>
-            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={'Password confirm..'} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={100} secureTextEntry={true} onChangeText={onPasswordConfirmChangeText} />
+            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={t('common:placeholders.passwordConfirm')} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={100} secureTextEntry={true} onChangeText={onPasswordConfirmChangeText} />
           </View>
         </View>
-        <ActionButton iconImageSource={require('../assets/images/list-icon.png')} text={'Register'} foregroundColor={themer.getColor('button3.foreground')} backgroundColor={themer.getColor('button3.background')} disabled={isLoading} onTapped={() => onRegisterTapped()} />
+        <ActionButton iconImageSource={require('../assets/images/list-icon.png')} text={t('common:buttons.register')} foregroundColor={themer.getColor('button3.foreground')} backgroundColor={themer.getColor('button3.background')} disabled={isLoading} onTapped={() => onRegisterTapped()} />
       </KeyboardAwareScrollView>
     </View>
   );

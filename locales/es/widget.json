@@ -1,0 +1,21 @@
+{
+  "title": "Widget",
+  "install": {
+    "title": "📱 Instala el widget",
+    "description": "..para acceder a snippets desde la pantalla de inicio del dispositivo",
+    "ios": {
+      "step1": "1. Mantén presionado en la Pantalla de inicio hasta que aparezca el <bold>modo de edición</bold>.*",
+      "step2": "2. Toca el botón <bold>Editar</bold>, luego el botón <bold>Agregar Widget</bold>",
+      "step3": "3. Busca <bold>\"Snippeta\"</bold> y elígelo",
+      "step4": "4. Desliza para elegir el tipo de widget que quieres y toca <bold>Agregar Widget</bold> para agregarlo a tu Pantalla de inicio"
+    },
+    "android": {
+      "step1": "1. Mantén presionado en la Pantalla de inicio hasta que aparezca el <bold>modo de edición</bold>.*",
+      "step2": "2. Toca la opción para <bold>Widgets</bold> o <bold>Agregar widgets</bold>",
+      "step3": "3. Busca <bold>\"Snippeta\"</bold> y elígelo",
+      "step4": "4. Toca <bold>Agregar</bold> o <bold>Agregar Widget</bold> para agregarlo a tu Pantalla de inicio"
+    },
+    "note": "*Ve a la Pantalla de inicio de tu dispositivo para comenzar"
+  }
+}
+

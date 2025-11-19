@@ -3,6 +3,7 @@ import { Image, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, Vi
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useFancyActionSheet } from 'react-native-fancy-action-sheet';
+import { useTranslation } from 'react-i18next';
 import { ApplicationContext } from '../ApplicationContext';
 import { storageKeys } from '../constants/storageKeys';
 import { snippetTypes } from '../constants/snippetTypes';
@@ -12,12 +13,12 @@ import banner from '../helpers/banner';
 import analytics from '../helpers/analytics';
 import style from '../helpers/style';
 import { snippetSources } from '../constants/snippetSources';
-import { errorCodeMessages } from '../constants/errorCodeMessages';
 import { moveSnippetOptions } from '../constants/moveSnippetOptions';
 import { colorIds } from '../constants/colorIds';
 import ColorButton from '../components/ColorButton';
 
 const SnippetScreen = ({ route, navigation }) => {
+  const { t } = useTranslation(['common', 'snippets', 'errors']);
   const callbacks = route.params.callbacks || [];
 
   const { themer, user, isUserLoading, onSnippetChanged } = useContext(ApplicationContext);
@@ -91,8 +92,8 @@ const SnippetScreen = ({ route, navigation }) => {
         if (responseJson && responseJson.success) {
           console.log('SnippetScreen.js -> onSaveTapped: Saved snippet via API with ID ' + id);
         } else {
-          const errorMessage = responseJson?.error_code ? 'Saving snippet failed: ' + errorCodeMessages[responseJson.error_code] : 'Saving snippet failed with unknown error.';
-          console.log('SnippetScreen.js -> onSaveTapped: ' + errorMessage);
+          const errorMessage = responseJson?.error_code ? t('snippets:savingFailedErrorCode', { errorMessage: t(`errors:errorCodes.${responseJson.error_code}`) }) : t('snippets:savingFailedUnknown');
+          console.log('SnippetScreen.js -> onSaveTapped: Failed to save snippet via API with error code: ' + (responseJson?.error_code || 'unknown'));
           banner.showErrorMessage(errorMessage);
           setIsLoading(false); return;
         }
@@ -105,9 +106,8 @@ const SnippetScreen = ({ route, navigation }) => {
       onSnippetChanged();
 
     } catch (error) {
-      const errorMessage = 'Saving snippet failed with error: ' + error.message;
-      console.error('SnippetScreen.js -> onSaveTapped: ' + errorMessage);
-      banner.showErrorMessage(errorMessage);
+      console.error('SnippetScreen.js -> onSaveTapped: Saving snippet failed with error: ' + error.message);
+      banner.showErrorMessage(t('snippets:savingFailed', { error: error.message }));
       setIsLoading(false);
     }
   };
@@ -145,8 +145,8 @@ const SnippetScreen = ({ route, navigation }) => {
     return new Promise((resolve, reject) => {
       const options = [{ id: snippetSources.API, name: snippetSources.API }, { id: snippetSources.STORAGE, name: snippetSources.STORAGE }];
       showFancyActionSheet({
-        title: '💾 Snippet saving options ‎ ‎',
-        message: 'It can be stored on this device, or in Snippeta Cloud',
+        title: t('snippets:savingOptions.title'),
+        message: t('snippets:savingOptions.message'),
         ...style.getFancyActionSheetStyles(themer),
         options: options,
         onOptionPress: async (option) => {
@@ -207,9 +207,8 @@ const SnippetScreen = ({ route, navigation }) => {
           .join('\n');
       }
     } catch (error) {
-      const errorMessage = 'Formatting snippet content failed with error: ' + error.message;
-      console.error('SnippetScreen.js -> onSaveTapped: ' + errorMessage);
-      banner.showErrorMessage(errorMessage);
+      console.error('SnippetScreen.js -> onSaveTapped: Formatting snippet failed with error: ' + error.message);
+      banner.showErrorMessage(t('snippets:formattingFailed', { error: error.message }));
     }
     return newText;  // return unmodified code if more than one new line
   };
@@ -221,7 +220,7 @@ const SnippetScreen = ({ route, navigation }) => {
             <Pressable onPress={onBackTapped} hitSlop={20}>
               <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={themer.getColor('screenHeader1.foreground')} />
             </Pressable>
-            <Text style={[styles.title, { color: themer.getColor('screenHeader1.foreground') }]}>{`${snippet.id ? 'Edit' : 'New'} ${snippet.type == snippetTypes.SINGLE ? 'snippet' : (snippet.parent_id ? 'sub-group' : 'group')}`}</Text>
+            <Text style={[styles.title, { color: themer.getColor('screenHeader1.foreground') }]}>{snippet.id ? t('snippets:edit.title', { type: snippet.type == snippetTypes.SINGLE ? t('snippets:edit.snippet') : (snippet.parent_id ? t('snippets:edit.subGroup') : t('snippets:edit.group')) }) : t('snippets:edit.new', { type: snippet.type == snippetTypes.SINGLE ? t('snippets:edit.snippet') : (snippet.parent_id ? t('snippets:edit.subGroup') : t('snippets:edit.group')) })}</Text>
             <Pressable onPress={onSaveTapped} hitSlop={20} disabled={isLoading || !snippet.title || snippet.title.length == 0 || !snippet.content || snippet.content.length == 0}>
               <Image source={require('../assets/images/checkmark.png')} style={[styles.saveIcon, { opacity: isLoading || !snippet.title || snippet.title.length == 0 || !snippet.content || snippet.content.length == 0 ? .1 : 1 }]} tintColor={themer.getColor('screenHeader1.foreground')} />
             </Pressable>
@@ -233,10 +232,10 @@ const SnippetScreen = ({ route, navigation }) => {
           </View>
         </View>
         <View style={[styles.titleInputView, { backgroundColor: themer.getColor('textInput3.background') }]}>
-          <TextInput style={[styles.titleInput, { color: themer.getColor('textInput3.foreground') }]} placeholder={`Type ${snippet.type == snippetTypes.SINGLE ? 'title' : `title of ${(snippet.parent_id ? 'sub-group' : 'group')}`} here..`} placeholderTextColor={themer.getPlaceholderTextColor('textInput3.foreground')} multiline maxLength={50} autoFocus onChangeText={onTitleChangeText}>{snippet.title}</TextInput>
+          <TextInput style={[styles.titleInput, { color: themer.getColor('textInput3.foreground') }]} placeholder={t('snippets:edit.titlePlaceholder', { text: snippet.type == snippetTypes.SINGLE ? t('snippets:edit.titleSnippet') : (snippet.parent_id ? t('snippets:edit.titleSubGroup') : t('snippets:edit.titleGroup')) })} placeholderTextColor={themer.getPlaceholderTextColor('textInput3.foreground')} multiline maxLength={50} autoFocus onChangeText={onTitleChangeText}>{snippet.title}</TextInput>
         </View>
         <View style={styles.contentInputView}>
-          <TextInput style={[styles.contentInput, { color: themer.getColor('textArea1.foreground') }]} placeholder={`Type ${snippet.type == snippetTypes.SINGLE ? 'content' : `description of ${(snippet.parent_id ? 'sub-group' : 'group')}`} here..`} placeholderTextColor={themer.getPlaceholderTextColor('textArea1.foreground')} multiline scrollEnabled={false} maxLength={1000} onChangeText={onContentChangeText} onSelectionChange={onContentSelectionChange}>{snippet.content}</TextInput>
+          <TextInput style={[styles.contentInput, { color: themer.getColor('textArea1.foreground') }]} placeholder={t('snippets:edit.contentPlaceholder', { text: snippet.type == snippetTypes.SINGLE ? t('snippets:edit.contentSnippet') : (snippet.parent_id ? t('snippets:edit.contentSubGroup') : t('snippets:edit.contentGroup')) })} placeholderTextColor={themer.getPlaceholderTextColor('textArea1.foreground')} multiline scrollEnabled={false} maxLength={1000} onChangeText={onContentChangeText} onSelectionChange={onContentSelectionChange}>{snippet.content}</TextInput>
         </View>
       </KeyboardAwareScrollView>
   );

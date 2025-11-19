@@ -1,0 +1,71 @@
+{
+  "buttons": {
+    "addSnippet": "Agregar snippet",
+    "newGroup": "Nuevo grupo",
+    "newSubGroup": "Nuevo subgrupo",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "share": "Compartir",
+    "save": "Guardar",
+    "login": "Iniciar sesión",
+    "register": "Registrarse",
+    "forgotPassword": "Olvidé mi contraseña",
+    "sendPasswordResetEmail": "Enviar correo de restablecimiento de contraseña",
+    "logout": "Cerrar sesión",
+    "account": "Cuenta",
+    "deleteAccount": "Eliminar cuenta",
+    "learnMore": "Saber más",
+    "search": "Buscar",
+    "searchTitle": "Buscar"
+  },
+  "actions": {
+    "moveToTop": "Mover arriba ⎴",
+    "moveUp": "Mover arriba ↑",
+    "moveDown": "Mover abajo ↓",
+    "moveToBottom": "Mover abajo ⎵"
+  },
+  "placeholders": {
+    "emailOrPhone": "Correo o teléfono..",
+    "password": "Contraseña..",
+    "passwordConfirm": "Confirmar contraseña..",
+    "emailAddress": "Dirección de correo..",
+    "phoneNumber": "Número de teléfono..",
+    "firstName": "Nombre..",
+    "lastName": "Apellido..",
+    "searchText": "Buscar texto.."
+  },
+  "messages": {
+    "textCopiedToClipboard": "El texto se copió al portapapeles",
+    "loggedOut": "¡Sesión cerrada!",
+    "emailSent": "Correo enviado. Por favor revisa tu correo para continuar restableciendo la contraseña.",
+    "noSubscriptionFound": "No se encontró suscripción o compras para restaurar.",
+    "featureAlertsReset": "¡Las alertas de funciones se han restablecido! Aparecerán nuevamente en la pantalla principal.",
+    "previewingTheme": "Vista previa del tema '{{themeName}}' por {{seconds}} segundos."
+  },
+  "sources": {
+    "onDevice": "En el dispositivo",
+    "cloud": "Nube"
+  },
+  "cloud": {
+    "title": "Nube",
+    "createAccount": "Crea una cuenta para más funciones*",
+    "syncBackup": "☁️ Sincroniza y respalda snippets en la Nube",
+    "accessDevices": "📱 Accede a tus snippets en diferentes dispositivos",
+    "unlockPro": "🛒 Desbloquea <bold>Snippeta Pro</bold> en múltiples dispositivos",
+    "requiresPro": "*Requiere una suscripción a Snippeta Pro",
+    "loggedInAs": "Has iniciado sesión como <bold>{{name}}</bold>"
+  },
+  "featureAlerts": {
+    "keyboard": {
+      "title": "⌨️ Habilita el teclado Snippeta",
+      "description": "¡Una vez habilitado, puedes abrir el teclado en cualquier otra aplicación para pegar snippets rápidamente!",
+      "actionText": "Saber más"
+    },
+    "widget": {
+      "title": "📱 Agrega un widget en la pantalla de inicio",
+      "description": "¡Acceso rápido a tus snippets directamente desde tu pantalla de inicio!",
+      "actionText": "Saber más"
+    }
+  }
+}
+

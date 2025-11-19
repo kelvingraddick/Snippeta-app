@@ -1,14 +1,14 @@
 import React, { useContext, useState } from 'react';
 import { Image, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 import { ApplicationContext } from '../ApplicationContext';
-import { errorCodeMessages } from '../constants/errorCodeMessages';
 import banner from '../helpers/banner';
 import analytics from '../helpers/analytics';
 import ActionButton from '../components/ActionButton';
 
 const LoginScreen = ({ navigation }) => {
-  
+  const { t } = useTranslation(['common', 'auth', 'errors']);
   const { themer, loginWithCredentials } = useContext(ApplicationContext);
 
   const safeAreaInsets = useSafeAreaInsets();
@@ -29,13 +29,12 @@ const LoginScreen = ({ navigation }) => {
         console.log(`LoginScreen.js -> onLoginTapped: User logged in. Going back to Settings screen..`);
         navigation.goBack();
       } else {
-        banner.showErrorMessage(responseJson?.error_code ? 'Login failed: ' + errorCodeMessages[responseJson.error_code] : 'Login failed with unknown error.');
+        banner.showErrorMessage(responseJson?.error_code ? t('auth:login.failed', { error: t(`errors:errorCodes.${responseJson.error_code}`) }) : t('auth:login.failedUnknown'));
       }
       setIsLoading(false);
     } catch(error) {
-      const errorMessage = 'Login failed with error: ' + error.message;
-      console.error('LoginScreen.js -> onLoginTapped: ' + errorMessage);
-      banner.showErrorMessage(errorMessage);
+      console.error('LoginScreen.js -> onLoginTapped: Login failed with error: ' + error.message);
+      banner.showErrorMessage(t('auth:login.failedError', { error: error.message }));
       setIsLoading(false);
     }
   };
@@ -59,21 +58,21 @@ const LoginScreen = ({ navigation }) => {
           <Pressable onPress={onBackTapped} hitSlop={20}>
             <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={themer.getColor('screenHeader1.foreground')} />
           </Pressable>
-          <Text style={[styles.title, { color: themer.getColor('screenHeader1.foreground') }]}>Login</Text>
+          <Text style={[styles.title, { color: themer.getColor('screenHeader1.foreground') }]}>{t('auth:login.title')}</Text>
           <View style={styles.placeholderIcon} />
         </View>
       </View>
       <View style={styles.formView}>
         <View style={styles.inputsView}>
           <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background') }]}>
-            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={'Email or phone..'} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={50} keyboardType='email-address' textContentType='username' autoCapitalize='none' onChangeText={onEmailOrPhoneChangeText} />
+            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={t('common:placeholders.emailOrPhone')} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={50} keyboardType='email-address' textContentType='username' autoCapitalize='none' onChangeText={onEmailOrPhoneChangeText} />
           </View>
           <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background') }]}>
-            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={'Password..'} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={100} secureTextEntry={true} textContentType='password' onChangeText={onPasswordChangeText} />
+            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={t('common:placeholders.password')} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={100} secureTextEntry={true} textContentType='password' onChangeText={onPasswordChangeText} />
           </View>
         </View>
-        <ActionButton iconImageSource={require('../assets/images/user.png')} text={'Login'} foregroundColor={themer.getColor('button2.foreground')} backgroundColor={themer.getColor('button2.background')} disabled={isLoading} onTapped={() => onLoginTapped()} />
-        <ActionButton iconImageSource={require('../assets/images/gear-gray.png')} text={'Forgot Password'} foregroundColor={themer.getColor('button4.foreground')} backgroundColor={themer.getColor('button4.background')} onTapped={() => onForgotPasswordTapped()} />
+        <ActionButton iconImageSource={require('../assets/images/user.png')} text={t('common:buttons.login')} foregroundColor={themer.getColor('button2.foreground')} backgroundColor={themer.getColor('button2.background')} disabled={isLoading} onTapped={() => onLoginTapped()} />
+        <ActionButton iconImageSource={require('../assets/images/gear-gray.png')} text={t('common:buttons.forgotPassword')} foregroundColor={themer.getColor('button4.foreground')} backgroundColor={themer.getColor('button4.background')} onTapped={() => onForgotPasswordTapped()} />
       </View>
     </View>
   );

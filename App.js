@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useRef } from 'react';
+import React, { useEffect, useReducer, useRef, useState } from 'react';
 import { Linking, NativeModules, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { navigationRef } from './RootNavigation';
@@ -7,6 +7,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import { FancyActionSheetProvider } from 'react-native-fancy-action-sheet';
+import { I18nextProvider } from 'react-i18next';
 import FlashMessage from "react-native-flash-message";
 import Clipboard from '@react-native-clipboard/clipboard';
 import Rate from 'react-native-rate';
@@ -22,6 +23,8 @@ import { entitlementIds } from './constants/entitlementIds';
 import { themes } from './constants/themes';
 import { readableErrorMessages } from './constants/readableErrorMessages';
 import { appearanceModes } from './constants/appearanceModes';
+import initI18n from './helpers/i18n';
+import i18n from 'i18next';
 import { useThemer }from './helpers/themer';
 import api from './helpers/api';
 import storage from './helpers/storage';
@@ -92,12 +95,15 @@ const { WidgetNativeModule } = NativeModules;
 
 export default Sentry.wrap(function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [i18nInstance, setI18nInstance] = useState(null);
   const themer = useThemer(Object.keys(themes)[0], appearanceModes.SYSTEM);
   const themePreviewStatusIntervalId = useRef();
   const routeNameRef = useRef();
 
   useEffect(() => {
     console.log('\n\n\nApp.js -> useEffect: STARTING APP');
+
+    initI18n().then((i18n) => { setI18nInstance(i18n); });
 
     RevenueCat.configure()
       .then(() => loadThemeAppearanceFromStorage()
@@ -163,7 +169,7 @@ export default Sentry.wrap(function App() {
       }
     } catch (error) {
       console.error('App.js -> loginWithCredentials: Login failed with error: ' + error.message);
-      banner.showErrorMessage(readableErrorMessages.LOGIN_ERROR);
+      banner.showErrorMessage(i18n.t(`errors:${readableErrorMessages.LOGIN_ERROR}`));
     }
     dispatch({ type: 'LOGGED_IN', payload: user ?? null });
     return responseJson;
@@ -173,7 +179,7 @@ export default Sentry.wrap(function App() {
     try { await RevenueCat.login(userId); }
     catch (error) { 
       console.error('App.js -> loginToRevenueCat: RevenueCat login failed with error: ' + error.message);
-      banner.showErrorMessage(readableErrorMessages.GET_PURCHASE_DATA_ERROR);
+      banner.showErrorMessage(i18n.t(`errors:${readableErrorMessages.GET_PURCHASE_DATA_ERROR}`));
     }
   };
 
@@ -255,7 +261,7 @@ export default Sentry.wrap(function App() {
         } else { // path === 'copy'
           console.log(`App.js -> handleDeepLink: copy for snippet ID ${param}`);
           Clipboard.setString(snippet.content);
-          banner.showSuccessMessage('The text was copied to the clipboard', `"${snippet.content}"`);
+          banner.showSuccessMessage(i18n.t('common:messages.textCopiedToClipboard'), `"${snippet.content}"`);
           await analytics.logEvent('snippet_copied', { type: snippet.type, source: snippet.source });
         }
       } else {
@@ -284,7 +290,7 @@ export default Sentry.wrap(function App() {
         storageSnippetGroups.sort((a, b) => a.order_index - b.order_index);
       } catch (error) {
         console.error('App.js -> updateDataForWidgets: getting snippet groups from storage failed with error: ' + error.message);
-        banner.showErrorMessage(readableErrorMessages.UPDATE_WIDGET_ERROR);
+        banner.showErrorMessage(i18n.t(`errors:${readableErrorMessages.UPDATE_WIDGET_ERROR}`));
       }
 
       // 2. try to get API snippet groups
@@ -299,7 +305,7 @@ export default Sentry.wrap(function App() {
         console.log(`App.js -> updateDataForWidgets: Got ${apiSnippetGroups.length} snippet groups via API:`, JSON.stringify(apiSnippetGroups.map(x => x.id)));
       } catch (error) {
         console.error('App.js -> updateDataForWidgets: getting snippet groups from API failed with error: ' + error.message);
-        banner.showErrorMessage(readableErrorMessages.UPDATE_WIDGET_ERROR);
+        banner.showErrorMessage(i18n.t(`errors:${readableErrorMessages.UPDATE_WIDGET_ERROR}`));
       }
 
       // 4. combine data from storage and API
@@ -317,7 +323,7 @@ export default Sentry.wrap(function App() {
       updateWidgets();
     } catch (error) {
       console.error('App.js -> updateDataForWidgets: updating snippet groups failed with error: ' + error.message);
-      banner.showErrorMessage(readableErrorMessages.UPDATE_WIDGET_ERROR);
+      banner.showErrorMessage(i18n.t(`errors:${readableErrorMessages.UPDATE_WIDGET_ERROR}`));
     }
   };
 
@@ -333,7 +339,7 @@ export default Sentry.wrap(function App() {
         await analytics.setUserProperty('storage_snippet_count', storageSnippets.length.toString());
       } catch (error) {
         console.error('App.js -> updateDataForKeyboard: getting snippets from storage failed with error: ' + error.message);
-        banner.showErrorMessage(readableErrorMessages.UPDATE_KEYBOARD_ERROR);
+        banner.showErrorMessage(i18n.t(`errors:${readableErrorMessages.UPDATE_KEYBOARD_ERROR}`));
       }
 
       // 2. try to get API snippets
@@ -348,7 +354,7 @@ export default Sentry.wrap(function App() {
         console.log(`App.js -> updateDataForKeyboard: Got ${apiSnippets.length} snippets via API:`, JSON.stringify(apiSnippets.map(x => x.id)));
       } catch (error) {
         console.error('App.js -> updateDataForKeyboard: getting snippets from API failed with error: ' + error.message);
-        banner.showErrorMessage(readableErrorMessages.UPDATE_KEYBOARD_ERROR);
+        banner.showErrorMessage(i18n.t(`errors:${readableErrorMessages.UPDATE_KEYBOARD_ERROR}`));
       }
         
       // 4. combine data from storage and API
@@ -362,7 +368,7 @@ export default Sentry.wrap(function App() {
       await widget.saveData('snippets', snippets);
     } catch (error) {
       console.error('App.js -> updateDataForKeyboard: updating snippets failed with error: ' + error.message);
-      banner.showErrorMessage(readableErrorMessages.UPDATE_KEYBOARD_ERROR);
+      banner.showErrorMessage(i18n.t(`errors:${readableErrorMessages.UPDATE_KEYBOARD_ERROR}`));
     }
 
     function _updateMetadata(snippets, source) {
@@ -405,7 +411,7 @@ export default Sentry.wrap(function App() {
       dispatch({ type: 'PREVIEWING_THEME', payload: true });
       await updateThemer(themeId, state.appearanceMode);
       let seconds = 60;
-      const getStatusMessage = (seconds) => `Previewing the '${themes[themeId]?.name}' theme for ${seconds} seconds.`;
+      const getStatusMessage = (seconds) => i18n.t('common:messages.previewingTheme', { themeName: themes[themeId]?.name, seconds });
       banner.showStatusMessage(getStatusMessage(seconds), null, true);
       themePreviewStatusIntervalId.current = setInterval(async () => {
         if (seconds > 1) {
@@ -417,7 +423,7 @@ export default Sentry.wrap(function App() {
       }, 1000);
     } catch (error) {
       console.error('App.js -> startThemePreview: previewing theme failed with error: ' + error.message);
-      banner.showErrorMessage(readableErrorMessages.THEME_PREVIEW_ERROR);
+      banner.showErrorMessage(i18n.t(`errors:${readableErrorMessages.THEME_PREVIEW_ERROR}`));
     }
   }
 
@@ -444,7 +450,7 @@ export default Sentry.wrap(function App() {
       dispatch({ type: 'UPDATE_ENTITLEMENTS', payload: entitlements });
     } catch (error) {
       console.error('App.js -> updateEntitlements: syncing entitlements failed with error: ' + error.message);
-      banner.showErrorMessage(readableErrorMessages.GET_PURCHASE_DATA_ERROR);
+      banner.showErrorMessage(i18n.t(`errors:${readableErrorMessages.GET_PURCHASE_DATA_ERROR}`));
     }
     // 2. determine subscription status based on entitlements and current user
     try {  
@@ -457,7 +463,7 @@ export default Sentry.wrap(function App() {
       await analytics.setUserProperties({ subscription_type: activeSubscription?.type ?? 'No active subscription', entitlements: JSON.stringify(entitlements) });
     } catch (error) {
       console.error('App.js -> updateEntitlements: syncing entitlements failed with error: ' + error.message);
-      banner.showErrorMessage(readableErrorMessages.GET_PURCHASE_DATA_ERROR);
+      banner.showErrorMessage(i18n.t(`errors:${readableErrorMessages.GET_PURCHASE_DATA_ERROR}`));
     }
   };
 
@@ -521,84 +527,90 @@ export default Sentry.wrap(function App() {
     dispatch({ type: 'REFRESH_FEATURE_ALERTS' });
   };
 
+  if (!i18nInstance) {
+    return null; // Wait for i18n to initialize
+  }
+
   return (
-    <Sentry.TouchEventBoundary>
-      <ApplicationContext.Provider value={{...state, themer, onSnippetChanged, updateThemer, startThemePreview, endThemePreview, updateAppearanceMode, loginWithCredentials, logout, updateEntitlements, refreshFeatureAlerts}}>
-        <ActionSheetProvider>
-          <FancyActionSheetProvider>
-            <NavigationContainer 
-              ref={navigationRef}
-              onReady={() => { routeNameRef.current = navigationRef.current.getCurrentRoute().name; }}
-              onStateChange={async () => {
-                const previousRouteName = routeNameRef.current;
-                const currentRouteName = navigationRef.current.getCurrentRoute().name;
-                if (previousRouteName !== currentRouteName) {
-                  await analytics.logScreenView(currentRouteName);
-                }
-                routeNameRef.current = currentRouteName;
-              }}
-            >
-              <Stack.Navigator initialRouteName="Snippets">
-                <Stack.Group>
-                  <Stack.Screen
-                    name="Snippets"
-                    component={SnippetsScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="Snippet"
-                    component={SnippetScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="Search"
-                    component={SearchScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="Settings"
-                    component={SettingsScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="Login"
-                    component={LoginScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="ForgotPassword"
-                    component={ForgotPasswordScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="Register"
-                    component={RegisterScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="User"
-                    component={UserScreen}
-                    options={{ headerShown: false }}
-                  />
-                </Stack.Group>
-                <Stack.Group screenOptions={{ presentation: Platform.isPad ? 'fullScreenModal' : 'modal' }}>
-                  <Stack.Screen
-                    name="Keyboard"
-                    component={KeyboardScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="Widget"
-                    component={WidgetScreen}
-                    options={{ headerShown: false }}
-                  />
-                </Stack.Group>
-              </Stack.Navigator>
-              <FlashMessage position="top" />
-            </NavigationContainer>
-          </FancyActionSheetProvider>
-        </ActionSheetProvider>
-      </ApplicationContext.Provider>
-    </Sentry.TouchEventBoundary>
+    <I18nextProvider i18n={i18nInstance}>
+      <Sentry.TouchEventBoundary>
+        <ApplicationContext.Provider value={{...state, themer, onSnippetChanged, updateThemer, startThemePreview, endThemePreview, updateAppearanceMode, loginWithCredentials, logout, updateEntitlements, refreshFeatureAlerts}}>
+          <ActionSheetProvider>
+            <FancyActionSheetProvider>
+              <NavigationContainer 
+                ref={navigationRef}
+                onReady={() => { routeNameRef.current = navigationRef.current.getCurrentRoute().name; }}
+                onStateChange={async () => {
+                  const previousRouteName = routeNameRef.current;
+                  const currentRouteName = navigationRef.current.getCurrentRoute().name;
+                  if (previousRouteName !== currentRouteName) {
+                    await analytics.logScreenView(currentRouteName);
+                  }
+                  routeNameRef.current = currentRouteName;
+                }}
+              >
+                <Stack.Navigator initialRouteName="Snippets">
+                  <Stack.Group>
+                    <Stack.Screen
+                      name="Snippets"
+                      component={SnippetsScreen}
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                      name="Snippet"
+                      component={SnippetScreen}
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                      name="Search"
+                      component={SearchScreen}
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                      name="Settings"
+                      component={SettingsScreen}
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                      name="Login"
+                      component={LoginScreen}
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                      name="ForgotPassword"
+                      component={ForgotPasswordScreen}
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                      name="Register"
+                      component={RegisterScreen}
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                      name="User"
+                      component={UserScreen}
+                      options={{ headerShown: false }}
+                    />
+                  </Stack.Group>
+                  <Stack.Group screenOptions={{ presentation: Platform.isPad ? 'fullScreenModal' : 'modal' }}>
+                    <Stack.Screen
+                      name="Keyboard"
+                      component={KeyboardScreen}
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                      name="Widget"
+                      component={WidgetScreen}
+                      options={{ headerShown: false }}
+                    />
+                  </Stack.Group>
+                </Stack.Navigator>
+                <FlashMessage position="top" />
+              </NavigationContainer>
+            </FancyActionSheetProvider>
+          </ActionSheetProvider>
+        </ApplicationContext.Provider>
+      </Sentry.TouchEventBoundary>
+    </I18nextProvider>
   );
 });

@@ -1,0 +1,30 @@
+{
+  "title": "Keyboard",
+  "theSnippetaKeyboard": "⌨️ The Snippeta Keyboard",
+  "description": "Quickly paste snippets into any other app",
+  "features": {
+    "tapSnippet": "• Tap a <bold>snippet</bold> to paste it into the app you are in",
+    "spaceBackspace": "• Dedicated buttons for <bold>space</bold> and <bold>backspace</bold>",
+    "findKeyboardIos": "• After <italic>installing</italic>, find it by cycling keyboards with the <bold>globe 🌐</bold> button",
+    "findKeyboardAndroid": "• After <italic>installing</italic>, find it by cycling keyboards with the <bold>keyboard ⌨️</bold> button"
+  },
+  "howToInstall": "How to install",
+  "install": {
+    "title": "⌨️ Install the keyboard",
+    "description": "..to quickly paste snippets into any other app",
+    "ios": {
+      "step1": "1. Tap the <bold>System settings</bold> button below",
+      "step2": "2. Tap the <bold>Keyboards</bold> option",
+      "step3": "3. Toggle on the <bold>Snippeta Keyboard</bold> option, then also toggle on <bold>Allow Full Access</bold>"
+    },
+    "android": {
+      "step1": "1. Tap the <bold>System settings</bold> button below",
+      "step2": "2. On the settings screen, tap <bold>System</bold>",
+      "step3": "3. Tap on <bold>Languages & input</bold>",
+      "step4": "4. Tap <bold>On-screen keyboard</bold> or <bold>Virtual keyboard</bold>",
+      "step5": "5. Toggle on the <bold>Snippeta Keyboard</bold> option"
+    }
+  },
+  "systemSettings": "System settings"
+}
+

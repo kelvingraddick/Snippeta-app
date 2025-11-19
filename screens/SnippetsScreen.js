@@ -5,6 +5,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { useFancyActionSheet } from 'react-native-fancy-action-sheet';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import ReactNativeHapticFeedback from "react-native-haptic-feedback";
+import { useTranslation } from 'react-i18next';
 import { ApplicationContext } from '../ApplicationContext';
 import { snippetTypes } from '../constants/snippetTypes';
 import { snippetSources } from '../constants/snippetSources';
@@ -23,6 +24,7 @@ import FeatureAlertsView from '../components/FeatureAlertsView';
 import analytics from '../helpers/analytics';
 
 const SnippetsScreen = ({ route, navigation }) => {
+  const { t } = useTranslation(['common', 'snippets', 'errors', 'tutorial']);
   const parentSnippet = route.params?.parentSnippet;
   const isRootSnippetsScreen = !parentSnippet;
   const callbacks = route.params?.callbacks || [];
@@ -42,18 +44,18 @@ const SnippetsScreen = ({ route, navigation }) => {
   const { showFancyActionSheet } = useFancyActionSheet();
 
   const tutorialSnippets = [
-    { id: storageKeys.SNIPPET + 1, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Welcome to Snippeta!', content: 'Snippeta is the best way to copy, paste, and manage snippets of text! Copy text to your clipboard with a single tap; no highlighting or long-tapping!', color_id: colorIds.COLOR_1, time: new Date(), order_index: 0 },
-    { id: storageKeys.SNIPPET + 2, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Getting started', content: 'Tap here to copy this snippet to your clipboard, or tap the "Add snippet" button above to create a new snippet!', color_id: colorIds.COLOR_2, time: new Date(), order_index: 1 },
-    { id: storageKeys.SNIPPET + 3, type: snippetTypes.MULTIPLE, source: snippetSources.STORAGE, title: 'Organize by creating groups', content: 'Create a snippet group to organize and nest snippets. Tap here to try it out!', color_id: colorIds.COLOR_3, time: new Date(), order_index: 2 },
-    { id: storageKeys.SNIPPET + 4, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Go PRO to do more!', content: 'Get access to Cloud sync, creating sub-groups, pro themes, and more with a Snippeta Pro subscription!', color_id: colorIds.COLOR_4, time: new Date(), order_index: 3 },
-    { id: storageKeys.SNIPPET + 5, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: 'Add snippets to this group', content: 'Tap the "Add snippet" button above to try it out!', color_id: colorIds.COLOR_3, time: new Date(), order_index: 0, parent_id: storageKeys.SNIPPET + 3 },
+    { id: storageKeys.SNIPPET + 1, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: t('tutorial:snippets.welcome.title'), content: t('tutorial:snippets.welcome.content'), color_id: colorIds.COLOR_1, time: new Date(), order_index: 0 },
+    { id: storageKeys.SNIPPET + 2, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: t('tutorial:snippets.gettingStarted.title'), content: t('tutorial:snippets.gettingStarted.content'), color_id: colorIds.COLOR_2, time: new Date(), order_index: 1 },
+    { id: storageKeys.SNIPPET + 3, type: snippetTypes.MULTIPLE, source: snippetSources.STORAGE, title: t('tutorial:snippets.organizeGroups.title'), content: t('tutorial:snippets.organizeGroups.content'), color_id: colorIds.COLOR_3, time: new Date(), order_index: 2 },
+    { id: storageKeys.SNIPPET + 4, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: t('tutorial:snippets.goPro.title'), content: t('tutorial:snippets.goPro.content'), color_id: colorIds.COLOR_4, time: new Date(), order_index: 3 },
+    { id: storageKeys.SNIPPET + 5, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: t('tutorial:snippets.addSnippetsToGroup.title'), content: t('tutorial:snippets.addSnippetsToGroup.content'), color_id: colorIds.COLOR_3, time: new Date(), order_index: 0, parent_id: storageKeys.SNIPPET + 3 },
   ];
 
   const moveSnippetOptionNames = {};
-  moveSnippetOptionNames[moveSnippetOptions.TO_TOP] = 'Move to top ⎴';
-  moveSnippetOptionNames[moveSnippetOptions.UP] = 'Move up ↑';
-  moveSnippetOptionNames[moveSnippetOptions.DOWN] = 'Move down ↓';
-  moveSnippetOptionNames[moveSnippetOptions.TO_BOTTOM] = 'Move to bottom ⎵';
+  moveSnippetOptionNames[moveSnippetOptions.TO_TOP] = t('common:actions.moveToTop');
+  moveSnippetOptionNames[moveSnippetOptions.UP] = t('common:actions.moveUp');
+  moveSnippetOptionNames[moveSnippetOptions.DOWN] = t('common:actions.moveDown');
+  moveSnippetOptionNames[moveSnippetOptions.TO_BOTTOM] = t('common:actions.moveToBottom');
 
   useEffect(() => {
     if (!isUserLoading) {
@@ -76,7 +78,7 @@ const SnippetsScreen = ({ route, navigation }) => {
         }
       } catch (error) {
         console.error('SnippetsScreen.js -> getSnippets: getting snippets from storage failed with error: ' + error.message);
-        banner.showErrorMessage(readableErrorMessages.GET_SNIPPET_DATA_ERROR);
+        banner.showErrorMessage(t(`errors:${readableErrorMessages.GET_SNIPPET_DATA_ERROR}`));
       }
       
       // try to get API snippets for current parent ID
@@ -152,9 +154,8 @@ const SnippetsScreen = ({ route, navigation }) => {
           await analytics.logEvent('snippet_deleted', { type: snippet.type, source: snippet.source });
           console.log('SnippetScreen.js -> deleteSnippet: Deleted snippet via API with ID ' + snippet.id);
         } else {
-          const errorMessage = 'Deleting snippet failed with unknown error.';
-          console.log('SnippetScreen.js -> deleteSnippet: ' + errorMessage);
-          banner.showErrorMessage(errorMessage);
+          console.log('SnippetScreen.js -> deleteSnippet: Failed to delete snippet via API with unknown error');
+          banner.showErrorMessage(t('snippets:deletingFailedUnknown'));
         }
       }
       setIsLoading(false);
@@ -162,9 +163,8 @@ const SnippetsScreen = ({ route, navigation }) => {
       onSnippetChanged();
 
     } catch (error) {
-      const errorMessage = 'Deleting snippet failed with error: ' + error.message;
-      console.error('SnippetsScreen.js -> deleteSnippet: ' + errorMessage);
-      banner.showErrorMessage(errorMessage);
+      console.error('SnippetsScreen.js -> deleteSnippet: Deleting snippet failed with error: ' + error.message);
+      banner.showErrorMessage(t('snippets:deletingFailed', { error: error.message }));
       setIsLoading(false);
     }
   };
@@ -202,9 +202,8 @@ const SnippetsScreen = ({ route, navigation }) => {
           await analytics.logEvent('snippet_moved', { type: snippet.type, source: snippet.source, option: option });
           console.log('SnippetScreen.js -> moveSnippet: Moved snippet via API with ID ' + snippet.id);
         } else {
-          const errorMessage = 'Moving snippet in failed with unknown error.';
-          console.log('SnippetScreen.js -> moveSnippet: ' + errorMessage);
-          banner.showErrorMessage(errorMessage);
+          console.log('SnippetScreen.js -> moveSnippet: Failed to move snippet via API with unknown error');
+          banner.showErrorMessage(t('snippets:movingFailedUnknown'));
         }
       }
       setIsLoading(false);
@@ -212,9 +211,8 @@ const SnippetsScreen = ({ route, navigation }) => {
       onSnippetChanged();
 
     } catch (error) {
-      const errorMessage = 'Moving snippet failed with error: ' + error.message;
-      console.error('SnippetsScreen.js -> moveSnippet: ' + errorMessage);
-      banner.showErrorMessage(errorMessage);
+      console.error('SnippetsScreen.js -> moveSnippet: Moving snippet failed with error: ' + error.message);
+      banner.showErrorMessage(t('snippets:movingFailed', { error: error.message }));
       setIsLoading(false);
     }
   };
@@ -239,10 +237,10 @@ const SnippetsScreen = ({ route, navigation }) => {
 
   const onAddSnippetTapped = async () => {
     triggerHapticFeedback();
-    const options = [{ id: 'NEW_BLANK_SNIPPET', name: 'New blank snippet' }, { id: 'USE_TEXT_FROM_CLIPBOARD', name: 'Use text from clipboard' }];
+    const options = [{ id: 'NEW_BLANK_SNIPPET', name: t('snippets:newSnippetOptions.newBlankSnippet') }, { id: 'USE_TEXT_FROM_CLIPBOARD', name: t('snippets:newSnippetOptions.useTextFromClipboard') }];
     showFancyActionSheet({
-      title: '➕ New snippet options ‎ ‎',
-      message: 'Start blank, or copy text from the clipboard',
+      title: t('snippets:newSnippetOptions.title'),
+      message: t('snippets:newSnippetOptions.message'),
       ...style.getFancyActionSheetStyles(themer),
       options: options,
       onOptionPress: async (option) => {
@@ -265,7 +263,7 @@ const SnippetsScreen = ({ route, navigation }) => {
       createSnippet(snippetTypes.MULTIPLE);
     } else {
       onSettingsTapped();
-      banner.showErrorMessage('Creating a sub-group requires a Snippeta Pro subscription — Read this screen to learn more!');
+      banner.showErrorMessage(t('snippets:subGroupRequiresPro'));
     }
     await analytics.logEvent('new_group_tapped', { is_root_snippets_screen: isRootSnippetsScreen, has_subscription: (subscription ? true : false) });
   };
@@ -273,7 +271,7 @@ const SnippetsScreen = ({ route, navigation }) => {
   const onSnippetTapped = (snippet) => {
     if (snippet.type == snippetTypes.SINGLE) {
       Clipboard.setString(snippet.content);
-      banner.showSuccessMessage('The text was copied to the clipboard', `"${snippet.content}"`);
+      banner.showSuccessMessage(t('common:messages.textCopiedToClipboard'), `"${snippet.content}"`);
       triggerHapticFeedback();
       analytics.logEvent('snippet_content_copied', { type: snippet.type, source: snippet.source });
     } else { // snippetTypes.MULTIPLE
@@ -283,15 +281,10 @@ const SnippetsScreen = ({ route, navigation }) => {
 
   const shareSnippet = async (snippet) => {
     try {
-      const shareContent = snippet.type == snippetTypes.SINGLE 
-        ? snippet.content 
-        : `${snippet.title}\n\nThis is a snippet group. Share individual snippets from within the group.`;
-      
       const result = await Share.share({
-        message: shareContent,
+        message: snippet.content,
         title: snippet.title,
       });
-      console.log('SnippetsScreen.js -> shareSnippet: Result: ' + JSON.stringify(result));
       
       if (result.action === Share.sharedAction) {
         await analytics.logEvent('snippet_shared', { type: snippet.type, source: snippet.source });
@@ -299,22 +292,22 @@ const SnippetsScreen = ({ route, navigation }) => {
       }
     } catch (error) {
       console.error('SnippetsScreen.js -> shareSnippet: Sharing snippet failed with error: ' + error.message);
-      banner.showErrorMessage('Sharing snippet failed: ' + error.message);
+      banner.showErrorMessage(t('snippets:sharingFailed', { error: error.message }));
     }
   };
 
   const onSnippetMenuTapped = (snippet) => {
     triggerHapticFeedback();
     const options = [];
-    options.push({ id: 'Edit', name: 'Edit' });
+    options.push({ id: 'Edit', name: t('common:buttons.edit') });
     if (snippet.type == snippetTypes.SINGLE) {
-      options.push({ id: 'Share', name: 'Share' });
+      options.push({ id: 'Share', name: t('common:buttons.share') });
     }
     options.push(...Object.values(moveSnippetOptions).map(moveSnippetOptionValue => { return { id: moveSnippetOptionValue, name: moveSnippetOptionNames[moveSnippetOptionValue] };}));
-    options.push({ id: 'Delete', name: 'Delete' });
+    options.push({ id: 'Delete', name: t('common:buttons.delete') });
     showFancyActionSheet({
-      title: '⚙️ Snippet options ‎ ‎',
-      message: snippet.type == snippetTypes.SINGLE ? 'Edit, share, move, or delete this snippet' : 'Edit, move, or delete this snippet',
+      title: t('snippets:snippetOptions.title'),
+      message: snippet.type == snippetTypes.SINGLE ? t('snippets:snippetOptions.messageSingle') : t('snippets:snippetOptions.messageMultiple'),
       ...style.getFancyActionSheetStyles(themer),
       options: options,
       destructiveOptionId: 'Delete',
@@ -368,7 +361,7 @@ const SnippetsScreen = ({ route, navigation }) => {
             </Pressable>
           }
           {!isRootSnippetsScreen &&
-            <Text style={[styles.title, { color: themer.getColor('screenHeader1.foreground') }]} numberOfLines={2}>{parentSnippet ? parentSnippet.title : 'Snippeta'}</Text>
+            <Text style={[styles.title, { color: themer.getColor('screenHeader1.foreground') }]} numberOfLines={2}>{parentSnippet ? parentSnippet.title : t('snippets:title')}</Text>
           }
           {(!parentSnippet || parentSnippet.type == snippetTypes.SINGLE) &&
             <Pressable onPress={onSettingsTapped} hitSlop={20} disabled={isLoading || isUserLoading}>
@@ -383,8 +376,8 @@ const SnippetsScreen = ({ route, navigation }) => {
         </View>
         {!isRootSnippetsScreen && <View style={{ height: 5 }}></View> }
         <View style={styles.buttonsView}>
-          <ActionButton iconImageSource={require('../assets/images/plus.png')} text={'Add snippet'} foregroundColor={themer.getColor('button1.foreground')} backgroundColor={themer.getColor('button1.background')} disabled={isLoading || isUserLoading} isLeft onTapped={() => onAddSnippetTapped()} />
-          <ActionButton iconImageSource={require('../assets/images/list-icon.png')} text={isRootSnippetsScreen ? 'New group  ' : 'New sub-group'} foregroundColor={themer.getColor('button1.foreground')} backgroundColor={themer.getColor('button1.background')} disabled={isLoading || isUserLoading} isRight onTapped={() => onNewGroupTapped()} />
+          <ActionButton iconImageSource={require('../assets/images/plus.png')} text={t('common:buttons.addSnippet')} foregroundColor={themer.getColor('button1.foreground')} backgroundColor={themer.getColor('button1.background')} disabled={isLoading || isUserLoading} isLeft onTapped={() => onAddSnippetTapped()} />
+          <ActionButton iconImageSource={require('../assets/images/list-icon.png')} text={isRootSnippetsScreen ? t('common:buttons.newGroup') + '  ' : t('common:buttons.newSubGroup')} foregroundColor={themer.getColor('button1.foreground')} backgroundColor={themer.getColor('button1.background')} disabled={isLoading || isUserLoading} isRight onTapped={() => onNewGroupTapped()} />
         </View>
       </View>
       { (isLoading || isUserLoading) &&
@@ -429,7 +422,7 @@ const SnippetsScreen = ({ route, navigation }) => {
                 disabled={isLoading || isUserLoading}
               >
                 <View style={styles.sectionHeaderView}>
-                  <Text style={[styles.sectionHeaderText, { color: themer.getColor('listHeader1.foreground') }]}>{title == snippetSources.STORAGE ? '📱' : '☁️'} {title}</Text>
+                  <Text style={[styles.sectionHeaderText, { color: themer.getColor('listHeader1.foreground') }]}>{title == snippetSources.STORAGE ? t('snippets:sections.onDevice') : t('snippets:sections.cloud')}</Text>
                   <Image
                     source={require('../assets/images/back-arrow.png')}
                     style={[styles.sectionHeaderButtonIcon, { color: themer.getColor('listHeader1.foreground'), transform: [{ rotate: (title == snippetSources.STORAGE ? (isOnDeviceSectionVisible ? '-90deg' : '180deg') : (isCloudSectionVisible ? '-90deg' : '180deg')) }], }]}
@@ -439,7 +432,7 @@ const SnippetsScreen = ({ route, navigation }) => {
               </Pressable>
               { ((title == snippetSources.API && snippetSections.find(x => x.title == snippetSources.API)?.data?.length == 0) && isCloudSectionVisible) &&
                 <SnippetaCloudView themer={themer} user={user} isLargeLogo={false} isCentered={false}>
-                  <ActionButton iconImageSource={require('../assets/images/cloud.png')} text={'Learn more'} foregroundColor={themer.getColor('button1.foreground')} backgroundColor={themer.getColor('button1.background')} disabled={isLoading || isUserLoading} onTapped={() => onSettingsTapped()} />
+                  <ActionButton iconImageSource={require('../assets/images/cloud.png')} text={t('common:buttons.learnMore')} foregroundColor={themer.getColor('button1.foreground')} backgroundColor={themer.getColor('button1.background')} disabled={isLoading || isUserLoading} onTapped={() => onSettingsTapped()} />
                 </SnippetaCloudView>
               }
             </>

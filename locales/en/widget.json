@@ -1,0 +1,21 @@
+{
+  "title": "Widget",
+  "install": {
+    "title": "📱 Install the widget",
+    "description": "..to access snippets from the device home screen",
+    "ios": {
+      "step1": "1. Hold down on the Home Screen until the <bold>edit mode</bold> appears.*",
+      "step2": "2. Tap the <bold>Edit</bold> button, then the <bold>Add Widget</bold> button",
+      "step3": "3. Search for <bold>\"Snippeta\"</bold> and choose it",
+      "step4": "4. Swipe to choose the widget type you want and tap <bold>Add Widget</bold> to add it to your Home Screen"
+    },
+    "android": {
+      "step1": "1. Hold down on the Home Screen until the <bold>edit mode</bold> appears.*",
+      "step2": "2. Tap the option for <bold>Widgets</bold> or <bold>Add widgets</bold>",
+      "step3": "3. Search for <bold>\"Snippeta\"</bold> and choose it",
+      "step4": "4. Tap <bold>Add</bold> or <bold>Add Widget</bold> to add it to your Home Screen"
+    },
+    "note": "*Go to your device's Home Screen to start"
+  }
+}
+

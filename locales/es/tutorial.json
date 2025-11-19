@@ -1,0 +1,25 @@
+{
+  "snippets": {
+    "welcome": {
+      "title": "¡Bienvenido a Snippeta!",
+      "content": "¡Snippeta es la mejor manera de copiar, pegar y gestionar snippets de texto! Copia texto a tu portapapeles con un solo toque; ¡sin resaltar ni mantener presionado!"
+    },
+    "gettingStarted": {
+      "title": "Primeros pasos",
+      "content": "¡Toca aquí para copiar este snippet a tu portapapeles, o toca el botón \"Agregar snippet\" arriba para crear un nuevo snippet!"
+    },
+    "organizeGroups": {
+      "title": "Organiza creando grupos",
+      "content": "Crea un grupo de snippets para organizar y anidar snippets. ¡Toca aquí para probarlo!"
+    },
+    "goPro": {
+      "title": "¡Hazte PRO para hacer más!",
+      "content": "¡Obtén acceso a sincronización en la nube, creación de subgrupos, temas profesionales y más con una suscripción a Snippeta Pro!"
+    },
+    "addSnippetsToGroup": {
+      "title": "Agrega snippets a este grupo",
+      "content": "¡Toca el botón \"Agregar snippet\" arriba para probarlo!"
+    }
+  }
+}
+

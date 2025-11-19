@@ -1,0 +1,81 @@
+{
+  "title": "Settings",
+  "pro": "Pro",
+  "subscribeDescription": "Subscribe to access pro-level features",
+  "features": {
+    "cloudSync": "☁️ Sync & backup snippets with <bold>Snippeta Cloud</bold>",
+    "proThemes": "🎨 Unlock <bold>pro themes</bold> to find your own style",
+    "subGroups": "🧠 Organize better with nested <bold>sub-groups</bold>"
+  },
+  "subscribed": "You are subscribed: <bold>{{type}}</bold>",
+  "freeTrial": "Free trial • {{price}}/month",
+  "freeTrialDefault": "Free trial • $1.99/month",
+  "sections": {
+    "theme": "🎨 Theme",
+    "appearance": "🌗 Appearance",
+    "language": "🌐 Language",
+    "appExtensions": "📱 App extensions",
+    "notifications": "🔔 Notifications",
+    "inAppPurchase": "🛒 In-app purchase",
+    "getInTouch": "📝 Get in touch",
+    "info": "ℹ️ Info"
+  },
+  "language": "Language: {{language}}",
+  "languageOptions": {
+    "title": "🌐 Language options ‎ ‎",
+    "message": "Select your preferred language",
+    "default": "Default ({{language}})",
+    "languages": {
+      "en": "English",
+      "es": "Spanish"
+    }
+  },
+  "appearanceMode": "Light/dark mode: {{mode}}",
+  "appearanceModes": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "appearanceOptions": {
+    "title": "🌗 Theme appearance options ‎ ‎",
+    "message": "Select light, dark, or have it automatically controlled by the device's system setting"
+  },
+  "settings": {
+    "keyboardExtension": "Keyboard extension",
+    "homeScreenWidget": "Home screen widget",
+    "systemSettings": "System settings",
+    "resetFeatureAlerts": "Reset feature alerts",
+    "restorePurchases": "Restore purchases",
+    "manageSubscription": "Manage subscription",
+    "leaveReview": "Leave a review",
+    "getHelpSupport": "Get help / support",
+    "requestNewFeature": "Request new feature",
+    "privacyPolicy": "Privacy Policy",
+    "termsAndConditions": "Terms and Conditions",
+    "waveLinkDeveloper": "Wave Link (developer)",
+    "kgCodesDeveloper": "KG.codes (developer)"
+  },
+  "proThemeUnlocked": {
+    "title": "🔒 This pro theme must be unlocked",
+    "message": "You can preview it, buy it now, or subscribe to Snippeta Pro to unlock all pro themes!",
+    "preview": "Preview",
+    "buy": "Buy",
+    "subscribe": "Subscribe to Snippeta Pro"
+  },
+  "logoutConfirm": {
+    "title": "⚠️ Are you sure you want to logout?",
+    "message": "Cloud snippets will not be available, and some other functionality will be disabled."
+  },
+  "restorePurchases": {
+    "success": "Successfully restored purchases for: {{entitlements}}",
+    "noPurchases": "No subscription or purchases found to restore.",
+    "snippetaProSubscription": "Snippeta Pro subscription",
+    "theme": "theme"
+  },
+  "version": "<bold>Version {{version}}</bold> (<italic>b{{build}}</italic>) • made with 🖤 by Wave Link",
+  "themeSelectionFailed": "Theme selection failed with error: {{error}}",
+  "paywallFailed": "Paywall failed with error: {{error}}",
+  "restoreFailed": "Failed to reset feature alerts. Please try again.",
+  "restorePurchasesFailed": "Restoring purchases failed with error: {{error}}"
+}
+

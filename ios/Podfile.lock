@@ -1772,6 +1772,27 @@ PODS:
   - RNFBApp (23.4.0):
     - Firebase/CoreOnly (= 12.3.0)
     - React-Core
+  - RNLocalize (3.6.0):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - RNPaywalls (9.2.0):
     - PurchasesHybridCommonUI (= 16.2.0)
     - React-Core
@@ -1952,6 +1973,7 @@ DEPENDENCIES:
   - "RNCMaskedView (from `../node_modules/@react-native-masked-view/masked-view`)"
   - "RNFBAnalytics (from `../node_modules/@react-native-firebase/analytics`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
+  - RNLocalize (from `../node_modules/react-native-localize`)
   - RNPaywalls (from `../node_modules/react-native-purchases-ui`)
   - RNPurchases (from `../node_modules/react-native-purchases`)
   - RNRate (from `../node_modules/react-native-rate`)
@@ -2128,6 +2150,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/analytics"
   RNFBApp:
     :path: "../node_modules/@react-native-firebase/app"
+  RNLocalize:
+    :path: "../node_modules/react-native-localize"
   RNPaywalls:
     :path: "../node_modules/react-native-purchases-ui"
   RNPurchases:
@@ -2233,6 +2257,7 @@ SPEC CHECKSUMS:
   RNCMaskedView: ca5c7d2db3015c15e6e06522bdd921cc50a7cf44
   RNFBAnalytics: 8e3e973023690051f298efd38f814426560f8483
   RNFBApp: 04850834479084af85bf3100391c38dd9ea79017
+  RNLocalize: 8b2335fce314155cc15f03530e68b0bf228a2612
   RNPaywalls: 7e1b3afa0752ef0088bb4bf35dd3b7189017051f
   RNPurchases: 3a4d5e27fe3b01135779ced228532c4c93561e47
   RNRate: ef3bcff84f39bb1d1e41c5593d3eea4aab2bd73a

@@ -1,25 +1,27 @@
 import React from 'react';
 import { Image, Platform, StyleSheet, Text, View } from 'react-native';
+import { useTranslation, Trans } from 'react-i18next';
 
 const SnippetaCloudView = (props) => {
   const { children, themer, user, isLargeLogo, isCentered } = props;
+  const { t } = useTranslation(['common']);
   return (
     <View style={[styles.container, { backgroundColor: themer.getColor('content2.background'), alignItems: isCentered ? 'center' : 'stretch', }]}>
       <View style={isLargeLogo ? styles.largeLogoView : styles.smallLogoView}>
         <Image source={require('../assets/images/logo.png')} style={isLargeLogo ? styles.largeLogoIcon : styles.smallLogoIcon} tintColor={themer.getColor('content2.foreground')} resizeMode='contain' />
-        <Text style={[isLargeLogo ? styles.largeTitleText : styles.smallTitleText, { color: themer.getColor('content2.foreground') }]}>Cloud</Text>
+        <Text style={[isLargeLogo ? styles.largeTitleText : styles.smallTitleText, { color: themer.getColor('content2.foreground') }]}>{t('common:cloud.title')}</Text>
       </View>
       { !user && 
         <View style={styles.contentView}>
-          <Text style={[styles.descriptionText, { color: themer.getColor('content2.foreground'), textAlign: isCentered ? 'center' : 'auto', }]}>Create an account for more features*</Text>
-          <Text style={[styles.featureText, { color: themer.getColor('content2.foreground') }]}>☁️ Sync & backup snippets to the Cloud</Text>
-          <Text style={[styles.featureText, { color: themer.getColor('content2.foreground') }]}>📱 Access your snippets on different devices</Text>
-          <Text style={[styles.featureText, { color: themer.getColor('content2.foreground') }]}>🛒 Unlock <Text style={{ fontWeight: 'bold' }}>Snippeta Pro</Text> on multiple devices</Text>
-          <Text style={[styles.featureText, { color: themer.getColor('content2.foreground'), textAlign: 'center', fontStyle: 'italic', opacity: 0.50, marginTop: 5 }]}>*Requires a Snippeta Pro subscription</Text>
+          <Text style={[styles.descriptionText, { color: themer.getColor('content2.foreground'), textAlign: isCentered ? 'center' : 'auto', }]}>{t('common:cloud.createAccount')}</Text>
+          <Text style={[styles.featureText, { color: themer.getColor('content2.foreground') }]}>{t('common:cloud.syncBackup')}</Text>
+          <Text style={[styles.featureText, { color: themer.getColor('content2.foreground') }]}>{t('common:cloud.accessDevices')}</Text>
+          <Text style={[styles.featureText, { color: themer.getColor('content2.foreground') }]}><Trans i18nKey="common:cloud.unlockPro" components={{ bold: <Text style={{ fontWeight: 'bold' }} /> }} /></Text>
+          <Text style={[styles.featureText, { color: themer.getColor('content2.foreground'), textAlign: 'center', fontStyle: 'italic', opacity: 0.50, marginTop: 5 }]}>{t('common:cloud.requiresPro')}</Text>
         </View>
       }
       { user && user.first_name && user.last_name &&
-        <Text style={[styles.descriptionText, { color: themer.getColor('content2.foreground') }]}>You are logged in as <Text style={{ fontWeight: 'bold' }}>{user.first_name} {user.last_name}</Text></Text>
+        <Text style={[styles.descriptionText, { color: themer.getColor('content2.foreground') }]}><Trans i18nKey="common:cloud.loggedInAs" values={{ name: `${user.first_name} ${user.last_name}` }} components={{ bold: <Text style={{ fontWeight: 'bold' }} /> }} /></Text>
       }
       <View style={styles.buttonsView}>
         {children}

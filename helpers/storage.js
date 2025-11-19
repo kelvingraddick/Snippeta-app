@@ -235,6 +235,18 @@ const saveThemeId = async (themeId) => {
   console.log('storage.js -> saveTheme: Saved theme with ID', themeId);
 };
 
+const getLanguage = async () => {
+  const language = await AsyncStorage.getItem(storageKeys.LANGUAGE);
+  console.log(`storage.js -> getLanguage: ${language ? `Got language '${language}'` : 'No language in storage, using device default'}`);
+  return language;
+};
+
+const saveLanguage = async (language) => {
+  console.log(`storage.js -> saveLanguage: Saving language '${language}'`);
+  await AsyncStorage.setItem(storageKeys.LANGUAGE, language);
+  console.log(`storage.js -> saveLanguage: Saved language '${language}'`);
+};
+
 const getMilestoneNumber = async () => {
   const item = await AsyncStorage.getItem(storageKeys.MILESTONE_NUMBER);
   const milestoneNumber  = JSON.parse(item);
@@ -315,4 +327,6 @@ export default {
   getIsFeatureAlertDismissed,
   saveIsFeatureAlertDismissed,
   resetAllFeatureAlerts,
+  getLanguage,
+  saveLanguage,
 };

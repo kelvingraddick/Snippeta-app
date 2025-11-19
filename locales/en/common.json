@@ -1,0 +1,71 @@
+{
+  "buttons": {
+    "addSnippet": "Add snippet",
+    "newGroup": "New group",
+    "newSubGroup": "New sub-group",
+    "edit": "Edit",
+    "delete": "Delete",
+    "share": "Share",
+    "save": "Save",
+    "login": "Login",
+    "register": "Register",
+    "forgotPassword": "Forgot Password",
+    "sendPasswordResetEmail": "Send password reset email",
+    "logout": "Logout",
+    "account": "Account",
+    "deleteAccount": "Delete account",
+    "learnMore": "Learn more",
+    "search": "Search",
+    "searchTitle": "Search"
+  },
+  "actions": {
+    "moveToTop": "Move to top ⎴",
+    "moveUp": "Move up ↑",
+    "moveDown": "Move down ↓",
+    "moveToBottom": "Move to bottom ⎵"
+  },
+  "placeholders": {
+    "emailOrPhone": "Email or phone..",
+    "password": "Password..",
+    "passwordConfirm": "Password confirm..",
+    "emailAddress": "Email address..",
+    "phoneNumber": "Phone number..",
+    "firstName": "First name..",
+    "lastName": "Last name..",
+    "searchText": "Search text.."
+  },
+  "messages": {
+    "textCopiedToClipboard": "The text was copied to the clipboard",
+    "loggedOut": "Logged out!",
+    "emailSent": "Email sent. Please check your email to continue resetting the password.",
+    "noSubscriptionFound": "No subscription or purchases found to restore.",
+    "featureAlertsReset": "Feature alerts have been reset! They will appear again on the main screen.",
+    "previewingTheme": "Previewing the '{{themeName}}' theme for {{seconds}} seconds."
+  },
+  "sources": {
+    "onDevice": "On device",
+    "cloud": "Cloud"
+  },
+  "cloud": {
+    "title": "Cloud",
+    "createAccount": "Create an account for more features*",
+    "syncBackup": "☁️ Sync & backup snippets to the Cloud",
+    "accessDevices": "📱 Access your snippets on different devices",
+    "unlockPro": "🛒 Unlock <bold>Snippeta Pro</bold> on multiple devices",
+    "requiresPro": "*Requires a Snippeta Pro subscription",
+    "loggedInAs": "You are logged in as <bold>{{name}}</bold>"
+  },
+  "featureAlerts": {
+    "keyboard": {
+      "title": "⌨️ Enable the Snippeta keyboard",
+      "description": "Once enabled, you can open the keyboard in any other app to quickly paste snippets!",
+      "actionText": "Learn More"
+    },
+    "widget": {
+      "title": "📱 Add a home screen widget",
+      "description": "Quick access to your snippets right from your home screen!",
+      "actionText": "Learn More"
+    }
+  }
+}
+
