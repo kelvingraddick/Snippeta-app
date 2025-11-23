@@ -6,7 +6,7 @@ const ActionButton = (props) => {
   return (
     <TouchableOpacity style={[styles.container, (isLeft ? styles.leftContainer : null), (isRight ? styles.rightContainer : null), { backgroundColor: backgroundColor, opacity: disabled ? .1 : 1 }]} disabled={disabled} onPress={() => onTapped()}>
       <Image source={iconImageSource} style={styles.icon} tintColor={foregroundColor} />
-      <Text style={[styles.text, { color: foregroundColor }]}>  {text}{ (!isLeft && !isRight) ? '  ' : isRight ? ' ' : '' }</Text>
+      <Text style={[styles.text, { color: foregroundColor }]} numberOfLines={1} adjustsFontSizeToFit={true} minimumFontScale={0.7}>  {text}{ (!isLeft && !isRight) ? '  ' : isRight ? ' ' : '' }</Text>
     </TouchableOpacity>
   );
 }
