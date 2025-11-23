@@ -1,0 +1,25 @@
+{
+  "snippets": {
+    "welcome": {
+      "title": "Bienvenue sur Snippeta !",
+      "content": "Snippeta est le meilleur moyen de copier, coller et gérer des snippets de texte ! Copiez du texte dans votre presse-papiers en un seul tap ; sans surligner ou appuyer longuement !"
+    },
+    "gettingStarted": {
+      "title": "Pour commencer",
+      "content": "Tapez ici pour copier ce snippet dans votre presse-papiers, ou tapez sur le bouton \"Ajouter un snippet\" ci-dessus pour créer un nouveau snippet !"
+    },
+    "organizeGroups": {
+      "title": "Organisez en créant des groupes",
+      "content": "Créez un groupe de snippets pour organiser et imbriquer des snippets. Tapez ici pour l'essayer !"
+    },
+    "goPro": {
+      "title": "Passez PRO pour en faire plus !",
+      "content": "Accédez à la synchronisation Cloud, à la création de sous-groupes, aux thèmes professionnels et plus encore avec un abonnement Snippeta Pro !"
+    },
+    "addSnippetsToGroup": {
+      "title": "Ajoutez des snippets à ce groupe",
+      "content": "Tapez sur le bouton \"Ajouter un snippet\" ci-dessus pour l'essayer !"
+    }
+  }
+}
+

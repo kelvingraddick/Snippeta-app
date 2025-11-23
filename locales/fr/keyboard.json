@@ -1,0 +1,30 @@
+{
+  "title": "Clavier",
+  "theSnippetaKeyboard": "⌨️ Le clavier Snippeta",
+  "description": "Collez rapidement des snippets dans n'importe quelle autre application",
+  "features": {
+    "tapSnippet": "• Tapez sur un <bold>snippet</bold> pour le coller dans l'application dans laquelle vous êtes",
+    "spaceBackspace": "• Boutons dédiés pour <bold>espace</bold> et <bold>retour arrière</bold>",
+    "findKeyboardIos": "• Après <italic>installation</italic>, trouvez-le en faisant défiler les claviers avec le bouton <bold>globe 🌐</bold>",
+    "findKeyboardAndroid": "• Après <italic>installation</italic>, trouvez-le en faisant défiler les claviers avec le bouton <bold>clavier ⌨️</bold>"
+  },
+  "howToInstall": "Comment installer",
+  "install": {
+    "title": "⌨️ Installez le clavier",
+    "description": "..pour coller rapidement des snippets dans n'importe quelle autre application",
+    "ios": {
+      "step1": "1. Tapez sur le bouton <bold>Paramètres système</bold> ci-dessous",
+      "step2": "2. Tapez sur l'option <bold>Claviers</bold>",
+      "step3": "3. Activez l'option <bold>Clavier Snippeta</bold>, puis activez également <bold>Autoriser l'accès complet</bold>"
+    },
+    "android": {
+      "step1": "1. Tapez sur le bouton <bold>Paramètres système</bold> ci-dessous",
+      "step2": "2. Sur l'écran des paramètres, tapez sur <bold>Système</bold>",
+      "step3": "3. Tapez sur <bold>Langues et saisie</bold>",
+      "step4": "4. Tapez sur <bold>Clavier à l'écran</bold> ou <bold>Clavier virtuel</bold>",
+      "step5": "5. Activez l'option <bold>Clavier Snippeta</bold>"
+    }
+  },
+  "systemSettings": "Paramètres système"
+}
+

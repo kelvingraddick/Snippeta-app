@@ -1,0 +1,48 @@
+{
+  "title": "Snippeta",
+  "snippetOptions": {
+    "title": "⚙️ Options de snippet ‎ ‎",
+    "messageSingle": "Modifier, partager, déplacer ou supprimer ce snippet",
+    "messageMultiple": "Modifier, déplacer ou supprimer ce snippet"
+  },
+  "newSnippetOptions": {
+    "title": "➕ Options de nouveau snippet ‎ ‎",
+    "message": "Commencer à blanc ou copier le texte du presse-papiers",
+    "newBlankSnippet": "Nouveau snippet vide",
+    "useTextFromClipboard": "Utiliser le texte du presse-papiers"
+  },
+  "savingOptions": {
+    "title": "💾 Options d'enregistrement de snippet ‎ ‎",
+    "message": "Il peut être stocké sur cet appareil ou dans Snippeta Cloud"
+  },
+  "sections": {
+    "onDevice": "📱 Sur l'appareil",
+    "cloud": "☁️ Cloud"
+  },
+  "subGroupRequiresPro": "Créer un sous-groupe nécessite un abonnement Snippeta Pro — Lisez cet écran pour en savoir plus !",
+  "sharingFailed": "Échec du partage du snippet : {{error}}",
+  "deletingFailed": "Échec de la suppression du snippet avec l'erreur : {{error}}",
+  "deletingFailedUnknown": "Échec de la suppression du snippet avec une erreur inconnue.",
+  "movingFailed": "Échec du déplacement du snippet avec l'erreur : {{error}}",
+  "movingFailedUnknown": "Échec du déplacement du snippet avec une erreur inconnue.",
+  "savingFailed": "Échec de l'enregistrement du snippet avec l'erreur : {{error}}",
+  "savingFailedUnknown": "Échec de l'enregistrement du snippet avec une erreur inconnue.",
+  "savingFailedErrorCode": "Échec de l'enregistrement du snippet : {{errorMessage}}",
+  "formattingFailed": "Échec du formatage du contenu du snippet avec l'erreur : {{error}}",
+  "edit": {
+    "title": "Modifier {{type}}",
+    "new": "Nouveau {{type}}",
+    "snippet": "snippet",
+    "group": "groupe",
+    "subGroup": "sous-groupe",
+    "titlePlaceholder": "Tapez {{text}} ici..",
+    "titleSnippet": "titre",
+    "titleGroup": "titre du groupe",
+    "titleSubGroup": "titre du sous-groupe",
+    "contentPlaceholder": "Tapez {{text}} ici..",
+    "contentSnippet": "contenu",
+    "contentGroup": "description du groupe",
+    "contentSubGroup": "description du sous-groupe"
+  }
+}
+

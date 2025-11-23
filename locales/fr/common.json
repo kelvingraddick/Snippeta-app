@@ -1,0 +1,72 @@
+{
+  "buttons": {
+    "addSnippet": "Ajouter un snippet",
+    "newGroup": "Nouveau groupe",
+    "newSubGroup": "Nouveau sous-groupe",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "share": "Partager",
+    "save": "Enregistrer",
+    "login": "Connexion",
+    "register": "S'inscrire",
+    "forgotPassword": "Mot de passe oublié",
+    "sendPasswordResetEmail": "Envoyer un email de réinitialisation du mot de passe",
+    "logout": "Déconnexion",
+    "account": "Compte",
+    "deleteAccount": "Supprimer le compte",
+    "learnMore": "En savoir plus",
+    "search": "Rechercher",
+    "searchTitle": "Rechercher"
+  },
+  "actions": {
+    "moveToTop": "Déplacer en haut ⎴",
+    "moveUp": "Déplacer vers le haut ↑",
+    "moveDown": "Déplacer vers le bas ↓",
+    "moveToBottom": "Déplacer en bas ⎵"
+  },
+  "placeholders": {
+    "emailOrPhone": "Email ou téléphone..",
+    "password": "Mot de passe..",
+    "passwordConfirm": "Confirmer le mot de passe..",
+    "emailAddress": "Adresse email..",
+    "phoneNumber": "Numéro de téléphone..",
+    "firstName": "Prénom..",
+    "lastName": "Nom..",
+    "searchText": "Rechercher du texte.."
+  },
+  "messages": {
+    "textCopiedToClipboard": "Le texte a été copié dans le presse-papiers",
+    "loggedOut": "Déconnecté !",
+    "emailSent": "Email envoyé. Veuillez vérifier votre email pour continuer la réinitialisation du mot de passe.",
+    "noSubscriptionFound": "Aucun abonnement ou achat trouvé à restaurer.",
+    "featureAlertsReset": "Les alertes de fonctionnalités ont été réinitialisées ! Elles réapparaîtront sur l'écran principal.",
+    "previewingTheme": "Aperçu du thème '{{themeName}}' pendant {{seconds}} secondes."
+  },
+  "sources": {
+    "onDevice": "Sur l'appareil",
+    "cloud": "Cloud"
+  },
+  "cloud": {
+    "title": "Cloud",
+    "createAccount": "Créez un compte pour plus de fonctionnalités*",
+    "syncBackup": "☁️ Synchronisez et sauvegardez les snippets dans le Cloud",
+    "accessDevices": "📱 Accédez à vos snippets sur différents appareils",
+    "unlockPro": "🛒 Débloquez <bold>Snippeta Pro</bold> sur plusieurs appareils",
+    "requiresPro": "*Nécessite un abonnement Snippeta Pro",
+    "loggedInAs": "Vous êtes connecté en tant que <bold>{{name}}</bold>"
+  },
+  "featureAlerts": {
+    "keyboard": {
+      "title": "⌨️ Activez le clavier Snippeta",
+      "description": "Une fois activé, vous pouvez ouvrir le clavier dans n'importe quelle autre application pour coller rapidement des snippets !",
+      "actionText": "En savoir plus"
+    },
+    "widget": {
+      "title": "📱 Ajoutez un widget sur l'écran d'accueil",
+      "description": "Accès rapide à vos snippets directement depuis votre écran d'accueil !",
+      "actionText": "En savoir plus"
+    }
+  },
+  "pro": "PRO"
+}
+

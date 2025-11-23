@@ -1,0 +1,72 @@
+{
+  "buttons": {
+    "addSnippet": "Snippet hinzufügen",
+    "newGroup": "Neue Gruppe",
+    "newSubGroup": "Neue Untergruppe",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "share": "Teilen",
+    "save": "Speichern",
+    "login": "Anmelden",
+    "register": "Registrieren",
+    "forgotPassword": "Passwort vergessen",
+    "sendPasswordResetEmail": "E-Mail zum Zurücksetzen des Passworts senden",
+    "logout": "Abmelden",
+    "account": "Konto",
+    "deleteAccount": "Konto löschen",
+    "learnMore": "Mehr erfahren",
+    "search": "Suchen",
+    "searchTitle": "Suchen"
+  },
+  "actions": {
+    "moveToTop": "Nach oben verschieben ⎴",
+    "moveUp": "Nach oben ↑",
+    "moveDown": "Nach unten ↓",
+    "moveToBottom": "Nach unten verschieben ⎵"
+  },
+  "placeholders": {
+    "emailOrPhone": "E-Mail oder Telefon..",
+    "password": "Passwort..",
+    "passwordConfirm": "Passwort bestätigen..",
+    "emailAddress": "E-Mail-Adresse..",
+    "phoneNumber": "Telefonnummer..",
+    "firstName": "Vorname..",
+    "lastName": "Nachname..",
+    "searchText": "Text suchen.."
+  },
+  "messages": {
+    "textCopiedToClipboard": "Der Text wurde in die Zwischenablage kopiert",
+    "loggedOut": "Abgemeldet!",
+    "emailSent": "E-Mail gesendet. Bitte überprüfen Sie Ihre E-Mail, um die Passwort-Zurücksetzung fortzusetzen.",
+    "noSubscriptionFound": "Kein Abonnement oder Käufe zum Wiederherstellen gefunden.",
+    "featureAlertsReset": "Funktionshinweise wurden zurückgesetzt! Sie werden wieder auf dem Hauptbildschirm angezeigt.",
+    "previewingTheme": "Vorschau des Themes '{{themeName}}' für {{seconds}} Sekunden."
+  },
+  "sources": {
+    "onDevice": "Auf dem Gerät",
+    "cloud": "Cloud"
+  },
+  "cloud": {
+    "title": "Cloud",
+    "createAccount": "Erstellen Sie ein Konto für mehr Funktionen*",
+    "syncBackup": "☁️ Synchronisieren und sichern Sie Snippets in der Cloud",
+    "accessDevices": "📱 Greifen Sie auf Ihre Snippets auf verschiedenen Geräten zu",
+    "unlockPro": "🛒 Schalten Sie <bold>Snippeta Pro</bold> auf mehreren Geräten frei",
+    "requiresPro": "*Erfordert ein Snippeta Pro-Abonnement",
+    "loggedInAs": "Sie sind angemeldet als <bold>{{name}}</bold>"
+  },
+  "featureAlerts": {
+    "keyboard": {
+      "title": "⌨️ Aktivieren Sie die Snippeta-Tastatur",
+      "description": "Einmal aktiviert, können Sie die Tastatur in jeder anderen App öffnen, um schnell Snippets einzufügen!",
+      "actionText": "Mehr erfahren"
+    },
+    "widget": {
+      "title": "📱 Fügen Sie ein Widget zum Startbildschirm hinzu",
+      "description": "Schneller Zugriff auf Ihre Snippets direkt vom Startbildschirm!",
+      "actionText": "Mehr erfahren"
+    }
+  },
+  "pro": "PRO"
+}
+

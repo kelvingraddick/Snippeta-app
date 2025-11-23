@@ -1,0 +1,20 @@
+{
+  "getPurchaseDataError": "Houve um problema ao carregar dados de assinatura ou compra. Por favor, tente novamente, reinicie o aplicativo ou obtenha ajuda em Configurações.",
+  "purchaseError": "Houve um problema ao realizar a compra. Por favor, tente novamente ou obtenha ajuda em Configurações.",
+  "restorePurchasesError": "Houve um problema ao restaurar compras. Por favor, tente novamente ou obtenha ajuda em Configurações.",
+  "updateWidgetError": "Houve um problema ao atualizar os dados do widget, então os widgets podem não exibir os dados corretos. Obtenha ajuda em Configurações.",
+  "updateKeyboardError": "Houve um problema ao atualizar os dados do teclado, então o teclado Snippeta pode não exibir os dados corretos. Obtenha ajuda em Configurações.",
+  "themePreviewError": "Houve um problema ao visualizar o tema. Por favor, tente novamente ou obtenha ajuda em Configurações",
+  "loginError": "Houve um problema ao fazer login. Por favor, tente novamente ou obtenha ajuda em Configurações",
+  "getSnippetDataError": "Houve um problema ao carregar dados do snippet. Por favor, tente novamente, reinicie o aplicativo ou obtenha ajuda em Configurações.",
+  "errorCodes": {
+    "0": "Houve um erro desconhecido no servidor.",
+    "1": "Houve um erro na resposta do servidor.",
+    "2": "Houve um erro no banco de dados do servidor.",
+    "3": "Este endereço de email já está em uso.",
+    "4": "Este número de telefone já está em uso.",
+    "5": "As credenciais fornecidas eram inválidas.",
+    "6": "Uma compra/assinatura é necessária para concluir esta função."
+  }
+}
+

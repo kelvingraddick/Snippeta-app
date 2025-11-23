@@ -1,0 +1,30 @@
+{
+  "title": "Tastatur",
+  "theSnippetaKeyboard": "⌨️ Die Snippeta-Tastatur",
+  "description": "Fügen Sie schnell Snippets in jede andere App ein",
+  "features": {
+    "tapSnippet": "• Tippen Sie auf ein <bold>Snippet</bold>, um es in die App einzufügen, in der Sie sich befinden",
+    "spaceBackspace": "• Dedizierte Tasten für <bold>Leertaste</bold> und <bold>Rücktaste</bold>",
+    "findKeyboardIos": "• Nach der <italic>Installation</italic> finden Sie es, indem Sie durch die Tastaturen mit der <bold>Globus 🌐</bold>-Taste blättern",
+    "findKeyboardAndroid": "• Nach der <italic>Installation</italic> finden Sie es, indem Sie durch die Tastaturen mit der <bold>Tastatur ⌨️</bold>-Taste blättern"
+  },
+  "howToInstall": "So installieren Sie",
+  "install": {
+    "title": "⌨️ Installieren Sie die Tastatur",
+    "description": "..um schnell Snippets in jede andere App einzufügen",
+    "ios": {
+      "step1": "1. Tippen Sie auf die Schaltfläche <bold>Systemeinstellungen</bold> unten",
+      "step2": "2. Tippen Sie auf die Option <bold>Tastaturen</bold>",
+      "step3": "3. Aktivieren Sie die Option <bold>Snippeta-Tastatur</bold> und aktivieren Sie auch <bold>Vollzugriff zulassen</bold>"
+    },
+    "android": {
+      "step1": "1. Tippen Sie auf die Schaltfläche <bold>Systemeinstellungen</bold> unten",
+      "step2": "2. Tippen Sie auf dem Einstellungsbildschirm auf <bold>System</bold>",
+      "step3": "3. Tippen Sie auf <bold>Sprachen & Eingabe</bold>",
+      "step4": "4. Tippen Sie auf <bold>Bildschirmtastatur</bold> oder <bold>Virtuelle Tastatur</bold>",
+      "step5": "5. Aktivieren Sie die Option <bold>Snippeta-Tastatur</bold>"
+    }
+  },
+  "systemSettings": "Systemeinstellungen"
+}
+

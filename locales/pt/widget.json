@@ -1,0 +1,21 @@
+{
+  "title": "Widget",
+  "install": {
+    "title": "📱 Instale o widget",
+    "description": "..para acessar snippets da tela inicial do dispositivo",
+    "ios": {
+      "step1": "1. Mantenha pressionado na Tela Inicial até o <bold>modo de edição</bold> aparecer.*",
+      "step2": "2. Toque no botão <bold>Editar</bold>, depois no botão <bold>Adicionar Widget</bold>",
+      "step3": "3. Procure por <bold>\"Snippeta\"</bold> e escolha-o",
+      "step4": "4. Deslize para escolher o tipo de widget desejado e toque em <bold>Adicionar Widget</bold> para adicioná-lo à sua Tela Inicial"
+    },
+    "android": {
+      "step1": "1. Mantenha pressionado na Tela Inicial até o <bold>modo de edição</bold> aparecer.*",
+      "step2": "2. Toque na opção <bold>Widgets</bold> ou <bold>Adicionar widgets</bold>",
+      "step3": "3. Procure por <bold>\"Snippeta\"</bold> e escolha-o",
+      "step4": "4. Toque em <bold>Adicionar</bold> ou <bold>Adicionar Widget</bold> para adicioná-lo à sua Tela Inicial"
+    },
+    "note": "*Vá para a Tela Inicial do seu dispositivo para começar"
+  }
+}
+

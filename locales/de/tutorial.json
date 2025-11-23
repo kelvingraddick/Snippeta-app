@@ -1,0 +1,25 @@
+{
+  "snippets": {
+    "welcome": {
+      "title": "Willkommen bei Snippeta!",
+      "content": "Snippeta ist der beste Weg, Text-Snippets zu kopieren, einzufügen und zu verwalten! Kopieren Sie Text mit einem einzigen Tippen in Ihre Zwischenablage; ohne Markieren oder langes Tippen!"
+    },
+    "gettingStarted": {
+      "title": "Erste Schritte",
+      "content": "Tippen Sie hier, um dieses Snippet in Ihre Zwischenablage zu kopieren, oder tippen Sie auf die Schaltfläche \"Snippet hinzufügen\" oben, um ein neues Snippet zu erstellen!"
+    },
+    "organizeGroups": {
+      "title": "Organisieren Sie durch Erstellen von Gruppen",
+      "content": "Erstellen Sie eine Snippet-Gruppe, um Snippets zu organisieren und zu verschachteln. Tippen Sie hier, um es auszuprobieren!"
+    },
+    "goPro": {
+      "title": "Werden Sie PRO, um mehr zu tun!",
+      "content": "Erhalten Sie Zugriff auf Cloud-Synchronisierung, Erstellen von Untergruppen, Pro-Themes und mehr mit einem Snippeta Pro-Abonnement!"
+    },
+    "addSnippetsToGroup": {
+      "title": "Fügen Sie Snippets zu dieser Gruppe hinzu",
+      "content": "Tippen Sie auf die Schaltfläche \"Snippet hinzufügen\" oben, um es auszuprobieren!"
+    }
+  }
+}
+

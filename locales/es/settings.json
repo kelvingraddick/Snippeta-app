@@ -27,7 +27,10 @@
     "default": "Predeterminado ({{language}})",
     "languages": {
       "en": "Inglés",
-      "es": "Español"
+      "es": "Español",
+      "pt": "Portugués",
+      "fr": "Francés",
+      "de": "Alemán"
     }
   },
   "appearanceMode": "Modo claro/oscuro: {{mode}}",

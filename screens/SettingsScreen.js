@@ -243,7 +243,7 @@ const SettingsScreen = ({ navigation }) => {
   const onLanguageTapped = async () => {
     const deviceLanguage = getDeviceLanguage();
     const storedLanguage = await storage.getLanguage();
-    const availableLanguages = ['en', 'es'];
+    const availableLanguages = ['en', 'es', 'pt', 'fr', 'de'];
     
     const getLanguageName = (langCode) => {
       return t(`settings:languageOptions.languages.${langCode}`, { defaultValue: langCode.toUpperCase() });

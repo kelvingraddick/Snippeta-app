@@ -22,6 +22,33 @@ import esTutorial from '../locales/es/tutorial.json';
 import esKeyboard from '../locales/es/keyboard.json';
 import esWidget from '../locales/es/widget.json';
 
+import ptCommon from '../locales/pt/common.json';
+import ptSnippets from '../locales/pt/snippets.json';
+import ptSettings from '../locales/pt/settings.json';
+import ptAuth from '../locales/pt/auth.json';
+import ptErrors from '../locales/pt/errors.json';
+import ptTutorial from '../locales/pt/tutorial.json';
+import ptKeyboard from '../locales/pt/keyboard.json';
+import ptWidget from '../locales/pt/widget.json';
+
+import frCommon from '../locales/fr/common.json';
+import frSnippets from '../locales/fr/snippets.json';
+import frSettings from '../locales/fr/settings.json';
+import frAuth from '../locales/fr/auth.json';
+import frErrors from '../locales/fr/errors.json';
+import frTutorial from '../locales/fr/tutorial.json';
+import frKeyboard from '../locales/fr/keyboard.json';
+import frWidget from '../locales/fr/widget.json';
+
+import deCommon from '../locales/de/common.json';
+import deSnippets from '../locales/de/snippets.json';
+import deSettings from '../locales/de/settings.json';
+import deAuth from '../locales/de/auth.json';
+import deErrors from '../locales/de/errors.json';
+import deTutorial from '../locales/de/tutorial.json';
+import deKeyboard from '../locales/de/keyboard.json';
+import deWidget from '../locales/de/widget.json';
+
 const LANGUAGE_STORAGE_KEY = storageKeys.LANGUAGE;
 
 const resources = {
@@ -44,6 +71,36 @@ const resources = {
     tutorial: esTutorial,
     keyboard: esKeyboard,
     widget: esWidget,
+  },
+  pt: {
+    common: ptCommon,
+    snippets: ptSnippets,
+    settings: ptSettings,
+    auth: ptAuth,
+    errors: ptErrors,
+    tutorial: ptTutorial,
+    keyboard: ptKeyboard,
+    widget: ptWidget,
+  },
+  fr: {
+    common: frCommon,
+    snippets: frSnippets,
+    settings: frSettings,
+    auth: frAuth,
+    errors: frErrors,
+    tutorial: frTutorial,
+    keyboard: frKeyboard,
+    widget: frWidget,
+  },
+  de: {
+    common: deCommon,
+    snippets: deSnippets,
+    settings: deSettings,
+    auth: deAuth,
+    errors: deErrors,
+    tutorial: deTutorial,
+    keyboard: deKeyboard,
+    widget: deWidget,
   },
 };
 
