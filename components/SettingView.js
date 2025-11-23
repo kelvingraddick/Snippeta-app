@@ -1,13 +1,15 @@
 import React from 'react';
 import { Image, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 const SettingView = (props) => {
   const { label, isPro, isSelectable, isSelected, onTapped, isSwitchEnabled, onSwitchToggled, isTop, isBottom, themer } = props;
+  const { t } = useTranslation(['common']);
   return (
     <TouchableOpacity style={[styles.container, (isTop ? styles.topContainer : null), (isBottom ? styles.bottomContainer : null), { backgroundColor: themer.getColor('content2.background') }]} onPress={onTapped}>
       <View style={[styles.labelView, {}]}>
         <Text style={[styles.labelText, { color: themer.getColor('content2.foreground') }]} numberOfLines={1}>&nbsp;{label}</Text>
-        { isPro && <Text style={[styles.labelTag, { color: themer.getColor('content2.background'), backgroundColor: themer.getColor('content2.foreground'), }]} numberOfLines={1}>PRO</Text> }
+        { isPro && <Text style={[styles.labelTag, { color: themer.getColor('content2.background'), backgroundColor: themer.getColor('content2.foreground'), }]} numberOfLines={1}>{t('common:pro')}</Text> }
       </View>
       { onSwitchToggled ?
         <Switch
