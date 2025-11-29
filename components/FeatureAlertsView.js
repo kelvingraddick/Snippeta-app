@@ -7,7 +7,7 @@ import { featureAlertTypes } from '../constants/featureAlertTypes';
 import { isKeyboardInstalled } from '../helpers/keyboard';
 
 const FeatureAlertsView = ({ themer, user, onAlertDismissed, onActionTapped }) => {
-  const { t } = useTranslation(['common']);
+  const { t, i18n } = useTranslation(['common']);
   const { featureAlertsRefreshTime } = useContext(ApplicationContext);
   const [alerts, setAlerts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -22,6 +22,11 @@ const FeatureAlertsView = ({ themer, user, onAlertDismissed, onActionTapped }) =
       loadAlerts();
     }
   }, [featureAlertsRefreshTime]);
+
+  useEffect(() => {
+    console.log('FeatureAlertsView.js -> useEffect: Language changed to', i18n.language);
+    loadAlerts();
+  }, [i18n.language]);
 
   const loadAlerts = async () => {
     try {
