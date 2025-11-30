@@ -14,7 +14,7 @@ const LoginScreen = ({ navigation }) => {
   const safeAreaInsets = useSafeAreaInsets();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [credentials, setCredentials] = useState(true);
+  const [credentials, setCredentials] = useState({});
 
   const onBackTapped = async () => {
     navigation.goBack();
@@ -44,11 +44,11 @@ const LoginScreen = ({ navigation }) => {
   };
 
   const onEmailOrPhoneChangeText = async (text) => {
-    setCredentials({ ...credentials, emailOrPhone: text });
+    setCredentials(prev => ({ ...prev, emailOrPhone: text }));
   };
 
   const onPasswordChangeText = async (text) => {
-    setCredentials({ ...credentials, password: text });
+    setCredentials(prev => ({ ...prev, password: text }));
   };
 
   return (
