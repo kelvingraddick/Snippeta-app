@@ -30,7 +30,8 @@
       "es": "Espagnol",
       "pt": "Portugais",
       "fr": "Français",
-      "de": "Allemand"
+      "de": "Allemand",
+      "ja": "Japonais"
     }
   },
   "appearanceMode": "Mode clair/sombre : {{mode}}",

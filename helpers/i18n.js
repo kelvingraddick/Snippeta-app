@@ -49,6 +49,15 @@ import deTutorial from '../locales/de/tutorial.json';
 import deKeyboard from '../locales/de/keyboard.json';
 import deWidget from '../locales/de/widget.json';
 
+import jaCommon from '../locales/ja/common.json';
+import jaSnippets from '../locales/ja/snippets.json';
+import jaSettings from '../locales/ja/settings.json';
+import jaAuth from '../locales/ja/auth.json';
+import jaErrors from '../locales/ja/errors.json';
+import jaTutorial from '../locales/ja/tutorial.json';
+import jaKeyboard from '../locales/ja/keyboard.json';
+import jaWidget from '../locales/ja/widget.json';
+
 const LANGUAGE_STORAGE_KEY = storageKeys.LANGUAGE;
 
 const resources = {
@@ -101,6 +110,16 @@ const resources = {
     tutorial: deTutorial,
     keyboard: deKeyboard,
     widget: deWidget,
+  },
+  ja: {
+    common: jaCommon,
+    snippets: jaSnippets,
+    settings: jaSettings,
+    auth: jaAuth,
+    errors: jaErrors,
+    tutorial: jaTutorial,
+    keyboard: jaKeyboard,
+    widget: jaWidget,
   },
 };
 

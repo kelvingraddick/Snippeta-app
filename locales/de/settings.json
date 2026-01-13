@@ -30,7 +30,8 @@
       "es": "Spanisch",
       "pt": "Portugiesisch",
       "fr": "Französisch",
-      "de": "Deutsch"
+      "de": "Deutsch",
+      "ja": "Japanisch"
     }
   },
   "appearanceMode": "Hell/Dunkel-Modus: {{mode}}",

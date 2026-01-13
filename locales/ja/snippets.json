@@ -1,0 +1,47 @@
+{
+  "title": "Snippeta",
+  "snippetOptions": {
+    "title": "⚙️ スニペットオプション ‎ ‎",
+    "messageSingle": "このスニペットを編集、共有、移動、または削除",
+    "messageMultiple": "このスニペットを編集、移動、または削除"
+  },
+  "newSnippetOptions": {
+    "title": "➕ 新しいスニペットオプション ‎ ‎",
+    "message": "空白から開始するか、クリップボードからテキストをコピー",
+    "newBlankSnippet": "新しい空白のスニペット",
+    "useTextFromClipboard": "クリップボードのテキストを使用"
+  },
+  "savingOptions": {
+    "title": "💾 スニペット保存オプション ‎ ‎",
+    "message": "このデバイスに保存するか、Snippeta Cloudに保存できます"
+  },
+  "sections": {
+    "onDevice": "📱 デバイス上",
+    "cloud": "☁️ クラウド"
+  },
+  "subGroupRequiresPro": "サブグループの作成にはSnippeta Proサブスクリプションが必要です — 詳細はこの画面をお読みください！",
+  "sharingFailed": "スニペットの共有に失敗しました: {{error}}",
+  "deletingFailed": "スニペットの削除がエラーで失敗しました: {{error}}",
+  "deletingFailedUnknown": "スニペットの削除に不明なエラーで失敗しました。",
+  "movingFailed": "スニペットの移動がエラーで失敗しました: {{error}}",
+  "movingFailedUnknown": "スニペットの移動に不明なエラーで失敗しました。",
+  "savingFailed": "スニペットの保存がエラーで失敗しました: {{error}}",
+  "savingFailedUnknown": "スニペットの保存に不明なエラーで失敗しました。",
+  "savingFailedErrorCode": "スニペットの保存に失敗しました: {{errorMessage}}",
+  "formattingFailed": "スニペットコンテンツのフォーマットがエラーで失敗しました: {{error}}",
+  "edit": {
+    "title": "{{type}}を編集",
+    "new": "新しい{{type}}",
+    "snippet": "スニペット",
+    "group": "グループ",
+    "subGroup": "サブグループ",
+    "titlePlaceholder": "ここに{{text}}を入力..",
+    "titleSnippet": "タイトル",
+    "titleGroup": "グループのタイトル",
+    "titleSubGroup": "サブグループのタイトル",
+    "contentPlaceholder": "ここに{{text}}を入力..",
+    "contentSnippet": "コンテンツ",
+    "contentGroup": "グループの説明",
+    "contentSubGroup": "サブグループの説明"
+  }
+}
