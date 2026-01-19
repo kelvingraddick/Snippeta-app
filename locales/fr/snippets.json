@@ -29,6 +29,12 @@
   "savingFailedUnknown": "Échec de l'enregistrement du snippet avec une erreur inconnue.",
   "savingFailedErrorCode": "Échec de l'enregistrement du snippet : {{errorMessage}}",
   "formattingFailed": "Échec du formatage du contenu du snippet avec l'erreur : {{error}}",
+  "moveToGroup": {
+    "title": "Déplacer vers un groupe",
+    "message": "Sélectionnez un groupe pour déplacer cet extrait",
+    "rootGroup": "Groupe racine",
+    "empty": "Aucun groupe disponible."
+  },
   "edit": {
     "title": "Modifier {{type}}",
     "new": "Nouveau {{type}}",

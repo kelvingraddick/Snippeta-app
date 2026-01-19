@@ -34,6 +34,7 @@ import RevenueCat from './helpers/revenueCat';
 import analytics from './helpers/analytics';
 import SnippetsScreen from './screens/SnippetsScreen';
 import SnippetScreen from './screens/SnippetScreen';
+import MoveScreen from './screens/MoveScreen';
 import SearchScreen from './screens/SearchScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import LoginScreen from './screens/LoginScreen';
@@ -559,6 +560,11 @@ export default Sentry.wrap(function App() {
                     <Stack.Screen
                       name="Snippet"
                       component={SnippetScreen}
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                      name="Move"
+                      component={MoveScreen}
                       options={{ headerShown: false }}
                     />
                     <Stack.Screen

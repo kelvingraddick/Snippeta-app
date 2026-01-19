@@ -22,7 +22,8 @@
     "moveToTop": "Nach oben verschieben ⎴",
     "moveUp": "Nach oben ↑",
     "moveDown": "Nach unten ↓",
-    "moveToBottom": "Nach unten verschieben ⎵"
+    "moveToBottom": "Nach unten verschieben ⎵",
+    "moveToGroup": "In Gruppe verschieben"
   },
   "placeholders": {
     "emailOrPhone": "E-Mail oder Telefon..",

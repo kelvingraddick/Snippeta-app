@@ -22,7 +22,8 @@
     "moveToTop": "一番上に移動 ⎴",
     "moveUp": "上に移動 ↑",
     "moveDown": "下に移動 ↓",
-    "moveToBottom": "一番下に移動 ⎵"
+    "moveToBottom": "一番下に移動 ⎵",
+    "moveToGroup": "グループに移動"
   },
   "placeholders": {
     "emailOrPhone": "メールアドレスまたは電話番号..",

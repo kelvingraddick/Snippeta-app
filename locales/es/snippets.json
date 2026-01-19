@@ -29,6 +29,12 @@
   "savingFailedUnknown": "Error al guardar snippet con error desconocido.",
   "savingFailedErrorCode": "Error al guardar snippet: {{errorMessage}}",
   "formattingFailed": "Error al formatear contenido del snippet con error: {{error}}",
+  "moveToGroup": {
+    "title": "Mover a grupo",
+    "message": "Selecciona un grupo para mover este snippet",
+    "rootGroup": "Grupo raíz",
+    "empty": "No hay grupos disponibles."
+  },
   "edit": {
     "title": "Editar {{type}}",
     "new": "Nuevo {{type}}",

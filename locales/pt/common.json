@@ -22,7 +22,8 @@
     "moveToTop": "Mover para o topo ⎴",
     "moveUp": "Mover para cima ↑",
     "moveDown": "Mover para baixo ↓",
-    "moveToBottom": "Mover para o final ⎵"
+    "moveToBottom": "Mover para o final ⎵",
+    "moveToGroup": "Mover para grupo"
   },
   "placeholders": {
     "emailOrPhone": "Email ou telefone..",

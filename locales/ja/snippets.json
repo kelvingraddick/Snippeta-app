@@ -29,6 +29,12 @@
   "savingFailedUnknown": "スニペットの保存に不明なエラーで失敗しました。",
   "savingFailedErrorCode": "スニペットの保存に失敗しました: {{errorMessage}}",
   "formattingFailed": "スニペットコンテンツのフォーマットがエラーで失敗しました: {{error}}",
+  "moveToGroup": {
+    "title": "グループに移動",
+    "message": "移動先のグループを選択してください",
+    "rootGroup": "ルートグループ",
+    "empty": "利用可能なグループがありません。"
+  },
   "edit": {
     "title": "{{type}}を編集",
     "new": "新しい{{type}}",

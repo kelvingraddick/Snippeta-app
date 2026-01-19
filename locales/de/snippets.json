@@ -29,6 +29,12 @@
   "savingFailedUnknown": "Speichern des Snippets fehlgeschlagen mit unbekanntem Fehler.",
   "savingFailedErrorCode": "Speichern des Snippets fehlgeschlagen: {{errorMessage}}",
   "formattingFailed": "Formatieren des Snippet-Inhalts fehlgeschlagen mit Fehler: {{error}}",
+  "moveToGroup": {
+    "title": "In Gruppe verschieben",
+    "message": "Wähle eine Gruppe, um dieses Snippet zu verschieben",
+    "rootGroup": "Stammgruppe",
+    "empty": "Keine Gruppen verfügbar."
+  },
   "edit": {
     "title": "{{type}} bearbeiten",
     "new": "Neues {{type}}",

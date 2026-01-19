@@ -56,6 +56,12 @@ const SnippetsScreen = ({ route, navigation }) => {
   moveSnippetOptionNames[moveSnippetOptions.UP] = t('common:actions.moveUp');
   moveSnippetOptionNames[moveSnippetOptions.DOWN] = t('common:actions.moveDown');
   moveSnippetOptionNames[moveSnippetOptions.TO_BOTTOM] = t('common:actions.moveToBottom');
+  const moveSnippetOrderOptions = [
+    moveSnippetOptions.TO_TOP,
+    moveSnippetOptions.UP,
+    moveSnippetOptions.DOWN,
+    moveSnippetOptions.TO_BOTTOM,
+  ];
 
   useEffect(() => {
     if (!isUserLoading) {
@@ -195,7 +201,7 @@ const SnippetsScreen = ({ route, navigation }) => {
       }
       // if source is API, move via API
       else if (snippet.source == snippetSources.API && user) {
-        const response = await api.moveSnippet(snippet, option, await storage.getAuthorizationToken());
+        const response = await api.moveSnippet(snippet, option, null, await storage.getAuthorizationToken());
         if (!response?.ok) { throw new Error(`HTTP error with status ${response?.status}`); }
         const responseJson = await response.json();
         if (responseJson && responseJson.success) {
@@ -303,7 +309,8 @@ const SnippetsScreen = ({ route, navigation }) => {
     if (snippet.type == snippetTypes.SINGLE) {
       options.push({ id: 'Share', name: t('common:buttons.share') });
     }
-    options.push(...Object.values(moveSnippetOptions).map(moveSnippetOptionValue => { return { id: moveSnippetOptionValue, name: moveSnippetOptionNames[moveSnippetOptionValue] };}));
+    options.push(...moveSnippetOrderOptions.map(moveSnippetOptionValue => { return { id: moveSnippetOptionValue, name: moveSnippetOptionNames[moveSnippetOptionValue] };}));
+    options.push({ id: 'MoveToGroup', name: t('common:actions.moveToGroup') });
     options.push({ id: 'Delete', name: t('common:buttons.delete') });
     showFancyActionSheet({
       title: t('snippets:snippetOptions.title'),
@@ -317,11 +324,13 @@ const SnippetsScreen = ({ route, navigation }) => {
             navigation.navigate('Snippet', { snippet, callbacks: callbacks.concat(getSnippets) }); break;
           case 'Share':
             setTimeout(async () => { await shareSnippet(snippet); }, 100); break;
+          case 'MoveToGroup':
+            navigation.navigate('Move', { snippet, callbacks: callbacks.concat(getSnippets) }); break;
           case 'Delete':
             await deleteSnippet(snippet); break;
           default:
-            const moveSnippetOptionValue = Object.values(moveSnippetOptions).find((moveSnippetOptionValue) => moveSnippetOptionValue == option.id);
-            if (Object.values(moveSnippetOptions).includes(moveSnippetOptionValue)) { await moveSnippet(snippet, moveSnippetOptionValue); }
+            const moveSnippetOptionValue = moveSnippetOrderOptions.find((moveSnippetOptionValue) => moveSnippetOptionValue == option.id);
+            if (moveSnippetOrderOptions.includes(moveSnippetOptionValue)) { await moveSnippet(snippet, moveSnippetOptionValue); }
             break;
         }
       },
