@@ -73,9 +73,10 @@ const MoveScreen = ({ route, navigation }) => {
   };
 
   const filterInvalidGroups = (groups, snippetToMove) => {
-    const currentGroupId = snippetToMove?.source == snippetSources.STORAGE
-      ? (snippetToMove?.parent_id ?? (storageKeys.SNIPPET + 0))
-      : (snippetToMove?.parent_id ?? 0);
+    const rootGroupId = snippetToMove?.source == snippetSources.STORAGE
+      ? (storageKeys.SNIPPET + 0)
+      : 0;
+    const currentGroupId = snippetToMove?.parent_id ?? rootGroupId;
 
     const groupsById = groups.reduce((map, group) => {
       map[group.id] = group;
@@ -98,11 +99,47 @@ const MoveScreen = ({ route, navigation }) => {
       return false;
     };
 
-    return groups
+    const filteredGroups = groups
       .filter(group => group.type === snippetTypes.MULTIPLE)
       .filter(group => group.id !== snippetToMove?.id && group.id !== currentGroupId)
       .filter(group => !isDescendantOfSnippet(group.id))
       .sort((a, b) => (a.order_index ?? 0) - (b.order_index ?? 0));
+
+    return orderGroupsWithDepth(filteredGroups, rootGroupId);
+  };
+
+  const orderGroupsWithDepth = (groups, rootGroupId) => {
+    const rootGroup = groups.find(group => group.id === rootGroupId);
+    const groupsWithoutRoot = rootGroup ? groups.filter(group => group.id !== rootGroupId) : groups;
+    const childrenByParent = new Map();
+
+    groupsWithoutRoot.forEach(group => {
+      const parentId = group.parent_id ?? rootGroupId;
+      if (!childrenByParent.has(parentId)) {
+        childrenByParent.set(parentId, []);
+      }
+      childrenByParent.get(parentId).push(group);
+    });
+
+    for (const [, children] of childrenByParent) {
+      children.sort((a, b) => (a.order_index ?? 0) - (b.order_index ?? 0));
+    }
+
+    const ordered = [];
+    const addChildren = (parentId, depth) => {
+      const children = childrenByParent.get(parentId) || [];
+      children.forEach(child => {
+        ordered.push({ ...child, listDepth: depth });
+        addChildren(child.id, depth + 1);
+      });
+    };
+
+    if (rootGroup) {
+      ordered.push({ ...rootGroup, listDepth: 0 });
+    }
+    addChildren(rootGroupId, 0);
+
+    return ordered;
   };
 
   const onBackTapped = () => {
@@ -168,16 +205,18 @@ const MoveScreen = ({ route, navigation }) => {
       }
       {(!isLoading && !isUserLoading && groups.length > 0) &&
         <ScrollView style={styles.groupList} contentContainerStyle={styles.groupListContent} keyboardShouldPersistTaps={'handled'}>
-          {groups.map(group => (
+          {groups.map(group => {
+            const rowMarginLeft = (group.listDepth ?? 0) * 12;
+            return (
             <Pressable key={group.id} onPress={() => onGroupTapped(group)} disabled={isLoading}>
-              <View style={[styles.groupRow, { backgroundColor: themer.getColor('textInput3.background') }]}>
+              <View style={[styles.groupRow, { backgroundColor: themer.getColor('textInput3.background'), marginLeft: rowMarginLeft }]}>
                 <Text style={[styles.groupTitle, { color: themer.getColor('textInput3.foreground') }]} numberOfLines={1}>{getGroupTitle(group)}</Text>
                 {!!group?.content &&
                   <Text style={[styles.groupSubtitle, { color: themer.getColor('textInput3.foreground'), opacity: themer.getOpacity('content1.text2') }]} numberOfLines={1}>{group.content}</Text>
                 }
               </View>
             </Pressable>
-          ))}
+          )})}
         </ScrollView>
       }
     </View>
