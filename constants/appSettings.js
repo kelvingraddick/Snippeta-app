@@ -2,7 +2,7 @@ import { LOG_LEVEL as REVENUE_CAT_LOG_LEVEL } from 'react-native-purchases';
 import { LogLevel as ONESIGNAL_LOG_LEVEL } from 'react-native-onesignal';
 export const appSettings = {
   VERSION_NUMBER: '2.6',
-  BUILD_NUMBER: 1,
+  BUILD_NUMBER: 2,
   SENTRY_ENABLED: true,
   SENTRY_DSN_URL: '{{SENTRY_DSN_URL}}',
   SENTRY_AUTH_TOKEN: '{{SENTRY_AUTH_TOKEN}}',
