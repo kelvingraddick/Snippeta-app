@@ -18,6 +18,7 @@
 		B62C4FA22D9A4D1C0006DFE1 /* SnippetaKeyboard.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B62C4F9B2D9A4D1C0006DFE1 /* SnippetaKeyboard.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B62C4FAE2D9A568F0006DFE1 /* Themer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B6F7042D19346C006518BD /* Themer.swift */; };
 		B62C4FAF2D9A56990006DFE1 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17D42CD6CCB500DC3628 /* ColorExtension.swift */; };
+		B6311D932F4430510014D361 /* SnippetaAppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = B6311D922F4430510014D361 /* SnippetaAppIcon.icon */; };
 		B67D17D22CD6CB1E00DC3628 /* GroupWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17D12CD6CB1E00DC3628 /* GroupWidget.swift */; };
 		B67D17D52CD6CCB500DC3628 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17D42CD6CCB500DC3628 /* ColorExtension.swift */; };
 		B67D17D62CD6CCB500DC3628 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D17D42CD6CCB500DC3628 /* ColorExtension.swift */; };
@@ -134,6 +135,7 @@
 		B611EEFE2E7D397300C6FBEB /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		B611EEFF2E7D397300C6FBEB /* OneSignalNotificationServiceExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OneSignalNotificationServiceExtension.entitlements; sourceTree = "<group>"; };
 		B62C4F9B2D9A4D1C0006DFE1 /* SnippetaKeyboard.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SnippetaKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		B6311D922F4430510014D361 /* SnippetaAppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = SnippetaAppIcon.icon; sourceTree = "<group>"; };
 		B67D17D12CD6CB1E00DC3628 /* GroupWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupWidget.swift; sourceTree = "<group>"; };
 		B67D17D42CD6CCB500DC3628 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		B67D17D72CD6D40300DC3628 /* GroupWidgetConfigurationIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupWidgetConfigurationIntent.swift; sourceTree = "<group>"; };
@@ -217,6 +219,7 @@
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				B6FA6AB32D40B44A005699F4 /* Assets.xcassets */,
+				B6311D922F4430510014D361 /* SnippetaAppIcon.icon */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				B6D711FA2E88EFBE00D85018 /* GoogleService-Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
@@ -529,6 +532,7 @@
 				B6D711FB2E88EFBE00D85018 /* GoogleService-Info.plist in Resources */,
 				B6FA6AB42D40B44A005699F4 /* Assets.xcassets in Resources */,
 				E5C4676548DEE7CB10F23EF6 /* PrivacyInfo.xcprivacy in Resources */,
+				B6311D932F4430510014D361 /* SnippetaAppIcon.icon in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -857,7 +861,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-Snippeta.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = SnippetaAppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Snippeta/Snippeta.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -894,7 +898,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-Snippeta.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = SnippetaAppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Snippeta/Snippeta.entitlements;
 				CODE_SIGN_STYLE = Automatic;
