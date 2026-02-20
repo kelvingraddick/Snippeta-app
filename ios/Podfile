@@ -32,11 +32,26 @@ target 'Snippeta' do
   )
 
   post_install do |installer|
+    # Fix: 'hermes/hermes.h' file not found when building for Mac Catalyst.
+    # Ensure hermes-engine include path is set for all configurations.
+    hermes_include = '"${PODS_ROOT}/hermes-engine/destroot/include"'
+    installer.pods_project.targets.each do |target|
+      if target.name == 'React-hermes' || target.name == 'React-Core'
+        target.build_configurations.each do |config|
+          current = config.build_settings['HEADER_SEARCH_PATHS']
+          current = current.is_a?(Array) ? current.join(' ') : (current || '$(inherited)')
+          unless current.include?('hermes-engine/destroot/include')
+            config.build_settings['HEADER_SEARCH_PATHS'] = "#{current} #{hermes_include}".strip
+          end
+        end
+      end
+    end
+
     # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
     react_native_post_install(
       installer,
       config[:reactNativePath],
-      :mac_catalyst_enabled => false,
+      :mac_catalyst_enabled => true,
       # :ccache_enabled => true
     )
   end
