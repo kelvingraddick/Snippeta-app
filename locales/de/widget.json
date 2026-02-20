@@ -1,0 +1,21 @@
+{
+  "title": "Widget",
+  "install": {
+    "title": "📱 Installieren Sie das Widget",
+    "description": "..um auf Snippets vom Startbildschirm des Geräts zuzugreifen",
+    "ios": {
+      "step1": "1. Halten Sie den Startbildschirm gedrückt, bis der <bold>Bearbeitungsmodus</bold> erscheint.*",
+      "step2": "2. Tippen Sie auf die Schaltfläche <bold>Bearbeiten</bold> und dann auf die Schaltfläche <bold>Widget hinzufügen</bold>",
+      "step3": "3. Suchen Sie nach <bold>\"Snippeta\"</bold> und wählen Sie es aus",
+      "step4": "4. Wischen Sie, um den gewünschten Widget-Typ auszuwählen, und tippen Sie auf <bold>Widget hinzufügen</bold>, um es zu Ihrem Startbildschirm hinzuzufügen"
+    },
+    "android": {
+      "step1": "1. Halten Sie den Startbildschirm gedrückt, bis der <bold>Bearbeitungsmodus</bold> erscheint.*",
+      "step2": "2. Tippen Sie auf die Option <bold>Widgets</bold> oder <bold>Widgets hinzufügen</bold>",
+      "step3": "3. Suchen Sie nach <bold>\"Snippeta\"</bold> und wählen Sie es aus",
+      "step4": "4. Tippen Sie auf <bold>Hinzufügen</bold> oder <bold>Widget hinzufügen</bold>, um es zu Ihrem Startbildschirm hinzuzufügen"
+    },
+    "note": "*Gehen Sie zum Startbildschirm Ihres Geräts, um zu beginnen"
+  }
+}
+

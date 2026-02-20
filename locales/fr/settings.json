@@ -1,0 +1,85 @@
+{
+  "title": "Paramètres",
+  "pro": "Pro",
+  "subscribeDescription": "Abonnez-vous pour accéder aux fonctionnalités de niveau professionnel",
+  "features": {
+    "cloudSync": "☁️ Synchronisez et sauvegardez les snippets avec <bold>Snippeta Cloud</bold>",
+    "proThemes": "🎨 Débloquez des <bold>thèmes professionnels</bold> pour trouver votre propre style",
+    "subGroups": "🧠 Organisez mieux avec des <bold>sous-groupes</bold> imbriqués"
+  },
+  "subscribed": "Vous êtes abonné : <bold>{{type}}</bold>",
+  "freeTrial": "Essai gratuit • {{price}}/mois",
+  "freeTrialDefault": "Essai gratuit • 1,99 €/mois",
+  "sections": {
+    "theme": "🎨 Thème",
+    "appearance": "🌗 Apparence",
+    "language": "🌐 Langue",
+    "appExtensions": "📱 Extensions d'application",
+    "notifications": "🔔 Notifications",
+    "inAppPurchase": "🛒 Achat intégré",
+    "getInTouch": "📝 Contactez-nous",
+    "info": "ℹ️ Informations"
+  },
+  "language": "Langue : {{language}}",
+  "languageOptions": {
+    "title": "🌐 Options de langue ‎ ‎",
+    "message": "Sélectionnez votre langue préférée",
+    "default": "Par défaut ({{language}})",
+    "languages": {
+      "en": "Anglais",
+      "es": "Espagnol",
+      "pt": "Portugais",
+      "fr": "Français",
+      "de": "Allemand",
+      "ja": "Japonais"
+    }
+  },
+  "appearanceMode": "Mode clair/sombre : {{mode}}",
+  "appearanceModes": {
+    "light": "Clair",
+    "dark": "Sombre",
+    "system": "Système"
+  },
+  "appearanceOptions": {
+    "title": "🌗 Options d'apparence du thème ‎ ‎",
+    "message": "Sélectionnez clair, sombre ou laissez-le contrôlé automatiquement par le paramètre système de l'appareil"
+  },
+  "settings": {
+    "keyboardExtension": "Extension de clavier",
+    "homeScreenWidget": "Widget de l'écran d'accueil",
+    "systemSettings": "Paramètres système",
+    "resetFeatureAlerts": "Réinitialiser les alertes de fonctionnalités",
+    "restorePurchases": "Restaurer les achats",
+    "manageSubscription": "Gérer l'abonnement",
+    "leaveReview": "Laisser un avis",
+    "getHelpSupport": "Obtenir de l'aide / support",
+    "requestNewFeature": "Demander une nouvelle fonctionnalité",
+    "privacyPolicy": "Politique de confidentialité",
+    "termsAndConditions": "Conditions générales",
+    "waveLinkDeveloper": "Wave Link (développeur)",
+    "kgCodesDeveloper": "KG.codes (développeur)"
+  },
+  "proThemeUnlocked": {
+    "title": "🔒 Ce thème professionnel doit être débloqué",
+    "message": "Vous pouvez le prévisualiser, l'acheter maintenant ou vous abonner à Snippeta Pro pour débloquer tous les thèmes professionnels !",
+    "preview": "Aperçu",
+    "buy": "Acheter",
+    "subscribe": "S'abonner à Snippeta Pro"
+  },
+  "logoutConfirm": {
+    "title": "⚠️ Êtes-vous sûr de vouloir vous déconnecter ?",
+    "message": "Les snippets Cloud ne seront pas disponibles et certaines autres fonctionnalités seront désactivées."
+  },
+  "restorePurchases": {
+    "success": "Achats restaurés avec succès pour : {{entitlements}}",
+    "noPurchases": "Aucun abonnement ou achat trouvé à restaurer.",
+    "snippetaProSubscription": "Abonnement Snippeta Pro",
+    "theme": "thème"
+  },
+  "version": "<bold>Version {{version}}</bold> (<italic>b{{build}}</italic>) • fait avec 🖤 par Wave Link",
+  "themeSelectionFailed": "La sélection du thème a échoué avec l'erreur : {{error}}",
+  "paywallFailed": "L'écran d'achat a échoué avec l'erreur : {{error}}",
+  "restoreFailed": "Échec de la réinitialisation des alertes de fonctionnalités. Veuillez réessayer.",
+  "restorePurchasesFailed": "La restauration des achats a échoué avec l'erreur : {{error}}"
+}
+

@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Platform, Pressable } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { ApplicationContext } from '../ApplicationContext';
 import storage from '../helpers/storage';
 import { featureAlertTypes } from '../constants/featureAlertTypes';
 import { isKeyboardInstalled } from '../helpers/keyboard';
 
 const FeatureAlertsView = ({ themer, user, onAlertDismissed, onActionTapped }) => {
+  const { t, i18n } = useTranslation(['common']);
   const { featureAlertsRefreshTime } = useContext(ApplicationContext);
   const [alerts, setAlerts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -20,6 +22,11 @@ const FeatureAlertsView = ({ themer, user, onAlertDismissed, onActionTapped }) =
       loadAlerts();
     }
   }, [featureAlertsRefreshTime]);
+
+  useEffect(() => {
+    console.log('FeatureAlertsView.js -> useEffect: Language changed to', i18n.language);
+    loadAlerts();
+  }, [i18n.language]);
 
   const loadAlerts = async () => {
     try {
@@ -46,9 +53,9 @@ const FeatureAlertsView = ({ themer, user, onAlertDismissed, onActionTapped }) =
         availableAlerts.push({
           id: featureAlertTypes.KEYBOARD,
           type: featureAlertTypes.KEYBOARD,
-          title: '⌨️ Enable the Snippeta keyboard',
-          description: 'Once enabled, you can open the keyboard in any other app to quickly paste snippets!',
-          actionText: 'Learn More',
+          title: t('common:featureAlerts.keyboard.title'),
+          description: t('common:featureAlerts.keyboard.description'),
+          actionText: t('common:featureAlerts.keyboard.actionText'),
           actionScreen: 'Keyboard',
           icon: '⌨️'
         });
@@ -59,9 +66,9 @@ const FeatureAlertsView = ({ themer, user, onAlertDismissed, onActionTapped }) =
         availableAlerts.push({
           id: featureAlertTypes.WIDGET,
           type: featureAlertTypes.WIDGET,
-          title: '📱 Add a home screen widget',
-          description: 'Quick access to your snippets right from your home screen!',
-          actionText: 'Learn More',
+          title: t('common:featureAlerts.widget.title'),
+          description: t('common:featureAlerts.widget.description'),
+          actionText: t('common:featureAlerts.widget.actionText'),
           actionScreen: 'Widget',
           icon: '📱'
         });

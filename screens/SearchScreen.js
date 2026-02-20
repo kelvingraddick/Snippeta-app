@@ -1,8 +1,10 @@
 import React, { useContext, useState } from 'react';
 import { Dimensions, Image, Platform, Pressable, SectionList, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useFancyActionSheet } from 'react-native-fancy-action-sheet';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import { useTranslation } from 'react-i18next';
 import { ApplicationContext } from '../ApplicationContext';
 import { snippetTypes } from '../constants/snippetTypes';
 import { snippetSources } from '../constants/snippetSources';
@@ -17,7 +19,10 @@ import SnippetView from '../components/SnippetView';
 const SearchScreen = ({ route, navigation }) => {
   const callbacks = route.params.callbacks || [];
 
+  const { t } = useTranslation(['common', 'snippets', 'errors']);
   const { themer, user, isUserLoading } = useContext(ApplicationContext);
+
+  const safeAreaInsets = useSafeAreaInsets();
 
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useState("");
@@ -40,7 +45,7 @@ const SearchScreen = ({ route, navigation }) => {
         }
       } catch (error) {
         console.error('SearchScreen.js -> searchSnippets: searching snippets in storage failed with error: ' + error.message);
-        banner.showErrorMessage(readableErrorMessages.GET_SNIPPET_DATA_ERROR);
+        banner.showErrorMessage(t(`errors:${readableErrorMessages.GET_SNIPPET_DATA_ERROR}`));
       }
       
       // search api snippets for current query
@@ -57,7 +62,7 @@ const SearchScreen = ({ route, navigation }) => {
         }
       } catch (error) {
         console.error('SearchScreen.js -> searchSnippets: searching snippets via API failed with error: ' + error.message);
-        banner.showErrorMessage(readableErrorMessages.GET_SNIPPET_DATA_ERROR);
+        banner.showErrorMessage(t(`errors:${readableErrorMessages.GET_SNIPPET_DATA_ERROR}`));
       }
 
       // combine storage and api snippets
@@ -92,7 +97,7 @@ const SearchScreen = ({ route, navigation }) => {
   const onSnippetTapped = (snippet) => {
     if (snippet.type == snippetTypes.SINGLE) {
       Clipboard.setString(snippet.content);
-      banner.showSuccessMessage('The text was copied to the clipboard', `"${snippet.content}"`);
+      banner.showSuccessMessage(t('common:messages.textCopiedToClipboard'), `"${snippet.content}"`);
       analytics.logEvent('snippet_copied', { type: snippet.type, source: snippet.source });
     } else { // snippetTypes.MULTIPLE
       navigation.push('Snippets', { parentSnippet: snippet, callbacks: callbacks.concat(async () => { await searchSnippets(query); }) });
@@ -100,9 +105,9 @@ const SearchScreen = ({ route, navigation }) => {
   };
 
   const onSnippetMenuTapped = (snippet) => {
-    const options = [{ id: 'Edit', name: 'Edit' }];
+    const options = [{ id: 'Edit', name: t('common:buttons.edit') }];
     showFancyActionSheet({
-      title: '⚙️ Snippet options ‎ ‎',
+      title: t('snippets:snippetOptions.title'),
       ...style.getFancyActionSheetStyles(themer),
       options: options,
       onOptionPress: async (option) => {
@@ -120,23 +125,23 @@ const SearchScreen = ({ route, navigation }) => {
 
   return (
     <View style={[styles.container, { backgroundColor: themer.getColor('background1') }]}>
-      <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background') } ]}>
+      <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background'), paddingTop: Platform.OS === 'ios' ? 60 : (safeAreaInsets.top + 17.5) } ]}>
         <View style={styles.titleView}>
           <Pressable onPress={onBackTapped} hitSlop={20}>
             <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={themer.getColor('screenHeader1.foreground')} />
           </Pressable>
-          <Text style={[styles.title, { color: themer.getColor('screenHeader1.foreground') }]}>Search</Text>
+          <Text style={[styles.title, { color: themer.getColor('screenHeader1.foreground') }]}>{t('common:buttons.searchTitle')}</Text>
           <View style={styles.placeholderIcon} />
         </View>
         <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput2.background') }]}>
-          <TextInput style={[styles.input, { color: themer.getColor('textInput2.foreground') }]} placeholder={'Search text..'} placeholderTextColor={themer.getPlaceholderTextColor('textInput2.foreground')} maxLength={50} autoCapitalize='none' autoFocus value={query} onChangeText={onQueryChangeText} />
+          <TextInput style={[styles.input, { color: themer.getColor('textInput2.foreground') }]} placeholder={t('common:placeholders.searchText')} placeholderTextColor={themer.getPlaceholderTextColor('textInput2.foreground')} maxLength={50} autoCapitalize='none' autoFocus value={query} onChangeText={onQueryChangeText} />
         </View>
       </View>
       { (isLoading || isUserLoading) &&
-        <View style={styles.snippetsList}>
+        <View style={styles.placeholderView}>
           {[0, 1, 2, 3, 4, 5].map(x => (
-            <SkeletonPlaceholder borderRadius={10} speed={200}>
-              <SkeletonPlaceholder.Item height={100} width={Dimensions.get('window').width - 40 } marginBottom={16} />
+            <SkeletonPlaceholder key={x} borderRadius={10} speed={200}>
+              <SkeletonPlaceholder.Item height={100} width={Dimensions.get('window').width - 40 } marginBottom={16} marginHorizontal={20} />
             </SkeletonPlaceholder>
           ))}
         </View>
@@ -151,7 +156,7 @@ const SearchScreen = ({ route, navigation }) => {
           renderItem={({item}) => <SnippetView snippet={item} onSnippetTapped={onSnippetTapped} onSnippetMenuTapped={onSnippetMenuTapped} themer={themer} />}
           renderSectionHeader={({section: {title}}) => ( title &&
             <View style={styles.sectionHeaderView}>
-              <Text style={[styles.sectionHeaderText, { color: themer.getColor('listHeader1.foreground') }]}>{title == snippetSources.STORAGE ? '📱' : '☁️'} {title}</Text>
+              <Text style={[styles.sectionHeaderText, { color: themer.getColor('listHeader1.foreground') }]}>{title == snippetSources.STORAGE ? t('snippets:sections.onDevice') : t('snippets:sections.cloud')}</Text>
             </View>
           )}
           renderSectionFooter={() => <View style={{ height: 10 }}></View>}
@@ -168,7 +173,6 @@ const styles = StyleSheet.create({
   },
   headerView: {
     paddingHorizontal: 20,
-    paddingTop: Platform.OS === 'ios' ? 60 : 17.5,
     paddingBottom: 5,
   },
   titleView: {
@@ -203,6 +207,10 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 17,
     fontWeight: 'bold',
+  },
+  placeholderView: {
+    paddingTop: 20,
+    backgroundColor: 'transparent',
   },
   snippetsList: {
     padding: 20

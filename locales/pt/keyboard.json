@@ -1,0 +1,30 @@
+{
+  "title": "Teclado",
+  "theSnippetaKeyboard": "⌨️ O Teclado Snippeta",
+  "description": "Cole snippets rapidamente em qualquer outro aplicativo",
+  "features": {
+    "tapSnippet": "• Toque em um <bold>snippet</bold> para colá-lo no aplicativo em que você está",
+    "spaceBackspace": "• Botões dedicados para <bold>espaço</bold> e <bold>backspace</bold>",
+    "findKeyboardIos": "• Após <italic>instalar</italic>, encontre-o alternando teclados com o botão <bold>globo 🌐</bold>",
+    "findKeyboardAndroid": "• Após <italic>instalar</italic>, encontre-o alternando teclados com o botão <bold>teclado ⌨️</bold>"
+  },
+  "howToInstall": "Como instalar",
+  "install": {
+    "title": "⌨️ Instale o teclado",
+    "description": "..para colar snippets rapidamente em qualquer outro aplicativo",
+    "ios": {
+      "step1": "1. Toque no botão <bold>Configurações do sistema</bold> abaixo",
+      "step2": "2. Toque na opção <bold>Teclados</bold>",
+      "step3": "3. Ative a opção <bold>Teclado Snippeta</bold> e também ative <bold>Permitir Acesso Total</bold>"
+    },
+    "android": {
+      "step1": "1. Toque no botão <bold>Configurações do sistema</bold> abaixo",
+      "step2": "2. Na tela de configurações, toque em <bold>Sistema</bold>",
+      "step3": "3. Toque em <bold>Idiomas e entrada</bold>",
+      "step4": "4. Toque em <bold>Teclado na tela</bold> ou <bold>Teclado virtual</bold>",
+      "step5": "5. Ative a opção <bold>Teclado Snippeta</bold>"
+    }
+  },
+  "systemSettings": "Configurações do sistema"
+}
+

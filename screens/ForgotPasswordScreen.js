@@ -1,14 +1,17 @@
 import React, { useContext, useState } from 'react';
 import { Image, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 import { ApplicationContext } from '../ApplicationContext';
-import { errorCodeMessages } from '../constants/errorCodeMessages';
 import banner from '../helpers/banner';
 import ActionButton from '../components/ActionButton';
 import api from '../helpers/api';
 import analytics from '../helpers/analytics';
 const ForgotPasswordScreen = ({ navigation }) => {
-
+  const { t } = useTranslation(['common', 'auth', 'errors']);
   const { themer } = useContext(ApplicationContext);
+
+  const safeAreaInsets = useSafeAreaInsets();
 
   const [isLoading, setIsLoading] = useState(false);
   const [emailOrPhone, setEmailOrPhone] = useState();
@@ -27,16 +30,15 @@ const ForgotPasswordScreen = ({ navigation }) => {
         analytics.logEvent('password_reset_email_sent');
         console.log(`ForgotPasswordScreen.js -> onSubmitTapped: Password reset email sent. Going back to Login screen..`);
         navigation.goBack();
-        banner.showSuccessMessage('Email sent. Please check your email to continue resetting the password.');
+        banner.showSuccessMessage(t('auth:forgotPassword.emailSent'));
       } else {
         console.log(responseJson);
-        banner.showErrorMessage(responseJson?.error_code ? 'Password reset email failed: ' + errorCodeMessages[responseJson.error_code] : 'Password reset email failed with unknown error.');
+        banner.showErrorMessage(responseJson?.error_code ? t('auth:forgotPassword.failed', { error: t(`errors:errorCodes.${responseJson.error_code}`) }) : t('auth:forgotPassword.failedUnknown'));
       }
       setIsLoading(false);
     } catch(error) {
-      const errorMessage = 'Password reset email failed with error: ' + error.message;
-      console.error('ForgotPasswordScreen.js -> onSubmitTapped: ' + errorMessage);
-      banner.showErrorMessage(errorMessage);
+      console.error('ForgotPasswordScreen.js -> onSubmitTapped: Password reset request failed with error: ' + error.message);
+      banner.showErrorMessage(t('auth:forgotPassword.failedError', { error: error.message }));
       setIsLoading(false);
     }
   };
@@ -47,22 +49,22 @@ const ForgotPasswordScreen = ({ navigation }) => {
 
   return (
     <View style={[styles.container, { backgroundColor: themer.getColor('background1') }]}>
-      <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background') } ]}>
+      <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background'), paddingTop: Platform.OS === 'ios' ? 60 : (safeAreaInsets.top + 17.5) } ]}>
         <View style={styles.titleView}>
           <Pressable onPress={onBackTapped} hitSlop={20}>
             <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={themer.getColor('screenHeader1.foreground')} />
           </Pressable>
-          <Text style={[styles.title, { color: themer.getColor('screenHeader1.foreground') }]}>Forgot Password</Text>
+          <Text style={[styles.title, { color: themer.getColor('screenHeader1.foreground') }]}>{t('auth:forgotPassword.title')}</Text>
           <View style={styles.placeholderIcon} />
         </View>
       </View>
       <View style={styles.formView}>
         <View style={styles.inputsView}>
           <View style={[styles.inputView, { backgroundColor: themer.getColor('textInput1.background') }]}>
-            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={'Email or phone..'} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={50} keyboardType='email-address' textContentType='username' autoCapitalize='none' onChangeText={onEmailOrPhoneChangeText} />
+            <TextInput style={[styles.input, { color: themer.getColor('textInput1.foreground') }]} placeholder={t('common:placeholders.emailOrPhone')} placeholderTextColor={themer.getPlaceholderTextColor('textInput1.foreground')} maxLength={50} keyboardType='email-address' textContentType='username' autoCapitalize='none' onChangeText={onEmailOrPhoneChangeText} />
           </View>
         </View>
-        <ActionButton iconImageSource={require('../assets/images/gear-gray.png')} text={'Send password reset email'} foregroundColor={themer.getColor('button2.foreground')} backgroundColor={themer.getColor('button2.background')} disabled={isLoading} onTapped={() => onSendPasswordResetEmailTapped()} />
+        <ActionButton iconImageSource={require('../assets/images/gear-gray.png')} text={t('common:buttons.sendPasswordResetEmail')} foregroundColor={themer.getColor('button2.foreground')} backgroundColor={themer.getColor('button2.background')} disabled={isLoading} onTapped={() => onSendPasswordResetEmailTapped()} />
       </View>
     </View>
   );
@@ -74,7 +76,6 @@ const styles = StyleSheet.create({
   },
   headerView: {
     paddingHorizontal: 20,
-    paddingTop: Platform.OS === 'ios' ? 60 : 17.5,
   },
   titleView: {
     flexDirection: 'row',

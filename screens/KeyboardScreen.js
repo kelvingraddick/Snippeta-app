@@ -1,12 +1,16 @@
 import React, { useContext, useState } from 'react';
 import { Dimensions, Image, Linking, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation, Trans } from 'react-i18next';
 import { ApplicationContext } from '../ApplicationContext';
 import ActionButton from '../components/ActionButton';
 import analytics from '../helpers/analytics';
 
 const KeyboardScreen = ({ navigation }) => {
-
+  const { t } = useTranslation(['common', 'keyboard']);
   const { themer, refreshFeatureAlerts } = useContext(ApplicationContext);
+
+  const safeAreaInsets = useSafeAreaInsets();
 
   const [isInstructionsShowing, setIsInstructionsShowing] = useState(false);
 
@@ -17,12 +21,12 @@ const KeyboardScreen = ({ navigation }) => {
 
   return (
     <View style={[styles.container, { backgroundColor: themer.getColor('background1') }]}>
-      <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background') } ]}>
+      <View style={[styles.headerView, { backgroundColor: themer.getColor('screenHeader1.background'), paddingTop: Platform.OS === 'ios' ? 60 : (safeAreaInsets.top + 17.5) } ]}>
         <View style={styles.titleView}>
           <Pressable onPress={onBackTapped} hitSlop={20}>
             <Image source={require('../assets/images/back-arrow.png')} style={styles.backIcon} tintColor={themer.getColor('screenHeader1.foreground')} />
           </Pressable>
-          <Text style={[styles.title, { color: themer.getColor('screenHeader1.foreground') }]}>Keyboard</Text>
+          <Text style={[styles.title, { color: themer.getColor('screenHeader1.foreground') }]}>{t('keyboard:title')}</Text>
           <View style={styles.placeholderIcon} />
         </View>
       </View>
@@ -30,12 +34,12 @@ const KeyboardScreen = ({ navigation }) => {
         <>
           <Image source={Platform.OS === 'ios' ? require('../assets/images/keyboard-demo-ios.gif') : require('../assets/images/keyboard-demo-android.gif')} style={[styles.previewImage, { backgroundColor: Platform.OS === 'ios' ? 'rgb(255, 252, 255)' : '#F7F6FB' }]} />
           <View style={styles.contentView}>
-            <Text style={[styles.titleText, { color: themer.getColor('content2.foreground') }]}>⌨️ The Snippeta Keyboard</Text>
-            <Text style={[styles.descriptionText, { color: themer.getColor('content2.foreground') }]}>Quickly paste snippets into any other app</Text>
-            <Text style={[styles.featureText, { color: themer.getColor('content2.foreground') }]}>• Tap a <Text style={{ fontWeight: 'bold' }}>snippet</Text> to paste it into the app you are in</Text>
-            <Text style={[styles.featureText, { color: themer.getColor('content2.foreground') }]}>• Dedicated buttons for <Text style={{ fontWeight: 'bold' }}>space</Text> and <Text style={{ fontWeight: 'bold' }}>backspace</Text></Text>
-            <Text style={[styles.featureText, { color: themer.getColor('content2.foreground'), marginBottom: 20 }]}>• After <Text style={{ fontStyle: 'italic' }}>installing</Text>, find it by cycling keyboards with the <Text style={{ fontWeight: 'bold' }}>{Platform.OS === 'ios' ? "globe 🌐" : "keyboard ⌨️"}</Text> button</Text>
-            <ActionButton iconImageSource={require('../assets/images/gear-gray.png')} text={'How to install'} foregroundColor={themer.getColor('button2.foreground')} backgroundColor={themer.getColor('button2.background')} onTapped={() => { setIsInstructionsShowing(true); analytics.logEvent('keyboard_how_to_install_tapped'); }} />
+            <Text style={[styles.titleText, { color: themer.getColor('content2.foreground') }]}>{t('keyboard:theSnippetaKeyboard')}</Text>
+            <Text style={[styles.descriptionText, { color: themer.getColor('content2.foreground') }]}>{t('keyboard:description')}</Text>
+            <Text style={[styles.featureText, { color: themer.getColor('content2.foreground') }]}><Trans i18nKey="keyboard:features.tapSnippet" components={{ bold: <Text style={{ fontWeight: 'bold' }} /> }} /></Text>
+            <Text style={[styles.featureText, { color: themer.getColor('content2.foreground') }]}><Trans i18nKey="keyboard:features.spaceBackspace" components={{ bold: <Text style={{ fontWeight: 'bold' }} /> }} /></Text>
+            <Text style={[styles.featureText, { color: themer.getColor('content2.foreground'), marginBottom: 20 }]}><Trans i18nKey={Platform.OS === 'ios' ? 'keyboard:features.findKeyboardIos' : 'keyboard:features.findKeyboardAndroid'} components={{ bold: <Text style={{ fontWeight: 'bold' }} />, italic: <Text style={{ fontStyle: 'italic' }} /> }} /></Text>
+            <ActionButton iconImageSource={require('../assets/images/gear-gray.png')} text={t('keyboard:howToInstall')} foregroundColor={themer.getColor('button2.foreground')} backgroundColor={themer.getColor('button2.background')} onTapped={() => { setIsInstructionsShowing(true); analytics.logEvent('keyboard_how_to_install_tapped'); }} />
           </View>
         </>
       }
@@ -43,24 +47,24 @@ const KeyboardScreen = ({ navigation }) => {
         <>
           <Image source={Platform.OS === 'ios' ? require('../assets/images/keyboard-install-ios.gif') : require('../assets/images/keyboard-install-android.gif')} style={[styles.previewImage, { backgroundColor: Platform.OS === 'ios' ? 'rgb(242, 242, 247)' : '#EFEEF1' }]} />
           <View style={styles.contentView}>
-            <Text style={[styles.titleText, { color: themer.getColor('content2.foreground') }]}>⌨️ Install the keyboard</Text>
-            <Text style={[styles.descriptionText, { color: themer.getColor('content2.foreground') }]}>..to quickly paste snippets into any other app</Text>
+            <Text style={[styles.titleText, { color: themer.getColor('content2.foreground') }]}>{t('keyboard:install.title')}</Text>
+            <Text style={[styles.descriptionText, { color: themer.getColor('content2.foreground') }]}>{t('keyboard:install.description')}</Text>
             { Platform.OS === 'ios' &&
               <>
-                <Text style={[styles.featureText, { color: themer.getColor('content2.foreground') }]}>1. Tap the <Text style={{ fontWeight: 'bold' }}>System settings</Text> button below</Text>
-                <Text style={[styles.featureText, { color: themer.getColor('content2.foreground') }]}>2. Tap the <Text style={{ fontWeight: 'bold' }}>Keyboards</Text> option</Text>
-                <Text style={[styles.featureText, { color: themer.getColor('content2.foreground'), marginBottom: 20 }]}>3. Toggle on the <Text style={{ fontWeight: 'bold' }}>Snippeta Keyboard</Text> option, then also toggle on <Text style={{ fontWeight: 'bold' }}>Allow Full Access</Text></Text>
-                <ActionButton iconImageSource={require('../assets/images/gear-gray.png')} text={'System settings'} foregroundColor={themer.getColor('button3.foreground')} backgroundColor={themer.getColor('button3.background')} onTapped={() => { Linking.openURL('app-settings:'); analytics.logEvent('keyboard_system_settings_tapped'); }} />
+                <Text style={[styles.featureText, { color: themer.getColor('content2.foreground') }]}><Trans i18nKey="keyboard:install.ios.step1" components={{ bold: <Text style={{ fontWeight: 'bold' }} /> }} /></Text>
+                <Text style={[styles.featureText, { color: themer.getColor('content2.foreground') }]}><Trans i18nKey="keyboard:install.ios.step2" components={{ bold: <Text style={{ fontWeight: 'bold' }} /> }} /></Text>
+                <Text style={[styles.featureText, { color: themer.getColor('content2.foreground'), marginBottom: 20 }]}><Trans i18nKey="keyboard:install.ios.step3" components={{ bold: <Text style={{ fontWeight: 'bold' }} /> }} /></Text>
+                <ActionButton iconImageSource={require('../assets/images/gear-gray.png')} text={t('keyboard:systemSettings')} foregroundColor={themer.getColor('button3.foreground')} backgroundColor={themer.getColor('button3.background')} onTapped={() => { Linking.openURL('app-settings:'); analytics.logEvent('keyboard_system_settings_tapped'); }} />
               </>
             }
             { Platform.OS === 'android' &&
               <>
-                <Text style={[styles.featureText, { color: themer.getColor('content2.foreground') }]}>1. Tap the <Text style={{ fontWeight: 'bold' }}>System settings</Text> button below</Text>
-                <Text style={[styles.featureText, { color: themer.getColor('content2.foreground') }]}>2. On the settings screen, tap <Text style={{ fontWeight: 'bold' }}>System</Text></Text>
-                <Text style={[styles.featureText, { color: themer.getColor('content2.foreground') }]}>3. Tap on <Text style={{ fontWeight: 'bold' }}>Languages & input</Text></Text>
-                <Text style={[styles.featureText, { color: themer.getColor('content2.foreground') }]}>4. Tap <Text style={{ fontWeight: 'bold' }}>On-screen keyboard</Text> or <Text style={{ fontWeight: 'bold' }}>Virtual keyboard</Text></Text>
-                <Text style={[styles.featureText, { color: themer.getColor('content2.foreground'), marginBottom: 20 }]}>5. Toggle on the <Text style={{ fontWeight: 'bold' }}>Snippeta Keyboard</Text> option</Text>
-                <ActionButton iconImageSource={require('../assets/images/gear-gray.png')} text={'System settings'} foregroundColor={themer.getColor('button3.foreground')} backgroundColor={themer.getColor('button3.background')} onTapped={() => { Linking.sendIntent('android.settings.SETTINGS'); analytics.logEvent('keyboard_system_settings_tapped'); }} />
+                <Text style={[styles.featureText, { color: themer.getColor('content2.foreground') }]}><Trans i18nKey="keyboard:install.android.step1" components={{ bold: <Text style={{ fontWeight: 'bold' }} /> }} /></Text>
+                <Text style={[styles.featureText, { color: themer.getColor('content2.foreground') }]}><Trans i18nKey="keyboard:install.android.step2" components={{ bold: <Text style={{ fontWeight: 'bold' }} /> }} /></Text>
+                <Text style={[styles.featureText, { color: themer.getColor('content2.foreground') }]}><Trans i18nKey="keyboard:install.android.step3" components={{ bold: <Text style={{ fontWeight: 'bold' }} /> }} /></Text>
+                <Text style={[styles.featureText, { color: themer.getColor('content2.foreground') }]}><Trans i18nKey="keyboard:install.android.step4" components={{ bold: <Text style={{ fontWeight: 'bold' }} /> }} /></Text>
+                <Text style={[styles.featureText, { color: themer.getColor('content2.foreground'), marginBottom: 20 }]}><Trans i18nKey="keyboard:install.android.step5" components={{ bold: <Text style={{ fontWeight: 'bold' }} /> }} /></Text>
+                <ActionButton iconImageSource={require('../assets/images/gear-gray.png')} text={t('keyboard:systemSettings')} foregroundColor={themer.getColor('button3.foreground')} backgroundColor={themer.getColor('button3.background')} onTapped={() => { Linking.sendIntent('android.settings.SETTINGS'); analytics.logEvent('keyboard_system_settings_tapped'); }} />
               </>
             }
           </View>
@@ -76,7 +80,6 @@ const styles = StyleSheet.create({
   },
   headerView: {
     paddingHorizontal: 20,
-    paddingTop: 20,
   },
   titleView: {
     flexDirection: 'row',

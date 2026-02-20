@@ -1,0 +1,29 @@
+{
+  "title": "キーボード",
+  "theSnippetaKeyboard": "⌨️ Snippetaキーボード",
+  "description": "他のアプリにスニペットを素早く貼り付け",
+  "features": {
+    "tapSnippet": "• <bold>スニペット</bold>をタップして、使用中のアプリに貼り付け",
+    "spaceBackspace": "• <bold>スペース</bold>と<bold>バックスペース</bold>専用ボタン",
+    "findKeyboardIos": "• <italic>インストール</italic>後、<bold>地球儀 🌐</bold>ボタンでキーボードを切り替えて見つけます",
+    "findKeyboardAndroid": "• <italic>インストール</italic>後、<bold>キーボード ⌨️</bold>ボタンでキーボードを切り替えて見つけます"
+  },
+  "howToInstall": "インストール方法",
+  "install": {
+    "title": "⌨️ キーボードをインストール",
+    "description": "..他のアプリにスニペットを素早く貼り付けるために",
+    "ios": {
+      "step1": "1. 下の<bold>システム設定</bold>ボタンをタップ",
+      "step2": "2. <bold>キーボード</bold>オプションをタップ",
+      "step3": "3. <bold>Snippetaキーボード</bold>オプションをオンにし、<bold>フルアクセスを許可</bold>もオンにします"
+    },
+    "android": {
+      "step1": "1. 下の<bold>システム設定</bold>ボタンをタップ",
+      "step2": "2. 設定画面で<bold>システム</bold>をタップ",
+      "step3": "3. <bold>言語と入力</bold>をタップ",
+      "step4": "4. <bold>画面キーボード</bold>または<bold>仮想キーボード</bold>をタップ",
+      "step5": "5. <bold>Snippetaキーボード</bold>オプションをオンにします"
+    }
+  },
+  "systemSettings": "システム設定"
+}

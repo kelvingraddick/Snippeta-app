@@ -1,0 +1,20 @@
+{
+  "getPurchaseDataError": "Beim Laden der Abonnement- oder Kaufdaten ist ein Problem aufgetreten. Bitte versuchen Sie es erneut, starten Sie die App neu oder erhalten Sie Hilfe in den Einstellungen.",
+  "purchaseError": "Beim Kauf ist ein Problem aufgetreten. Bitte versuchen Sie es erneut oder erhalten Sie Hilfe in den Einstellungen.",
+  "restorePurchasesError": "Beim Wiederherstellen der Käufe ist ein Problem aufgetreten. Bitte versuchen Sie es erneut oder erhalten Sie Hilfe in den Einstellungen.",
+  "updateWidgetError": "Beim Aktualisieren der Widget-Daten ist ein Problem aufgetreten, sodass Widgets möglicherweise nicht die richtigen Daten anzeigen. Erhalten Sie Hilfe in den Einstellungen.",
+  "updateKeyboardError": "Beim Aktualisieren der Tastaturdaten ist ein Problem aufgetreten, sodass die Snippeta-Tastatur möglicherweise nicht die richtigen Daten anzeigt. Erhalten Sie Hilfe in den Einstellungen.",
+  "themePreviewError": "Beim Anzeigen der Theme-Vorschau ist ein Problem aufgetreten. Bitte versuchen Sie es erneut oder erhalten Sie Hilfe in den Einstellungen",
+  "loginError": "Bei der Anmeldung ist ein Problem aufgetreten. Bitte versuchen Sie es erneut oder erhalten Sie Hilfe in den Einstellungen",
+  "getSnippetDataError": "Beim Laden der Snippet-Daten ist ein Problem aufgetreten. Bitte versuchen Sie es erneut, starten Sie die App neu oder erhalten Sie Hilfe in den Einstellungen.",
+  "errorCodes": {
+    "0": "Es ist ein unbekannter Serverfehler aufgetreten.",
+    "1": "Es ist ein Fehler in der Serverantwort aufgetreten.",
+    "2": "Es ist ein Fehler in der Serverdatenbank aufgetreten.",
+    "3": "Diese E-Mail-Adresse ist bereits vergeben.",
+    "4": "Diese Telefonnummer ist bereits vergeben.",
+    "5": "Die angegebenen Anmeldedaten waren ungültig.",
+    "6": "Ein Kauf/Abonnement ist erforderlich, um diese Funktion abzuschließen."
+  }
+}
+

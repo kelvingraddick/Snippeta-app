@@ -1,0 +1,25 @@
+{
+  "snippets": {
+    "welcome": {
+      "title": "Welcome to Snippeta!",
+      "content": "Snippeta is the best way to copy, paste, and manage snippets of text! Copy text to your clipboard with a single tap; no highlighting or long-tapping!"
+    },
+    "gettingStarted": {
+      "title": "Getting started",
+      "content": "Tap here to copy this snippet to your clipboard, or tap the \"Add snippet\" button above to create a new snippet!"
+    },
+    "organizeGroups": {
+      "title": "Organize by creating groups",
+      "content": "Create a snippet group to organize and nest snippets. Tap here to try it out!"
+    },
+    "goPro": {
+      "title": "Go PRO to do more!",
+      "content": "Get access to Cloud sync, creating sub-groups, pro themes, and more with a Snippeta Pro subscription!"
+    },
+    "addSnippetsToGroup": {
+      "title": "Add snippets to this group",
+      "content": "Tap the \"Add snippet\" button above to try it out!"
+    }
+  }
+}
+

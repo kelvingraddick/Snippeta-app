@@ -1,0 +1,54 @@
+{
+  "title": "Snippeta",
+  "snippetOptions": {
+    "title": "⚙️ Snippet-Optionen ‎ ‎",
+    "messageSingle": "Dieses Snippet bearbeiten, teilen, verschieben oder löschen",
+    "messageMultiple": "Dieses Snippet bearbeiten, verschieben oder löschen"
+  },
+  "newSnippetOptions": {
+    "title": "➕ Neue Snippet-Optionen ‎ ‎",
+    "message": "Leer beginnen oder Text aus der Zwischenablage kopieren",
+    "newBlankSnippet": "Neues leeres Snippet",
+    "useTextFromClipboard": "Text aus der Zwischenablage verwenden"
+  },
+  "savingOptions": {
+    "title": "💾 Snippet-Speicheroptionen ‎ ‎",
+    "message": "Es kann auf diesem Gerät oder in Snippeta Cloud gespeichert werden"
+  },
+  "sections": {
+    "onDevice": "📱 Auf dem Gerät",
+    "cloud": "☁️ Cloud"
+  },
+  "subGroupRequiresPro": "Das Erstellen einer Untergruppe erfordert ein Snippeta Pro-Abonnement — Lesen Sie diesen Bildschirm, um mehr zu erfahren!",
+  "sharingFailed": "Teilen des Snippets fehlgeschlagen: {{error}}",
+  "deletingFailed": "Löschen des Snippets fehlgeschlagen mit Fehler: {{error}}",
+  "deletingFailedUnknown": "Löschen des Snippets fehlgeschlagen mit unbekanntem Fehler.",
+  "movingFailed": "Verschieben des Snippets fehlgeschlagen mit Fehler: {{error}}",
+  "movingFailedUnknown": "Verschieben des Snippets fehlgeschlagen mit unbekanntem Fehler.",
+  "savingFailed": "Speichern des Snippets fehlgeschlagen mit Fehler: {{error}}",
+  "savingFailedUnknown": "Speichern des Snippets fehlgeschlagen mit unbekanntem Fehler.",
+  "savingFailedErrorCode": "Speichern des Snippets fehlgeschlagen: {{errorMessage}}",
+  "formattingFailed": "Formatieren des Snippet-Inhalts fehlgeschlagen mit Fehler: {{error}}",
+  "moveToGroup": {
+    "title": "In Gruppe verschieben",
+    "message": "Wähle eine Gruppe, um dieses Snippet zu verschieben",
+    "rootGroup": "Stammgruppe",
+    "empty": "Keine Gruppen verfügbar."
+  },
+  "edit": {
+    "title": "{{type}} bearbeiten",
+    "new": "Neues {{type}}",
+    "snippet": "Snippet",
+    "group": "Gruppe",
+    "subGroup": "Untergruppe",
+    "titlePlaceholder": "{{text}} hier eingeben..",
+    "titleSnippet": "Titel",
+    "titleGroup": "Gruppentitel",
+    "titleSubGroup": "Untergruppentitel",
+    "contentPlaceholder": "{{text}} hier eingeben..",
+    "contentSnippet": "Inhalt",
+    "contentGroup": "Gruppenbeschreibung",
+    "contentSubGroup": "Untergruppenbeschreibung"
+  }
+}
+

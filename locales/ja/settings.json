@@ -1,0 +1,84 @@
+{
+  "title": "設定",
+  "pro": "Pro",
+  "subscribeDescription": "プロレベルの機能にアクセスするためにサブスクライブ",
+  "features": {
+    "cloudSync": "☁️ <bold>Snippeta Cloud</bold>でスニペットを同期・バックアップ",
+    "proThemes": "🎨 <bold>プロテーマ</bold>をアンロックして独自のスタイルを見つける",
+    "subGroups": "🧠 ネストされた<bold>サブグループ</bold>でより良く整理"
+  },
+  "subscribed": "サブスクライブ中: <bold>{{type}}</bold>",
+  "freeTrial": "無料トライアル • {{price}}/月",
+  "freeTrialDefault": "無料トライアル • $1.99/月",
+  "sections": {
+    "theme": "🎨 テーマ",
+    "appearance": "🌗 外観",
+    "language": "🌐 言語",
+    "appExtensions": "📱 アプリ拡張機能",
+    "notifications": "🔔 通知",
+    "inAppPurchase": "🛒 アプリ内購入",
+    "getInTouch": "📝 お問い合わせ",
+    "info": "ℹ️ 情報"
+  },
+  "language": "言語: {{language}}",
+  "languageOptions": {
+    "title": "🌐 言語オプション ‎ ‎",
+    "message": "希望する言語を選択",
+    "default": "デフォルト ({{language}})",
+    "languages": {
+      "en": "英語",
+      "es": "スペイン語",
+      "pt": "ポルトガル語",
+      "fr": "フランス語",
+      "de": "ドイツ語",
+      "ja": "日本語"
+    }
+  },
+  "appearanceMode": "ライト/ダークモード: {{mode}}",
+  "appearanceModes": {
+    "light": "ライト",
+    "dark": "ダーク",
+    "system": "システム"
+  },
+  "appearanceOptions": {
+    "title": "🌗 テーマ外観オプション ‎ ‎",
+    "message": "ライト、ダーク、またはデバイスのシステム設定によって自動制御されるように選択"
+  },
+  "settings": {
+    "keyboardExtension": "キーボード拡張機能",
+    "homeScreenWidget": "ホーム画面ウィジェット",
+    "systemSettings": "システム設定",
+    "resetFeatureAlerts": "機能アラートをリセット",
+    "restorePurchases": "購入を復元",
+    "manageSubscription": "サブスクリプションを管理",
+    "leaveReview": "レビューを残す",
+    "getHelpSupport": "ヘルプ/サポートを取得",
+    "requestNewFeature": "新機能をリクエスト",
+    "privacyPolicy": "プライバシーポリシー",
+    "termsAndConditions": "利用規約",
+    "waveLinkDeveloper": "Wave Link (開発者)",
+    "kgCodesDeveloper": "KG.codes (開発者)"
+  },
+  "proThemeUnlocked": {
+    "title": "🔒 このプロテーマはアンロックする必要があります",
+    "message": "プレビュー、今すぐ購入、またはSnippeta Proにサブスクライブしてすべてのプロテーマをアンロックできます！",
+    "preview": "プレビュー",
+    "buy": "購入",
+    "subscribe": "Snippeta Proにサブスクライブ"
+  },
+  "logoutConfirm": {
+    "title": "⚠️ ログアウトしてもよろしいですか？",
+    "message": "クラウドスニペットは利用できなくなり、他の一部の機能も無効になります。"
+  },
+  "restorePurchases": {
+    "success": "購入を正常に復元しました: {{entitlements}}",
+    "noPurchases": "復元するサブスクリプションまたは購入が見つかりませんでした。",
+    "snippetaProSubscription": "Snippeta Proサブスクリプション",
+    "theme": "テーマ"
+  },
+  "version": "<bold>バージョン {{version}}</bold> (<italic>b{{build}}</italic>) • Wave Linkが🖤で作成",
+  "themeSelectionFailed": "テーマ選択がエラーで失敗しました: {{error}}",
+  "paywallFailed": "ペイウォールがエラーで失敗しました: {{error}}",
+  "restoreFailed": "機能アラートのリセットに失敗しました。もう一度お試しください。",
+  "restorePurchasesFailed": "購入の復元がエラーで失敗しました: {{error}}"
+}

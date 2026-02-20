@@ -3,4 +3,5 @@ export const moveSnippetOptions = {
   UP: 1,
   DOWN: 2,
   TO_BOTTOM: 3,
+  TO_GROUP: 4,
 };

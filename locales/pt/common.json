@@ -1,0 +1,73 @@
+{
+  "buttons": {
+    "addSnippet": "Adicionar snippet",
+    "newGroup": "Novo grupo",
+    "newSubGroup": "Novo subgrupo",
+    "edit": "Editar",
+    "delete": "Excluir",
+    "share": "Compartilhar",
+    "save": "Salvar",
+    "login": "Entrar",
+    "register": "Registrar",
+    "forgotPassword": "Esqueci a senha",
+    "sendPasswordResetEmail": "Enviar email de redefinição de senha",
+    "logout": "Sair",
+    "account": "Conta",
+    "deleteAccount": "Excluir conta",
+    "learnMore": "Saiba mais",
+    "search": "Buscar",
+    "searchTitle": "Buscar"
+  },
+  "actions": {
+    "moveToTop": "Mover para o topo ⎴",
+    "moveUp": "Mover para cima ↑",
+    "moveDown": "Mover para baixo ↓",
+    "moveToBottom": "Mover para o final ⎵",
+    "moveToGroup": "Mover para grupo"
+  },
+  "placeholders": {
+    "emailOrPhone": "Email ou telefone..",
+    "password": "Senha..",
+    "passwordConfirm": "Confirmar senha..",
+    "emailAddress": "Endereço de email..",
+    "phoneNumber": "Número de telefone..",
+    "firstName": "Nome..",
+    "lastName": "Sobrenome..",
+    "searchText": "Buscar texto.."
+  },
+  "messages": {
+    "textCopiedToClipboard": "O texto foi copiado para a área de transferência",
+    "loggedOut": "Sessão encerrada!",
+    "emailSent": "Email enviado. Por favor, verifique seu email para continuar redefinindo a senha.",
+    "noSubscriptionFound": "Nenhuma assinatura ou compra encontrada para restaurar.",
+    "featureAlertsReset": "Os alertas de recursos foram redefinidos! Eles aparecerão novamente na tela principal.",
+    "previewingTheme": "Visualizando o tema '{{themeName}}' por {{seconds}} segundos."
+  },
+  "sources": {
+    "onDevice": "No dispositivo",
+    "cloud": "Nuvem"
+  },
+  "cloud": {
+    "title": "Nuvem",
+    "createAccount": "Crie uma conta para mais recursos*",
+    "syncBackup": "☁️ Sincronize e faça backup de snippets na Nuvem",
+    "accessDevices": "📱 Acesse seus snippets em diferentes dispositivos",
+    "unlockPro": "🛒 Desbloqueie <bold>Snippeta Pro</bold> em vários dispositivos",
+    "requiresPro": "*Requer uma assinatura Snippeta Pro",
+    "loggedInAs": "Você está conectado como <bold>{{name}}</bold>"
+  },
+  "featureAlerts": {
+    "keyboard": {
+      "title": "⌨️ Ative o teclado Snippeta",
+      "description": "Uma vez ativado, você pode abrir o teclado em qualquer outro aplicativo para colar snippets rapidamente!",
+      "actionText": "Saiba mais"
+    },
+    "widget": {
+      "title": "📱 Adicione um widget na tela inicial",
+      "description": "Acesso rápido aos seus snippets diretamente da sua tela inicial!",
+      "actionText": "Saiba mais"
+    }
+  },
+  "pro": "PRO"
+}
+

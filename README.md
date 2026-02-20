@@ -1,26 +1,41 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Snippeta
+
+Snippeta is a clipboard manager with a powerful custom keyboard that lets you paste snippets directly into any app. The Snippeta keyboard replaces your default keyboard and displays your organized snippets, allowing you to tap any snippet to instantly paste it wherever you're typing. Navigate through groups and nested sub-groups, use dedicated space and delete buttons, and access your snippets without ever leaving the app you're working in. Whether you're drafting emails, coding, or managing notes, Snippeta enhances productivity by putting your text snippets at your fingertips, right when you need them.
+
+## Key Features
+
+- **Custom Keyboard**: Replace your default keyboard with Snippeta to access and paste snippets directly into any app. Simply tap a snippet to paste it instantly.
+- **In-App Snippet Access**: Browse and select from your organized snippets without switching apps. Navigate through groups and nested sub-groups right from the keyboard.
+- **Dedicated Controls**: Built-in space and delete buttons for seamless text editing without switching keyboards.
+- **Quick Access**: Utilize home screen widgets to swiftly copy snippet text without opening the app.
+- **Organized Management**: Create groups and nested sub-groups to logically organize your snippets within the app.
+- **Customizable Interface**: Choose from various themes to personalize your Snippeta experience.
+
+For more information, visit [Snippeta.com](https://snippeta.com) or download the app from the [App Store](https://apps.apple.com/us/app/snippeta-copy-manage-paste/id1282250868).
+
+---
+
+This is a [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
 # Getting Started
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## Step 1: Complete the React Native environment setup
 
-## Step 1: Start the Metro Server
+>**Note**: This React Native project *does not* use [Expo](https://reactnative.dev/docs/environment-setup#start-a-new-react-native-project-with-expo)
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
-
-To start Metro, run the following command from the _root_ of your React Native project:
-
+1. Follow the instructions at [React Native - "Set Up Your Environment"](https://reactnative.dev/docs/environment-setup)
+2. Run the following command to install the Node packages (*dependencies*)
 ```bash
 # using npm
-npm start
+npm install
 
 # OR using Yarn
-yarn start
+yarn install
 ```
 
-## Step 2: Start your Application
+## Step 2: Start the app
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+Run the following command in the console to start your Android or iOS app:
 
 ### For Android
 
@@ -44,27 +59,41 @@ npm run ios --device "iPhone 16 Pro"
 yarn ios
 ```
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+If everything is set up correctly, you should see your new app running in your Android Emulator or iOS Simulator shortly, provided you have set up your emulator/simulator correctly.
 
 This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
 
-## Step 3: Modifying your App
+## Step 3: Modifying and debugging the app
 
-Now that you have successfully run the app, let's modify it.
+Now that you have successfully run the app, you can modify and debug it.
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+### React Native DevTools
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+**React Native DevTools** is a debugging experience built on Chrome DevTools that opens directly in your browser.
+
+#### To open:
+1. **From Metro Terminal**: Press <kbd>j</kbd> while Metro is running to open DevTools in your browser
+2. **From Developer Menu**: Open the Developer Menu (<kbd>Ctrl</kbd> + <kbd>M</kbd> / <kbd>Cmd ⌘</kbd> + <kbd>M</kbd>) and select **"Debug"**
+
+#### Features:
+- **Console Panel**: View and filter console messages, evaluate JavaScript expressions, and inspect object properties
+- **Sources & Breakpoints**: Access your source files and set breakpoints for step-through debugging
+- **Memory Inspection**: Monitor memory usage to identify potential leaks
+- **React Components Inspector**: Examine and modify component props and state at runtime
+- **React Profiler**: Record performance profiles to analyze component render times
+
+#### Console logging:
+
+> **Note**: To view console logs, use the **Console panel** in React Native DevTools instead.
 
 ## Step 4: Publishing your App
 
 ### For Android
 
-Pre-req.: Follow the instructions here to setup upload key: https://reactnative.dev/docs/signed-apk-android
+**Prerequisite**: Follow the instructions here to set up upload key: https://reactnative.dev/docs/signed-apk-android
 1. Bump the version and/or build number in `~/android/app/build.gradle`
 2. Run `npx react-native build-android --mode=release` in the console
-3. The generated AAB can be found under `~/android/app/build/outputs/bundle/release/app-release.aab`, and is ready to be uploaded to Google Play; where it can be used as a release or beta test build
+3. The generated AAB can be found in `~/android/app/build/outputs/bundle/release/app-release.aab`, and is ready to be uploaded to Google Play, where it can be used as a release or beta test build
 
 ### For iOS
 
@@ -73,15 +102,14 @@ Pre-req.: Follow the instructions here to setup upload key: https://reactnative.
 3. In the menu, go to "Product", then "Archive"
 4. Once built successfully, the new version will show in the Organizer; select it
 5. Click "Distribute App" and follow the wizard
-6. To app will be uploaded to App Store Connect, where it can be used as a release or beta test build
+6. The app will be uploaded to App Store Connect, where it can be used as a release or beta test build
 
-## Congratulations! :tada:
+## Congratulations! 🎉
 
-You've successfully ran, modified, and published your React Native App. :partying_face:
+You've successfully run, modified, and published this React Native app. 🎊
 
 ### Now what?
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
 - If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
 
 # Troubleshooting
@@ -93,7 +121,8 @@ If you can't get this to work, see the [Troubleshooting](https://reactnative.dev
 To learn more about React Native, take a look at the following resources:
 
 - [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
+- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how to set up your environment.
 - [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
+- [React Native DevTools](https://reactnative.dev/docs/react-native-devtools) - comprehensive guide to using React Native DevTools for debugging.
 - [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
 - [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.

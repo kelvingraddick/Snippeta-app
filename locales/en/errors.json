@@ -1,0 +1,20 @@
+{
+  "getPurchaseDataError": "There was an issue loading subscription or purchase data. Please try again, restart the app, or get help in Settings.",
+  "purchaseError": "There was an issue making the purchase. Please try again, or get help in Settings.",
+  "restorePurchasesError": "There was an issue restoring purchases. Please try again, or get help in Settings.",
+  "updateWidgetError": "There was an issue updating widget data so widgets may not display the correct data. Get help in Settings.",
+  "updateKeyboardError": "There was an issue updating keyboard data so the Snippeta keyboard may not display the correct data. Get help in Settings.",
+  "themePreviewError": "There was an issue previewing the theme. Please try again, or get help in Settings",
+  "loginError": "There was an issue logging in. Please try again, or get help in Settings",
+  "getSnippetDataError": "There was an issue loading snippet data. Please try again, restart the app, or get help in Settings.",
+  "errorCodes": {
+    "0": "There was an unknown server error.",
+    "1": "There was an error on the server response.",
+    "2": "There was an error in the server database.",
+    "3": "This email address is already taken.",
+    "4": "This phone number is already taken.",
+    "5": "The provided credentials were invalid.",
+    "6": "A purchase/subscription is needed to complete this function."
+  }
+}
+

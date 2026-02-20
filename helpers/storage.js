@@ -153,6 +153,35 @@ const moveSnippet = async (snippet, option) => {
   };
 };
 
+const moveSnippetToGroup = async (snippet, parentId) => {
+  console.log(`storage.js -> moveSnippetToGroup: Moving snippet with ID ${snippet?.id} to parent ${parentId}`);
+  if (!validator.isValidSnippet(snippet)) return;
+
+  const currentParentId = snippet.parent_id ?? undefined;
+  const targetParentId = parentId ?? undefined;
+  if (currentParentId === targetParentId) return;
+
+  // Re-index old siblings after removing the snippet
+  const oldSiblings = (await getSnippets(currentParentId)).filter(x => x.id !== snippet.id);
+  oldSiblings.sort((a, b) => a.order_index - b.order_index);
+  let orderIndex = 0;
+  for (const oldSibling of oldSiblings) {
+    oldSibling.order_index = orderIndex++;
+    await saveSnippet(oldSibling);
+  }
+
+  // Move snippet to new parent and place at bottom
+  const newSiblings = await getSnippets(targetParentId);
+  newSiblings.sort((a, b) => a.order_index - b.order_index);
+  if (targetParentId === undefined) {
+    delete snippet.parent_id;
+  } else {
+    snippet.parent_id = targetParentId;
+  }
+  snippet.order_index = newSiblings.length;
+  await saveSnippet(snippet);
+};
+
 const _moveSnippetToTop = async (snippet) => {
   console.log('storage.js -> _moveSnippetToTop: Moving snippet to top with ID', snippet?.id);
   if (validator.isValidSnippet(snippet)) {
@@ -235,6 +264,18 @@ const saveThemeId = async (themeId) => {
   console.log('storage.js -> saveTheme: Saved theme with ID', themeId);
 };
 
+const getLanguage = async () => {
+  const language = await AsyncStorage.getItem(storageKeys.LANGUAGE);
+  console.log(`storage.js -> getLanguage: ${language ? `Got language '${language}'` : 'No language in storage, using device default'}`);
+  return language;
+};
+
+const saveLanguage = async (language) => {
+  console.log(`storage.js -> saveLanguage: Saving language '${language}'`);
+  await AsyncStorage.setItem(storageKeys.LANGUAGE, language);
+  console.log(`storage.js -> saveLanguage: Saved language '${language}'`);
+};
+
 const getMilestoneNumber = async () => {
   const item = await AsyncStorage.getItem(storageKeys.MILESTONE_NUMBER);
   const milestoneNumber  = JSON.parse(item);
@@ -304,6 +345,7 @@ export default {
   saveSnippet,
   deleteSnippet,
   moveSnippet,
+  moveSnippetToGroup,
   getAppearanceMode,
   saveAppearanceMode,
   getThemeId,
@@ -315,4 +357,6 @@ export default {
   getIsFeatureAlertDismissed,
   saveIsFeatureAlertDismissed,
   resetAllFeatureAlerts,
+  getLanguage,
+  saveLanguage,
 };

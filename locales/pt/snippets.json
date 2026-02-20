@@ -1,0 +1,54 @@
+{
+  "title": "Snippeta",
+  "snippetOptions": {
+    "title": "⚙️ Opções de snippet ‎ ‎",
+    "messageSingle": "Editar, compartilhar, mover ou excluir este snippet",
+    "messageMultiple": "Editar, mover ou excluir este snippet"
+  },
+  "newSnippetOptions": {
+    "title": "➕ Opções de novo snippet ‎ ‎",
+    "message": "Começar em branco ou copiar texto da área de transferência",
+    "newBlankSnippet": "Novo snippet em branco",
+    "useTextFromClipboard": "Usar texto da área de transferência"
+  },
+  "savingOptions": {
+    "title": "💾 Opções de salvamento de snippet ‎ ‎",
+    "message": "Pode ser armazenado neste dispositivo ou no Snippeta Cloud"
+  },
+  "sections": {
+    "onDevice": "📱 No dispositivo",
+    "cloud": "☁️ Nuvem"
+  },
+  "subGroupRequiresPro": "Criar um subgrupo requer uma assinatura Snippeta Pro — Leia esta tela para saber mais!",
+  "sharingFailed": "Falha ao compartilhar snippet: {{error}}",
+  "deletingFailed": "Falha ao excluir snippet com erro: {{error}}",
+  "deletingFailedUnknown": "Falha ao excluir snippet com erro desconhecido.",
+  "movingFailed": "Falha ao mover snippet com erro: {{error}}",
+  "movingFailedUnknown": "Falha ao mover snippet com erro desconhecido.",
+  "savingFailed": "Falha ao salvar snippet com erro: {{error}}",
+  "savingFailedUnknown": "Falha ao salvar snippet com erro desconhecido.",
+  "savingFailedErrorCode": "Falha ao salvar snippet: {{errorMessage}}",
+  "formattingFailed": "Falha ao formatar conteúdo do snippet com erro: {{error}}",
+  "moveToGroup": {
+    "title": "Mover para grupo",
+    "message": "Selecione um grupo para mover este snippet",
+    "rootGroup": "Grupo raiz",
+    "empty": "Nenhum grupo disponível."
+  },
+  "edit": {
+    "title": "Editar {{type}}",
+    "new": "Novo {{type}}",
+    "snippet": "snippet",
+    "group": "grupo",
+    "subGroup": "subgrupo",
+    "titlePlaceholder": "Digite {{text}} aqui..",
+    "titleSnippet": "título",
+    "titleGroup": "título do grupo",
+    "titleSubGroup": "título do subgrupo",
+    "contentPlaceholder": "Digite {{text}} aqui..",
+    "contentSnippet": "conteúdo",
+    "contentGroup": "descrição do grupo",
+    "contentSubGroup": "descrição do subgrupo"
+  }
+}
+

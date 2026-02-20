@@ -1,0 +1,54 @@
+{
+  "title": "Snippeta",
+  "snippetOptions": {
+    "title": "⚙️ Snippet options ‎ ‎",
+    "messageSingle": "Edit, share, move, or delete this snippet",
+    "messageMultiple": "Edit, move, or delete this snippet"
+  },
+  "newSnippetOptions": {
+    "title": "➕ New snippet options ‎ ‎",
+    "message": "Start blank, or copy text from the clipboard",
+    "newBlankSnippet": "New blank snippet",
+    "useTextFromClipboard": "Use text from clipboard"
+  },
+  "savingOptions": {
+    "title": "💾 Snippet saving options ‎ ‎",
+    "message": "It can be stored on this device, or in Snippeta Cloud"
+  },
+  "sections": {
+    "onDevice": "📱 On device",
+    "cloud": "☁️ Cloud"
+  },
+  "subGroupRequiresPro": "Creating a sub-group requires a Snippeta Pro subscription — Read this screen to learn more!",
+  "sharingFailed": "Sharing snippet failed: {{error}}",
+  "deletingFailed": "Deleting snippet failed with error: {{error}}",
+  "deletingFailedUnknown": "Deleting snippet failed with unknown error.",
+  "movingFailed": "Moving snippet failed with error: {{error}}",
+  "movingFailedUnknown": "Moving snippet in failed with unknown error.",
+  "savingFailed": "Saving snippet failed with error: {{error}}",
+  "savingFailedUnknown": "Saving snippet failed with unknown error.",
+  "savingFailedErrorCode": "Saving snippet failed: {{errorMessage}}",
+  "formattingFailed": "Formatting snippet content failed with error: {{error}}",
+  "moveToGroup": {
+    "title": "Move to group",
+    "message": "Select a group to move this snippet",
+    "rootGroup": "Root group",
+    "empty": "No groups available."
+  },
+  "edit": {
+    "title": "Edit {{type}}",
+    "new": "New {{type}}",
+    "snippet": "snippet",
+    "group": "group",
+    "subGroup": "sub-group",
+    "titlePlaceholder": "Type {{text}} here..",
+    "titleSnippet": "title",
+    "titleGroup": "title of group",
+    "titleSubGroup": "title of sub-group",
+    "contentPlaceholder": "Type {{text}} here..",
+    "contentSnippet": "content",
+    "contentGroup": "description of group",
+    "contentSubGroup": "description of sub-group"
+  }
+}
+

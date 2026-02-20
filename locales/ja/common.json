@@ -1,0 +1,72 @@
+{
+  "buttons": {
+    "addSnippet": "スニペットを追加",
+    "newGroup": "新しいグループ",
+    "newSubGroup": "新しいサブグループ",
+    "edit": "編集",
+    "delete": "削除",
+    "share": "共有",
+    "save": "保存",
+    "login": "ログイン",
+    "register": "登録",
+    "forgotPassword": "パスワードを忘れた場合",
+    "sendPasswordResetEmail": "パスワードリセットメールを送信",
+    "logout": "ログアウト",
+    "account": "アカウント",
+    "deleteAccount": "アカウントを削除",
+    "learnMore": "詳細を見る",
+    "search": "検索",
+    "searchTitle": "検索"
+  },
+  "actions": {
+    "moveToTop": "一番上に移動 ⎴",
+    "moveUp": "上に移動 ↑",
+    "moveDown": "下に移動 ↓",
+    "moveToBottom": "一番下に移動 ⎵",
+    "moveToGroup": "グループに移動"
+  },
+  "placeholders": {
+    "emailOrPhone": "メールアドレスまたは電話番号..",
+    "password": "パスワード..",
+    "passwordConfirm": "パスワード確認..",
+    "emailAddress": "メールアドレス..",
+    "phoneNumber": "電話番号..",
+    "firstName": "名..",
+    "lastName": "姓..",
+    "searchText": "検索テキスト.."
+  },
+  "messages": {
+    "textCopiedToClipboard": "テキストがクリップボードにコピーされました",
+    "loggedOut": "ログアウトしました！",
+    "emailSent": "メールを送信しました。パスワードリセットを続けるには、メールを確認してください。",
+    "noSubscriptionFound": "復元するサブスクリプションまたは購入が見つかりませんでした。",
+    "featureAlertsReset": "機能アラートがリセットされました！メイン画面に再度表示されます。",
+    "previewingTheme": "「{{themeName}}」テーマを{{seconds}}秒間プレビューしています。"
+  },
+  "sources": {
+    "onDevice": "デバイス上",
+    "cloud": "クラウド"
+  },
+  "cloud": {
+    "title": "クラウド",
+    "createAccount": "より多くの機能のためにアカウントを作成*",
+    "syncBackup": "☁️ スニペットをクラウドに同期・バックアップ",
+    "accessDevices": "📱 異なるデバイスでスニペットにアクセス",
+    "unlockPro": "🛒 複数のデバイスで<bold>Snippeta Pro</bold>をアンロック",
+    "requiresPro": "*Snippeta Proサブスクリプションが必要です",
+    "loggedInAs": "<bold>{{name}}</bold>としてログインしています"
+  },
+  "featureAlerts": {
+    "keyboard": {
+      "title": "⌨️ Snippetaキーボードを有効化",
+      "description": "有効にすると、他のアプリでキーボードを開いてスニペットを素早く貼り付けることができます！",
+      "actionText": "詳細を見る"
+    },
+    "widget": {
+      "title": "📱 ホーム画面ウィジェットを追加",
+      "description": "ホーム画面から直接スニペットにアクセス！",
+      "actionText": "詳細を見る"
+    }
+  },
+  "pro": "PRO"
+}
