@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Dimensions, Image, Platform, Pressable, RefreshControl, SectionList, Share, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Image, Platform, Pressable, SectionList, Share, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useFancyActionSheet } from 'react-native-fancy-action-sheet';
@@ -404,14 +404,6 @@ const SnippetsScreen = ({ route, navigation }) => {
           sections={snippetSections}
           keyExtractor={(item, index) => item.id}
           stickySectionHeadersEnabled={false}
-          refreshControl={
-            <RefreshControl
-              refreshing={isRefreshing}
-              onRefresh={onRefresh}
-              tintColor={themer.getColor('screenHeader1.foreground')}
-              colors={[themer.getColor('screenHeader1.foreground')]}
-            />
-          }
           renderItem={({item, index, section}) => <SnippetView snippet={item} onSnippetTapped={onSnippetTapped} onSnippetMenuTapped={onSnippetMenuTapped} isHidden={item.source == snippetSources.STORAGE ? !isOnDeviceSectionVisible : !isCloudSectionVisible} isTop={index === 0} isBottom={index === section.data.length - 1} themer={themer} />}
           renderSectionHeader={({section: {title}}) => ( title &&
             <>
