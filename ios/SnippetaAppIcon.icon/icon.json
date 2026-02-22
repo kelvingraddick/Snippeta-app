@@ -21,9 +21,29 @@
       "layers" : [
         {
           "glass" : true,
-          "hidden" : false,
-          "image-name" : "icon-white.png",
-          "name" : "icon-white",
+          "image-name" : "icon-white-square.png",
+          "name" : "icon-white-square",
+          "position" : {
+            "scale" : 2,
+            "translation-in-points" : [
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "glass" : false,
+          "image-name" : "icon-white-shadow.png",
+          "name" : "icon-white-shadow",
+          "opacity-specializations" : [
+            {
+              "value" : 0.75
+            },
+            {
+              "appearance" : "dark",
+              "value" : 1
+            }
+          ],
           "position" : {
             "scale" : 2,
             "translation-in-points" : [
@@ -53,10 +73,39 @@
       "hidden" : false,
       "layers" : [
         {
-          "glass" : true,
+          "image-name" : "icon-orange-square.png",
+          "name" : "icon-orange-square",
+          "position" : {
+            "scale" : 2,
+            "translation-in-points" : [
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "blend-mode-specializations" : [
+            {
+              "appearance" : "dark",
+              "value" : "normal"
+            }
+          ],
+          "fill-specializations" : [
+            {
+              "appearance" : "dark",
+              "value" : "automatic"
+            }
+          ],
+          "glass" : false,
           "hidden" : false,
-          "image-name" : "icon-orange.png",
-          "name" : "icon-orange",
+          "image-name" : "icon-orange-shadow.png",
+          "name" : "icon-orange-shadow",
+          "opacity-specializations" : [
+            {
+              "appearance" : "dark",
+              "value" : 0.5
+            }
+          ],
           "position" : {
             "scale" : 2,
             "translation-in-points" : [
