@@ -15,6 +15,7 @@ import style from '../helpers/style';
 import { snippetSources } from '../constants/snippetSources';
 import { moveSnippetOptions } from '../constants/moveSnippetOptions';
 import { colorIds } from '../constants/colorIds';
+import { snippetLimits } from '../constants/snippetLimits';
 import ColorButton from '../components/ColorButton';
 
 const SnippetScreen = ({ route, navigation }) => {
@@ -232,10 +233,10 @@ const SnippetScreen = ({ route, navigation }) => {
           </View>
         </View>
         <View style={[styles.titleInputView, { backgroundColor: themer.getColor('textInput3.background') }]}>
-          <TextInput style={[styles.titleInput, { color: themer.getColor('textInput3.foreground') }]} placeholder={t('snippets:edit.titlePlaceholder', { text: snippet.type == snippetTypes.SINGLE ? t('snippets:edit.titleSnippet') : (snippet.parent_id ? t('snippets:edit.titleSubGroup') : t('snippets:edit.titleGroup')) })} placeholderTextColor={themer.getPlaceholderTextColor('textInput3.foreground')} multiline maxLength={50} autoFocus onChangeText={onTitleChangeText}>{snippet.title}</TextInput>
+          <TextInput style={[styles.titleInput, { color: themer.getColor('textInput3.foreground') }]} placeholder={t('snippets:edit.titlePlaceholder', { text: snippet.type == snippetTypes.SINGLE ? t('snippets:edit.titleSnippet') : (snippet.parent_id ? t('snippets:edit.titleSubGroup') : t('snippets:edit.titleGroup')) })} placeholderTextColor={themer.getPlaceholderTextColor('textInput3.foreground')} multiline maxLength={snippetLimits.TITLE_MAX_LENGTH} autoFocus onChangeText={onTitleChangeText}>{snippet.title}</TextInput>
         </View>
         <View style={styles.contentInputView}>
-          <TextInput style={[styles.contentInput, { color: themer.getColor('textArea1.foreground') }]} placeholder={t('snippets:edit.contentPlaceholder', { text: snippet.type == snippetTypes.SINGLE ? t('snippets:edit.contentSnippet') : (snippet.parent_id ? t('snippets:edit.contentSubGroup') : t('snippets:edit.contentGroup')) })} placeholderTextColor={themer.getPlaceholderTextColor('textArea1.foreground')} multiline scrollEnabled={false} maxLength={1000} onChangeText={onContentChangeText} onSelectionChange={onContentSelectionChange}>{snippet.content}</TextInput>
+          <TextInput style={[styles.contentInput, { color: themer.getColor('textArea1.foreground') }]} placeholder={t('snippets:edit.contentPlaceholder', { text: snippet.type == snippetTypes.SINGLE ? t('snippets:edit.contentSnippet') : (snippet.parent_id ? t('snippets:edit.contentSubGroup') : t('snippets:edit.contentGroup')) })} placeholderTextColor={themer.getPlaceholderTextColor('textArea1.foreground')} multiline scrollEnabled={false} maxLength={snippetLimits.CONTENT_MAX_LENGTH} onChangeText={onContentChangeText} onSelectionChange={onContentSelectionChange}>{snippet.content}</TextInput>
         </View>
       </KeyboardAwareScrollView>
   );

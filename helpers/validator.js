@@ -2,6 +2,7 @@ import { colorIds } from '../constants/colorIds';
 import { snippetTypes } from '../constants/snippetTypes';
 import { snippetSources } from '../constants/snippetSources';
 import { storageKeys } from '../constants/storageKeys';
+import { snippetLimits } from '../constants/snippetLimits';
 import * as Sentry from '@sentry/react-native';
 
 const isValidCredentials = (credentials) => {
@@ -64,11 +65,11 @@ const isValidSnippet = (snippet) => {
   if (!Object.values(snippetSources).includes(snippet.source)) {
     errorMessages.push(`Snippet source must be one of: ${Object.values(snippetSources).join(', ')}.'`);
   }
-  if (!snippet.title || snippet.title.length < 1 || snippet.title.length > 50) {
-    errorMessages.push('Snippet title must be between 1 and 50 characters.');
+  if (!snippet.title || snippet.title.length < 1 || snippet.title.length > snippetLimits.TITLE_MAX_LENGTH) {
+    errorMessages.push(`Snippet title must be between 1 and ${snippetLimits.TITLE_MAX_LENGTH} characters.`);
   }
-  if (!snippet.content || snippet.title.length < 1 || snippet.title.length > 1000) {
-    errorMessages.push('Snippet content must be between 1 and 1000 characters.');
+  if (!snippet.content || snippet.content.length < 1 || snippet.content.length > snippetLimits.CONTENT_MAX_LENGTH) {
+    errorMessages.push(`Snippet content must be between 1 and ${snippetLimits.CONTENT_MAX_LENGTH} characters.`);
   }
   if (!Object.values(colorIds).map(colorId => `${colorId}`).includes(`${snippet.color_id}`)) {
     errorMessages.push(`Snippet color ID must be a valid color ID (typically 0-6 or 100).'`);
