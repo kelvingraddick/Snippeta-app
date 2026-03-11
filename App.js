@@ -12,7 +12,6 @@ import FlashMessage from "react-native-flash-message";
 import Clipboard from '@react-native-clipboard/clipboard';
 import Rate from 'react-native-rate';
 import * as Sentry from '@sentry/react-native';
-import OneSignal from './helpers/oneSignal';
 import { ApplicationContext } from './ApplicationContext';
 import { appSettings } from './constants/appSettings';
 import { storageKeys } from './constants/storageKeys';
@@ -110,7 +109,6 @@ export default Sentry.wrap(function App() {
       .then(() => loadThemeAppearanceFromStorage()
       .then(() => loginWithStorage()));
 
-    OneSignal.initialize(appSettings.ONESIGNAL_APP_ID, handleNotificationClick, handleForegroundNotification);
 
     Linking.getInitialURL().then((url) => { if (url) { handleDeepLink({ url }); }}); // handle deep link from app launch
     const urlEventBinding = Linking.addEventListener('url', handleDeepLink);  // handle deep link while app running
@@ -158,7 +156,6 @@ export default Sentry.wrap(function App() {
         console.log(`App.js -> loginWithCredentials: Login successful with user ID ${user.id}`);
         await storage.saveCredentials(emailOrPhone, password);
         await loginToRevenueCat(user.id);
-        await OneSignal.loginUser(user.id, { 'app_version': appSettings.VERSION_NUMBER, 'build_number': appSettings.BUILD_NUMBER.toString() });
         await updateEntitlements(user);
         await updateDataForWidgets();
         await updateDataForKeyboard();
@@ -188,7 +185,6 @@ export default Sentry.wrap(function App() {
     dispatch({ type: 'LOGGING_OUT' });
     try {
       await storage.deleteCredentials();
-      OneSignal.logoutUser();  
       await updateEntitlements();
       await updateDataForWidgets();
       await updateDataForKeyboard();
@@ -237,10 +233,6 @@ export default Sentry.wrap(function App() {
     }
   };
 
-  const handleForegroundNotification = (event) => {
-    console.log('OneSignal: notification will display in foreground:', event);
-    event.preventDefault();
-  }
 
   const handleDeepLink = async (event) => {
     console.log('App.js -> handleDeepLink: Handling deep link', event?.url);
