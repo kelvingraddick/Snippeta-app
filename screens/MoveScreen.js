@@ -99,16 +99,16 @@ const MoveScreen = ({ route, navigation }) => {
       return false;
     };
 
-    const filteredGroups = groups
+    const groupsForTree = groups
       .filter(group => group.type === snippetTypes.MULTIPLE)
-      .filter(group => group.id !== snippetToMove?.id && group.id !== currentGroupId)
+      .filter(group => group.id !== snippetToMove?.id)
       .filter(group => !isDescendantOfSnippet(group.id))
       .sort((a, b) => (a.order_index ?? 0) - (b.order_index ?? 0));
 
-    return orderGroupsWithDepth(filteredGroups, rootGroupId);
+    return orderGroupsWithDepth(groupsForTree, rootGroupId, new Set([currentGroupId]));
   };
 
-  const orderGroupsWithDepth = (groups, rootGroupId) => {
+  const orderGroupsWithDepth = (groups, rootGroupId, hiddenGroupIds = new Set()) => {
     const rootGroup = groups.find(group => group.id === rootGroupId);
     const groupsWithoutRoot = rootGroup ? groups.filter(group => group.id !== rootGroupId) : groups;
     const childrenByParent = new Map();
@@ -129,12 +129,17 @@ const MoveScreen = ({ route, navigation }) => {
     const addChildren = (parentId, depth) => {
       const children = childrenByParent.get(parentId) || [];
       children.forEach(child => {
+        if (hiddenGroupIds.has(child.id)) {
+          addChildren(child.id, depth);
+          return;
+        }
+
         ordered.push({ ...child, listDepth: depth });
         addChildren(child.id, depth + 1);
       });
     };
 
-    if (rootGroup) {
+    if (rootGroup && !hiddenGroupIds.has(rootGroup.id)) {
       ordered.push({ ...rootGroup, listDepth: 0 });
     }
     addChildren(rootGroupId, 0);
