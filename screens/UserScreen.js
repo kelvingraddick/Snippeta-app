@@ -11,6 +11,7 @@ import api from '../helpers/api';
 import banner from '../helpers/banner';
 import analytics from '../helpers/analytics';
 import ActionButton from '../components/ActionButton';
+import { sanitizeUserContactFields } from '../helpers/userSanitizer';
 
 const UserScreen = ({ navigation }) => {
   const { t } = useTranslation(['common', 'auth', 'errors']);
@@ -41,16 +42,18 @@ const UserScreen = ({ navigation }) => {
   const onSaveTapped = async () => {
     try {
       setIsLoading(true);
-      if (editedUser.password != editedUser.password_confirm) {
+      const sanitizedUser = sanitizeUserContactFields(editedUser);
+      setEditedUser(sanitizedUser);
+      if (sanitizedUser.password != sanitizedUser.password_confirm) {
         throw new Error('Password confirmation must match the password entered.');
       }
-      const response = await api.saveUser(editedUser, await storage.getAuthorizationToken());
+      const response = await api.saveUser(sanitizedUser, await storage.getAuthorizationToken());
       if (!response?.ok) { throw new Error(`HTTP error with status ${response?.status}`); }
       let responseJson = await response.json();
       if (responseJson && responseJson.success && responseJson.user) {
-        await analytics.logEvent('user_edited', { properties: Object.keys(editedUser).filter(key => editedUser[key] !== user[key]).length });
+        await analytics.logEvent('user_edited', { properties: Object.keys(sanitizedUser).filter(key => sanitizedUser[key] !== user[key]).length });
         console.log(`UserScreen.js -> onSaveTapped: User saved. Now logging user in again..`);
-        responseJson = await loginWithCredentials(editedUser.email_address, editedUser.password);
+        responseJson = await loginWithCredentials(sanitizedUser.email_address, sanitizedUser.password);
         if (responseJson && responseJson.success && responseJson.user) {
           console.log(`UserScreen.js -> onSaveTapped: User logged in. Going back to Settings screen..`);
           navigation.goBack();
