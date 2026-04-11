@@ -45,6 +45,7 @@
     "message": "Wählen Sie hell, dunkel oder lassen Sie es automatisch von der Systemeinstellung des Geräts steuern"
   },
   "settings": {
+    "backgroundClipboard": "Background clipboard",
     "keyboardExtension": "Tastatur-Erweiterung",
     "homeScreenWidget": "Startbildschirm-Widget",
     "systemSettings": "Systemeinstellungen",
@@ -82,4 +83,3 @@
   "restoreFailed": "Zurücksetzen der Funktionshinweise fehlgeschlagen. Bitte versuchen Sie es erneut.",
   "restorePurchasesFailed": "Wiederherstellen der Käufe fehlgeschlagen mit Fehler: {{error}}"
 }
-

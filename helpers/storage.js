@@ -6,6 +6,7 @@ import { featureAlertTypes } from '../constants/featureAlertTypes';
 import { snippetTypes } from '../constants/snippetTypes';
 import { moveSnippetOptions } from '../constants/moveSnippetOptions';
 import { snippetSources } from '../constants/snippetSources';
+import widget from './widget';
 
 const getCredentials = async () => {
   const item = await AsyncStorage.getItem(storageKeys.CREDENTIALS);
@@ -248,6 +249,21 @@ const getAppearanceMode = async () => {
   return await AsyncStorage.getItem(storageKeys.APPEARANCE_MODE);
 };
 
+const getClipboardSyncEnabled = async () => {
+  const item = await AsyncStorage.getItem(storageKeys.IS_CLIPBOARD_SYNC_ENABLED);
+  return item == null ? true : item === 'true';
+};
+
+const saveClipboardSyncEnabled = async (isEnabled) => {
+  console.log('storage.js -> saveClipboardSyncEnabled: Saving clipboard sync enabled', isEnabled);
+  await AsyncStorage.setItem(storageKeys.IS_CLIPBOARD_SYNC_ENABLED, isEnabled ? 'true' : 'false');
+  await widget.saveData('isClipboardSyncEnabled', isEnabled);
+};
+
+const syncKeyboardSettings = async () => {
+  await widget.saveData('isClipboardSyncEnabled', await getClipboardSyncEnabled());
+};
+
 const saveAppearanceMode = async (appearanceMode) => {
   console.log('storage.js -> saveAppearanceMode: Saving appearance with mode', appearanceMode);
   await AsyncStorage.setItem(storageKeys.APPEARANCE_MODE, appearanceMode);
@@ -347,9 +363,12 @@ export default {
   moveSnippet,
   moveSnippetToGroup,
   getAppearanceMode,
+  getClipboardSyncEnabled,
   saveAppearanceMode,
+  saveClipboardSyncEnabled,
   getThemeId,
   saveThemeId,
+  syncKeyboardSettings,
   getMilestoneNumber,
   saveMilestoneNumber,
   getLastReviewPromptDate,

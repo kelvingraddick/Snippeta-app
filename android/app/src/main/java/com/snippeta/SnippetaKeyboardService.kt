@@ -3,17 +3,24 @@ package com.wavelinkllc.snippeta
 import android.inputmethodservice.InputMethodService
 import android.view.LayoutInflater
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.ImageButton
 import android.content.Context
+import android.content.ClipboardManager
 import android.content.SharedPreferences
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 
 class SnippetaKeyboardService : InputMethodService() {
+    companion object {
+        private const val CLIPBOARD_GROUP_ID = "SNIPPET_CLIPBOARD_GROUP"
+        private const val CLIPBOARD_SNIPPET_ID_PREFIX = "SNIPPET_CLIPBOARD_"
+        private const val CLIPBOARD_GROUP_TITLE = "Clipboard"
+        private const val MAX_CLIPBOARD_SNIPPETS = 50
+    }
+
     private lateinit var rootView: View
     private lateinit var snippetListView: ListView
     private lateinit var navBar: LinearLayout
@@ -28,6 +35,7 @@ class SnippetaKeyboardService : InputMethodService() {
     private lateinit var themer: Themer
 
     private lateinit var sharedPrefs: SharedPreferences
+    private lateinit var clipboardManager: ClipboardManager
     private val prefsListener = SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
         if (key == "snippets") {
             loadAllSnippets()
@@ -36,6 +44,9 @@ class SnippetaKeyboardService : InputMethodService() {
                 (snippetListView.adapter as SnippetAdapter).updateSnippets(currentSnippets)
             }
         }
+    }
+    private val clipboardListener = ClipboardManager.OnPrimaryClipChangedListener {
+        syncClipboardSnippetIfNeeded()
     }
 
     override fun onCreateInputView(): View {
@@ -49,8 +60,11 @@ class SnippetaKeyboardService : InputMethodService() {
         snippetListView = rootView.findViewById(R.id.snippet_list)
         themer = Themer(this)
         sharedPrefs = applicationContext.getSharedPreferences("group.com.wavelinkllc.snippeta.shared", Context.MODE_PRIVATE)
+        clipboardManager = applicationContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         sharedPrefs.registerOnSharedPreferenceChangeListener(prefsListener)
+        clipboardManager.addPrimaryClipChangedListener(clipboardListener)
         loadAllSnippets()
+        syncClipboardSnippetIfNeeded()
         setupUI()
         return rootView
     }
@@ -59,6 +73,9 @@ class SnippetaKeyboardService : InputMethodService() {
         super.onDestroy()
         if (::sharedPrefs.isInitialized) {
             sharedPrefs.unregisterOnSharedPreferenceChangeListener(prefsListener)
+        }
+        if (::clipboardManager.isInitialized) {
+            clipboardManager.removePrimaryClipChangedListener(clipboardListener)
         }
     }
 
@@ -70,6 +87,78 @@ class SnippetaKeyboardService : InputMethodService() {
             allSnippets = gson.fromJson(dataString, listType)
             currentSnippets = allSnippets
         }
+    }
+
+    private fun syncClipboardSnippetIfNeeded() {
+        if (!isClipboardSyncEnabled()) return
+        if (!clipboardManager.hasPrimaryClip()) return
+        val clipboardText = clipboardManager.primaryClip
+            ?.getItemAt(0)
+            ?.coerceToText(this)
+            ?.toString()
+            ?.trim()
+            ?.takeIf { it.isNotEmpty() }
+            ?: return
+
+        loadAllSnippets()
+        val clipboardGroup = allSnippets.find { it.id == CLIPBOARD_GROUP_ID }
+        val existingChildren = (clipboardGroup?.child_snippets ?: listOf())
+            .filter { !it.content.isNullOrBlank() }
+
+        if (existingChildren.firstOrNull()?.content == clipboardText) return
+
+        val dedupedChildren = existingChildren.filter { it.content != clipboardText }
+        val newSnippet = Snippet(
+            id = CLIPBOARD_SNIPPET_ID_PREFIX + System.currentTimeMillis(),
+            type = 0,
+            source = "storage",
+            title = buildClipboardSnippetTitle(clipboardText),
+            content = clipboardText,
+            color_id = 4,
+            order_index = 0,
+            child_snippets = null
+        )
+        val updatedChildren = (listOf(newSnippet) + dedupedChildren)
+            .take(MAX_CLIPBOARD_SNIPPETS)
+            .mapIndexed { index, snippet -> snippet.copy(order_index = index) }
+
+        val updatedClipboardGroup = Snippet(
+            id = CLIPBOARD_GROUP_ID,
+            type = 1,
+            source = "storage",
+            title = CLIPBOARD_GROUP_TITLE,
+            content = CLIPBOARD_GROUP_TITLE,
+            color_id = 3,
+            order_index = 0,
+            child_snippets = updatedChildren
+        )
+        val updatedRootSnippets = listOf(updatedClipboardGroup) + allSnippets.filter { it.id != CLIPBOARD_GROUP_ID }
+        val json = GsonBuilder().create().toJson(updatedRootSnippets)
+        sharedPrefs.edit().putString("snippets", json).apply()
+
+        allSnippets = updatedRootSnippets
+        when (titleLabel.text?.toString()) {
+            CLIPBOARD_GROUP_TITLE -> currentSnippets = updatedChildren
+            else -> if (snippetStack.isEmpty()) currentSnippets = updatedRootSnippets
+        }
+        if (::snippetListView.isInitialized && snippetListView.adapter is SnippetAdapter) {
+            (snippetListView.adapter as SnippetAdapter).updateSnippets(currentSnippets)
+        }
+    }
+
+    private fun isClipboardSyncEnabled(): Boolean {
+        val value = sharedPrefs.getString("isClipboardSyncEnabled", null) ?: return true
+        return value.toBoolean()
+    }
+
+    private fun buildClipboardSnippetTitle(content: String): String {
+        return content
+            .lineSequence()
+            .firstOrNull()
+            ?.trim()
+            ?.take(40)
+            ?.ifBlank { "Clipboard" }
+            ?: "Clipboard"
     }
 
     private fun setupUI() {

@@ -45,6 +45,7 @@
     "message": "Selecciona claro, oscuro o que se controle automáticamente por la configuración del sistema del dispositivo"
   },
   "settings": {
+    "backgroundClipboard": "Background clipboard",
     "keyboardExtension": "Extensión de teclado",
     "homeScreenWidget": "Widget de pantalla de inicio",
     "systemSettings": "Configuración del sistema",
@@ -82,4 +83,3 @@
   "restoreFailed": "No se pudieron restablecer las alertas de funciones. Por favor, inténtalo de nuevo.",
   "restorePurchasesFailed": "La restauración de compras falló con error: {{error}}"
 }
-

@@ -45,6 +45,7 @@
     "message": "Sélectionnez clair, sombre ou laissez-le contrôlé automatiquement par le paramètre système de l'appareil"
   },
   "settings": {
+    "backgroundClipboard": "Background clipboard",
     "keyboardExtension": "Extension de clavier",
     "homeScreenWidget": "Widget de l'écran d'accueil",
     "systemSettings": "Paramètres système",
@@ -82,4 +83,3 @@
   "restoreFailed": "Échec de la réinitialisation des alertes de fonctionnalités. Veuillez réessayer.",
   "restorePurchasesFailed": "La restauration des achats a échoué avec l'erreur : {{error}}"
 }
-

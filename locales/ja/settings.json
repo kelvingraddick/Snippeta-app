@@ -45,6 +45,7 @@
     "message": "ライト、ダーク、またはデバイスのシステム設定によって自動制御されるように選択"
   },
   "settings": {
+    "backgroundClipboard": "Background clipboard",
     "keyboardExtension": "キーボード拡張機能",
     "homeScreenWidget": "ホーム画面ウィジェット",
     "systemSettings": "システム設定",

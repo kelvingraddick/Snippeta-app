@@ -45,6 +45,7 @@
     "message": "Selecione claro, escuro ou deixe controlado automaticamente pela configuração do sistema do dispositivo"
   },
   "settings": {
+    "backgroundClipboard": "Background clipboard",
     "keyboardExtension": "Extensão do teclado",
     "homeScreenWidget": "Widget da tela inicial",
     "systemSettings": "Configurações do sistema",
@@ -82,4 +83,3 @@
   "restoreFailed": "Falha ao redefinir alertas de recursos. Por favor, tente novamente.",
   "restorePurchasesFailed": "A restauração de compras falhou com erro: {{error}}"
 }
-

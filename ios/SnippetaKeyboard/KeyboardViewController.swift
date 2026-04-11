@@ -7,12 +7,17 @@ import UIKit
 import SwiftUI
 
 class KeyboardViewController: UIInputViewController {
+  let clipboardGroupId = "SNIPPET_CLIPBOARD_GROUP"
+  let clipboardSnippetIdPrefix = "SNIPPET_CLIPBOARD_"
+  let clipboardGroupTitle = "Clipboard"
+  let maxClipboardSnippets = 50
   
   var allSnippets: [Snippet] = []
   var currentSnippets: [Snippet] = []
   var snippetStack: [[Snippet]] = []
   var snippetTitleStack: [String] = []
   var deleteTimer: Timer?
+  var clipboardTimer: Timer?
   var themer = Themer()
   
   var tableView: UITableView!
@@ -29,7 +34,15 @@ class KeyboardViewController: UIInputViewController {
     super.viewDidLoad()
     
     loadAllSnippets()
+    syncClipboardSnippetIfNeeded()
     setupUI()
+    startClipboardMonitoring()
+  }
+
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    clipboardTimer?.invalidate()
+    clipboardTimer = nil
   }
   
   func loadAllSnippets() {
@@ -45,6 +58,90 @@ class KeyboardViewController: UIInputViewController {
         print("Error decoding snippets: \(error)")
       }
     }
+  }
+
+  func startClipboardMonitoring() {
+    clipboardTimer?.invalidate()
+    clipboardTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { [weak self] _ in
+      self?.syncClipboardSnippetIfNeeded()
+    }
+  }
+
+  func syncClipboardSnippetIfNeeded() {
+    guard isClipboardSyncEnabled() else { return }
+    guard let clipboardText = UIPasteboard.general.string?.trimmingCharacters(in: .whitespacesAndNewlines), !clipboardText.isEmpty else { return }
+
+    loadAllSnippets()
+    let clipboardGroup = allSnippets.first(where: { $0.id == clipboardGroupId })
+    let existingChildren = (clipboardGroup?.child_snippets ?? []).filter { !$0.content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+    if existingChildren.first?.content == clipboardText { return }
+
+    let dedupedChildren = existingChildren.filter { $0.content != clipboardText }
+    let newSnippet = Snippet(
+      id: clipboardSnippetIdPrefix + String(Int(Date().timeIntervalSince1970 * 1000)),
+      type: SnippetType.SINGLE.rawValue,
+      source: "storage",
+      title: buildClipboardSnippetTitle(from: clipboardText),
+      content: clipboardText,
+      color_id: 4,
+      order_index: 0,
+      child_snippets: nil
+    )
+    let updatedChildren = Array(([newSnippet] + dedupedChildren).prefix(maxClipboardSnippets)).enumerated().map { index, snippet in
+      Snippet(
+        id: snippet.id,
+        type: snippet.type,
+        source: snippet.source,
+        title: snippet.title,
+        content: snippet.content,
+        color_id: snippet.color_id,
+        order_index: index,
+        child_snippets: snippet.child_snippets
+      )
+    }
+    let updatedClipboardGroup = Snippet(
+      id: clipboardGroupId,
+      type: SnippetType.MULTIPLE.rawValue,
+      source: "storage",
+      title: clipboardGroupTitle,
+      content: clipboardGroupTitle,
+      color_id: 3,
+      order_index: 0,
+      child_snippets: updatedChildren
+    )
+    let updatedRootSnippets = [updatedClipboardGroup] + allSnippets.filter { $0.id != clipboardGroupId }
+    saveSnippets(updatedRootSnippets)
+
+    allSnippets = updatedRootSnippets
+    if titleLabel?.text == clipboardGroupTitle {
+      currentSnippets = updatedChildren
+    } else if snippetStack.isEmpty {
+      currentSnippets = updatedRootSnippets
+    }
+    tableView?.reloadData()
+  }
+
+  func isClipboardSyncEnabled() -> Bool {
+    guard let sharedDefaults = UserDefaults(suiteName: "group.com.wavelinkllc.snippeta.shared") else { return true }
+    guard let value = sharedDefaults.string(forKey: "isClipboardSyncEnabled") else { return true }
+    return NSString(string: value).boolValue
+  }
+
+  func saveSnippets(_ snippets: [Snippet]) {
+    guard let sharedDefaults = UserDefaults(suiteName: "group.com.wavelinkllc.snippeta.shared") else { return }
+    do {
+      let data = try JSONEncoder().encode(snippets)
+      let dataString = String(data: data, encoding: .utf8)
+      sharedDefaults.set(dataString, forKey: "snippets")
+    } catch {
+      print("Error encoding snippets: \(error)")
+    }
+  }
+
+  func buildClipboardSnippetTitle(from content: String) -> String {
+    let line = content.components(separatedBy: .newlines).first?.trimmingCharacters(in: .whitespacesAndNewlines) ?? clipboardGroupTitle
+    if line.isEmpty { return clipboardGroupTitle }
+    return String(line.prefix(40))
   }
   
   // MARK: - Setup UI
