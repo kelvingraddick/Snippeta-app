@@ -40,8 +40,12 @@ const SnippetsScreen = ({ route, navigation }) => {
   const [isCloudSectionVisible, setIsCloudSectionVisible] = useState(true);
 
   const isEligibleForTutorial = useRef(true);
+  const CLIPBOARD_GROUP_ID = 'SNIPPET_CLIPBOARD_GROUP';
+  const CLIPBOARD_SNIPPET_ID_PREFIX = 'SNIPPET_CLIPBOARD_';
 
   const { showFancyActionSheet } = useFancyActionSheet();
+
+  const isClipboardManagedSnippet = (snippet) => snippet?.id === CLIPBOARD_GROUP_ID || snippet?.id?.startsWith?.(CLIPBOARD_SNIPPET_ID_PREFIX);
 
   const tutorialSnippets = [
     { id: storageKeys.SNIPPET + 1, type: snippetTypes.SINGLE, source: snippetSources.STORAGE, title: t('tutorial:snippets.welcome.title'), content: t('tutorial:snippets.welcome.content'), color_id: colorIds.COLOR_1, time: new Date(), order_index: 0 },
@@ -236,12 +240,13 @@ const SnippetsScreen = ({ route, navigation }) => {
   };
 
   const onEditTapped = async () => {
-    if (!parentSnippet)
+    if (!parentSnippet || isClipboardManagedSnippet(parentSnippet))
       return;
     navigation.navigate('Snippet', { snippet: parentSnippet, callbacks: callbacks.concat(getSnippets) });
   };
 
   const onAddSnippetTapped = async () => {
+    if (isClipboardManagedSnippet(parentSnippet)) return;
     triggerHapticFeedback();
     const options = [{ id: 'NEW_BLANK_SNIPPET', name: t('snippets:newSnippetOptions.newBlankSnippet') }, { id: 'USE_TEXT_FROM_CLIPBOARD', name: t('snippets:newSnippetOptions.useTextFromClipboard') }];
     showFancyActionSheet({
@@ -264,6 +269,7 @@ const SnippetsScreen = ({ route, navigation }) => {
   };
 
   const onNewGroupTapped = async () => {
+    if (isClipboardManagedSnippet(parentSnippet)) return;
     // top-level groups are always allowed, but only allow a sub-group with subscription
     if (isRootSnippetsScreen || subscription) {
       createSnippet(snippetTypes.MULTIPLE);
@@ -303,6 +309,7 @@ const SnippetsScreen = ({ route, navigation }) => {
   };
 
   const onSnippetMenuTapped = (snippet) => {
+    if (isClipboardManagedSnippet(snippet)) return;
     triggerHapticFeedback();
     const options = [];
     options.push({ id: 'Edit', name: t('common:buttons.edit') });
@@ -377,7 +384,7 @@ const SnippetsScreen = ({ route, navigation }) => {
               <Image source={require('../assets/images/gear-gray.png')} style={styles.settingsIcon} tintColor={themer.getColor('screenHeader1.foreground')} />
             </Pressable>
           }
-          {(parentSnippet && parentSnippet.type == snippetTypes.MULTIPLE) &&
+          {(parentSnippet && parentSnippet.type == snippetTypes.MULTIPLE && !isClipboardManagedSnippet(parentSnippet)) &&
             <Pressable onPress={onEditTapped} hitSlop={20} disabled={isLoading || isUserLoading}>
               <Image source={require('../assets/images/edit.png')} style={styles.editIcon} tintColor={themer.getColor('screenHeader1.foreground')} />
             </Pressable>
@@ -385,8 +392,8 @@ const SnippetsScreen = ({ route, navigation }) => {
         </View>
         {!isRootSnippetsScreen && <View style={{ height: 5 }}></View> }
         <View style={styles.buttonsView}>
-          <ActionButton iconImageSource={require('../assets/images/plus.png')} text={t('common:buttons.addSnippet')} foregroundColor={themer.getColor('button1.foreground')} backgroundColor={themer.getColor('button1.background')} disabled={isLoading || isUserLoading} isLeft onTapped={() => onAddSnippetTapped()} />
-          <ActionButton iconImageSource={require('../assets/images/list-icon.png')} text={isRootSnippetsScreen ? t('common:buttons.newGroup') + '  ' : t('common:buttons.newSubGroup')} foregroundColor={themer.getColor('button1.foreground')} backgroundColor={themer.getColor('button1.background')} disabled={isLoading || isUserLoading} isRight onTapped={() => onNewGroupTapped()} />
+          <ActionButton iconImageSource={require('../assets/images/plus.png')} text={t('common:buttons.addSnippet')} foregroundColor={themer.getColor('button1.foreground')} backgroundColor={themer.getColor('button1.background')} disabled={isLoading || isUserLoading || isClipboardManagedSnippet(parentSnippet)} isLeft onTapped={() => onAddSnippetTapped()} />
+          <ActionButton iconImageSource={require('../assets/images/list-icon.png')} text={isRootSnippetsScreen ? t('common:buttons.newGroup') + '  ' : t('common:buttons.newSubGroup')} foregroundColor={themer.getColor('button1.foreground')} backgroundColor={themer.getColor('button1.background')} disabled={isLoading || isUserLoading || isClipboardManagedSnippet(parentSnippet)} isRight onTapped={() => onNewGroupTapped()} />
         </View>
       </View>
       { (isLoading || isUserLoading) &&
@@ -412,7 +419,7 @@ const SnippetsScreen = ({ route, navigation }) => {
               colors={[themer.getColor('screenHeader1.foreground')]}
             />
           }
-          renderItem={({item, index, section}) => <SnippetView snippet={item} onSnippetTapped={onSnippetTapped} onSnippetMenuTapped={onSnippetMenuTapped} isHidden={item.source == snippetSources.STORAGE ? !isOnDeviceSectionVisible : !isCloudSectionVisible} isTop={index === 0} isBottom={index === section.data.length - 1} themer={themer} />}
+          renderItem={({item, index, section}) => <SnippetView snippet={item} onSnippetTapped={onSnippetTapped} onSnippetMenuTapped={onSnippetMenuTapped} isMenuVisible={!isClipboardManagedSnippet(item)} isHidden={item.source == snippetSources.STORAGE ? !isOnDeviceSectionVisible : !isCloudSectionVisible} isTop={index === 0} isBottom={index === section.data.length - 1} themer={themer} />}
           renderSectionHeader={({section: {title}}) => ( title &&
             <>
               <View>
