@@ -30,6 +30,7 @@ import api from './helpers/api';
 import storage from './helpers/storage';
 import widget from './helpers/widget';
 import banner from './helpers/banner';
+import { sanitizeCredentialIdentifier } from './helpers/userSanitizer';
 import RevenueCat from './helpers/revenueCat';
 import analytics from './helpers/analytics';
 import SnippetsScreen from './screens/SnippetsScreen';
@@ -149,6 +150,7 @@ export default Sentry.wrap(function App() {
     let user = null;
     let responseJson;
     try {
+      emailOrPhone = sanitizeCredentialIdentifier(emailOrPhone);
       const response = await api.login(emailOrPhone, password);
       if (!response?.ok) { throw new Error(`HTTP error with status ${response?.status}`); }
       responseJson = await response.json();

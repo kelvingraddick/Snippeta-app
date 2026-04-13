@@ -7,6 +7,15 @@ const sanitizeField = (value, { toLowerCase } = {}) => {
   return toLowerCase ? trimmed.toLowerCase() : trimmed;
 };
 
+export const sanitizeCredentialIdentifier = (emailOrPhone) => {
+  const trimmedValue = sanitizeField(emailOrPhone);
+  if (trimmedValue === null || trimmedValue === undefined || trimmedValue === '') {
+    return trimmedValue;
+  }
+
+  return trimmedValue.includes('@') ? trimmedValue.toLowerCase() : trimmedValue;
+};
+
 export const sanitizeUserContactFields = (user = {}) => {
   if (!user || typeof user !== 'object') {
     return user;

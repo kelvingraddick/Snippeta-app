@@ -6,15 +6,20 @@ import { featureAlertTypes } from '../constants/featureAlertTypes';
 import { snippetTypes } from '../constants/snippetTypes';
 import { moveSnippetOptions } from '../constants/moveSnippetOptions';
 import { snippetSources } from '../constants/snippetSources';
+import { sanitizeCredentialIdentifier } from './userSanitizer';
 
 const getCredentials = async () => {
   const item = await AsyncStorage.getItem(storageKeys.CREDENTIALS);
   const credentials = JSON.parse(item);
+  if (credentials?.emailOrPhone) {
+    credentials.emailOrPhone = sanitizeCredentialIdentifier(credentials.emailOrPhone);
+  }
   console.log(`storage.js -> getCredentials: ${credentials?.emailOrPhone ? `Got credentials for ${credentials.emailOrPhone}` : 'No credentials in storage'}`);
   return credentials;
 };
 
 const saveCredentials = async (emailOrPhone, password) => {
+  emailOrPhone = sanitizeCredentialIdentifier(emailOrPhone);
   console.log('storage.js -> saveCredentials: Saving credentials for ', emailOrPhone);
   const credentials = { emailOrPhone, password };
   if (validator.isValidCredentials(credentials)) {
