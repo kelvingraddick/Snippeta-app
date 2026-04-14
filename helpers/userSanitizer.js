@@ -7,13 +7,28 @@ const sanitizeField = (value, { toLowerCase } = {}) => {
   return toLowerCase ? trimmed.toLowerCase() : trimmed;
 };
 
+const sanitizePhoneNumber = (value) => {
+  const trimmedValue = sanitizeField(value);
+  if (trimmedValue === null || trimmedValue === undefined || trimmedValue === '') {
+    return trimmedValue;
+  }
+
+  const hasLeadingPlus = trimmedValue.startsWith('+');
+  const digitsOnly = trimmedValue.replace(/\D/g, '');
+  if (!digitsOnly) {
+    return trimmedValue;
+  }
+
+  return hasLeadingPlus ? `+${digitsOnly}` : digitsOnly;
+};
+
 export const sanitizeCredentialIdentifier = (emailOrPhone) => {
   const trimmedValue = sanitizeField(emailOrPhone);
   if (trimmedValue === null || trimmedValue === undefined || trimmedValue === '') {
     return trimmedValue;
   }
 
-  return trimmedValue.includes('@') ? trimmedValue.toLowerCase() : trimmedValue;
+  return trimmedValue.includes('@') ? trimmedValue.toLowerCase() : sanitizePhoneNumber(trimmedValue);
 };
 
 export const sanitizeUserContactFields = (user = {}) => {
@@ -24,6 +39,6 @@ export const sanitizeUserContactFields = (user = {}) => {
   return {
     ...user,
     email_address: sanitizeField(user.email_address, { toLowerCase: true }),
-    phone_number: sanitizeField(user.phone_number),
+    phone_number: sanitizePhoneNumber(user.phone_number),
   };
 };
