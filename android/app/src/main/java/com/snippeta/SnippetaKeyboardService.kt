@@ -30,16 +30,17 @@ class SnippetaKeyboardService : InputMethodService() {
     private lateinit var deleteButton: ImageButton
     private var snippetStack: MutableList<List<Snippet>> = mutableListOf()
     private var snippetTitleStack: MutableList<String> = mutableListOf()
+    private var snippetIdStack: MutableList<String?> = mutableListOf()
     private var allSnippets: List<Snippet> = listOf()
     private var currentSnippets: List<Snippet> = listOf()
+    private var currentSnippetGroupId: String? = null
     private lateinit var themer: Themer
 
     private lateinit var sharedPrefs: SharedPreferences
     private lateinit var clipboardManager: ClipboardManager
     private val prefsListener = SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
         if (key == "snippets") {
-            loadAllSnippets()
-            // Update the adapter/UI if already initialized
+            loadAllSnippets(preserveNavigation = true)
             if (::snippetListView.isInitialized && snippetListView.adapter is SnippetAdapter) {
                 (snippetListView.adapter as SnippetAdapter).updateSnippets(currentSnippets)
             }
@@ -79,14 +80,28 @@ class SnippetaKeyboardService : InputMethodService() {
         }
     }
 
-    private fun loadAllSnippets() {
+    private fun loadAllSnippets(preserveNavigation: Boolean = false) {
         val dataString = sharedPrefs.getString("snippets", null)
         if (dataString != null) {
             val gson = GsonBuilder().create()
             val listType = object : TypeToken<List<Snippet>>() {}.type
             allSnippets = gson.fromJson(dataString, listType)
-            currentSnippets = allSnippets
+            currentSnippets = if (preserveNavigation) {
+                getSnippetsForCurrentGroup() ?: allSnippets.also {
+                    currentSnippetGroupId = null
+                    snippetStack.clear()
+                    snippetTitleStack.clear()
+                    snippetIdStack.clear()
+                }
+            } else {
+                allSnippets
+            }
         }
+    }
+
+    private fun getSnippetsForCurrentGroup(): List<Snippet>? {
+        val groupId = currentSnippetGroupId ?: return allSnippets
+        return allSnippets.find { it.id == groupId }?.child_snippets
     }
 
     private fun syncClipboardSnippetIfNeeded() {
@@ -100,7 +115,7 @@ class SnippetaKeyboardService : InputMethodService() {
             ?.takeIf { it.isNotEmpty() }
             ?: return
 
-        loadAllSnippets()
+        loadAllSnippets(preserveNavigation = true)
         val clipboardGroup = allSnippets.find { it.id == CLIPBOARD_GROUP_ID }
         val existingChildren = (clipboardGroup?.child_snippets ?: listOf())
             .filter { !it.content.isNullOrBlank() }
@@ -137,9 +152,21 @@ class SnippetaKeyboardService : InputMethodService() {
         sharedPrefs.edit().putString("snippets", json).apply()
 
         allSnippets = updatedRootSnippets
-        when (titleLabel.text?.toString()) {
-            CLIPBOARD_GROUP_TITLE -> currentSnippets = updatedChildren
-            else -> if (snippetStack.isEmpty()) currentSnippets = updatedRootSnippets
+        currentSnippets = when (currentSnippetGroupId) {
+            CLIPBOARD_GROUP_ID -> updatedChildren
+            null -> updatedRootSnippets
+            else -> getSnippetsForCurrentGroup() ?: updatedRootSnippets.also {
+                currentSnippetGroupId = null
+                snippetStack.clear()
+                snippetTitleStack.clear()
+                snippetIdStack.clear()
+                if (::backButton.isInitialized) {
+                    backButton.visibility = View.INVISIBLE
+                }
+                if (::titleLabel.isInitialized) {
+                    titleLabel.text = "Snippets"
+                }
+            }
         }
         if (::snippetListView.isInitialized && snippetListView.adapter is SnippetAdapter) {
             (snippetListView.adapter as SnippetAdapter).updateSnippets(currentSnippets)
@@ -172,9 +199,10 @@ class SnippetaKeyboardService : InputMethodService() {
         snippetListView.adapter = adapter
 
         backButton.setOnClickListener {
-            if (snippetStack.isNotEmpty() && snippetTitleStack.isNotEmpty()) {
+            if (snippetStack.isNotEmpty() && snippetTitleStack.isNotEmpty() && snippetIdStack.isNotEmpty()) {
                 currentSnippets = snippetStack.removeAt(snippetStack.size - 1)
                 titleLabel.text = snippetTitleStack.removeAt(snippetTitleStack.size - 1)
+                currentSnippetGroupId = snippetIdStack.removeAt(snippetIdStack.size - 1)
                 adapter.updateSnippets(currentSnippets)
                 if (snippetStack.isEmpty()) {
                     backButton.visibility = View.INVISIBLE
@@ -195,6 +223,8 @@ class SnippetaKeyboardService : InputMethodService() {
         } else if (snippet.type == 1) { // MULTIPLE
             snippetStack.add(currentSnippets)
             snippetTitleStack.add(titleLabel.text.toString())
+            snippetIdStack.add(currentSnippetGroupId)
+            currentSnippetGroupId = snippet.id
             currentSnippets = snippet.child_snippets ?: listOf()
             adapter.updateSnippets(currentSnippets)
             titleLabel.text = snippet.title
