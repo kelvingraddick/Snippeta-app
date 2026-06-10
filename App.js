@@ -107,6 +107,7 @@ export default Sentry.wrap(function App() {
     initI18n().then((i18n) => { setI18nInstance(i18n); });
 
     RevenueCat.configure()
+      .then(() => storage.syncKeyboardSettings())
       .then(() => loadThemeAppearanceFromStorage()
       .then(() => loginWithStorage()));
 
@@ -331,6 +332,8 @@ export default Sentry.wrap(function App() {
   const updateDataForKeyboard = async () => {
     try {
       console.log('App.js -> updateDataForKeyboard: about to get snippets for user');
+      const existingSharedSnippets = await widget.getData('snippets') ?? [];
+      const clipboardGroup = existingSharedSnippets.find(x => x?.id === 'SNIPPET_CLIPBOARD_GROUP');
 
       // 1. try to get storage snippets
       let storageSnippets = [];
@@ -361,6 +364,9 @@ export default Sentry.wrap(function App() {
       // 4. combine data from storage and API
       let snippets = [];
       snippets = snippets.concat(storageSnippets).concat(apiSnippets);
+      if (clipboardGroup) {
+        snippets = [clipboardGroup].concat(snippets.filter(x => x.id !== clipboardGroup.id));
+      }
       await analytics.setUserProperty('total_snippet_count', snippets.length.toString());
       await analytics.setUserProperty('total_snippet_group_count', snippets.filter(x => x.type === snippetTypes.MULTIPLE).length.toString());
       console.log(`App.js -> updateDataForKeyboard: Combined  ${snippets.length} snippets from storage and API:`, JSON.stringify(snippets.map(x => x.id)));

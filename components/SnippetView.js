@@ -5,7 +5,7 @@ import { snippetTypes } from '../constants/snippetTypes';
 import color from '../helpers/color';
 
 const SnippetView = (props) => {
-  const { snippet, onSnippetTapped, onSnippetMenuTapped, isHidden, isTop, isBottom, themer } = props;
+  const { snippet, onSnippetTapped, onSnippetMenuTapped, isMenuVisible = true, isHidden, isTop, isBottom, themer } = props;
   const ContainerComponent = Array.isArray(themer.getColor(snippet.color_id)) ? LinearGradient : View;
   const containerProps = Array.isArray(themer.getColor(snippet.color_id)) ?
     { style: [styles.container, (isTop ? styles.topContainer : null), (isBottom ? styles.bottomContainer : null)], colors: themer.getColor(snippet.color_id), start: {x: 0, y: 0}, end: {x: 1, y: 0}, } :
@@ -27,9 +27,11 @@ const SnippetView = (props) => {
             <Text style={[styles.titleText, { color: foregroundColor }]} numberOfLines={1}>&nbsp;&nbsp;{snippet.title}</Text>
             { !isCollapsed && <Text style={[styles.contentText, { color: foregroundColor, opacity: themer.getOpacity('content1.text2') }]} numberOfLines={1}>&nbsp;&nbsp;{snippet.content}</Text> }
           </View>
-          <TouchableOpacity onPress={() => onSnippetMenuTapped(snippet)} hitSlop={40}>
-            <Text style={[styles.menuIcon, { color: foregroundColor, opacity: themer.getOpacity('content1.icon2') }]}>&middot;&middot;&middot;</Text>
-          </TouchableOpacity>
+          { isMenuVisible &&
+            <TouchableOpacity onPress={() => onSnippetMenuTapped(snippet)} hitSlop={40}>
+              <Text style={[styles.menuIcon, { color: foregroundColor, opacity: themer.getOpacity('content1.icon2') }]}>&middot;&middot;&middot;</Text>
+            </TouchableOpacity>
+          }
         </View>
       </ContainerComponent>
     </TouchableOpacity>

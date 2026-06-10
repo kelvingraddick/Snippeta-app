@@ -6,6 +6,34 @@ import { featureAlertTypes } from '../constants/featureAlertTypes';
 import { snippetTypes } from '../constants/snippetTypes';
 import { moveSnippetOptions } from '../constants/moveSnippetOptions';
 import { snippetSources } from '../constants/snippetSources';
+import widget from './widget';
+
+const CLIPBOARD_GROUP_ID = 'SNIPPET_CLIPBOARD_GROUP';
+const CLIPBOARD_SNIPPET_ID_PREFIX = 'SNIPPET_CLIPBOARD_';
+
+const _isClipboardSnippet = (id) => id === CLIPBOARD_GROUP_ID || id?.startsWith?.(CLIPBOARD_SNIPPET_ID_PREFIX);
+
+const _getSharedClipboardGroup = async () => {
+  const sharedSnippets = (await widget.getData('snippets')) ?? [];
+  const clipboardGroup = sharedSnippets.find(x => x?.id === CLIPBOARD_GROUP_ID);
+  if (!clipboardGroup) return null;
+  clipboardGroup.source = snippetSources.STORAGE;
+  clipboardGroup.child_snippets = (clipboardGroup.child_snippets ?? []).map((childSnippet, index) => ({
+    ...childSnippet,
+    source: snippetSources.STORAGE,
+    parent_id: CLIPBOARD_GROUP_ID,
+    order_index: childSnippet.order_index ?? index,
+  }));
+  return clipboardGroup;
+};
+
+const _saveSharedClipboardGroup = async (clipboardGroup) => {
+  const sharedSnippets = (await widget.getData('snippets')) ?? [];
+  const nextSharedSnippets = clipboardGroup ?
+    [clipboardGroup].concat(sharedSnippets.filter(x => x?.id !== CLIPBOARD_GROUP_ID)) :
+    sharedSnippets.filter(x => x?.id !== CLIPBOARD_GROUP_ID);
+  await widget.saveData('snippets', nextSharedSnippets);
+};
 
 const getCredentials = async () => {
   const item = await AsyncStorage.getItem(storageKeys.CREDENTIALS);
@@ -69,6 +97,15 @@ const getSnippets = async (parentId, includeNestedChildren) => {
       }
     }
   }
+  const clipboardGroup = await _getSharedClipboardGroup();
+  if (clipboardGroup) {
+    if (parentId === undefined) {
+      snippets = [includeNestedChildren ? clipboardGroup : { ...clipboardGroup, child_snippets: undefined }]
+        .concat(snippets.filter(x => x?.id !== CLIPBOARD_GROUP_ID));
+    } else if (parentId === CLIPBOARD_GROUP_ID) {
+      snippets = clipboardGroup.child_snippets ?? [];
+    }
+  }
   console.log(`storage.js -> getSnippets: Got ${snippets.length} snippets for parent ID ${parentId} and include nested children ${includeNestedChildren}:`, JSON.stringify(snippets.map(x => x.id)));
   return snippets;
 };
@@ -85,6 +122,11 @@ const getSnippetGroups = async () => {
   }
   let snippetGroups = [{ id: storageKeys.SNIPPET + 0, type: snippetTypes.MULTIPLE, title: 'Snippets', content: 'Snippets', color_id: colorIds.COLOR_100, order_index: 0 }]; // root snippet group
   snippetGroups = snippetGroups.concat(snippets.filter(x => x.type === snippetTypes.MULTIPLE));
+  const clipboardGroup = await _getSharedClipboardGroup();
+  if (clipboardGroup) {
+    snippetGroups = snippetGroups.concat([{ ...clipboardGroup, child_snippets: undefined }]);
+    snippets.push(...(clipboardGroup.child_snippets ?? []));
+  }
   for (let i = 0; i < snippetGroups.length; i++) {
     snippetGroups[i].snippets = snippetGroups[i].id === storageKeys.SNIPPET + 0 ?
       snippets.filter(x => !x.parent_id) :
@@ -109,11 +151,21 @@ const searchSnippets = async (query) => {
       snippets.push(snippet);
     }
   }
+  const clipboardGroup = await _getSharedClipboardGroup();
+  if (clipboardGroup) {
+    const clipboardSnippets = [clipboardGroup].concat(clipboardGroup.child_snippets ?? []);
+    snippets.push(...clipboardSnippets.filter(snippet => snippet && (snippet.title?.toLowerCase().includes(query) || snippet.content?.toLowerCase().includes(query))));
+  }
   console.log(`storage.js -> searchSnippets: Got ${snippets.length} snippets for query ${query}:`, JSON.stringify(snippets.map(x => x.id)));
   return snippets;
 };
 
 const getSnippet = async (id) => {
+  if (_isClipboardSnippet(id)) {
+    const clipboardGroup = await _getSharedClipboardGroup();
+    if (clipboardGroup?.id === id) return { ...clipboardGroup, child_snippets: undefined };
+    return clipboardGroup?.child_snippets?.find(x => x.id === id) ?? null;
+  }
   const item = await AsyncStorage.getItem(id);
   return JSON.parse(item);
 };
@@ -136,6 +188,19 @@ const _enrichSnippet = async (snippet) => {
 
 const deleteSnippet = async (id) => {
   console.log('storage.js -> deleteSnippet: Deleting snippet with ID', id);
+  if (_isClipboardSnippet(id)) {
+    const clipboardGroup = await _getSharedClipboardGroup();
+    if (!clipboardGroup) return;
+    if (id === CLIPBOARD_GROUP_ID) {
+      await _saveSharedClipboardGroup(null);
+      return;
+    }
+    const childSnippets = (clipboardGroup.child_snippets ?? [])
+      .filter(x => x.id !== id)
+      .map((snippet, index) => ({ ...snippet, order_index: index }));
+    await _saveSharedClipboardGroup({ ...clipboardGroup, child_snippets: childSnippets });
+    return;
+  }
   await AsyncStorage.removeItem(id);
   const childSnippets = await getSnippets(id);
   for (const childSnippet of childSnippets) {
@@ -248,6 +313,21 @@ const getAppearanceMode = async () => {
   return await AsyncStorage.getItem(storageKeys.APPEARANCE_MODE);
 };
 
+const getClipboardSyncEnabled = async () => {
+  const item = await AsyncStorage.getItem(storageKeys.IS_CLIPBOARD_SYNC_ENABLED);
+  return item == null ? true : item === 'true';
+};
+
+const saveClipboardSyncEnabled = async (isEnabled) => {
+  console.log('storage.js -> saveClipboardSyncEnabled: Saving clipboard sync enabled', isEnabled);
+  await AsyncStorage.setItem(storageKeys.IS_CLIPBOARD_SYNC_ENABLED, isEnabled ? 'true' : 'false');
+  await widget.saveData('isClipboardSyncEnabled', isEnabled);
+};
+
+const syncKeyboardSettings = async () => {
+  await widget.saveData('isClipboardSyncEnabled', await getClipboardSyncEnabled());
+};
+
 const saveAppearanceMode = async (appearanceMode) => {
   console.log('storage.js -> saveAppearanceMode: Saving appearance with mode', appearanceMode);
   await AsyncStorage.setItem(storageKeys.APPEARANCE_MODE, appearanceMode);
@@ -347,9 +427,12 @@ export default {
   moveSnippet,
   moveSnippetToGroup,
   getAppearanceMode,
+  getClipboardSyncEnabled,
   saveAppearanceMode,
+  saveClipboardSyncEnabled,
   getThemeId,
   saveThemeId,
+  syncKeyboardSettings,
   getMilestoneNumber,
   saveMilestoneNumber,
   getLastReviewPromptDate,

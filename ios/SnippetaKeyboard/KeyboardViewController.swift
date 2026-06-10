@@ -7,12 +7,19 @@ import UIKit
 import SwiftUI
 
 class KeyboardViewController: UIInputViewController {
+  let clipboardGroupId = "SNIPPET_CLIPBOARD_GROUP"
+  let clipboardSnippetIdPrefix = "SNIPPET_CLIPBOARD_"
+  let clipboardGroupTitle = "Clipboard"
+  let maxClipboardSnippets = 50
   
   var allSnippets: [Snippet] = []
   var currentSnippets: [Snippet] = []
   var snippetStack: [[Snippet]] = []
   var snippetTitleStack: [String] = []
+  var snippetIdStack: [String?] = []
+  var currentSnippetGroupId: String?
   var deleteTimer: Timer?
+  var clipboardTimer: Timer?
   var themer = Themer()
   
   var tableView: UITableView!
@@ -29,22 +36,140 @@ class KeyboardViewController: UIInputViewController {
     super.viewDidLoad()
     
     loadAllSnippets()
+    syncClipboardSnippetIfNeeded()
     setupUI()
+    startClipboardMonitoring()
+  }
+
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    clipboardTimer?.invalidate()
+    clipboardTimer = nil
   }
   
-  func loadAllSnippets() {
+  func loadAllSnippets(preserveNavigation: Bool = false) {
     if let sharedDefaults = UserDefaults(suiteName: "group.com.wavelinkllc.snippeta.shared"),
        let dataString = sharedDefaults.string(forKey: "snippets"),
        let data = dataString.data(using: .utf8) {
       do {
         let results = try JSONDecoder().decode([Snippet].self, from: data)
         self.allSnippets = results
-        self.currentSnippets = results
+        if preserveNavigation {
+          self.currentSnippets = getSnippetsForCurrentGroup() ?? results
+          if currentSnippetGroupId != nil && getSnippetsForCurrentGroup() == nil {
+            currentSnippetGroupId = nil
+            snippetStack.removeAll()
+            snippetTitleStack.removeAll()
+            snippetIdStack.removeAll()
+          }
+        } else {
+          self.currentSnippets = results
+        }
         print("Loaded \(results.count) snippets.")
       } catch {
         print("Error decoding snippets: \(error)")
       }
     }
+  }
+
+  func getSnippetsForCurrentGroup() -> [Snippet]? {
+    guard let currentSnippetGroupId else { return allSnippets }
+    return allSnippets.first(where: { $0.id == currentSnippetGroupId })?.child_snippets
+  }
+
+  func startClipboardMonitoring() {
+    clipboardTimer?.invalidate()
+    clipboardTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { [weak self] _ in
+      self?.syncClipboardSnippetIfNeeded()
+    }
+  }
+
+  func syncClipboardSnippetIfNeeded() {
+    guard isClipboardSyncEnabled() else { return }
+    guard let clipboardText = UIPasteboard.general.string?.trimmingCharacters(in: .whitespacesAndNewlines), !clipboardText.isEmpty else { return }
+
+    loadAllSnippets(preserveNavigation: true)
+    let clipboardGroup = allSnippets.first(where: { $0.id == clipboardGroupId })
+    let existingChildren = (clipboardGroup?.child_snippets ?? []).filter { !$0.content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+    if existingChildren.first?.content == clipboardText { return }
+
+    let dedupedChildren = existingChildren.filter { $0.content != clipboardText }
+    let newSnippet = Snippet(
+      id: clipboardSnippetIdPrefix + String(Int(Date().timeIntervalSince1970 * 1000)),
+      type: SnippetType.SINGLE.rawValue,
+      source: "storage",
+      title: buildClipboardSnippetTitle(from: clipboardText),
+      content: clipboardText,
+      color_id: 4,
+      order_index: 0,
+      child_snippets: nil
+    )
+    let updatedChildren = Array(([newSnippet] + dedupedChildren).prefix(maxClipboardSnippets)).enumerated().map { index, snippet in
+      Snippet(
+        id: snippet.id,
+        type: snippet.type,
+        source: snippet.source,
+        title: snippet.title,
+        content: snippet.content,
+        color_id: snippet.color_id,
+        order_index: index,
+        child_snippets: snippet.child_snippets
+      )
+    }
+    let updatedClipboardGroup = Snippet(
+      id: clipboardGroupId,
+      type: SnippetType.MULTIPLE.rawValue,
+      source: "storage",
+      title: clipboardGroupTitle,
+      content: clipboardGroupTitle,
+      color_id: 3,
+      order_index: 0,
+      child_snippets: updatedChildren
+    )
+    let updatedRootSnippets = [updatedClipboardGroup] + allSnippets.filter { $0.id != clipboardGroupId }
+    saveSnippets(updatedRootSnippets)
+
+    allSnippets = updatedRootSnippets
+    if currentSnippetGroupId == clipboardGroupId {
+      currentSnippets = updatedChildren
+    } else if currentSnippetGroupId == nil {
+      currentSnippets = updatedRootSnippets
+    } else if let preservedSnippets = getSnippetsForCurrentGroup() {
+      currentSnippets = preservedSnippets
+    } else {
+      currentSnippetGroupId = nil
+      snippetStack.removeAll()
+      snippetTitleStack.removeAll()
+      snippetIdStack.removeAll()
+      currentSnippets = updatedRootSnippets
+      backButton?.isHidden = true
+      settingsButton?.isHidden = false
+      titleLabel?.text = "Snippets"
+    }
+    tableView?.reloadData()
+  }
+
+  func isClipboardSyncEnabled() -> Bool {
+    guard let sharedDefaults = UserDefaults(suiteName: "group.com.wavelinkllc.snippeta.shared") else { return true }
+    guard let value = sharedDefaults.string(forKey: "isClipboardSyncEnabled") else { return true }
+    return NSString(string: value).boolValue
+  }
+
+  func saveSnippets(_ snippets: [Snippet]) {
+    guard let sharedDefaults = UserDefaults(suiteName: "group.com.wavelinkllc.snippeta.shared") else { return }
+    do {
+      let data = try JSONEncoder().encode(snippets)
+      let dataString = String(data: data, encoding: .utf8)
+      sharedDefaults.set(dataString, forKey: "snippets")
+    } catch {
+      print("Error encoding snippets: \(error)")
+    }
+  }
+
+  func buildClipboardSnippetTitle(from content: String) -> String {
+    let line = content.components(separatedBy: .newlines).first?.trimmingCharacters(in: .whitespacesAndNewlines) ?? clipboardGroupTitle
+    if line.isEmpty { return clipboardGroupTitle }
+    return String(line.prefix(40))
   }
   
   // MARK: - Setup UI
@@ -183,11 +308,11 @@ class KeyboardViewController: UIInputViewController {
     if snippet.type == SnippetType.SINGLE.rawValue {
       insertText(snippet.content)
     } else if snippet.type == SnippetType.MULTIPLE.rawValue {
-      // Push current state to stack
       snippetStack.append(currentSnippets)
       snippetTitleStack.append(titleLabel.text ?? "Snippets")
+      snippetIdStack.append(currentSnippetGroupId)
+      currentSnippetGroupId = snippet.id
       
-      // Show nested snippets
       if let childSnippets = snippet.child_snippets {
         self.currentSnippets = childSnippets
         tableView.reloadData()
@@ -203,19 +328,18 @@ class KeyboardViewController: UIInputViewController {
   
   // MARK: - Back button
   @objc func didTapBack() {
-    // Pop from snippet stack
     guard let previousSnippets = snippetStack.popLast(),
-          let previousTitle = snippetTitleStack.popLast() else {
+          let previousTitle = snippetTitleStack.popLast(),
+          !snippetIdStack.isEmpty else {
       return
     }
     
+    currentSnippetGroupId = snippetIdStack.removeLast()
     currentSnippets = previousSnippets
     tableView.reloadData()
     
-    // Update title
     titleLabel.text = previousTitle
     
-    // If stack is empty, hide back button again
     if snippetStack.isEmpty {
       backButton.isHidden = true
       settingsButton.isHidden = false

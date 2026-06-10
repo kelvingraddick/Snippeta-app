@@ -34,6 +34,7 @@ const SettingsScreen = ({ navigation }) => {
   const [subscriptionPrice, setSubscriptionPrice] = useState();
   const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
   const [storedLanguage, setStoredLanguage] = useState(null);
+  const [isClipboardSyncEnabled, setIsClipboardSyncEnabled] = useState(true);
 
   const { showFancyActionSheet } = useFancyActionSheet();
 
@@ -68,6 +69,7 @@ const SettingsScreen = ({ navigation }) => {
     const deviceLanguage = getDeviceLanguage();
     setStoredLanguage(stored);
     setCurrentLanguage(stored || deviceLanguage);
+    setIsClipboardSyncEnabled(await storage.getClipboardSyncEnabled());
     i18n.on('languageChanged', updateLanguage);
   };
 
@@ -108,10 +110,12 @@ const SettingsScreen = ({ navigation }) => {
         { label: languageLabel, onTapped: () => { onLanguageTapped(); }},
       ];
       let appExtensionsSettings = !Platform.constants.isMacCatalyst ? [
+        { label: t('settings:settings.backgroundClipboard'), onTapped: async () => { await onClipboardSyncToggled(!isClipboardSyncEnabled); }, isSwitchEnabled: isClipboardSyncEnabled, onSwitchToggled: async (value) => { await onClipboardSyncToggled(value); } },
         { label: t('settings:settings.keyboardExtension'), onTapped: () => { navigation.navigate('Keyboard'); }},
         { label: t('settings:settings.homeScreenWidget'), onTapped: () => { navigation.navigate('Widget'); }},
         { label: t('settings:settings.systemSettings'), onTapped: async () => {  Platform.OS === 'ios' ? Linking.openURL('app-settings:') : Linking.openSettings(); await analytics.logEvent('system_settings_tapped'); }},
       ] : [
+        { label: t('settings:settings.backgroundClipboard'), onTapped: async () => { await onClipboardSyncToggled(!isClipboardSyncEnabled); }, isSwitchEnabled: isClipboardSyncEnabled, onSwitchToggled: async (value) => { await onClipboardSyncToggled(value); } },
         { label: t('settings:settings.homeScreenWidget'), onTapped: () => { navigation.navigate('Widget'); }},
         { label: t('settings:settings.systemSettings'), onTapped: async () => { Linking.openURL('app-settings:'); await analytics.logEvent('system_settings_tapped'); }},
       ];
@@ -281,6 +285,13 @@ const SettingsScreen = ({ navigation }) => {
 
   const onBackTapped = async () => {
     navigation.goBack();
+  };
+
+  const onClipboardSyncToggled = async (isEnabled) => {
+    triggerHapticFeedback();
+    setIsClipboardSyncEnabled(isEnabled);
+    await storage.saveClipboardSyncEnabled(isEnabled);
+    await analytics.logEvent('background_clipboard_toggled', { enabled: isEnabled });
   };
 
   const onSubscribeTapped = async () => {

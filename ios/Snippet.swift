@@ -1,6 +1,6 @@
 import AppIntents
 
-struct Snippet: AppEntity, Decodable, Hashable {
+struct Snippet: AppEntity, Codable, Hashable {
   let id: String
   let type: Int
   let source: String

@@ -45,6 +45,7 @@
     "message": "Select light, dark, or have it automatically controlled by the device's system setting"
   },
   "settings": {
+    "backgroundClipboard": "Background clipboard",
     "keyboardExtension": "Keyboard extension",
     "homeScreenWidget": "Home screen widget",
     "systemSettings": "System settings",
@@ -82,4 +83,3 @@
   "restoreFailed": "Failed to reset feature alerts. Please try again.",
   "restorePurchasesFailed": "Restoring purchases failed with error: {{error}}"
 }
-

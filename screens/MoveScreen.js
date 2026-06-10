@@ -20,6 +20,7 @@ const MoveScreen = ({ route, navigation }) => {
 
   const snippet = route.params?.snippet;
   const callbacks = route.params?.callbacks || [];
+  const CLIPBOARD_GROUP_ID = 'SNIPPET_CLIPBOARD_GROUP';
 
   const [groups, setGroups] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -101,6 +102,7 @@ const MoveScreen = ({ route, navigation }) => {
 
     const groupsForTree = groups
       .filter(group => group.type === snippetTypes.MULTIPLE)
+      .filter(group => group.id !== CLIPBOARD_GROUP_ID)
       .filter(group => group.id !== snippetToMove?.id)
       .filter(group => !isDescendantOfSnippet(group.id))
       .sort((a, b) => (a.order_index ?? 0) - (b.order_index ?? 0));
