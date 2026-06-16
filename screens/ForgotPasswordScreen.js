@@ -7,6 +7,7 @@ import banner from '../helpers/banner';
 import ActionButton from '../components/ActionButton';
 import api from '../helpers/api';
 import analytics from '../helpers/analytics';
+import { sanitizeCredentialIdentifier } from '../helpers/userSanitizer';
 const ForgotPasswordScreen = ({ navigation }) => {
   const { t } = useTranslation(['common', 'auth', 'errors']);
   const { themer } = useContext(ApplicationContext);
@@ -23,7 +24,9 @@ const ForgotPasswordScreen = ({ navigation }) => {
   const onSendPasswordResetEmailTapped = async () => {
     try {
       setIsLoading(true);
-      const response = await api.sendPasswordResetEmail(emailOrPhone);
+      const sanitizedEmailOrPhone = sanitizeCredentialIdentifier(emailOrPhone);
+      setEmailOrPhone(sanitizedEmailOrPhone);
+      const response = await api.sendPasswordResetEmail(sanitizedEmailOrPhone);
       if (!response?.ok) { throw new Error(`HTTP error with status ${response?.status}`); }
       let responseJson = await response.json();
       if (responseJson && responseJson.success) {

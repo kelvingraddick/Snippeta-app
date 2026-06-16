@@ -8,6 +8,7 @@ import api from '../helpers/api';
 import banner from '../helpers/banner';
 import analytics from '../helpers/analytics';
 import ActionButton from '../components/ActionButton';
+import { sanitizeUserContactFields } from '../helpers/userSanitizer';
 
 const RegisterScreen = ({ navigation }) => {
   const { t } = useTranslation(['common', 'auth', 'errors']);
@@ -25,16 +26,18 @@ const RegisterScreen = ({ navigation }) => {
   const onRegisterTapped = async () => {
     try {
       setIsLoading(true);
-      if (user.password != user.password_confirm) {
+      const sanitizedUser = sanitizeUserContactFields(user);
+      setUser(sanitizedUser);
+      if (sanitizedUser.password != sanitizedUser.password_confirm) {
         throw new Error(t('auth:passwordMismatch'));
       }
-      const response = await api.register(user);
+      const response = await api.register(sanitizedUser);
       if (!response?.ok) { throw new Error(`HTTP error with status ${response?.status}`); }
       let responseJson = await response.json();
       if (responseJson && responseJson.success && responseJson.user) {
         await analytics.logEvent('signup', { user_id: responseJson.user.id });
-        console.log(`RegisterScreen.js -> onRegisterTapped: User registered with email address ${user.email_address}. Now logging user in..`);
-        responseJson = await loginWithCredentials(user.email_address, user.password);
+        console.log(`RegisterScreen.js -> onRegisterTapped: User registered with email address ${sanitizedUser.email_address}. Now logging user in..`);
+        responseJson = await loginWithCredentials(sanitizedUser.email_address, sanitizedUser.password);
         if (responseJson && responseJson.success && responseJson.user) {
           console.log(`RegisterScreen.js -> onRegisterTapped: User logged in. Going back to Settings screen..`);
           navigation.goBack();

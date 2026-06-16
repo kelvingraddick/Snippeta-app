@@ -6,6 +6,7 @@ import { ApplicationContext } from '../ApplicationContext';
 import banner from '../helpers/banner';
 import analytics from '../helpers/analytics';
 import ActionButton from '../components/ActionButton';
+import { sanitizeCredentialIdentifier } from '../helpers/userSanitizer';
 
 const LoginScreen = ({ navigation }) => {
   const { t } = useTranslation(['common', 'auth', 'errors']);
@@ -23,7 +24,12 @@ const LoginScreen = ({ navigation }) => {
   const onLoginTapped = async () => {
     try {
       setIsLoading(true);
-      const responseJson = await loginWithCredentials(credentials?.emailOrPhone, credentials?.password);
+      const sanitizedCredentials = {
+        ...credentials,
+        emailOrPhone: sanitizeCredentialIdentifier(credentials?.emailOrPhone),
+      };
+      setCredentials(sanitizedCredentials);
+      const responseJson = await loginWithCredentials(sanitizedCredentials?.emailOrPhone, sanitizedCredentials?.password);
       if (responseJson && responseJson.success && responseJson.user) {
         await analytics.logEvent('login', { method: 'email' });
         console.log(`LoginScreen.js -> onLoginTapped: User logged in. Going back to Settings screen..`);
